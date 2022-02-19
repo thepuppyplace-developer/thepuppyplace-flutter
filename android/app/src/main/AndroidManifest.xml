@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.thepuppyplace_flutter">
+    package="com.thepuppyplace.flutter">
    <application
         android:label="thepuppyplace_flutter"
         android:name="${applicationName}"

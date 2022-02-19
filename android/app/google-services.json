@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "516076380973",
+    "project_id": "thepuppyplace-a0bef",
+    "storage_bucket": "thepuppyplace-a0bef.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:516076380973:android:7ee0dda9672ab07296e9a4",
+        "android_client_info": {
+          "package_name": "com.thepuppyplace.flutter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "516076380973-31142gptntb4navtn171l6m6mivs7tub.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.thepuppyplace.flutter",
+            "certificate_hash": "7d34a20f64cd67124ded48a2ce75c10ab067a01e"
+          }
+        },
+        {
+          "client_id": "516076380973-vs93ulq83fabpcrs9mgiv75q76pddbmh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCPhArLj3jl8UVcfFnkAEmpSmUWtrMTLO0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "516076380973-vs93ulq83fabpcrs9mgiv75q76pddbmh.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "516076380973-2njmgp22up92ec696qb7v97t9jve0f5l.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.thepuppyplace.flutter"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
