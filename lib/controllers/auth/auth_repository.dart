@@ -12,9 +12,11 @@ class AuthRepository extends GetConnect with Config{
 
     switch(res.statusCode){
       case 200:
-        await showToast('${res.body['nickname']}님 환영합니다.');
-        return User.fromJson(res.body);
+        return User.fromJson(res.body['user']);
       case 400:
+        await showToast(res.body['message']);
+        return User();
+      case 404:
         await showToast(res.body['message']);
         return User();
       case 500:
@@ -25,31 +27,34 @@ class AuthRepository extends GetConnect with Config{
     }
   }
 
-  Future<String> login(String email, String password) async{
-    Response res = await post('$APIURL/user/login', jsonEncode({ 'email': email.trim(), 'password': password.trim() }));
+  Future<String?> login(User user) async{
+    Response res = await post('$APIURL/user/login', jsonEncode(user.loginToJson()));
     switch(res.statusCode){
       case 200:
-        return res.body;
+        return res.body['jsonToken'];
       case 400:
-        await showToast('존재하지 않는 이메일 주소입니다.');
-        return '';
-      case 403:
-        await showToast('비밀번호가 일치하지 않습니다.');
-        return '';
+        await showToast(res.body['message']);
+        return null;
+      case 404:
+        await showToast(res.body['message']);
+        return null;
       case 500:
         await showToast(res.body['message']);
-        return '';
+        return null;
       default:
-        return '';
+        return null;
     }
   }
 
   Future<User> logout(User user) async{
-    Response res = await put('$APIURL/user/logout/${user.userId!}', jsonEncode(user.logoutToJson()));
+    Response res = await put('$APIURL/user/logout/${user.uid!}', jsonEncode(user.logoutToJson()));
 
     switch(res.statusCode){
       case 200:
-        await showToast('성공적으로 로그아웃되었습니다.');
+        await showToast(res.body['message']);
+        return User();
+      case 404:
+        await showToast(res.body['message']);
         return User();
       case 500:
         await showToast(res.body['message']);
@@ -59,18 +64,24 @@ class AuthRepository extends GetConnect with Config{
     }
   }
 
-  Future<User> signUp(User user) async{
+  Future<String?> signUp(User user) async{
     Response res = await post('$APIURL/user/signUp', jsonEncode(user.joinToJson()));
 
     switch(res.statusCode){
       case 201:
-        await showToast('${res.body['nickname']}님 환영합니다.');
-        return User.fromJson(res.body);
+        await showToast(res.body['message']);
+        return res.body['jsonToken'];
+      case 401:
+        await showToast(res.body['message']);
+        return null;
+      case 404:
+        await showToast(res.body['message']);
+        return null;
       case 500:
         await showToast(res.body['message']);
-        return User();
+        return null;
       default:
-        return User();
+        return null;
     }
   }
 
@@ -97,9 +108,13 @@ class AuthRepository extends GetConnect with Config{
 
       switch(res.statusCode){
         case 200:
-          return true;
-        case 204:
-          await showToast('이미 존재하는 이메일 주소입니다.');
+          await showToast(res.body['message']);
+          return res.body['check'];
+        case 401:
+          await showToast(res.body['message']);
+          return res.body['check'];
+        case 404:
+          await showToast(res.body['message']);
           return false;
         case 500:
           await showToast(res.body['message']);
@@ -124,9 +139,13 @@ class AuthRepository extends GetConnect with Config{
 
       switch(res.statusCode){
         case 200:
-          return true;
-        case 204:
-          await showToast('이미 사용중인 닉네임입니다.');
+          await showToast(res.body['message']);
+          return res.body['check'];
+        case 401:
+          await showToast(res.body['message']);
+          return res.body['check'];
+        case 404:
+          await showToast(res.body['message']);
           return false;
         case 500:
           await showToast(res.body['message']);

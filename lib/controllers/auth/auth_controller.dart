@@ -16,26 +16,54 @@ class AuthController extends GetxController with StateMixin<User>{
   late SharedPreferences _sharedPreferences;
 
   final Rx<User?> _user = Rx(null);
+  final Rx<String?> _jsonToken = Rx(null);
 
   @override
   void onReady() async{
     super.onReady();
     _sharedPreferences = await SharedPreferences.getInstance();
     ever(_user, _userListener);
+    ever(_jsonToken, _jsonTokenListener);
     _autoLogin();
   }
 
-  Future _userListener(User? user) async{
+  Future<String?> _deviceId() async{
+    if(Platform.isAndroid){
+      AndroidDeviceInfo android = await _deviceInfo.androidInfo;
+      return android.androidId;
+    } else {
+      IosDeviceInfo ios = await _deviceInfo.iosInfo;
+      return ios.identifierForVendor;
+    }
+  }
+
+  void _userListener(User? user){
     try{
       change(null, status: RxStatus.loading());
-      if(user!.userId != null){
+      if(user!.uid != null){
         change(user, status: RxStatus.success());
-        Get.back();
       } else {
         change(null, status: RxStatus.empty());
       }
     } catch(error){
       change(null, status: RxStatus.error(error.toString()));
+    }
+  }
+
+  Future _jsonTokenListener(String? jsonToken) async{
+    if(jsonToken != null){
+      _user.value = await _repo.getUser(jsonToken);
+      _sharedPreferences.setString('jsonToken', jsonToken);
+    } else {
+      _user.value = User();
+    }
+  }
+
+  void _autoLogin(){
+    if(_sharedPreferences.getString('jsonToken') != null){
+      _jsonToken.value = _sharedPreferences.getString('jsonToken');
+    } else {
+      _jsonToken.value = null;
     }
   }
 
@@ -47,46 +75,34 @@ class AuthController extends GetxController with StateMixin<User>{
     } else if(password.trim().isEmpty){
       await showToast('비밀번호를 입력해주세요');
     } else {
-      String jsonToken = await _repo.login(email, password);
-      _sharedPreferences.setString('jsonToken', jsonToken);
-      return _getUser(_sharedPreferences.getString('jsonToken')!);
-    }
-  }
-
-  Future _getUser(String jsonToken) async{
-    _user.value = await _repo.getUser(jsonToken);
-  }
-
-  Future _autoLogin() async{
-    if(_sharedPreferences.getString('jsonToken') != null){
-      _getUser(_sharedPreferences.getString('jsonToken')!);
-    } else {
-      _user.value = User();
-    }
-  }
-
-  Future<String?> _getDeviceId() async{
-    if(Platform.isAndroid){
-      AndroidDeviceInfo android = await _deviceInfo.androidInfo;
-      return android.androidId;
-    } else {
-      IosDeviceInfo ios = await _deviceInfo.iosInfo;
-      return ios.identifierForVendor;
+      _jsonToken.value = await _repo.login(User(
+        email: email.trim(),
+        password: password.trim(),
+        fcmToken: NotificationController.to.fcmToken,
+        deviceId: await _deviceId()
+      ));
+      if(_jsonToken.value != null){
+        return Get.back();
+      }
     }
   }
 
   Future signUp(String email, String password, String nickname) async{
-    _user.value = await _repo.signUp(User(
-      email: email.trim(),
-      password: password.trim(),
-      nickname: nickname.trim(),
-      fcmToken: NotificationController.to.fcmToken,
-      deviceId: await _getDeviceId()
+    _jsonToken.value = await _repo.signUp(User(
+        email: email.trim(),
+        password: password.trim(),
+        nickname: nickname.trim(),
+        fcmToken: NotificationController.to.fcmToken,
+        deviceId: await _deviceId()
     ));
+    if(_jsonToken.value != null){
+      Get.back();
+      return Get.back();
+    }
   }
 
   Future logout() async{
     _user.value = await _repo.logout(_user.value!);
-    _sharedPreferences.remove('jsonToken');
+    return _sharedPreferences.remove('jsonToken');
   }
 }

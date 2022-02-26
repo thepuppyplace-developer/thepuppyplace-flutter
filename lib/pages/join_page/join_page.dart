@@ -6,7 +6,6 @@ import 'package:thepuppyplace_flutter/widgets/buttons.dart';
 import '../../controllers/auth/auth_controller.dart';
 import 'insert_email_page.dart';
 import 'insert_nickname_page.dart';
-import 'insert_otp_page.dart';
 
 class JoinPage extends StatefulWidget {
   const JoinPage({Key? key}) : super(key: key);
@@ -53,7 +52,6 @@ class _JoinPageState extends State<JoinPage> {
     controller: _pageController,
     children: [
       InsertEmailPage(email: _email, password: _password, passwordCheck: _passwordCheck),
-      InsertOTPPage(email: _email.text, pageController: _pageController),
       InsertNicknamePage(nickname: _nickname,)
     ],
   );
@@ -68,7 +66,7 @@ class _JoinPageState extends State<JoinPage> {
               _pageControllerHandler();
             }
         );
-      case 2:
+      case 1:
         return CustomButton(
           title: '완료',
           margin: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.044)),
@@ -90,7 +88,7 @@ class _JoinPageState extends State<JoinPage> {
           return _pageController.nextPage(duration: duration, curve: curve);
         }
         break;
-      case 2:
+      case 1:
         if(await _repository.nicknameCheck(_nickname.text)){
           return _authController.signUp(_email.text, _password.text, _nickname.text);
         }
