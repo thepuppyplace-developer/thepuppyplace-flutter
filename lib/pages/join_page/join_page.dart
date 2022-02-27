@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:thepuppyplace_flutter/controllers/auth/auth_repository.dart';
 import 'package:thepuppyplace_flutter/util/common.dart';
-import 'package:thepuppyplace_flutter/widgets/buttons.dart';
 
 import '../../controllers/auth/auth_controller.dart';
+import '../../widgets/buttons/custom_button.dart';
 import 'insert_email_page.dart';
 import 'insert_nickname_page.dart';
 

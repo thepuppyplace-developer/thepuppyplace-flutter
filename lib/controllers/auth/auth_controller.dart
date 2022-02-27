@@ -82,6 +82,7 @@ class AuthController extends GetxController with StateMixin<User>{
         deviceId: await _deviceId()
       ));
       if(_jsonToken.value != null){
+        Get.back();
         return Get.back();
       }
     }
@@ -103,6 +104,7 @@ class AuthController extends GetxController with StateMixin<User>{
 
   Future logout() async{
     _user.value = await _repo.logout(_user.value!);
-    return _sharedPreferences.remove('jsonToken');
+    await _sharedPreferences.remove('jsonToken');
+    return Get.toNamed('/loginPage');
   }
 }

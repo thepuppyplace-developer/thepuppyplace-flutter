@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:thepuppyplace_flutter/util/common.dart';
-import 'package:thepuppyplace_flutter/widgets/text_fields.dart';
+
+import '../../widgets/text_fields/out_line_text_field.dart';
 
 class InsertEmailPage extends StatefulWidget {
   TextEditingController email;

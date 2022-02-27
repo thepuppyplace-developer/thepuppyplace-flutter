@@ -1,8 +1,16 @@
 class User{
-  String? uid, email, password, nickname, photoURL, fcmToken, jsonToken, deviceId;
-  int? gender;
-  bool? notification;
-  DateTime? createAt, updateAt;
+  final String? uid;
+  final String? email;
+  final String? password;
+  final String? nickname;
+  final String? photoURL;
+  final String? fcmToken;
+  final String? jsonToken;
+  final String? deviceId;
+  final String? location;
+  final int? gender;
+  final bool? notification;
+  final DateTime? createAt, updateAt;
 
   User({
     this.uid,
@@ -13,6 +21,7 @@ class User{
     this.fcmToken,
     this.jsonToken,
     this.deviceId,
+    this.location,
     this.gender,
     this.notification,
     this.createAt,
@@ -28,6 +37,7 @@ class User{
     fcmToken: json['fcmToken'],
     jsonToken: json['jsonToken'],
     deviceId: json['deviceId'],
+    location: json['location'],
     gender: json['gender'],
     notification: json['notification'],
     createAt: json['createAt'] != null ? DateTime.parse(json['createAt']) : null,
@@ -43,6 +53,7 @@ class User{
     'fcmToken': fcmToken,
     'jsonToken': jsonToken,
     'deviceId': deviceId,
+    'location': location,
     'gender': gender,
     'notification': notification,
     'createAt': createAt!.toIso8601String(),

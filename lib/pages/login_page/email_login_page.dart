@@ -4,8 +4,10 @@ import 'package:get/get.dart';
 import 'package:thepuppyplace_flutter/controllers/auth/auth_controller.dart';
 import 'package:thepuppyplace_flutter/pages/join_page/join_page.dart';
 import 'package:thepuppyplace_flutter/util/common.dart';
-import 'package:thepuppyplace_flutter/widgets/buttons.dart';
-import 'package:thepuppyplace_flutter/widgets/text_fields.dart';
+
+import '../../widgets/buttons/custom_button.dart';
+import '../../widgets/buttons/custom_text_button.dart';
+import '../../widgets/text_fields/out_line_text_field.dart';
 
 class EmailLoginPage extends StatefulWidget {
   const EmailLoginPage({Key? key}) : super(key: key);

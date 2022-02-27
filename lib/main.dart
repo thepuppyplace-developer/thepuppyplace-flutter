@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
       getPages: [
         GetPage(name: '/splashPage', page: () => const SplashPage()),
         GetPage(name: '/navigatorPage', page: () => const NavigatorPage()),
-        GetPage(name: '/loginPage', page: () => const LoginPage()),
+        GetPage(name: '/loginPage', page: () => const LoginPage(), fullscreenDialog: true),
       ],
       initialRoute: '/splashPage',
     );
