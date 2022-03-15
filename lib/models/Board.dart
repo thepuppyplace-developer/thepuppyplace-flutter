@@ -1,3 +1,5 @@
+import 'BoardComment.dart';
+import 'Like.dart';
 import 'User.dart';
 
 class Board{
@@ -8,6 +10,8 @@ class Board{
   final String location;
   final int? view_count;
   final User? user;
+  final List<Like>? likeList;
+  final List<BoardComment>? commentList;
   final DateTime? createdAt;
   final DateTime? updatedAt;
 
@@ -19,6 +23,8 @@ class Board{
     required this.location,
     this.view_count,
     this.user,
+    this.likeList,
+    this.commentList,
     this.createdAt,
     this.updatedAt
   });
@@ -30,9 +36,11 @@ class Board{
     description: json['description'],
     location: json['location'],
     view_count: json['view_count'],
-    user: User.fromJson(json['user']),
-    createdAt: json['createdAt'],
-    updatedAt: json['updatedAt'],
+    user: User.fromJson(json['User']),
+    likeList: List.from(json['BoardLikes']).map((data) => Like.fromJson(data)).toList(),
+    commentList: List.from(json['BoardComments']).map((data) => BoardComment.fromJson(data)).toList(),
+    createdAt: DateTime.parse(json['createdAt']),
+    updatedAt: DateTime.parse(json['updatedAt']),
   );
 
   Map<String, dynamic> toJson() => {

@@ -1,8 +1,12 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:thepuppyplace_flutter/util/common.dart';
 
+import '../../controllers/board/board/board_controller.dart';
+import '../../controllers/board/board_list/board_list_controller.dart';
+import '../../models/Board.dart';
 import '../../util/icon_list.dart';
 import '../../util/jpeg_list.dart';
 import '../../widgets/list_tile/board_list_tile.dart';
@@ -73,9 +77,18 @@ class HomePage extends StatelessWidget {
             SliverFixedExtentList(
               itemExtent: mediaHeight(context, 0.1),
               delegate: SliverChildBuilderDelegate((context, index){
-                return BoardListTile();
+                return GetBuilder<BoardListController>(
+                  builder: (BoardListController controller){
+                    return controller.obx((List<Board>? boardList){
+                      Board board = boardList![index];
+                      return BoardListTile(board: board);
+                    },
+                      onLoading: Container()
+                    );
+                  },
+                );
               },
-                  childCount: 5
+                  childCount: 10
               ),
             )
           ],

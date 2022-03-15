@@ -1,6 +1,7 @@
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:thepuppyplace_flutter/controllers/board/board_list/board_list_controller.dart';
 import 'package:thepuppyplace_flutter/pages/home_page/home_page.dart';
 import 'package:thepuppyplace_flutter/pages/my_page/my_page.dart';
 
@@ -25,6 +26,12 @@ class _NavigatorPageState extends State<NavigatorPage> {
     Icons.home,
     Icons.person
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    Get.put(BoardListController());
+  }
 
   @override
   Widget build(BuildContext context) {

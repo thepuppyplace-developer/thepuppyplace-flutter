@@ -35,11 +35,6 @@ class User{
     updateAt: json['updateAt'] != null ? DateTime.parse(json['updateAt']) : null,
   );
 
-  factory User.fromBoard(Map<String, dynamic> json) => User(
-    nickname: json['nickname'],
-    photo_url: json['phoro_url']
-  );
-
   Map<String, dynamic> toJson() => {
     'id': user_id,
     'email': email,
