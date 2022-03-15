@@ -1,7 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'controllers/notification/notification_controller.dart';
 import 'controllers/version/version_controller.dart';
 import 'pages/login_page/login_page.dart';

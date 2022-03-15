@@ -1,4 +1,3 @@
-import 'dart:convert';
 
 import 'package:get/get.dart';
 import 'package:thepuppyplace_flutter/util/common.dart';
@@ -7,20 +6,17 @@ import '../../.config.dart';
 
 class VersionRepository extends GetConnect with Config{
 
-  Future<Version> versionCheck(Version version) async{
-    Response res = await post('$APIURL/version', jsonEncode(version.toJson()));
+  Future<Version?> versionCheck(String version) async{
+    Response res = await get('$API_URL/version/$version');
 
     switch(res.statusCode){
       case 200:
-        return Version.fromJson(res.body);
-      case 404:
-        await showToast(res.body);
-        return Version(force: true);
+        return Version.fromJson(res.body['data']);
       case 500:
         await showToast(res.body);
-        return Version(force: true);
+        return null;
       default:
-        return Version(force: true);
+        return null;
     }
   }
 }

@@ -1,10 +1,10 @@
 class Version{
-  String? version;
-  bool? force;
+  String version;
+  bool force;
 
   Version({
-    this.version,
-    this.force
+    required this.version,
+    required this.force
   });
 
   factory Version.fromJson(Map<String, dynamic> json) => Version(

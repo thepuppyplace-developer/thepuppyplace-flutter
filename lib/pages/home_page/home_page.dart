@@ -10,7 +10,6 @@ import '../../widgets/tab_bars/location_tab_bar.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,8 +35,8 @@ class HomePage extends StatelessWidget {
                 child: CarouselSlider.builder(
                   itemCount: 2,
                   options: CarouselOptions(
-                    viewportFraction: 1,
-                    height: mediaHeight(context, 0.2)
+                      viewportFraction: 1,
+                      height: mediaHeight(context, 0.2)
                   ),
                   itemBuilder: (context, index, index2){
                     return Image.asset(JpegList.bannerList[index], fit: BoxFit.fitWidth, width: mediaWidth(context, 1));
@@ -76,7 +75,7 @@ class HomePage extends StatelessWidget {
               delegate: SliverChildBuilderDelegate((context, index){
                 return BoardListTile();
               },
-                  childCount: 2
+                  childCount: 5
               ),
             )
           ],

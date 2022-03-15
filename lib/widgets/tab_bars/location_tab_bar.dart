@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../controllers/auth/auth_controller.dart';
+import '../../controllers/user/user_controller.dart';
 import '../../models/User.dart';
 
-class LocationTabBar extends GetWidget<AuthController> with PreferredSizeWidget{
+class LocationTabBar extends GetWidget<UserController> with PreferredSizeWidget{
   final double height;
 
   const LocationTabBar(this.height, {Key? key}) : super(key: key);

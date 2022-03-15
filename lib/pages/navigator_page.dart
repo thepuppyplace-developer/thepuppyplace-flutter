@@ -1,13 +1,10 @@
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
-import 'package:dot_navigation_bar/dot_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thepuppyplace_flutter/pages/home_page/home_page.dart';
 import 'package:thepuppyplace_flutter/pages/my_page/my_page.dart';
 
-import '../controllers/auth/auth_controller.dart';
-import '../util/common.dart';
-import '../util/customs.dart';
+import '../controllers/user/user_controller.dart';
 
 class NavigatorPage extends StatefulWidget {
   const NavigatorPage({Key? key}) : super(key: key);
@@ -31,9 +28,9 @@ class _NavigatorPageState extends State<NavigatorPage> {
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<AuthController>(
-      init: AuthController(),
-      builder: (AuthController controller) {
+    return GetBuilder<UserController>(
+      init: UserController(),
+      builder: (UserController controller) {
         return Scaffold(
           body: bodies[_currentIndex],
           bottomNavigationBar: bottomNavigationBar(),

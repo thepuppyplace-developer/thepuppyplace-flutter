@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:thepuppyplace_flutter/controllers/auth/auth_repository.dart';
 import 'package:thepuppyplace_flutter/util/common.dart';
 
-import '../../controllers/auth/auth_controller.dart';
+import '../../controllers/user/user_repository.dart';
 import '../../widgets/buttons/custom_button.dart';
 import 'insert_email_page.dart';
 import 'insert_nickname_page.dart';
@@ -15,8 +14,7 @@ class JoinPage extends StatefulWidget {
 }
 
 class _JoinPageState extends State<JoinPage> {
-  final AuthRepository _repository = AuthRepository();
-  final AuthController _authController = AuthController();
+  final UserRepository _repository = UserRepository();
 
   final PageController _pageController = PageController();
   final TextEditingController _email = TextEditingController();
@@ -82,16 +80,5 @@ class _JoinPageState extends State<JoinPage> {
   Future _pageControllerHandler() async{
     Duration duration = const Duration(milliseconds: 500);
     Curve curve = Curves.easeIn;
-    switch(_currentIndex){
-      case 0:
-        if(await _repository.emailCheck(_email.text, _password.text, _passwordCheck.text)){
-          return _pageController.nextPage(duration: duration, curve: curve);
-        }
-        break;
-      case 1:
-        if(await _repository.nicknameCheck(_nickname.text)){
-          return _authController.signUp(_email.text, _password.text, _nickname.text);
-        }
-    }
   }
 }
