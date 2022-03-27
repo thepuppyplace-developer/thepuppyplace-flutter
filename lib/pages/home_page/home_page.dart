@@ -102,7 +102,7 @@ class _HomePageState extends State<HomePage> {
             ),
             SliverToBoxAdapter(
               child: Container(
-                margin: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.033), vertical: mediaHeight(context, 0.06)),
+                margin: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.033), vertical: mediaHeight(context, 0.02)),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -119,7 +119,8 @@ class _HomePageState extends State<HomePage> {
                       return controller.obx((List<Board>? boardList) => SliverGrid(
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
-                            crossAxisSpacing: mediaWidth(context, 0.026)
+                            crossAxisSpacing: mediaWidth(context, 0.026),
+                          mainAxisExtent: mediaHeight(context, 0.3)
                         ),
                         delegate: SliverChildBuilderDelegate((context, index){
                           Board board = boardList![index];

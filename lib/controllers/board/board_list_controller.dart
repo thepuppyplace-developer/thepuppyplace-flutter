@@ -30,7 +30,11 @@ class BoardListController extends GetxController with StateMixin<List<Board>>{
 
   Future findAllBoard() async{
     _boardList.value = <Board>[
-      Board(userId: 1, title: 'test1', description: 'test1', location: '경기도 고양시 일산동구', photoList: [], tagList: ['카페'])
+      Board(userId: 1, title: 'test1', description: 'test1', location: '경기도 고양시 일산동구', photoList: [], tagList: ['카페']),
+      Board(userId: 1, title: 'test1', description: 'test1', location: '경기도 고양시 일산동구', photoList: [], tagList: ['카페']),
+      Board(userId: 1, title: 'test1', description: 'test1', location: '경기도 고양시 일산동구', photoList: [], tagList: ['카페']),
+      Board(userId: 1, title: 'test1', description: 'test1', location: '경기도 고양시 일산동구', photoList: [], tagList: ['카페']),
+      Board(userId: 1, title: 'test1', description: 'test1', location: '경기도 고양시 일산동구', photoList: [], tagList: ['카페']),
     ];
     // _boardList.value = await _repository.findAllBoard();
   }

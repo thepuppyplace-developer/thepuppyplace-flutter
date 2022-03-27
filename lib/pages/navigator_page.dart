@@ -27,9 +27,9 @@ class _NavigatorPageState extends State<NavigatorPage> {
   ];
 
   final List<BottomNavigationBarItem> _items = const <BottomNavigationBarItem>[
-    BottomNavigationBarItem(icon: Icon(CustomIcons.home)),
-    BottomNavigationBarItem(icon: Icon(CustomIcons.insert)),
-    BottomNavigationBarItem(icon: Icon(CustomIcons.my_page)),
+    BottomNavigationBarItem(icon: Icon(CustomIcons.home), label: '홈'),
+    BottomNavigationBarItem(icon: Icon(CustomIcons.insert), label: '작성'),
+    BottomNavigationBarItem(icon: Icon(CustomIcons.my_page), label: '마이페이지'),
   ];
 
   @override
@@ -52,6 +52,8 @@ class _NavigatorPageState extends State<NavigatorPage> {
   }
 
   Widget bottomNavigationBar() => BottomNavigationBar(
+    showSelectedLabels: false,
+    showUnselectedLabels: false,
     selectedItemColor: CustomColors.mainText,
       currentIndex: _currentIndex,
       onTap: (int index){
