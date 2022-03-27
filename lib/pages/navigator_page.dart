@@ -1,11 +1,14 @@
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:thepuppyplace_flutter/controllers/board/board_list/board_list_controller.dart';
+import 'package:thepuppyplace_flutter/controllers/board/board_list_controller.dart';
 import 'package:thepuppyplace_flutter/pages/home_page/home_page.dart';
 import 'package:thepuppyplace_flutter/pages/my_page/my_page.dart';
 
 import '../controllers/user/user_controller.dart';
+import '../util/common.dart';
+import '../util/custom_icons.dart';
+import 'insert_page/insert_page.dart';
 
 class NavigatorPage extends StatefulWidget {
   const NavigatorPage({Key? key}) : super(key: key);
@@ -17,14 +20,16 @@ class NavigatorPage extends StatefulWidget {
 class _NavigatorPageState extends State<NavigatorPage> {
   int _currentIndex = 0;
 
-  List<Widget> bodies = <Widget>[
+  final List<Widget> _bodies = const <Widget>[
     HomePage(),
+    InsertPage(),
     MyPage(),
   ];
 
-  List<IconData> items = <IconData>[
-    Icons.home,
-    Icons.person
+  final List<BottomNavigationBarItem> _items = const <BottomNavigationBarItem>[
+    BottomNavigationBarItem(icon: Icon(CustomIcons.home)),
+    BottomNavigationBarItem(icon: Icon(CustomIcons.insert)),
+    BottomNavigationBarItem(icon: Icon(CustomIcons.my_page)),
   ];
 
   @override
@@ -39,30 +44,21 @@ class _NavigatorPageState extends State<NavigatorPage> {
       init: UserController(),
       builder: (UserController controller) {
         return Scaffold(
-          body: bodies[_currentIndex],
+          body: _bodies[_currentIndex],
           bottomNavigationBar: bottomNavigationBar(),
-          floatingActionButton: FloatingActionButton(
-            child: Icon(Icons.add),
-            onPressed: (){},
-          ),
-          floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         );
       }
     );
   }
 
-  Widget bottomNavigationBar() => AnimatedBottomNavigationBar(
-    activeColor: Colors.blue,
-    notchSmoothness: NotchSmoothness.smoothEdge,
-    gapLocation: GapLocation.center,
-      leftCornerRadius: 30,
-      rightCornerRadius: 30,
-      activeIndex: _currentIndex,
+  Widget bottomNavigationBar() => BottomNavigationBar(
+    selectedItemColor: CustomColors.mainText,
+      currentIndex: _currentIndex,
       onTap: (int index){
         setState(() {
           _currentIndex = index;
         });
       },
-      icons: items
+      items: _items
   );
 }

@@ -1,38 +1,38 @@
 import 'User.dart';
 
 class BoardComment{
-  int? comment_id;
+  int? commentId;
   String comment;
-  int user_id;
-  int board_id;
+  int userId;
+  int boardId;
   User? user;
   DateTime? createdAt;
   DateTime? updatedAt;
 
   BoardComment({
-    this.comment_id,
+    this.commentId,
     required this.comment,
-    required this.user_id,
-    required this.board_id,
+    required this.userId,
+    required this.boardId,
     this.user,
     this.createdAt,
     this.updatedAt,
   });
 
   factory BoardComment.fromJson(Map<String, dynamic> json) => BoardComment(
-    comment_id: json['id'],
+    commentId: json['id'],
     comment: json['comment'],
-    user_id: json['user_id'],
-    board_id: json['board_id'],
+    userId: json['user_id'],
+    boardId: json['board_id'],
     user: User.fromJson(json['User']),
     createdAt: DateTime.parse(json['createdAt']),
     updatedAt: DateTime.parse(json['updatedAt']),
   );
 
   Map<String, dynamic> toJson() => {
-    'id': comment_id,
+    'id': commentId,
     'comment': comment,
-    'user_id': user_id,
-    'board_id': board_id,
+    'user_id': userId,
+    'board_id': boardId,
   };
 }

@@ -21,7 +21,7 @@ class VersionController extends GetxController with StateMixin<Version>{
     try{
       change(null, status: RxStatus.loading());
       if(version!.force == false){
-        Future.delayed(const Duration(seconds: 1), (){
+        Future.delayed(const Duration(seconds: 2), (){
           change(version, status: RxStatus.success());
         });
       } else {
@@ -33,6 +33,7 @@ class VersionController extends GetxController with StateMixin<Version>{
   }
 
   Future _versionCheck() async{
-    _version.value = await _repo.versionCheck(_packageInfo.version);
+    _version.value = Version(version: '1.0.0', force: false);
+    // _version.value = await _repo.versionCheck(_packageInfo.version);
   }
 }

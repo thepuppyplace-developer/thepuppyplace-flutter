@@ -2,18 +2,28 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:thepuppyplace_flutter/util/common.dart';
 
-import '../../controllers/board/board/board_controller.dart';
-import '../../controllers/board/board_list/board_list_controller.dart';
+import '../../controllers/board/board_list_controller.dart';
 import '../../models/Board.dart';
-import '../../util/icon_list.dart';
+import '../../util/customs.dart';
 import '../../util/jpeg_list.dart';
-import '../../widgets/list_tile/board_list_tile.dart';
-import '../../widgets/tab_bars/location_tab_bar.dart';
+import '../../util/png_list.dart';
+import '../../widgets/cards/recent_board_card.dart';
+import '../../widgets/tab_bars/search_tab_bar.dart';
+import '../board_page/board_list_page.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  final PageController _bannerController = PageController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,72 +34,105 @@ class HomePage extends StatelessWidget {
               snap: true,
               floating: true,
               pinned: true,
-              title: const Text('홈'),
-              actions: [
-                CupertinoButton(
-                  child: const Icon(Icons.search, color: Colors.black),
-                  onPressed: (){},
-                )
-              ],
-              bottom: LocationTabBar(mediaHeight(context, 0.07)),
+              centerTitle: false,
+              title: Image.asset(PngList.logo, height: mediaHeight(context, 0.05)),
+              bottom: SearchTabBar(mediaHeight(context, 0.07), padding: EdgeInsets.symmetric(vertical: mediaHeight(context, 0.01)),),
             ),
             SliverPadding(
-              padding: EdgeInsets.only(bottom: mediaHeight(context, 0.05)),
+              padding: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.033), vertical: mediaHeight(context, 0.013)),
               sliver: SliverToBoxAdapter(
-                child: CarouselSlider.builder(
-                  itemCount: 2,
-                  options: CarouselOptions(
-                      viewportFraction: 1,
-                      height: mediaHeight(context, 0.2)
-                  ),
-                  itemBuilder: (context, index, index2){
-                    return Image.asset(JpegList.bannerList[index], fit: BoxFit.fitWidth, width: mediaWidth(context, 1));
-                  },
+                child: Stack(
+                  alignment: Alignment.bottomCenter,
+                  children: [
+                    CarouselSlider.builder(
+                      itemCount: 2,
+                      options: CarouselOptions(
+                          viewportFraction: 1,
+                          height: 151
+                      ),
+                      itemBuilder: (context, index, index2){
+                        return ClipRRect(
+                            borderRadius: BorderRadius.circular(12),
+                            child: Image.asset(JpegList.bannerList[index], fit: BoxFit.cover, width: mediaWidth(context, 1), height: 151));
+                      },
+                    ),
+                    SmoothPageIndicator(
+                      controller: _bannerController,
+                      count: JpegList.bannerList.length,
+                      effect: WormEffect(
+                        dotWidth: mediaWidth(context, 0.02),
+                        dotHeight: mediaWidth(context, 0.02),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+            SliverToBoxAdapter(
+              child: Container(
+                margin: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.033)),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('어떤 장소를 찾으시나요?', style: CustomTextStyle.w500(context, scale: 0.024),),
+                    Text('클릭해서 원하시는 장소를 둘러보세요', style: CustomTextStyle.w400(context, color: Colors.grey, height: 2),)
+                  ],
                 ),
               ),
             ),
             SliverPadding(
-              padding: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.044)),
+              padding: EdgeInsets.all(mediaWidth(context, 0.033)),
               sliver: SliverGrid(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 4
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 5,
+                    crossAxisSpacing: mediaWidth(context, 0.016)
                 ),
-                delegate: SliverChildBuilderDelegate((context, index) => CupertinoButton(
-                  child: Column(
-                    children: [
-                      Icon(IconList.home[index]['icon'], color: Colors.black),
-                      Text(IconList.home[index]['text'], style: CustomTextStyle.w500(context, height: 2))
-                    ],
-                  ),
-                  onPressed: (){
-
-                  },
+                delegate: SliverChildBuilderDelegate((context, index){
+                  return CupertinoButton(
+                    padding: EdgeInsets.zero,
+                    child: Image.asset(PngList.categoryList[index]),
+                    onPressed: (){
+                      Get.to(() => BoardListPage(index));
+                    },
+                  );
+                },
+                    childCount: PngList.categoryList.length
                 ),
-                    childCount: IconList.home.length),
+              ),
+            ),
+            SliverToBoxAdapter(
+              child: Container(
+                margin: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.033), vertical: mediaHeight(context, 0.06)),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('최신글', style: CustomTextStyle.w500(context, scale: 0.024),),
+                    Text('더퍼피플레이스의 최신글을 확인해보세요', style: CustomTextStyle.w400(context, color: Colors.grey, height: 2),)
+                  ],
+                ),
               ),
             ),
             SliverPadding(
-              padding: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.03)),
-              sliver: SliverToBoxAdapter(
-                child: Text('최근 게시물', style: CustomTextStyle.w500(context, scale: 0.02)),
-              ),
-            ),
-            SliverFixedExtentList(
-              itemExtent: mediaHeight(context, 0.1),
-              delegate: SliverChildBuilderDelegate((context, index){
-                return GetBuilder<BoardListController>(
-                  builder: (BoardListController controller){
-                    return controller.obx((List<Board>? boardList){
-                      Board board = boardList![index];
-                      return BoardListTile(board: board);
-                    },
-                      onLoading: Container()
-                    );
-                  },
-                );
-              },
-                  childCount: 10
-              ),
+                padding: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.033)),
+                sliver: GetBuilder<BoardListController>(
+                    builder: (BoardListController controller) {
+                      return controller.obx((List<Board>? boardList) => SliverGrid(
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            crossAxisSpacing: mediaWidth(context, 0.026)
+                        ),
+                        delegate: SliverChildBuilderDelegate((context, index){
+                          Board board = boardList![index];
+                          return RecentBoardCard(board);
+                        },
+                            childCount: boardList!.length < 6 ? boardList.length : 6
+                        ),
+                      ),
+                          onError: (error) => SliverError(error),
+                          onLoading: const SliverLoading()
+                      );
+                    }
+                )
             )
           ],
         ),

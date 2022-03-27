@@ -3,20 +3,20 @@ import 'package:flutter/services.dart';
 
 import '../../util/common.dart';
 
-class OutlineTextField extends StatefulWidget {
-  TextEditingController controller;
-  TextInputType keyboardType;
+class OutlineTextField extends StatelessWidget {
+  TextEditingController? controller;
+  TextInputType? keyboardType;
   TextStyle? textStyle;
   TextAlign? textAlign;
-  bool? autofocus, obscureText;
+  bool? autofocus, obscureText, readOnly;
   int? maxLength, maxLines, minLines;
-  double? height, width;
+  double? height, width, borderRadius;
   String? hintText, labelText, counterText, helperText;
   Widget? suffixIcon;
   EdgeInsets? margin, padding;
-  Color? sideColor;
+  Color? sideColor, fillColor;
   List<TextInputFormatter>? inputFormatters;
-  Function(String)? onChanged;
+  Function()? onTap;
 
   OutlineTextField({
     required this.controller,
@@ -25,11 +25,13 @@ class OutlineTextField extends StatefulWidget {
     this.textStyle,
     this.autofocus,
     this.obscureText,
+    this.readOnly,
     this.maxLength,
     this.maxLines,
     this.minLines,
     this.height,
     this.width,
+    this.borderRadius,
     this.hintText,
     this.labelText,
     this.counterText,
@@ -38,57 +40,44 @@ class OutlineTextField extends StatefulWidget {
     this.margin,
     this.padding,
     this.sideColor,
+    this.fillColor,
     this.inputFormatters,
-    this.onChanged,
+    this.onTap,
     Key? key}) : super(key: key);
-
-  @override
-  State<OutlineTextField> createState() => _OutlineTextFieldState();
-}
-
-class _OutlineTextFieldState extends State<OutlineTextField> {
-  OutlineInputBorder border = OutlineInputBorder(
-      borderRadius: BorderRadius.circular(10),
-      borderSide: const BorderSide(color: CustomColors.main)
-  );
-
   @override
   Widget build(BuildContext context) {
+    OutlineInputBorder border = OutlineInputBorder(
+        borderRadius: BorderRadius.circular(borderRadius ?? 10),
+        borderSide: BorderSide(color: sideColor ?? Colors.grey)
+    );
     return Container(
-      height: widget.height ?? mediaHeight(context, 0.05),
-      width: widget.width,
-      margin: widget.margin,
+      height: height ?? mediaHeight(context, 0.05),
+      width: width,
+      margin: margin,
       child: TextFormField(
-        inputFormatters: widget.inputFormatters,
-        onChanged: widget.onChanged ?? (String value){setState((){});},
-        textAlign: widget.textAlign ?? TextAlign.start,
-        autofocus: widget.autofocus ?? true,
+        onTap: onTap,
+        readOnly: readOnly ?? false,
+        inputFormatters: inputFormatters,
+        textAlign: textAlign ?? TextAlign.start,
+        autofocus: autofocus ?? true,
         cursorColor: CustomColors.main,
-        obscureText: widget.obscureText ?? false,
-        controller: widget.controller,
-        maxLength: widget.maxLength,
-        maxLines: widget.maxLines ?? 1,
-        minLines: widget.minLines,
-        keyboardType: widget.keyboardType,
+        obscureText: obscureText ?? false,
+        controller: controller,
+        maxLength: maxLength,
+        maxLines: maxLines ?? 1,
+        minLines: minLines,
+        keyboardType: keyboardType,
         decoration: InputDecoration(
           filled: true,
-          fillColor: Colors.white54,
-          hintText: widget.hintText,
-          labelText: widget.labelText,
-          counterText: widget.counterText,
-          helperText: widget.helperText,
-          suffixIcon: widget.controller.text.isEmpty ? null : widget.suffixIcon ?? IconButton(
-            iconSize: 15,
-            icon: const Icon(Icons.cancel_outlined, color: CustomColors.hint),
-            onPressed: (){
-              setState(() {
-                widget.controller.clear();
-              });
-            },
-          ),
-          contentPadding: widget.padding ?? EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.03)),
+          fillColor: fillColor ?? Colors.white54,
+          hintText: hintText,
+          labelText: labelText,
+          counterText: counterText,
+          helperText: helperText,
+          suffixIcon: suffixIcon,
+          contentPadding: padding ?? EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.03)),
           border: border,
-          enabledBorder: border.copyWith(borderSide: BorderSide(color: widget.sideColor ?? CustomColors.hint, width: 1)),
+          enabledBorder: border.copyWith(borderSide: BorderSide(color: sideColor ?? CustomColors.hint, width: 1)),
           focusedBorder: border,
         ),
       ),

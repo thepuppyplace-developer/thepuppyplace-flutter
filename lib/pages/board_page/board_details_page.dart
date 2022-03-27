@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../controllers/board/board/board_controller.dart';
+import '../../controllers/board/board_controller.dart';
 import '../../models/Board.dart';
 
 class BoardDetailsPage extends GetWidget<BoardController> {

@@ -2,17 +2,30 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thepuppyplace_flutter/util/common.dart';
 import '../../controllers/version/version_controller.dart';
+import '../util/png_list.dart';
 import 'navigator_page.dart';
 
-class SplashPage extends GetWidget<VersionController> {
+class SplashPage extends StatelessWidget {
   const SplashPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return controller.obx((version) => const NavigatorPage(),
-      onEmpty: _updateView(),
-      onError: (error) => CustomErrorView(error: error),
-      onLoading: const Scaffold(body: Center(child: Text('스플래쉬'),))
+    return GetBuilder<VersionController>(
+      init: VersionController(),
+      builder: (VersionController controller) {
+        return controller.obx((version) => const NavigatorPage(),
+          onEmpty: _updateView(),
+          onError: (error) => CustomErrorView(error: error),
+          onLoading: Scaffold(
+              body: Image.asset(
+                  PngList.splash,
+                  height: mediaHeight(context, 1),
+                  width: mediaWidth(context, 1),
+                  fit: BoxFit.cover,
+              )
+          )
+        );
+      }
     );
   }
 

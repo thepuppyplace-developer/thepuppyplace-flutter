@@ -1,10 +1,10 @@
 import 'package:get/get.dart';
 
-import '../../../models/Board.dart';
-import '../board_repository.dart';
+import '../../models/Board.dart';
 
-class BoardListController extends GetxController with StateMixin<List<Board>>{
-  final BoardRepository _repository = BoardRepository();
+class CategoryController extends GetxController with StateMixin<List<Board>>{
+  final String category;
+  CategoryController(this.category);
 
   final RxList<Board> _boardList = RxList(<Board>[]);
 
@@ -12,7 +12,6 @@ class BoardListController extends GetxController with StateMixin<List<Board>>{
   void onReady() {
     super.onReady();
     ever(_boardList, _boardListListener);
-    findAllBoard();
   }
 
   void _boardListListener(List<Board> boardList){
@@ -23,12 +22,8 @@ class BoardListController extends GetxController with StateMixin<List<Board>>{
       } else {
         change(null, status: RxStatus.empty());
       }
-    } catch(error){
+    } catch (error) {
       change(null, status: RxStatus.error(error.toString()));
     }
-  }
-
-  Future findAllBoard() async{
-    _boardList.value = await _repository.findAllBoard();
   }
 }

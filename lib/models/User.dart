@@ -1,50 +1,54 @@
 class User{
-  final int? user_id;
+  final int? userId;
   final String? email;
   final String? password;
   final String? nickname;
   final String? name;
-  final String? photo_url;
+  final String? phoneNumber;
+  final String? photoURL;
+  final String? gender;
   final String? location;
-  final int? gender;
-  final DateTime? createAt, updateAt;
+  final DateTime? createdAt, updatedAt, deletedAt;
 
   User({
-    this.user_id,
+    this.userId,
     this.email,
     this.password,
     this.nickname,
     this.name,
-    this.photo_url,
-    this.location,
+    this.phoneNumber,
+    this.photoURL,
     this.gender,
-    this.createAt,
-    this.updateAt
+    this.location,
+    this.createdAt,
+    this.updatedAt,
+    this.deletedAt,
   });
 
   factory User.fromJson(Map<String, dynamic> json) => User(
-    user_id: json['id'],
+    userId: json['id'],
     email: json['email'],
     password: json['password'],
     nickname: json['nickname'],
     name: json['name'],
-    photo_url: json['phoro_url'],
-    location: json['location'],
+    phoneNumber: json['phone_number'],
+    photoURL: json['photo_url'],
     gender: json['gender'],
-    createAt: json['createAt'] != null ? DateTime.parse(json['createAt']) : null,
-    updateAt: json['updateAt'] != null ? DateTime.parse(json['updateAt']) : null,
+    location: json['location'],
+    createdAt: DateTime.parse(json['createdAt']),
+    updatedAt: DateTime.parse(json['updatedAt']),
+    deletedAt: DateTime.parse(json['deletedAt']),
   );
 
   Map<String, dynamic> toJson() => {
-    'id': user_id,
+    'id': userId,
     'email': email,
     'password': password,
     'nickname': nickname,
     'name': name,
-    'phoro_url': photo_url,
-    'location': location,
+    'phone_number': phoneNumber,
+    'photo_url': photoURL,
     'gender': gender,
-    'createAt': createAt!.toIso8601String(),
-    'updateAt': updateAt!.toIso8601String(),
+    'location': location,
   };
 }
