@@ -4,9 +4,8 @@ import 'package:thepuppyplace_flutter/util/common.dart';
 class TagText extends StatelessWidget {
   final String text;
   final EdgeInsets? margin;
-  const TagText(this.text, {
-    this.margin,
-    Key? key}) : super(key: key);
+
+  const TagText(this.text, {this.margin, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +17,7 @@ class TagText extends StatelessWidget {
         color: CustomColors.main
       ),
       padding: EdgeInsets.all(mediaHeight(context, 0.005)),
-      child: Text('#$text', style: CustomTextStyle.w500(context, color: CustomColors.mainText)),
+      child: Text('#$text', style: CustomTextStyle.w500(context, scale: 0.012, color: CustomColors.mainText)),
     );
   }
 }

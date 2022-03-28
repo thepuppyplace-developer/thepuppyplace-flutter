@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:thepuppyplace_flutter/util/common.dart';
@@ -13,31 +14,82 @@ class RecentBoardCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        ClipRRect(
+    return Container(
+      margin: EdgeInsets.all(mediaWidth(context, 0.033)),
+      padding: EdgeInsets.all(mediaWidth(context, 0.033)),
+      decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
-          child: board.photoList.isEmpty
-              ? Image.asset(PngList.splash, height: mediaHeight(context, 0.13), width: mediaWidth(context, 1), fit: BoxFit.cover)
-              : Image.network(board.photoList.first),
-        ),
-        if(board.tagList.isNotEmpty) Row(
-          children: board.tagList.map((text) => TagText(text)).toList(),
-        ),
-        Text(board.title, style: CustomTextStyle.w600(context, scale: 0.022), overflow: TextOverflow.ellipsis),
-        Container(
-          margin: EdgeInsets.symmetric(vertical: mediaHeight(context, 0.01)),
-          child: Wrap(
-            spacing: mediaWidth(context, 0.01),
-            crossAxisAlignment: WrapCrossAlignment.center,
-            children: [
-              SvgPicture.asset(SvgList.comment, height: mediaHeight(context, 0.015)),
-              Text(board.commentList != null && board.commentList!.isNotEmpty ? '${board.commentList!.length}' : '0', style: CustomTextStyle.w500(context, scale: 0.02, color: CustomColors.hint))
-            ],
+          boxShadow: const [
+            BoxShadow(color: Colors.black12, blurStyle: BlurStyle.outer, blurRadius: 2),
+          ]
+      ),
+      child: Column(
+        children: [
+          ListTile(
+            contentPadding: EdgeInsets.zero,
+            title: board.user == null ? null : Row(
+              children: [
+                CircleAvatar(
+                  radius: mediaHeight(context, 0.02),
+                  foregroundImage: board.user!.photoURL == null ? null : NetworkImage(board.user!.photoURL!),
+                ),
+                Container(
+                    margin: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.015)),
+                    child: Text(board.user!.nickname ?? '', style: CustomTextStyle.w700(context)))
+              ],
+            ),
+            subtitle: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  margin: EdgeInsets.symmetric(vertical: mediaHeight(context, 0.01)),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      TagText(board.category),
+                      TagText(board.location)
+                    ],
+                  ),
+                ),
+                Container(
+                    margin: EdgeInsets.only(bottom: mediaHeight(context, 0.01)),
+                    child: Text(board.title, style: CustomTextStyle.w600(context), overflow: TextOverflow.ellipsis)),
+                Text(board.description, style: CustomTextStyle.w400(context, scale: 0.013), maxLines: 3, overflow: TextOverflow.ellipsis),
+                if(board.photoList.isNotEmpty) Container(
+                  height: mediaHeight(context, 0.1),
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: board.photoList.length,
+                    itemBuilder: (context, index) => Image.network(board.photoList[index]),
+                  ),
+                ),
+              ],
+            ),
           ),
-        )
-      ],
+          Container(
+            margin: EdgeInsets.symmetric(vertical: mediaHeight(context, 0.01)),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Row(
+                    children: [
+                      Icon(CupertinoIcons.heart, color: Colors.black54, size: mediaHeight(context, 0.022)),
+                      Container(
+                          margin: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.01)),
+                          child: Text(board.likeList != null ? '${board.likeList!.length}': '0', style: CustomTextStyle.w400(context, scale: 0.012, color: Colors.black54))),
+                      Icon(CupertinoIcons.chat_bubble_2, color: Colors.black54, size: mediaHeight(context, 0.022)),
+                      Container(
+                          margin: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.01)),
+                          child: Text(board.commentList != null ? '${board.commentList!.length}': '0', style: CustomTextStyle.w400(context, scale: 0.012, color: Colors.black54))),
+                    ],
+                  ),
+                ),
+                Text(beforeDate(board.createdAt ?? DateTime.now()), style: CustomTextStyle.w500(context, scale: 0.012, color: CustomColors.hint))
+              ],
+            ),
+          )
+        ],
+      ),
     );
   }
 }

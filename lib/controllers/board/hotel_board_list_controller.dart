@@ -30,9 +30,9 @@ class HotelBoardListController extends GetxController with StateMixin<List<Board
 
   Future findAllCafeBoardList() async{
     _boardList.value = <Board>[
-      Board(userId: 1, title: '호텔', description: '맛있어요', location: '경기도 고양시 일산동구 중산동', tagList: ['호텔'], photoList: []),
-      Board(userId: 1, title: '호텔', description: '맛있어요', location: '경기도 고양시 일산동구 중산동', tagList: ['호텔'], photoList: []),
-      Board(userId: 1, title: '호텔', description: '맛있어요', location: '경기도 고양시 일산동구 중산동', tagList: ['호텔'], photoList: []),
+      Board(userId: 1, title: '호텔', description: '맛있어요', location: '경기도 고양시 일산동구 중산동', category: '호텔', photoList: []),
+      Board(userId: 1, title: '호텔', description: '맛있어요', location: '경기도 고양시 일산동구 중산동', category: '호텔', photoList: []),
+      Board(userId: 1, title: '호텔', description: '맛있어요', location: '경기도 고양시 일산동구 중산동', category: '호텔', photoList: []),
     ];
   }
 }

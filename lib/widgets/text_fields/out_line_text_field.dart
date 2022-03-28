@@ -55,6 +55,7 @@ class OutlineTextField extends StatelessWidget {
       width: width,
       margin: margin,
       child: TextFormField(
+        style: CustomTextStyle.w500(context),
         onTap: onTap,
         readOnly: readOnly ?? false,
         inputFormatters: inputFormatters,
@@ -68,6 +69,7 @@ class OutlineTextField extends StatelessWidget {
         minLines: minLines,
         keyboardType: keyboardType,
         decoration: InputDecoration(
+          hintStyle: CustomTextStyle.w500(context, color: CustomColors.hint),
           filled: true,
           fillColor: fillColor ?? Colors.white54,
           hintText: hintText,

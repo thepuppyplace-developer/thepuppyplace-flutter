@@ -1,5 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:thepuppyplace_flutter/util/common.dart';
+
+import '../widgets/animations/SizedAnimation.dart';
+import 'png_list.dart';
 
 mixin CustomThemeData implements ThemeData{
   static ThemeData light = ThemeData(
@@ -45,5 +49,33 @@ class SliverLoading extends StatelessWidget {
   }
 }
 
+class LoadingView extends StatefulWidget {
+  const LoadingView({Key? key}) : super(key: key);
+
+  @override
+  State<LoadingView> createState() => _LoadingViewState();
+}
+
+class _LoadingViewState extends State<LoadingView> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SafeArea(
+        child: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedAnimation(child: Image.asset(PngList.loading, height: mediaHeight(context, 0.15))),
+              Container(
+                  margin: EdgeInsets.symmetric(vertical: mediaHeight(context, 0.04)),
+                  child: Text('페이지 이동중입니다', style: CustomTextStyle.w500(context, color: CustomColors.hint))),
+              const CupertinoActivityIndicator()
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
 
 

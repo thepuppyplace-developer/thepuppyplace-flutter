@@ -63,15 +63,15 @@ mixin CustomColors implements Color{
 }
 
 mixin CustomTextStyle implements TextStyle{
-  static TextStyle w100(BuildContext context, {double? scale, double? height, Color? color}) => TextStyle(fontWeight: FontWeight.w100, fontSize: mediaHeight(context, scale ?? 0.016), color: color ?? Colors.black, height: height);
-  static TextStyle w200(BuildContext context, {double? scale, double? height, Color? color}) => TextStyle(fontWeight: FontWeight.w200, fontSize: mediaHeight(context, scale ?? 0.016), color: color ?? Colors.black, height: height);
-  static TextStyle w300(BuildContext context, {double? scale, double? height, Color? color}) => TextStyle(fontWeight: FontWeight.w300, fontSize: mediaHeight(context, scale ?? 0.016), color: color ?? Colors.black, height: height);
-  static TextStyle w400(BuildContext context, {double? scale, double? height, Color? color}) => TextStyle(fontWeight: FontWeight.w400, fontSize: mediaHeight(context, scale ?? 0.016), color: color ?? Colors.black, height: height);
-  static TextStyle w500(BuildContext context, {double? scale, double? height, Color? color}) => TextStyle(fontWeight: FontWeight.w500, fontSize: mediaHeight(context, scale ?? 0.016), color: color ?? Colors.black, height: height);
-  static TextStyle w600(BuildContext context, {double? scale, double? height, Color? color}) => TextStyle(fontWeight: FontWeight.w600, fontSize: mediaHeight(context, scale ?? 0.016), color: color ?? Colors.black, height: height);
-  static TextStyle w700(BuildContext context, {double? scale, double? height, Color? color}) => TextStyle(fontWeight: FontWeight.w700, fontSize: mediaHeight(context, scale ?? 0.016), color: color ?? Colors.black, height: height);
-  static TextStyle w800(BuildContext context, {double? scale, double? height, Color? color}) => TextStyle(fontWeight: FontWeight.w800, fontSize: mediaHeight(context, scale ?? 0.016), color: color ?? Colors.black, height: height);
-  static TextStyle w900(BuildContext context, {double? scale, double? height, Color? color}) => TextStyle(fontWeight: FontWeight.w900, fontSize: mediaHeight(context, scale ?? 0.016), color: color ?? Colors.black, height: height);
+  static TextStyle w100(BuildContext context, {double? scale, double? height, Color? color, String? fontFamily}) => TextStyle(fontWeight: FontWeight.w100, fontSize: mediaHeight(context, scale ?? 0.016), color: color ?? Colors.black, height: height, fontFamily: fontFamily ?? 'Tmoney');
+  static TextStyle w200(BuildContext context, {double? scale, double? height, Color? color, String? fontFamily}) => TextStyle(fontWeight: FontWeight.w200, fontSize: mediaHeight(context, scale ?? 0.016), color: color ?? Colors.black, height: height, fontFamily: fontFamily ?? 'Tmoney');
+  static TextStyle w300(BuildContext context, {double? scale, double? height, Color? color, String? fontFamily}) => TextStyle(fontWeight: FontWeight.w300, fontSize: mediaHeight(context, scale ?? 0.016), color: color ?? Colors.black, height: height, fontFamily: fontFamily ?? 'Tmoney');
+  static TextStyle w400(BuildContext context, {double? scale, double? height, Color? color, String? fontFamily}) => TextStyle(fontWeight: FontWeight.w400, fontSize: mediaHeight(context, scale ?? 0.016), color: color ?? Colors.black, height: height, fontFamily: fontFamily ?? 'Tmoney');
+  static TextStyle w500(BuildContext context, {double? scale, double? height, Color? color, String? fontFamily}) => TextStyle(fontWeight: FontWeight.w500, fontSize: mediaHeight(context, scale ?? 0.016), color: color ?? Colors.black, height: height, fontFamily: fontFamily ?? 'Tmoney');
+  static TextStyle w600(BuildContext context, {double? scale, double? height, Color? color, String? fontFamily}) => TextStyle(fontWeight: FontWeight.w600, fontSize: mediaHeight(context, scale ?? 0.016), color: color ?? Colors.black, height: height, fontFamily: fontFamily ?? 'Tmoney');
+  static TextStyle w700(BuildContext context, {double? scale, double? height, Color? color, String? fontFamily}) => TextStyle(fontWeight: FontWeight.w700, fontSize: mediaHeight(context, scale ?? 0.016), color: color ?? Colors.black, height: height, fontFamily: fontFamily ?? 'Tmoney');
+  static TextStyle w800(BuildContext context, {double? scale, double? height, Color? color, String? fontFamily}) => TextStyle(fontWeight: FontWeight.w800, fontSize: mediaHeight(context, scale ?? 0.016), color: color ?? Colors.black, height: height, fontFamily: fontFamily ?? 'Tmoney');
+  static TextStyle w900(BuildContext context, {double? scale, double? height, Color? color, String? fontFamily}) => TextStyle(fontWeight: FontWeight.w900, fontSize: mediaHeight(context, scale ?? 0.016), color: color ?? Colors.black, height: height, fontFamily: fontFamily ?? 'Tmoney');
 }
 
 String beforeDate(DateTime date){

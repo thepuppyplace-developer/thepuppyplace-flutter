@@ -30,8 +30,8 @@ class ShoppingBoardListController extends GetxController with StateMixin<List<Bo
 
   Future findAllCafeBoardList() async{
     _boardList.value = <Board>[
-      Board(userId: 1, title: '쇼핑몰', description: '맛있어요', location: '경기도 고양시 일산동구 중산동', tagList: ['음식점'], photoList: []),
-      Board(userId: 1, title: '쇼핑몰', description: '맛있어요', location: '경기도 고양시 일산동구 중산동', tagList: ['음식점'], photoList: [])
+      Board(userId: 1, title: '쇼핑몰', description: '맛있어요', location: '경기도 고양시 일산동구 중산동', category: '음식점', photoList: []),
+      Board(userId: 1, title: '쇼핑몰', description: '맛있어요', location: '경기도 고양시 일산동구 중산동', category: '음식점', photoList: [])
     ];
   }
 }

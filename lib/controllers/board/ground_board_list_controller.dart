@@ -30,7 +30,7 @@ class GroundBoardListController extends GetxController with StateMixin<List<Boar
 
   Future findAllCafeBoardList() async{
     _boardList.value = <Board>[
-      Board(userId: 1, title: '운동장', description: '맛있어요', location: '경기도 고양시 일산동구 중산동', tagList: ['운동장'], photoList: []),
+      Board(userId: 1, title: '운동장', description: '맛있어요', location: '경기도 고양시 일산동구 중산동', category: '운동장', photoList: []),
     ];
   }
 }

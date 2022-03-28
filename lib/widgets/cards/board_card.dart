@@ -31,7 +31,9 @@ class BoardCard extends StatelessWidget {
             )
           ),
           Row(
-            children: board.tagList.map((String text) => TagText(text)).toList(),
+            children: [
+              TagText(board.category)
+            ],
           ),
           Text(board.title, style: CustomTextStyle.w600(context, scale: 0.022, height: 2), overflow: TextOverflow.ellipsis),
           Text(board.description, style: CustomTextStyle.w400(context, scale: 0.018), maxLines: 2, overflow: TextOverflow.ellipsis),

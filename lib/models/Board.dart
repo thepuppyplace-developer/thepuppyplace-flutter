@@ -8,9 +8,9 @@ class Board{
   final String title;
   final String description;
   final String location;
+  final String category;
   final int? viewCount;
   final User? user;
-  final List<String> tagList;
   final List<String> photoList;
   final List<Like>? likeList;
   final List<BoardComment>? commentList;
@@ -23,9 +23,9 @@ class Board{
     required this.title,
     required this.description,
     required this.location,
+    required this.category,
     this.viewCount,
     this.user,
-    required this.tagList,
     required this.photoList,
     this.likeList,
     this.commentList,
@@ -39,9 +39,9 @@ class Board{
     title: json['title'],
     description: json['description'],
     location: json['location'],
+    category: json['category'],
     viewCount: json['view_count'],
     user: User.fromJson(json['User']),
-    tagList: List.from(json['HashTag']),
     photoList: List.from(json['photoList']),
     likeList: List.from(json['BoardLikes']).map((data) => Like.fromJson(data)).toList(),
     commentList: List.from(json['Comments']).map((data) => BoardComment.fromJson(data)).toList(),
@@ -54,7 +54,7 @@ class Board{
     'title': title,
     'description': description,
     'location': location,
-    'hash_tag_list': tagList,
+    'category': category,
     'photo_list': photoList
   };
 }
