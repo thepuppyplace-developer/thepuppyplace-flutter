@@ -2,77 +2,62 @@ import 'package:flutter/material.dart';
 
 import '../../util/common.dart';
 
-class UnderlineTextField extends StatefulWidget {
-  TextEditingController controller;
-  TextInputType keyboardType;
-  TextStyle? textStyle, helperStyle;
-  bool? obscureText;
-  int? maxLength, maxLines, minLines;
-  String? hintText, labelText, counterText, helperText;
-  Widget? suffixIcon;
-  EdgeInsets? margin, padding;
-  Function(String)? onChanged;
+class UnderlineTextField extends StatelessWidget {
+  final TextEditingController controller;
+  final TextInputType keyboardType;
+  final TextStyle? textStyle;
+  final TextStyle? helperStyle;
+  final bool? obscureText;
+  final int? maxLength;
+  final int? maxLines;
+  final int? minLines;
+  final double? height;
+  final String? hintText;
+  final Widget? suffixIcon;
+  final EdgeInsets? margin;
+  final EdgeInsets? padding;
 
-  UnderlineTextField({
+  const UnderlineTextField({
     required this.controller,
     required this.keyboardType,
-    this.onChanged,
     this.obscureText,
     this.maxLength,
     this.maxLines,
     this.minLines,
+    this.height,
     this.hintText,
-    this.labelText,
-    this.counterText,
-    this.helperText,
     this.suffixIcon,
     this.margin,
     this.padding,
+    this.textStyle,
+    this.helperStyle,
     Key? key}) : super(key: key);
-
-  @override
-  _UnderlineTextFieldState createState() => _UnderlineTextFieldState();
-}
-
-class _UnderlineTextFieldState extends State<UnderlineTextField> {
-
-  UnderlineInputBorder border = const UnderlineInputBorder(
-      borderSide: BorderSide(color: CustomColors.main, width: 1)
-  );
-
   @override
   Widget build(BuildContext context) {
+    UnderlineInputBorder border = const UnderlineInputBorder(
+        borderSide: BorderSide(color: CustomColors.main, width: 1)
+    );
+
     return Container(
-      margin: widget.margin ?? EdgeInsets.symmetric(vertical: mediaHeight(context, 0.005)),
+      height: height,
+      margin: margin ?? EdgeInsets.symmetric(vertical: mediaHeight(context, 0.005)),
       child: TextFormField(
-        onChanged: widget.onChanged ?? (val){setState((){});},
-        obscureText: widget.obscureText ?? false,
-        controller: widget.controller,
-        maxLength: widget.maxLength,
-        maxLines: widget.maxLines,
-        minLines: widget.minLines,
-        keyboardType: widget.keyboardType,
+        style: CustomTextStyle.w500(context, scale: 0.018),
+        obscureText: obscureText ?? false,
+        controller: controller,
+        maxLength: maxLength,
+        maxLines: maxLines,
+        minLines: minLines,
+        keyboardType: keyboardType,
         decoration: InputDecoration(
-            hintText: widget.hintText,
-            labelText: widget.labelText,
-            counterText: widget.counterText,
-            helperText: widget.helperText,
-            suffixIcon: widget.controller.text.isEmpty
-                ? null
-                : widget.suffixIcon ?? IconButton(
-              color: CustomColors.hint,
-              icon: const Icon(Icons.clear),
-              onPressed: (){
-                setState(() {
-                  widget.controller.clear();
-                });
-              },
-            ),
-            contentPadding: widget.padding ?? EdgeInsets.symmetric(vertical: mediaHeight(context, 0.015)),
+          hintStyle: CustomTextStyle.w500(context, scale: 0.018, color: CustomColors.hint),
+            hintText: hintText,
+            suffixIcon: suffixIcon,
+            contentPadding: padding ?? EdgeInsets.symmetric(vertical: mediaHeight(context, 0.015)),
             border: border,
             enabledBorder: border.copyWith(borderSide: const BorderSide(color: CustomColors.hint)),
             focusedBorder: border,
-            helperStyle: widget.helperStyle ?? Theme.of(context).textTheme.bodyText1!.copyWith(color: Colors.blueGrey, fontSize: mediaHeight(context, 0.012))
+            helperStyle: helperStyle ?? Theme.of(context).textTheme.bodyText1!.copyWith(color: Colors.blueGrey, fontSize: mediaHeight(context, 0.012))
         ),
       ),
     );

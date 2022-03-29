@@ -1,9 +1,21 @@
 import 'package:get/get.dart';
+import 'package:path/path.dart';
+import 'package:sqflite/sqflite.dart';
 import 'package:thepuppyplace_flutter/util/common.dart';
 import '../../.config.dart';
+import '../../.local_db.dart';
 import '../../models/Board.dart';
 
-class BoardRepository extends GetConnect with Config{
+class BoardRepository extends GetConnect with Config, LocalDB{
+  Future<Database> get db async{
+    return openDatabase(join(await getDatabasesPath(), dbName),
+      version: version,
+      onCreate: (Database db, int version) async{
+
+      }
+    );
+  }
+
   Future<List<Board>> findAllBoard() async{
     Response res = await get('$API_URL/board');
 
@@ -18,6 +30,7 @@ class BoardRepository extends GetConnect with Config{
         return <Board>[];
       }
       default: {
+        showToast('인터넷 연결을 해주세요.');
         return <Board>[];
       }
     }

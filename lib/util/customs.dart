@@ -45,7 +45,12 @@ class SliverLoading extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SliverToBoxAdapter(child: Container());
+    return SliverToBoxAdapter(
+      child: Container(
+        margin: EdgeInsets.all(mediaHeight(context, 0.02)),
+        child: const CupertinoActivityIndicator(),
+      ),
+    );
   }
 }
 

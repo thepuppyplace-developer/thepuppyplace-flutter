@@ -1,9 +1,9 @@
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
-import '../../.config.dart';
+import '../../.local_db.dart';
 import '../../models/Search.dart';
 
-class SearchRepository with Config{
+class SearchRepository with LocalDB{
   Database? _db;
 
   Future<Database> get db async{
@@ -11,15 +11,9 @@ class SearchRepository with Config{
       return _db!;
     } else {
       return openDatabase(join(await getDatabasesPath(), 'thepuppyplace'),
-        version: sqliteVersion,
+        version: version,
         onCreate: (Database db, int version){
-        db.execute('''
-        CREATE TABLE Search(
-        id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-        keyword TEXT NOT NULL,
-        createdAT DATETIME NOT NULL
-        )
-        ''');
+        db.execute(createSearchTable);
         }
       );
     }

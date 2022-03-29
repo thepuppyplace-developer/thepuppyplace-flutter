@@ -35,9 +35,9 @@ class User{
     photoURL: json['photo_url'],
     gender: json['gender'],
     location: json['location'],
-    createdAt: DateTime.parse(json['createdAt']),
-    updatedAt: DateTime.parse(json['updatedAt']),
-    deletedAt: DateTime.parse(json['deletedAt']),
+    createdAt: json['createdAt'] == null ? null : DateTime.parse(json['createdAt']),
+    updatedAt: json['updatedAt'] == null ? null : DateTime.parse(json['updatedAt']),
+    deletedAt: json['deletedAt'] == null ? null : DateTime.parse(json['deletedAt']),
   );
 
   Map<String, dynamic> toJson() => {
