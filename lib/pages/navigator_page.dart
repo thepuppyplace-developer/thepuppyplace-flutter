@@ -36,7 +36,6 @@ class _NavigatorPageState extends State<NavigatorPage> {
   @override
   void initState() {
     super.initState();
-    Get.put(DatabaseController());
     Get.put(BoardListController());
   }
 

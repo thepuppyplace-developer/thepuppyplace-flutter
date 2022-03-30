@@ -7,12 +7,15 @@ class RestaurantBoardListController extends GetxController with StateMixin<List<
   final BoardRepository _repository = BoardRepository();
 
   final RxList<Board> _boardList = RxList<Board>([]);
+  final RxInt limit = RxInt(5);
+
+  List<Board> get boardList => _boardList;
 
   @override
   void onReady() {
     super.onReady();
     ever(_boardList, _boardListListener);
-    findAllCafeBoardList();
+    getBoardList;
   }
 
   void _boardListListener(List<Board> boardList){
@@ -28,9 +31,9 @@ class RestaurantBoardListController extends GetxController with StateMixin<List<
     }
   }
 
-  Future findAllCafeBoardList() async{
-    _boardList.value = <Board>[
-      Board(userId: 1, title: '음식점', description: '맛있어요', location: '경기도 고양시 일산동구 중산동', category: '음식점', photoList: [])
-    ];
+  Future refreshBoardList() => _repository.refreshBoardList().whenComplete(() => getBoardList);
+
+  Future get getBoardList async{
+    _boardList.value = await _repository.restaurantBoardList;
   }
 }

@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import '../../models/Board.dart';
 import 'board_repository.dart';
 
-class GroundBoardListController extends GetxController with StateMixin<List<Board>>{
+class TalkBoardListController extends GetxController with StateMixin<List<Board>>{
   final BoardRepository _repository = BoardRepository();
 
   final RxList<Board> _boardList = RxList<Board>([]);
@@ -34,6 +34,6 @@ class GroundBoardListController extends GetxController with StateMixin<List<Boar
   Future refreshBoardList() => _repository.refreshBoardList().whenComplete(() => getBoardList);
 
   Future get getBoardList async{
-    _boardList.value = await _repository.groundBoardList;
+    _boardList.value = await _repository.talkBoardList;
   }
 }

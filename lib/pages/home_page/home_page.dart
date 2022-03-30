@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:thepuppyplace_flutter/util/common.dart';
+import 'package:thepuppyplace_flutter/widgets/buttons/category_button.dart';
 import '../../controllers/board/board_list_controller.dart';
 import '../../models/Board.dart';
 import '../../util/customs.dart';
@@ -22,6 +23,32 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
 
   final RefreshController _refreshController = RefreshController();
+  final List<Map<String, dynamic>> _categoryList = <Map<String, dynamic>>[
+    {
+      'category': '카페',
+      'image': PngList.cafe
+    },
+    {
+      'category': '음식점',
+      'image': PngList.restaurant
+    },
+    {
+      'category': '쇼핑몰',
+      'image': PngList.shopping_mall
+    },
+    {
+      'category': '호텔',
+      'image': PngList.hotel
+    },
+    {
+      'category': '운동장',
+      'image': PngList.ground
+    },
+    {
+      'category': '수다방',
+      'image': PngList.cafe
+    },
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -49,29 +76,44 @@ class _HomePageState extends State<HomePage> {
                       enablePullUp: true,
                       controller: _refreshController,
                       header: CustomHeader(
-                        builder: (context, RefreshStatus? status) {
-                          switch (status) {
+                        builder: (BuildContext context, RefreshStatus? status){
+                          switch(status){
                             case RefreshStatus.completed: {
-                              return Container();
+                              return const SuccessText();
                             }
-                            default:
-                              {
-                                return const RefreshLoading();
-                              }
+                            case RefreshStatus.failed: {
+                              return const EmptyText();
+                            }
+                            default: {
+                              return const RefreshLoading();
+                            }
                           }
                         },
                         readyToRefresh: () async{
-                          controller.refreshBoardList().whenComplete((){
-                            _refreshController.refreshCompleted();
+                          controller.refreshBoardList().whenComplete(() async{
+                            if(controller.status.isEmpty){
+                              _refreshController.refreshFailed();
+                            } else {
+                              _refreshController.refreshCompleted(resetFooterState: true);
+                            }
                           });
                         },
-                        endRefresh: () async {
-                          _refreshController.loadComplete();
-                        },
                       ),
-                      footer: CustomFooter(
+                      footer: controller.status.isEmpty ? null : CustomFooter(
                         loadStyle: LoadStyle.ShowWhenLoading,
-                        builder: (context, LoadStatus? status){
+                        readyLoading: () async{
+                          Future.delayed(const Duration(seconds: 1), (){
+                            controller.limit.value += 5;
+                            controller.getBoardList.whenComplete((){
+                              if(controller.limit.value >= boardList!.length){
+                                _refreshController.loadNoData();
+                              } else {
+                                _refreshController.loadComplete();
+                              }
+                            });
+                          });
+                        },
+                        builder: (BuildContext context, LoadStatus? status){
                           switch(status){
                             case LoadStatus.noMore: {
                               return const NoDataText();
@@ -81,29 +123,24 @@ class _HomePageState extends State<HomePage> {
                             }
                           }
                         },
-                        readyLoading: () async{
-                          controller.limit.value += 1;
-                          controller.getBoardList.whenComplete((){
-                            _refreshController.loadComplete();
-                          });
-                        },
-                        endLoading: () async{
-                          if(controller.limit.value >= boardList!.length){
-                            controller.getBoardList.whenComplete((){
-                              _refreshController.loadNoData();
-                            });
-                          } else {
-                            controller.getBoardList.whenComplete((){
-                              _refreshController.loadComplete();
-                            });
-                          }
-                        } ,
                       ),
                       child: SingleChildScrollView(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             const BannerCard(),
+                            Container(
+                              margin: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.033)),
+                              child: Wrap(
+                                children: [
+                                  for(int index = 0; index < _categoryList.length; index++) CategoryButton(
+                                    category: _categoryList[index]['category'],
+                                    image: _categoryList[index]['image'],
+                                    currentIndex: index,
+                                  )
+                                ],
+                              ),
+                            ),
                             Container(
                               margin: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.033), vertical: mediaHeight(context, 0.02)),
                               child: Column(
@@ -128,9 +165,10 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                   )
-              )
+              ),
+            onLoading: const LoadingView()
           );
-        }
+        },
     );
   }
 }

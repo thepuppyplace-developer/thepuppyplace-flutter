@@ -83,4 +83,28 @@ class _LoadingViewState extends State<LoadingView> {
   }
 }
 
+class EmptyView extends StatelessWidget {
+  const EmptyView({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SafeArea(
+        child: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Image.asset(PngList.empty, height: mediaHeight(context, 0.15)),
+              Container(
+                  margin: EdgeInsets.symmetric(vertical: mediaHeight(context, 0.04)),
+                  child: Text('등록된 게시글이 없습니다', style: CustomTextStyle.w500(context, color: CustomColors.hint))),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+
 

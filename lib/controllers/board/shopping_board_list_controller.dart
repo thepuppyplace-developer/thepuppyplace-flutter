@@ -3,16 +3,19 @@ import 'package:get/get.dart';
 import '../../models/Board.dart';
 import 'board_repository.dart';
 
-class ShoppingBoardListController extends GetxController with StateMixin<List<Board>>{
+class ShoppingListController extends GetxController with StateMixin<List<Board>>{
   final BoardRepository _repository = BoardRepository();
 
   final RxList<Board> _boardList = RxList<Board>([]);
+  final RxInt limit = RxInt(5);
+
+  List<Board> get boardList => _boardList;
 
   @override
   void onReady() {
     super.onReady();
     ever(_boardList, _boardListListener);
-    findAllCafeBoardList();
+    getBoardList;
   }
 
   void _boardListListener(List<Board> boardList){
@@ -28,10 +31,9 @@ class ShoppingBoardListController extends GetxController with StateMixin<List<Bo
     }
   }
 
-  Future findAllCafeBoardList() async{
-    _boardList.value = <Board>[
-      Board(userId: 1, title: '쇼핑몰', description: '맛있어요', location: '경기도 고양시 일산동구 중산동', category: '음식점', photoList: []),
-      Board(userId: 1, title: '쇼핑몰', description: '맛있어요', location: '경기도 고양시 일산동구 중산동', category: '음식점', photoList: [])
-    ];
+  Future refreshBoardList() => _repository.refreshBoardList().whenComplete(() => getBoardList);
+
+  Future get getBoardList async{
+    _boardList.value = await _repository.shoppingBoardList;
   }
 }

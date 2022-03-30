@@ -11,9 +11,14 @@ double mediaWidth(BuildContext context, double scale) => MediaQuery.of(context).
 
 void unFocus(BuildContext context) => FocusScope.of(context).unfocus();
 
+Future showSnackBar(BuildContext context, String msg) async{
+  ScaffoldMessenger.of(context).clearSnackBars();
+  return ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg, style: CustomTextStyle.w500(context, color: Colors.white))));
+}
+
 Future showToast(String msg) async{
   await Fluttertoast.cancel();
-  return Fluttertoast.showToast(msg: msg, gravity: ToastGravity.CENTER);
+  return Fluttertoast.showToast(msg: msg);
 }
 
 Future showIndicator(Future future) => Get.dialog(FutureBuilder(
