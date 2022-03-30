@@ -22,42 +22,40 @@ class _BannerCardState extends State<BannerCard> {
 
   @override
   Widget build(BuildContext context) {
-    return SliverToBoxAdapter(
-      child: Stack(
-        alignment: Alignment.bottomCenter,
-        children: [
-          CarouselSlider.builder(
-            itemCount: 2,
-            options: CarouselOptions(
-                viewportFraction: 1,
-                height: 151,
-                onPageChanged: (int index, index2){
-                  setState(() {
-                    _currentIndex = index;
-                  });
-                }
-            ),
-            itemBuilder: (context, index, index2){
-              return ClipRRect(
-                  borderRadius: BorderRadius.circular(12),
-                  child: Image.asset(_bannerList[index], fit: BoxFit.cover, width: mediaWidth(context, 0.9), height: 151));
-            },
+    return Stack(
+      alignment: Alignment.bottomCenter,
+      children: [
+        CarouselSlider.builder(
+          itemCount: 2,
+          options: CarouselOptions(
+              viewportFraction: 1,
+              height: 151,
+              onPageChanged: (int index, index2){
+                setState(() {
+                  _currentIndex = index;
+                });
+              }
           ),
-          Container(
-            margin: EdgeInsets.symmetric(vertical: mediaHeight(context, 0.01)),
-            child: AnimatedSmoothIndicator(
-              activeIndex: _currentIndex,
-              count: _bannerList.length,
-              effect: WormEffect(
-                  activeDotColor: CustomColors.mainText,
-                  dotColor: CustomColors.hint,
-                  dotWidth: mediaWidth(context, 0.02),
-                  dotHeight: mediaWidth(context, 0.02)
-              ),
+          itemBuilder: (context, index, index2){
+            return ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: Image.asset(_bannerList[index], fit: BoxFit.cover, width: mediaWidth(context, 0.9), height: 151));
+          },
+        ),
+        Container(
+          margin: EdgeInsets.symmetric(vertical: mediaHeight(context, 0.01)),
+          child: AnimatedSmoothIndicator(
+            activeIndex: _currentIndex,
+            count: _bannerList.length,
+            effect: WormEffect(
+                activeDotColor: CustomColors.mainText,
+                dotColor: CustomColors.hint,
+                dotWidth: mediaWidth(context, 0.02),
+                dotHeight: mediaWidth(context, 0.02)
             ),
-          )
-        ],
-      ),
+          ),
+        )
+      ],
     );
   }
 }

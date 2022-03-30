@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import '../../models/Board.dart';
 import 'board_repository.dart';
@@ -9,8 +8,7 @@ class BoardListController extends GetxController with StateMixin<List<Board>>{
   final BoardRepository _repository = BoardRepository();
 
   final RxList<Board> _boardList = RxList<Board>([]);
-  final RxInt _limit = RxInt(5);
-  int get limit => _limit.value;
+  final RxInt limit = RxInt(5);
   final RxBool _isLoading = RxBool(false);
   bool get isLoading => _isLoading.value;
 
@@ -18,7 +16,11 @@ class BoardListController extends GetxController with StateMixin<List<Board>>{
   void onReady() {
     super.onReady();
     ever(_boardList, _boardListListener);
-    _findAllBoard();
+    try{
+      refreshBoardList();
+    } catch(error){
+      getBoardList;
+    }
   }
 
   void _boardListListener(List<Board> boardList){
@@ -34,13 +36,9 @@ class BoardListController extends GetxController with StateMixin<List<Board>>{
     }
   }
 
-  Future _findAllBoard() async{
-    List<Board> boardList = await _repository.findAllBoard();
-    if(_limit.value < boardList.length){
-      _boardList.value = List.generate(_limit.value, (index) => boardList[index]);
-    } else {
-      _boardList.value = await _repository.findAllBoard();
-    }
-    _isLoading.value = false;
+  Future get getBoardList async{
+    _boardList.value = await _repository.boardList;
   }
+
+  Future refreshBoardList() => _repository.refreshBoardList().whenComplete(() => getBoardList);
 }

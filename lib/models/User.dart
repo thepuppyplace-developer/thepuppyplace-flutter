@@ -51,4 +51,7 @@ class User{
     'gender': gender,
     'location': location,
   };
+
+  @override
+  String toString() => '{"nickname": "$nickname", "photo_url": ${photoURL == null ? null : "$photoURL"}}';
 }

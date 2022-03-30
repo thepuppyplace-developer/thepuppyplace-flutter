@@ -13,7 +13,7 @@ class BoardDetailsPage extends GetWidget<BoardController> {
       body: controller.obx((Board? board) => CustomScrollView(
         slivers: [
           SliverAppBar(
-            title: Text(board!.title),
+            title: Text(board!.title ?? ''),
           ),
           SliverToBoxAdapter(
             child: Text('${board.likeList!.length}'),

@@ -21,22 +21,22 @@ class BoardCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if(board.photoList.isNotEmpty)
+          if(board.photoList!.isNotEmpty && board.photoList != null)
           ClipRRect(
             borderRadius: BorderRadius.circular(12),
             child: CarouselSlider.builder(
-              itemCount: board.photoList.length,
+              itemCount: board.photoList!.length,
               options: CarouselOptions(),
-              itemBuilder: (context, index, index2) => Image.network(board.photoList[index]),
+              itemBuilder: (context, index, index2) => Image.network(board.photoList![index]),
             )
           ),
           Row(
             children: [
-              TagText(board.category)
+              TagText(board.category ?? '')
             ],
           ),
-          Text(board.title, style: CustomTextStyle.w600(context, scale: 0.022, height: 2), overflow: TextOverflow.ellipsis),
-          Text(board.description, style: CustomTextStyle.w400(context, scale: 0.018), maxLines: 2, overflow: TextOverflow.ellipsis),
+          Text(board.title ?? '', style: CustomTextStyle.w600(context, scale: 0.022, height: 2), overflow: TextOverflow.ellipsis),
+          Text(board.description ?? '', style: CustomTextStyle.w400(context, scale: 0.018), maxLines: 2, overflow: TextOverflow.ellipsis),
           Container(
             margin: EdgeInsets.symmetric(vertical: mediaHeight(context, 0.05)),
             child: Wrap(

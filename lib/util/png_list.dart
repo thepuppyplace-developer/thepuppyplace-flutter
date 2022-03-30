@@ -7,7 +7,7 @@ class PngList{
   static const String restaurant = 'assets/png/restaurant.png';
   static const String shopping_mall = 'assets/png/shopping_mall.png';
   static const String logo = 'assets/png/logo.png';
-  static const String loading = 'assets/png/loading.png';
+  static const String loading = 'assets/png/loadings.png';
 
   static const List<String> categoryList = <String>[
     cafe, restaurant, shopping_mall, hotel, ground

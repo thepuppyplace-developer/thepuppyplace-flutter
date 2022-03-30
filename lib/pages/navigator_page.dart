@@ -5,6 +5,7 @@ import 'package:thepuppyplace_flutter/controllers/board/board_list_controller.da
 import 'package:thepuppyplace_flutter/pages/home_page/home_page.dart';
 import 'package:thepuppyplace_flutter/pages/my_page/my_page.dart';
 
+import '../controllers/database_controller.dart';
 import '../controllers/user/user_controller.dart';
 import '../util/common.dart';
 import '../util/custom_icons.dart';
@@ -35,6 +36,7 @@ class _NavigatorPageState extends State<NavigatorPage> {
   @override
   void initState() {
     super.initState();
+    Get.put(DatabaseController());
     Get.put(BoardListController());
   }
 
