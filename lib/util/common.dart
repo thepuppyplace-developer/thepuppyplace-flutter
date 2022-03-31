@@ -60,8 +60,8 @@ class CustomErrorView extends StatelessWidget {
 
 mixin CustomColors implements Color{
   static const Color background = Color(0xFFE3F2FD);
-  static const Color main = Color(0xFFFFEBD9);
-  static const Color mainText = Color(0xFFEB9440);
+  static const Color main = Color(0xFF7DCE70);
+  static const Color mainEmpty = Color(0xFFEAFFE6);
   static const Color hint = Color(0xFFB6B6B6);
   static const Color empty = Color(0xFFF2F2F2);
   static const Color emptySide = Color(0xFFEAEAEA);

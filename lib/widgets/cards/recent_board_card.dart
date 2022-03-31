@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -55,13 +58,37 @@ class RecentBoardCard extends StatelessWidget {
                     margin: EdgeInsets.only(bottom: mediaHeight(context, 0.01)),
                     child: Text(board.title, style: CustomTextStyle.w600(context), overflow: TextOverflow.ellipsis)),
                 Text(board.description, style: CustomTextStyle.w400(context, scale: 0.013), maxLines: 3, overflow: TextOverflow.ellipsis),
-                if(board.photoList.isNotEmpty) Container(
-                  height: mediaHeight(context, 0.1),
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: board.photoList.length,
-                    itemBuilder: (context, index) => Image.network(board.photoList[index]),
-                  ),
+                Builder(
+                  builder: (context) {
+                    if(List.from(jsonDecode(board.photoList!)).isEmpty){
+                      return Container(
+                        margin: EdgeInsets.symmetric(vertical: mediaWidth(context, 0.02)),
+                      );
+                    } else {
+                      return Container(
+                        margin: EdgeInsets.symmetric(vertical: mediaWidth(context, 0.02)),
+                        height: mediaHeight(context, 0.1),
+                        child: ListView.separated(
+                          separatorBuilder: (context, index) => SizedBox(width: mediaWidth(context, 0.02),),
+                          scrollDirection: Axis.horizontal,
+                          itemCount: List.from(jsonDecode(board.photoList!)).length,
+                          itemBuilder: (context, index) => Container(
+                            height: mediaHeight(context, 0.1),
+                            width: mediaHeight(context, 0.1),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5),
+                                image: DecorationImage(
+                                    image: CachedNetworkImageProvider(
+                                        List.from(jsonDecode(board.photoList!))[index]
+                                    ),
+                                    fit: BoxFit.cover
+                                )
+                            ),
+                          ),
+                        ),
+                      );
+                    }
+                  }
                 ),
               ],
             ),

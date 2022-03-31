@@ -14,10 +14,10 @@ class TagText extends StatelessWidget {
       alignment: Alignment.center,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(mediaHeight(context, 1)),
-        color: CustomColors.main
+        color: CustomColors.mainEmpty
       ),
       padding: EdgeInsets.all(mediaHeight(context, 0.005)),
-      child: Text('#$text', style: CustomTextStyle.w500(context, scale: 0.012, color: CustomColors.mainText)),
+      child: Text('#$text', style: CustomTextStyle.w500(context, scale: 0.012, color: CustomColors.main)),
     );
   }
 }

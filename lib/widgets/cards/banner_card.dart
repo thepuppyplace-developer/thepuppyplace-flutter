@@ -48,7 +48,7 @@ class _BannerCardState extends State<BannerCard> {
             activeIndex: _currentIndex,
             count: _bannerList.length,
             effect: WormEffect(
-                activeDotColor: CustomColors.mainText,
+                activeDotColor: CustomColors.main,
                 dotColor: CustomColors.hint,
                 dotWidth: mediaWidth(context, 0.02),
                 dotHeight: mediaWidth(context, 0.02)

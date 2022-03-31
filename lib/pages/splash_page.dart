@@ -2,11 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thepuppyplace_flutter/util/common.dart';
 import '../../controllers/version/version_controller.dart';
+import '../controllers/database_controller.dart';
 import '../util/png_list.dart';
 import 'navigator_page.dart';
 
-class SplashPage extends StatelessWidget {
+class SplashPage extends StatefulWidget {
   const SplashPage({Key? key}) : super(key: key);
+
+  @override
+  State<SplashPage> createState() => _SplashPageState();
+}
+
+class _SplashPageState extends State<SplashPage> {
+  @override
+  void initState() {
+    super.initState();
+    Get.put(DatabaseController());
+  }
 
   @override
   Widget build(BuildContext context) {

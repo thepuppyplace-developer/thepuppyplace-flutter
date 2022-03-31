@@ -40,6 +40,11 @@ class User{
     deletedAt: json['deletedAt'] == null ? null : DateTime.parse(json['deletedAt']),
   );
 
+  factory User.fromNicknameAndPhotoURL(Map<String, dynamic> json) => User(
+    nickname: json['nickname'],
+    photoURL: json['photo_url'],
+  );
+
   Map<String, dynamic> toJson() => {
     'id': userId,
     'email': email,
@@ -51,7 +56,4 @@ class User{
     'gender': gender,
     'location': location,
   };
-
-  @override
-  String toString() => '{"nickname": "$nickname", "photo_url": ${photoURL == null ? null : "$photoURL"}}';
 }

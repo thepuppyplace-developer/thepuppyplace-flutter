@@ -4,8 +4,6 @@ import 'package:get/get.dart';
 import 'package:thepuppyplace_flutter/controllers/board/board_list_controller.dart';
 import 'package:thepuppyplace_flutter/pages/home_page/home_page.dart';
 import 'package:thepuppyplace_flutter/pages/my_page/my_page.dart';
-
-import '../controllers/database_controller.dart';
 import '../controllers/user/user_controller.dart';
 import '../util/common.dart';
 import '../util/custom_icons.dart';
@@ -55,7 +53,7 @@ class _NavigatorPageState extends State<NavigatorPage> {
   Widget bottomNavigationBar() => BottomNavigationBar(
     showSelectedLabels: false,
     showUnselectedLabels: false,
-    selectedItemColor: CustomColors.mainText,
+    selectedItemColor: CustomColors.main,
       currentIndex: _currentIndex,
       onTap: (int index){
         setState(() {

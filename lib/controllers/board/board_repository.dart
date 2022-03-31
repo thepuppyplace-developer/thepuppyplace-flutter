@@ -16,10 +16,12 @@ class BoardRepository extends GetConnect with Config, LocalDB{
       case 200: {
         List<Board> boardList = List.from(res.body['data']).map((board) => Board.fromJson(board)).toList();
         for(Board board in boardList){
-          if(List.from(await db.query(boardTable, where: 'id = ?', whereArgs: [board.boardId])).isEmpty){
+          if(List.from(await db.query(boardTable, where: 'id = ?', whereArgs: [board.id])).isEmpty){
             await db.insert(boardTable, board.toJson());
+          } else if(board.deletedAt != null){
+            await db.delete(boardTable, where: 'id = ?', whereArgs: [board.id]);
           } else {
-            await db.update(boardTable, board.toJson(), where: 'id = ?', whereArgs: [board.boardId]);
+            await db.update(boardTable, board.toJson(), where: 'id = ?', whereArgs: [board.id]);
           }
         }
         return print('refreshed-boardList');

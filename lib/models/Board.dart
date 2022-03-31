@@ -5,7 +5,7 @@ import 'Like.dart';
 import 'User.dart';
 
 class Board{
-  final int? boardId;
+  final int? id;
   final int userId;
   final String title;
   final String description;
@@ -13,7 +13,7 @@ class Board{
   final String category;
   final int? viewCount;
   final User? user;
-  final List<String> photoList;
+  final String? photoList;
   final List<Like>? likeList;
   final List<BoardComment>? commentList;
   final DateTime? createdAt;
@@ -21,7 +21,7 @@ class Board{
   final DateTime? deletedAt;
 
   Board({
-    this.boardId,
+    this.id,
     required this.userId,
     required this.title,
     required this.description,
@@ -38,7 +38,7 @@ class Board{
   });
 
   factory Board.fromJson(Map<String, dynamic> json) => Board(
-    boardId: json['id'],
+    id: json['id'],
     userId: json['user_id'],
     title: json['title'],
     description: json['description'],
@@ -46,7 +46,7 @@ class Board{
     category: json['category'],
     viewCount: json['view_count'],
     user: User.fromJson(json['User']),
-    photoList: List.from(jsonDecode(json['board_photos'])),
+    photoList: json['board_photos'],
     likeList: List.from(json['BoardLikes']).map((data) => Like.fromJson(data)).toList(),
     commentList: List.from(json['Comments']).map((data) => BoardComment.fromJson(data)).toList(),
     createdAt: DateTime.parse(json['createdAt']),
@@ -55,15 +55,15 @@ class Board{
   );
 
   factory Board.fromDatabase(Map<String, dynamic> json) => Board(
-    boardId: json['id'],
+    id: json['id'],
     userId: json['user_id'],
     title: json['title'],
     description: json['description'],
     location: json['location'],
     category: json['category'],
     viewCount: json['view_count'],
-    user: User.fromJson(jsonDecode(json['User'])),
-    photoList: List.from(jsonDecode(json['board_photos'])),
+    user: User.fromNicknameAndPhotoURL(jsonDecode(json['User'])),
+    photoList: json['board_photos'],
     likeList: List.from(jsonDecode(json['BoardLikes'])).map((data) => Like.fromJson(data)).toList(),
     commentList: List.from(jsonDecode(json['Comments'])).map((data) => BoardComment.fromJson(data)).toList(),
     createdAt: DateTime.parse(json['createdAt']),
@@ -72,17 +72,17 @@ class Board{
   );
 
   Map<String, dynamic> toJson() => {
-    'id': boardId,
+    'id': id,
     'user_id': userId,
     'title': title,
     'description': description,
     'location': location,
     'category': category,
     'view_count': viewCount,
-    'User': user == null ? null : user!.toString(),
+    'User': jsonEncode(user!.toJson()),
     'board_photos': photoList.toString(),
     'BoardLikes': likeList.toString(),
-    'Comments': commentList.toString(),
+    'Comments': jsonEncode(commentList),
     'createdAt': createdAt == null ? DateTime.now().toIso8601String() : createdAt!.toIso8601String(),
     'updatedAt': updatedAt == null ? DateTime.now().toIso8601String() : updatedAt!.toIso8601String(),
     'deletedAt': deletedAt == null ? DateTime.now().toIso8601String() : deletedAt!.toIso8601String(),
@@ -95,6 +95,5 @@ class Board{
     'description': description,
     'location': location,
     'category': category,
-    'photo_list': photoList
   };
 }

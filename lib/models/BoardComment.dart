@@ -8,6 +8,7 @@ class BoardComment{
   User? user;
   DateTime? createdAt;
   DateTime? updatedAt;
+  DateTime? deletedAt;
 
   BoardComment({
     this.commentId,
@@ -17,6 +18,7 @@ class BoardComment{
     this.user,
     this.createdAt,
     this.updatedAt,
+    this.deletedAt,
   });
 
   factory BoardComment.fromJson(Map<String, dynamic> json) => BoardComment(
@@ -24,9 +26,10 @@ class BoardComment{
     comment: json['comment'],
     userId: json['user_id'],
     boardId: json['board_id'],
-    user: User.fromJson(json['User']),
-    createdAt: DateTime.parse(json['createdAt']),
-    updatedAt: DateTime.parse(json['updatedAt']),
+    user: json['User'] == null ? null : User.fromNicknameAndPhotoURL(json['User']),
+    createdAt: json['createdAt'] == null ? null : DateTime.parse(json['createdAt']),
+    updatedAt: json['updatedAt'] == null ? null : DateTime.parse(json['updatedAt']),
+    deletedAt: json['deletedAt'] == null ? null : DateTime.parse(json['deletedAt']),
   );
 
   Map<String, dynamic> toJson() => {
