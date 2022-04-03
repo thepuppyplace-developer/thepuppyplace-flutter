@@ -16,6 +16,7 @@ class UnderlineTextField extends StatelessWidget {
   final Widget? suffixIcon;
   final EdgeInsets? margin;
   final EdgeInsets? padding;
+  final TextInputAction? textInputAction;
 
   const UnderlineTextField({
     required this.controller,
@@ -31,6 +32,7 @@ class UnderlineTextField extends StatelessWidget {
     this.padding,
     this.textStyle,
     this.helperStyle,
+    this.textInputAction,
     Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -42,6 +44,7 @@ class UnderlineTextField extends StatelessWidget {
       height: height,
       margin: margin ?? EdgeInsets.symmetric(vertical: mediaHeight(context, 0.005)),
       child: TextFormField(
+        cursorColor: CustomColors.main,
         style: CustomTextStyle.w500(context, scale: 0.018),
         obscureText: obscureText ?? false,
         controller: controller,
@@ -49,6 +52,7 @@ class UnderlineTextField extends StatelessWidget {
         maxLines: maxLines,
         minLines: minLines,
         keyboardType: keyboardType,
+        textInputAction: textInputAction,
         decoration: InputDecoration(
           hintStyle: CustomTextStyle.w500(context, scale: 0.018, color: CustomColors.hint),
             hintText: hintText,

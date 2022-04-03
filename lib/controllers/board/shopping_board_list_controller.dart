@@ -34,6 +34,6 @@ class ShoppingListController extends GetxController with StateMixin<List<Board>>
   Future refreshBoardList() => _repository.refreshBoardList().whenComplete(() => getBoardList);
 
   Future get getBoardList async{
-    _boardList.value = await _repository.shoppingBoardList;
+    _boardList.value = await _repository.shoppingBoardList(limit.value);
   }
 }

@@ -7,7 +7,7 @@ import '../../../controllers/board/cafe_board_list_controller.dart';
 import '../../../models/Board.dart';
 import '../../../util/customs.dart';
 import '../../../widgets/cards/board_card.dart';
-import '../../../widgets/loadings/refresh_loading.dart';
+import '../../../widgets/loadings/refresh_contents.dart';
 
 class CafeBoardListView extends StatefulWidget {
   const CafeBoardListView({Key? key}) : super(key: key);
@@ -38,19 +38,7 @@ class _CafeBoardListViewState extends State<CafeBoardListView> {
                     }
                   });
                 },
-                builder: (BuildContext context, RefreshStatus? status){
-                  switch(status){
-                    case RefreshStatus.completed: {
-                      return const SuccessText();
-                    }
-                    case RefreshStatus.failed: {
-                      return const EmptyText();
-                    }
-                    default: {
-                      return const RefreshLoading();
-                    }
-                  }
-                },
+                builder: (BuildContext context, RefreshStatus? status) => RefreshContents(status),
               ),
               footer: controller.status.isEmpty ? null : CustomFooter(
                 loadStyle: LoadStyle.ShowWhenLoading,
@@ -66,24 +54,13 @@ class _CafeBoardListViewState extends State<CafeBoardListView> {
                     });
                   });
                 },
-                builder: (BuildContext context, LoadStatus? status){
-                  switch(status){
-                    case LoadStatus.noMore: {
-                      return const NoDataText();
-                    }
-                    default: {
-                      return const RefreshLoading();
-                    }
-                  }
-                },
+                builder: (BuildContext context, LoadStatus? status) => LoadContents(status),
               ),
               child: controller.obx((List<Board>? boardList) => SingleChildScrollView(
-                child: Column(
-                  children: List.generate(controller.limit.value <= boardList!.length
-                      ? controller.limit.value
-                      : boardList.length, (index) => BoardCard(boardList[index])),
-                ),
-              ),
+                  physics: const NeverScrollableScrollPhysics(),
+                  child: Column(
+                    children: boardList!.map((Board board) => BoardCard(board)).toList(),
+                  )),
                   onLoading: const LoadingView(),
                   onEmpty: const EmptyView()
               )

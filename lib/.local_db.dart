@@ -1,15 +1,15 @@
 class LocalDB{
-  final String dbName = 'asdfvxczv';
+  final String dbName = 'test28';
   final int version = 1;
 
   final String searchTable = 'Search';
   final String createSearchTable = '''
-        CREATE TABLE Search(
-        id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-        keyword TEXT NOT NULL,
-        createdAT DATETIME NOT NULL
-        )
-        ''';
+  CREATE TABLE Search(
+  id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+  keyword TEXT NOT NULL UNIQUE,
+  createdAT TEXT NOT NULL
+  )
+  ''';
 
   final String boardTable = 'Board';
   final String createBoardTable = '''
@@ -25,6 +25,23 @@ class LocalDB{
   board_photos TEXT,
   BoardLikes TEXT,
   Comments TEXT,
+  createdAt TEXT,
+  updatedAt TEXT,
+  deletedAt TEXT
+  )
+  ''';
+
+  final String userTable = 'User';
+  final String createUserTable = '''
+  CREATE TABLE IF NOT EXISTS User(
+  id INTEGER PRIMARY KEY NOT NULL,
+  email TEXT,
+  nickname TEXT,
+  name TEXT,
+  phone_number TEXT,
+  photo_url TEXT,
+  gender TEXT,
+  location TEXT,
   createdAt TEXT,
   updatedAt TEXT,
   deletedAt TEXT

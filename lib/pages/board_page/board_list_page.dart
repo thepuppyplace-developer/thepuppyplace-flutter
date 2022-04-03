@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:thepuppyplace_flutter/util/common.dart';
+import '../../widgets/tab_bars/search_tab_bar.dart';
 import '../../widgets/text_fields/out_line_text_field.dart';
 import 'board_list_views/cafe_board_list_view.dart';
 import 'board_list_views/ground_board_list_view.dart';
@@ -43,10 +44,8 @@ class _BoardListPageState extends State<BoardListPage> {
               floating: true,
               pinned: true,
               elevation: 0.1,
-              title: OutlineTextField(
-                autofocus: false,
-                controller: null,
-                keyboardType: null,
+              title: SearchTabBar(mediaHeight(context, 0.07),
+                margin: EdgeInsets.zero,
               ),
               bottom: TabBar(
                 onTap: (int index){
@@ -65,6 +64,7 @@ class _BoardListPageState extends State<BoardListPage> {
             ),
           ],
           body: TabBarView(
+            physics: const NeverScrollableScrollPhysics(),
             children: _pageList,
           ),
         ),

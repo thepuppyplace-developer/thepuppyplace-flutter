@@ -1,12 +1,12 @@
 class Search{
   final int? id;
   final String keyword;
-  final DateTime createdAt;
+  final DateTime? createdAt;
 
   Search({
     this.id,
     required this.keyword,
-    required this.createdAt
+    this.createdAt
   });
 
   factory Search.fromJson(Map<String, dynamic> json) => Search(
@@ -18,6 +18,6 @@ class Search{
   Map<String, dynamic> toJson() => {
     'id': id,
     'keyword': keyword,
-    'createdAt': DateTime.now()
+    'createdAt': DateTime.now().toIso8601String()
   };
 }

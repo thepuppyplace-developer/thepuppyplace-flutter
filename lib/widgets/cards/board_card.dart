@@ -5,11 +5,15 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
+import 'package:thepuppyplace_flutter/pages/board_page/board_details_page.dart';
 import 'package:thepuppyplace_flutter/util/common.dart';
 import 'package:thepuppyplace_flutter/widgets/buttons/tag_text.dart';
 import '../../models/Board.dart';
 import '../../models/User.dart';
+import '../../util/custom_icons.dart';
 import '../../util/svg_list.dart';
+import 'user_profile_card.dart';
 
 class BoardCard extends StatelessWidget {
   final Board board;
@@ -34,14 +38,7 @@ class BoardCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              children: [
-                CircleAvatar(radius: mediaHeight(context, 0.018)),
-                Container(
-                    margin: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.015)),
-                    child: Text(user.nickname ?? '', style: CustomTextStyle.w600(context)))
-              ],
-            ),
+            UserProfileCard(board.user!),
             Container(
               margin: EdgeInsets.symmetric(vertical: mediaHeight(context, 0.005)),
               child: Row(
@@ -57,7 +54,7 @@ class BoardCard extends StatelessWidget {
                 child: Text(board.description, style: CustomTextStyle.w400(context, scale: 0.015), maxLines: 2, overflow: TextOverflow.ellipsis)),
             Builder(
               builder: (context){
-                if(List.from(jsonDecode(board.photoList!)).isEmpty){
+                if(board.board_photos!.isEmpty){
                   return Container(
                       margin: EdgeInsets.symmetric(vertical: mediaHeight(context, 0.02)));
                 } else {
@@ -67,7 +64,7 @@ class BoardCard extends StatelessWidget {
                     child: ListView.separated(
                       scrollDirection: Axis.horizontal,
                       separatorBuilder: (context, index) => SizedBox(width: mediaWidth(context, 0.02)),
-                      itemCount: List.from(jsonDecode(board.photoList!)).length,
+                      itemCount: board.board_photos!.length,
                       itemBuilder: (context, index) => Container(
                         height: mediaHeight(context, 0.1),
                         width: mediaHeight(context, 0.1),
@@ -75,7 +72,7 @@ class BoardCard extends StatelessWidget {
                             borderRadius: BorderRadius.circular(5),
                             image: DecorationImage(
                                 image: CachedNetworkImageProvider(
-                                    List.from(jsonDecode(board.photoList!))[index]
+                                    board.board_photos![index]
                                 ),
                                 fit: BoxFit.cover
                             )
@@ -89,18 +86,23 @@ class BoardCard extends StatelessWidget {
             Row(
               children: [
                 Expanded(
-                  child: Wrap(
-                    spacing: mediaWidth(context, 0.01),
+                  child: Row(
                     children: [
-                      SvgPicture.asset(SvgList.comment, height: 15),
-                      Text('${board.commentList!.length}', style: CustomTextStyle.w500(context, scale: 0.02, color: CustomColors.hint)),
+                      Icon(CustomIcons.heart, color: CustomColors.hint, size: mediaHeight(context, 0.02)),
+                      Container(
+                          margin: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.015)).copyWith(right: mediaWidth(context, 0.05)),
+                          child: Text(board.likeList!.length.toString(), style: CustomTextStyle.w500(context, scale: 0.02, color: CustomColors.hint))),
+                      Icon(CustomIcons.comment, color: CustomColors.hint, size: mediaHeight(context, 0.02)),
+                      Container(
+                          margin: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.015)),
+                          child: Text('${commentCount(board.commentList)}', style: CustomTextStyle.w500(context, scale: 0.02, color: CustomColors.hint))),
                     ],
                   ),
                 ),
                 Wrap(
                   spacing: mediaWidth(context, 0.01),
                   children: [
-                    SvgPicture.asset(SvgList.clock, height: mediaHeight(context, 0.02)),
+                    Icon(CustomIcons.clock, color: CustomColors.hint, size: mediaHeight(context, 0.025)),
                     Text(beforeDate(board.createdAt ?? DateTime.now()), style: CustomTextStyle.w500(context, color: CustomColors.hint))
                   ],
                 )
@@ -109,7 +111,9 @@ class BoardCard extends StatelessWidget {
           ],
         ),
       ),
-      onPressed: (){},
+      onPressed: (){
+        Get.to(() => BoardDetailsPage(board.id!));
+      },
     );
   }
 }

@@ -8,8 +8,13 @@ class SelectButton extends StatelessWidget {
   final int currentIndex;
   final int index;
   final Function(int) onChanged;
-  
-  const SelectButton({required this.text, required this.currentIndex, required this.index, required this.onChanged, Key? key}) : super(key: key);
+
+  const SelectButton({
+    required this.text,
+    required this.currentIndex,
+    required this.index,
+    required this.onChanged,
+    Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,9 +27,9 @@ class SelectButton extends StatelessWidget {
             alignment: Alignment.center,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5),
-                border: Border.all(color: currentIndex == index ? Colors.black : CustomColors.hint)
+                border: Border.all(color: currentIndex == index ? CustomColors.main : CustomColors.hint)
             ),
-            child: Text(text, style: CustomTextStyle.w500(context, color: currentIndex == index ? Colors.black : CustomColors.hint))),
+            child: Text(text, style: CustomTextStyle.w500(context, color: currentIndex == index ? CustomColors.main : CustomColors.hint))),
         onPressed: (){
           onChanged(index);
         },

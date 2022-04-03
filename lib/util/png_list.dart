@@ -13,4 +13,6 @@ class PngList{
   static const List<String> categoryList = <String>[
     cafe, restaurant, shopping_mall, hotel, ground
   ];
+
+  static const defaultProfile = 'https://thepuppyplace.s3.ap-northeast-2.amazonaws.com/uploads/default_profile.png';
 }

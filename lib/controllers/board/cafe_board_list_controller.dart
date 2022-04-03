@@ -34,6 +34,6 @@ class CafeBoardListController extends GetxController with StateMixin<List<Board>
   Future refreshBoardList() => _repository.refreshBoardList().whenComplete(() => getBoardList);
 
   Future get getBoardList async{
-    _boardList.value = await _repository.cafeBoardList;
+    _boardList.value = await _repository.cafeBoardList(limit.value);
   }
 }

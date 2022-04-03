@@ -34,6 +34,6 @@ class TalkBoardListController extends GetxController with StateMixin<List<Board>
   Future refreshBoardList() => _repository.refreshBoardList().whenComplete(() => getBoardList);
 
   Future get getBoardList async{
-    _boardList.value = await _repository.talkBoardList;
+    _boardList.value = await _repository.talkBoardList(limit.value);
   }
 }

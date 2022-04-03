@@ -4,12 +4,25 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+
+import '../models/BoardComment.dart';
 
 double mediaHeight(BuildContext context, double scale) => MediaQuery.of(context).size.height * scale;
 double mediaWidth(BuildContext context, double scale) => MediaQuery.of(context).size.width * scale;
 
 void unFocus(BuildContext context) => FocusScope.of(context).unfocus();
+
+Future<List<String>> pickMultiImage() async{
+  ImagePicker picker = ImagePicker();
+  List<XFile>? imageList = await picker.pickMultiImage();
+  if(imageList == null){
+    return <String>[];
+  } else {
+    return imageList.map((image) => image.path).toList();
+  }
+}
 
 Future showSnackBar(BuildContext context, String msg) async{
   ScaffoldMessenger.of(context).clearSnackBars();
@@ -96,3 +109,10 @@ String beforeDate(DateTime date){
   }
 }
 
+int commentCount(List<BoardComment>? commentList){
+  int commentCount = commentList!.length;
+  for(int i = 0; i < commentList.length; i++){
+    commentCount += commentList[i].nestedCommentList!.length;
+  }
+  return commentCount;
+}

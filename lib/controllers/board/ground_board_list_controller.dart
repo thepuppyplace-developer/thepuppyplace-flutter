@@ -34,6 +34,6 @@ class GroundBoardListController extends GetxController with StateMixin<List<Boar
   Future refreshBoardList() => _repository.refreshBoardList().whenComplete(() => getBoardList);
 
   Future get getBoardList async{
-    _boardList.value = await _repository.groundBoardList;
+    _boardList.value = await _repository.groundBoardList(limit.value);
   }
 }

@@ -7,6 +7,7 @@ class Like{
   final User? user;
   final DateTime? createdAt;
   final DateTime? updatedAt;
+  final DateTime? deletedAt;
 
   Like({
     this.likeId,
@@ -15,15 +16,17 @@ class Like{
     this.user,
     this.createdAt,
     this.updatedAt,
+    this.deletedAt,
   });
 
   factory Like.fromJson(Map<String, dynamic> json) => Like(
     likeId: json['id'],
     boardId: json['board_id'],
     userId: json['user_id'],
-    user: User.fromJson(json['User']),
-    createdAt: DateTime.parse(json['createdAt']),
-    updatedAt: DateTime.parse(json['updatedAt']),
+    user: json['User'] == null ? null : User.fromNicknameAndPhotoURL(json['User']),
+    createdAt: json['createdAt'] == null ? null : DateTime.parse(json['createdAt']),
+    updatedAt: json['updatedAt'] == null ? null : DateTime.parse(json['updatedAt']),
+    deletedAt: json['deletedAt'] == null ? null : DateTime.parse(json['deletedAt']),
   );
 
   Map<String, dynamic> toJson() => {

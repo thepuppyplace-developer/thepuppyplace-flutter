@@ -1,5 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../models/Board.dart';
 import 'board_repository.dart';
 
@@ -10,12 +11,17 @@ class BoardController extends GetxController with StateMixin<Board>{
   final BoardRepository _repository = BoardRepository();
 
   final Rxn<Board> _board = Rxn<Board>();
+  Board? get board => _board.value;
+
+  final RxInt limit = RxInt(5);
+  final Rx<TextEditingController> commentController = Rx(TextEditingController());
+  final Rxn<RefreshStatus> refreshStatus = Rxn<RefreshStatus>();
 
   @override
   void onReady() {
     super.onReady();
     ever(_board, _boardListener);
-    _findOneBoard();
+    getBoard();
   }
 
   void _boardListener(Board? board){
@@ -31,7 +37,20 @@ class BoardController extends GetxController with StateMixin<Board>{
     }
   }
 
-  Future _findOneBoard() async{
+  Future refreshBoard() async{
+    refreshStatus.value = await _repository.refreshBoard(board_id);
+    return getBoard();
+  }
+
+  Future getBoard() async{
     _board.value = await _repository.findOneBoard(board_id);
+  }
+
+  Future insertComment() async{
+    _repository.insertComment(
+        board_id: board_id,
+        user_id: 1,
+        comment: commentController.value.text).whenComplete(() => refreshBoard());
+    commentController.value.clear();
   }
 }

@@ -26,34 +26,6 @@ mixin CustomThemeData implements ThemeData{
   );
 }
 
-class SliverError extends StatelessWidget {
-  final String? error;
-  const SliverError(this.error, {Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return SliverToBoxAdapter(
-      child: Container(
-          alignment: Alignment.center,
-          child: Text(error ?? 'error')),
-    );
-  }
-}
-
-class SliverLoading extends StatelessWidget {
-  const SliverLoading({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return SliverToBoxAdapter(
-      child: Container(
-        margin: EdgeInsets.all(mediaHeight(context, 0.02)),
-        child: const CupertinoActivityIndicator(),
-      ),
-    );
-  }
-}
-
 class LoadingView extends StatefulWidget {
   const LoadingView({Key? key}) : super(key: key);
 
@@ -89,22 +61,30 @@ class EmptyView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Image.asset(PngList.empty, height: mediaHeight(context, 0.15)),
-              Container(
-                  margin: EdgeInsets.symmetric(vertical: mediaHeight(context, 0.04)),
-                  child: Text('등록된 게시글이 없습니다', style: CustomTextStyle.w500(context, color: CustomColors.hint))),
-            ],
-          ),
+      body: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Image.asset(PngList.empty, height: mediaHeight(context, 0.15)),
+            Container(
+                margin: EdgeInsets.symmetric(vertical: mediaHeight(context, 0.04)),
+                child: Text('등록된 게시글이 없습니다', style: CustomTextStyle.w500(context, color: CustomColors.hint))),
+          ],
         ),
       ),
     );
   }
 }
+
+class RecentLoading extends StatelessWidget {
+  const RecentLoading({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container();
+  }
+}
+
 
 
 

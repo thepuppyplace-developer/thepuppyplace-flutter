@@ -1,21 +1,22 @@
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:thepuppyplace_flutter/controllers/database_controller.dart';
 
 import '../../models/User.dart';
 import 'user_repository.dart';
 
 class UserController extends GetxController with StateMixin<User>{
   final UserRepository _repository = UserRepository();
-  late SharedPreferences _sharedPreferences;
+  static final Rxn<User> _user = Rxn<User>();
 
-  final Rxn<User> _user = Rxn<User>();
+  static final RxnString _jwt = RxnString();
+  static String? get jwt => _jwt.value;
 
   @override
   void onReady() async{
     super.onReady();
-    _sharedPreferences = await SharedPreferences.getInstance();
     ever(_user, _userListener);
-    autoLogin();
+    _autoLogin();
   }
 
   void _userListener(User? user){
@@ -31,11 +32,25 @@ class UserController extends GetxController with StateMixin<User>{
     }
   }
 
-  Future autoLogin() async{
-    if(_sharedPreferences.getString('email') != null && _sharedPreferences.getString('password') != null){
-      _user.value = await _repository.findUser(1);
+  Future _autoLogin() async{
+    SharedPreferences spf = await DatabaseController.spf;
+
+    String? email = spf.getString('email');
+    String? password = spf.getString('password');
+
+    if(email != null && password != null){
+      login(email: email, password: password);
     } else {
-      _user.value = await _repository.findUser(1);
+      _getUser();
     }
+  }
+
+  Future login({required String email, required String password}) async{
+    _jwt.value = await _repository.login(email, password);
+    return _getUser();
+  }
+
+  Future _getUser() async{
+    _user.value = await _repository.getUser(jwt);
   }
 }

@@ -2,15 +2,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:thepuppyplace_flutter/pages/search_page/search_page.dart';
 import 'package:thepuppyplace_flutter/util/common.dart';
 import 'package:thepuppyplace_flutter/widgets/buttons/category_button.dart';
 import '../../controllers/board/board_list_controller.dart';
 import '../../models/Board.dart';
-import '../../util/customs.dart';
 import '../../util/png_list.dart';
 import '../../widgets/cards/banner_card.dart';
 import '../../widgets/cards/recent_board_card.dart';
-import '../../widgets/loadings/refresh_loading.dart';
+import '../../widgets/loadings/refresh_contents.dart';
 import '../../widgets/tab_bars/search_tab_bar.dart';
 
 class HomePage extends StatefulWidget {
@@ -55,118 +55,107 @@ class _HomePageState extends State<HomePage> {
     return GetBuilder<BoardListController>(
         init: BoardListController(),
         builder: (BoardListController controller) {
-          return controller.obx((List<Board>? boardList) =>
-              NestedScrollView(
-                headerSliverBuilder: (context, innerBoxIsScrolled) => [
-                  SliverAppBar(
-                    snap: true,
-                    floating: true,
-                    pinned: true,
-                    centerTitle: false,
-                    elevation: 0.1,
-                    title: Image.asset(PngList.logo,
-                      width: mediaWidth(context, 0.4),),
-                    bottom: SearchTabBar(mediaHeight(context, 0.07),
-                      padding: EdgeInsets.symmetric(
-                          vertical: mediaHeight(context, 0.01)),),
-                  )
-                ],
-                body: Scrollbar(
-                  child: SmartRefresher(
-                    enablePullUp: true,
-                    controller: _refreshController,
-                    header: CustomHeader(
-                      builder: (BuildContext context, RefreshStatus? status){
-                        switch(status){
-                          case RefreshStatus.completed: {
-                            return const SuccessText();
-                          }
-                          case RefreshStatus.failed: {
-                            return const EmptyText();
-                          }
-                          default: {
-                            return const RefreshLoading();
-                          }
+          return NestedScrollView(
+            headerSliverBuilder: (context, innerBoxIsScrolled) => [
+              SliverAppBar(
+                snap: true,
+                floating: true,
+                pinned: true,
+                centerTitle: false,
+                elevation: 0.1,
+                title: Image.asset(PngList.logo,
+                  width: mediaWidth(context, 0.4),),
+                bottom: SearchTabBar(mediaHeight(context, 0.07)),
+              )
+            ],
+            body: Scrollbar(
+              child: SmartRefresher(
+                enablePullUp: controller.boardList.isEmpty ? false : true,
+                controller: _refreshController,
+                header: CustomHeader(
+                  builder: (BuildContext context, RefreshStatus? status) => RefreshContents(status,
+                    idleText: controller.refreshDate.value,
+                  ),
+                  readyToRefresh: () async{
+                    controller.refreshBoardList().whenComplete(() async{
+                      switch(controller.refreshStatus.value){
+                        case RefreshStatus.failed: {
+                          _refreshController.refreshFailed();
+                          break;
                         }
-                      },
-                      readyToRefresh: () async{
-                        controller.refreshBoardList().whenComplete(() async{
-                          if(controller.status.isEmpty){
-                            _refreshController.refreshFailed();
-                          } else {
-                            _refreshController.refreshCompleted(resetFooterState: true);
-                          }
-                        });
-                      },
-                    ),
-                    footer: controller.status.isEmpty ? null : CustomFooter(
-                      loadStyle: LoadStyle.ShowWhenLoading,
-                      readyLoading: () async{
-                        Future.delayed(const Duration(seconds: 1), (){
-                          controller.limit.value += 5;
-                          controller.getBoardList.whenComplete((){
-                            if(controller.limit.value >= boardList!.length){
-                              _refreshController.loadNoData();
-                            } else {
-                              _refreshController.loadComplete();
-                            }
-                          });
-                        });
-                      },
-                      builder: (BuildContext context, LoadStatus? status){
-                        switch(status){
-                          case LoadStatus.noMore: {
-                            return const NoDataText();
-                          }
-                          default: {
-                            return const RefreshLoading();
-                          }
+                        case RefreshStatus.idle: {
+                          _refreshController.refreshToIdle();
+                          break;
                         }
-                      },
-                    ),
-                    child: SingleChildScrollView(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const BannerCard(),
-                          Container(
-                            margin: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.033)),
-                            child: Wrap(
-                              children: [
-                                for(int index = 0; index < _categoryList.length; index++) CategoryButton(
-                                  category: _categoryList[index]['category'],
-                                  image: _categoryList[index]['image'],
-                                  currentIndex: index,
-                                )
-                              ],
-                            ),
-                          ),
-                          Container(
-                            margin: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.033), vertical: mediaHeight(context, 0.02)),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text('최신글', style: CustomTextStyle.w600(
-                                    context, scale: 0.024)),
-                                Text('더퍼피플레이스의 최신글을 확인해보세요',
-                                  style: CustomTextStyle.w400(
-                                      context, color: Colors.grey,
-                                      height: 2),)
-                              ],
-                            ),
-                          ),
-                          Column(
-                            children: List.generate(controller.limit.value <= boardList!.length
-                                ? controller.limit.value
-                                : boardList.length, (index) => RecentBoardCard(boardList[index]))
-                          )
-                        ],
+                        default: {
+                          _refreshController.refreshCompleted(resetFooterState: true);
+                        }
+                      }
+                    });
+                  },
+                ),
+                footer: controller.status.isEmpty ? null : CustomFooter(
+                  loadStyle: LoadStyle.ShowWhenLoading,
+                  readyLoading: () async{
+                    Future.delayed(const Duration(seconds: 1), (){
+                      controller.limit.value += 5;
+                      controller.getBoardList.whenComplete((){
+                        if(controller.limit.value >= controller.boardList.length){
+                          _refreshController.loadNoData();
+                        } else {
+                          _refreshController.loadComplete();
+                        }
+                      });
+                    });
+                  },
+                  builder: (BuildContext context, LoadStatus? status) => LoadContents(status),
+                ),
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const BannerCard(),
+                      Container(
+                        margin: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.033)),
+                        child: Wrap(
+                          children: [
+                            for(int index = 0; index < _categoryList.length; index++) CategoryButton(
+                              category: _categoryList[index]['category'],
+                              image: _categoryList[index]['image'],
+                              currentIndex: index,
+                            )
+                          ],
+                        ),
                       ),
-                    ),
+                      Container(
+                        margin: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.033), vertical: mediaHeight(context, 0.02)),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('최신글', style: CustomTextStyle.w600(
+                                context, scale: 0.024)),
+                            Text('더퍼피플레이스의 최신글을 확인해보세요',
+                              style: CustomTextStyle.w400(
+                                  context, color: Colors.grey,
+                                  height: 2),)
+                          ],
+                        ),
+                      ),
+                      Container(
+                        alignment: Alignment.center,
+                        margin: EdgeInsets.all(mediaWidth(context, 0.033)),
+                        child: controller.obx((List<Board>? boardList) => Column(
+                            children: boardList!.map((board) => RecentBoardCard(board)).toList()
+                        ),
+                          onEmpty: Text('등록된 게시글이 없습니다.', style: CustomTextStyle.w500(context, color: CustomColors.hint), textAlign: TextAlign.center),
+                          onLoading: const CupertinoActivityIndicator()
+                        ),
+                      )
+                    ],
                   ),
                 ),
               ),
-            onLoading: const LoadingView()
+            ),
           );
         },
     );
