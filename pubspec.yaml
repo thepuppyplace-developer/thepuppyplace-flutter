@@ -60,3 +60,6 @@ flutter:
     - family: Tmoney
       fonts:
         - asset: assets/fonts/TmoneyRoundWindRegular.ttf
+    - family: Dongle
+      fonts:
+        - asset: assets/fonts/Dongle.ttf

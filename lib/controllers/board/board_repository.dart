@@ -15,7 +15,7 @@ class BoardRepository extends GetConnect with Config, LocalDB{
 
   Future<RefreshStatus> refreshBoardList() async{
     Database db = await DatabaseController.to.db;
-    SharedPreferences spf = await DatabaseController.spf;
+    SharedPreferences spf = await SharedPreferences.getInstance();
     String? refreshDate = spf.getString('boardRefreshDate');
 
     Response res = await post('$API_URL/board', {

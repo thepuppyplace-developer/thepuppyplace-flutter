@@ -45,7 +45,8 @@ class BoardListController extends GetxController with StateMixin<List<Board>>{
   }
 
   Future refreshBoardList() async{
-    SharedPreferences spf = await DatabaseController.spf;
+    SharedPreferences spf = await SharedPreferences.getInstance();
+
     refreshStatus.value = await _repository.refreshBoardList();
     String? date = spf.getString('boardRefreshDate');
     if(date == null){

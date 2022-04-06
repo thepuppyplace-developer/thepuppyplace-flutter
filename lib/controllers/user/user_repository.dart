@@ -27,7 +27,7 @@ class UserRepository extends GetConnect with Config{
   }
 
   Future<String?> login(String email, String password) async{
-    SharedPreferences spf = await DatabaseController.spf;
+    SharedPreferences spf = await SharedPreferences.getInstance();
 
     Response res = await post('$API_URL/user', {
       'email': email,
@@ -38,7 +38,7 @@ class UserRepository extends GetConnect with Config{
       case 200: {
         await spf.setString('email', email);
         await spf.setString('password', password);
-        return res.body['data'];
+        return res.body['data']['jwt'];
       }
       default: {
         return null;
@@ -47,20 +47,15 @@ class UserRepository extends GetConnect with Config{
   }
   
   Future<User?> getUser(String? jwt) async{
-    if(jwt != null){
-      Response res = await get('$API_URL/user/my', headers: headers(jwt));
+    Response res = await get('$API_URL/user/my', headers: headers(jwt!));
 
-      switch(res.statusCode){
-        case 200: {
-          return User.fromJson(res.body['data']);
-        }
-        default: {
-          return null;
-        }
+    switch(res.statusCode){
+      case 200: {
+        return User.fromJson(res.body['data']);
       }
-    } else {
-      print('jwt 토큰 만료');
-      return null;
+      default: {
+        return null;
+      }
     }
   }
 

@@ -6,8 +6,11 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:thepuppyplace_flutter/util/png_list.dart';
 
 import '../models/BoardComment.dart';
+import '../widgets/animations/SizedAnimation.dart';
+import 'customs.dart';
 
 double mediaHeight(BuildContext context, double scale) => MediaQuery.of(context).size.height * scale;
 double mediaWidth(BuildContext context, double scale) => MediaQuery.of(context).size.width * scale;
@@ -34,10 +37,18 @@ Future showToast(String msg) async{
   return Fluttertoast.showToast(msg: msg);
 }
 
-Future showIndicator(Future future) => Get.dialog(FutureBuilder(
+Future showIndicator({required Future future, String? text}) => Get.dialog(FutureBuilder(
   future: future.whenComplete(() => Get.back()),
   builder: (context, snapshot) => Center(
-    child: Platform.isAndroid ? const CircularProgressIndicator() : const CupertinoActivityIndicator(),
+    child: Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        SizedAnimation(child: Image.asset(PngList.loading, height: mediaHeight(context, 0.15))),
+        Container(
+            margin: EdgeInsets.symmetric(vertical: mediaHeight(context, 0.04)),
+            child: const CupertinoActivityIndicator())
+      ],
+    ),
   ),
 ));
 

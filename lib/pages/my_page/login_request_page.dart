@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 
 import '../../util/common.dart';
 import '../../widgets/buttons/custom_button.dart';
-import '../login_page/login_page.dart';
 
 class LoginRequestPage extends StatelessWidget {
   const LoginRequestPage({Key? key}) : super(key: key);

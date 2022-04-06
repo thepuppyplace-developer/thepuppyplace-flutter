@@ -1,6 +1,5 @@
 import 'package:get/get.dart';
 import 'package:path/path.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../.local_db.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sqflite/sqlite_api.dart';
@@ -16,10 +15,6 @@ class DatabaseController extends GetxController with LocalDB{
       await db.execute(createBoardTable);
       }
     );
-  }
-
-  static Future<SharedPreferences> get spf async{
-    return SharedPreferences.getInstance();
   }
 
   @override

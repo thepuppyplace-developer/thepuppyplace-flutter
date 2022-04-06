@@ -12,22 +12,21 @@ class MyPage extends GetWidget<UserController> {
   @override
   Widget build(BuildContext context) {
     return controller.obx((User? user) => Scaffold(
-      appBar: appBar(user!),
+      appBar: AppBar(
+        title: Text(user!.nickname ?? ''),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout),
+            onPressed: (){
+              controller.logout(context);
+            },
+          )
+        ],
+      ),
     ),
         onLoading: const CustomIndicator(),
         onError: (error) => CustomErrorView(error: error),
         onEmpty: const LoginRequestPage()
     );
   }
-
-  AppBar appBar(User user) => AppBar(
-    title: Text(user.nickname ?? ''),
-    actions: [
-      IconButton(
-        icon: const Icon(Icons.logout),
-        onPressed: (){
-        },
-      )
-    ],
-  );
 }

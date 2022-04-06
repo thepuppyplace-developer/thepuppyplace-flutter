@@ -148,12 +148,13 @@ class _InsertPageState extends State<InsertPage> {
                           keyboardType: TextInputType.text,
                           hintText: '제목을 입력해주세요.(최대 20자)',
                           textInputAction: TextInputAction.next,
+                          maxLength: 20,
                         ),
                         UnderlineTextField(
                           margin: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.033)),
                           controller: _description,
                           minLines: 20,
-                          maxLines: null,
+                          maxLines: 50,
                           keyboardType: TextInputType.text,
                           hintText: '내용을 입력해주세요.',
                         )

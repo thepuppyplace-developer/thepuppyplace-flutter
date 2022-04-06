@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import '../../util/common.dart';
 
 class UnderlineTextField extends StatelessWidget {
-  final TextEditingController controller;
-  final TextInputType keyboardType;
+  final TextEditingController? controller;
+  final TextInputType? keyboardType;
   final TextStyle? textStyle;
   final TextStyle? helperStyle;
   final bool? obscureText;
@@ -49,19 +49,20 @@ class UnderlineTextField extends StatelessWidget {
         obscureText: obscureText ?? false,
         controller: controller,
         maxLength: maxLength,
-        maxLines: maxLines,
-        minLines: minLines,
+        maxLines: maxLines ?? 1,
+        minLines: minLines ,
         keyboardType: keyboardType,
         textInputAction: textInputAction,
         decoration: InputDecoration(
-          hintStyle: CustomTextStyle.w500(context, scale: 0.018, color: CustomColors.hint),
+            hintStyle: CustomTextStyle.w500(context, scale: 0.018, color: CustomColors.hint),
             hintText: hintText,
             suffixIcon: suffixIcon,
             contentPadding: padding ?? EdgeInsets.symmetric(vertical: mediaHeight(context, 0.015)),
             border: border,
-            enabledBorder: border.copyWith(borderSide: const BorderSide(color: CustomColors.hint)),
+            enabledBorder: border.copyWith(borderSide: const BorderSide(color: CustomColors.emptySide)),
             focusedBorder: border,
-            helperStyle: helperStyle ?? Theme.of(context).textTheme.bodyText1!.copyWith(color: Colors.blueGrey, fontSize: mediaHeight(context, 0.012))
+            helperStyle: helperStyle ?? Theme.of(context).textTheme.bodyText1!.copyWith(color: Colors.blueGrey, fontSize: mediaHeight(context, 0.012)),
+            counterText: ''
         ),
       ),
     );
