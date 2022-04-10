@@ -1,22 +1,21 @@
-import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:thepuppyplace_flutter/util/common.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:thepuppyplace_flutter/controllers/database_controller.dart';
+import '../../config/local_db.dart';
 import '../../models/User.dart';
-import '../database_controller.dart';
 import 'user_repository.dart';
 
-class UserController extends GetxController with StateMixin<User>{
+class UserController extends GetxController with StateMixin<User>, LocalDB{
+  static UserController get to => Get.put(UserController());
   final UserRepository _repository = UserRepository();
   final Rxn<User> _user = Rxn<User>();
 
-  static final RxnString _jwt = RxnString();
 
   @override
   void onReady() async{
     super.onReady();
     ever(_user, _userListener);
-    ever(_jwt, _jwtListener);
     _autoLogin();
   }
 
@@ -33,40 +32,29 @@ class UserController extends GetxController with StateMixin<User>{
     }
   }
 
-  void _jwtListener(String? jwt) async{
-    SharedPreferences spf = await SharedPreferences.getInstance();
-
-    if(jwt != null){
-      await _getUser(jwt);
-      await spf.setString('jwt', jwt);
-    }
-  }
-
   Future _autoLogin() async{
     SharedPreferences spf = await SharedPreferences.getInstance();
-
-    String? email = spf.getString('email');
-    String? password = spf.getString('password');
-
-    if(email != null && password != null){
-      login(email: email, password: password);
-    }
+    String? jwt = spf.getString('jwt');
+    _getUser(jwt);
   }
 
   Future login({required String email, required String password}) async{
-    _jwt.value = await _repository.login(email, password);
+    String? jwt = await _repository.login(email, password);
+    await _getUser(jwt);
+    return Get.back();
+
   }
 
-  Future logout(BuildContext context) async{
-    SharedPreferences spf = await SharedPreferences.getInstance();
-    await spf.remove('jwt');
-    await spf.remove('email');
-    await spf.remove('password');
-    _user.value = null;
-    return showSnackBar(context, '성공적으로 로그인되었습니다.');
+  Future logout() async{
+    _user.value = await _repository.logout(_user.value!.email);
+    return Get.back();
   }
 
   Future _getUser(String? jwt) async{
-    _user.value = await _repository.getUser(jwt);
+    if(jwt != null){
+      _user.value = await _repository.getUser(jwt);
+    } else {
+      _user.value = null;
+    }
   }
 }

@@ -17,10 +17,11 @@ class SearchTabBar extends StatelessWidget with PreferredSizeWidget{
 
   @override
   Widget build(BuildContext context) => OutlineTextField(
+    height: height,
+    onChanged: (String search){},
     onTap: (){
       Get.to(() => const SearchPage());
     },
-    height: height,
     padding: EdgeInsets.symmetric(vertical: mediaHeight(context, 0.01)),
     autofocus: false,
     readOnly: true,
@@ -58,7 +59,7 @@ class InsertSearchTabBar extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) => OutlineTextField(
-    height: height,
+    onChanged: (String search){},
     onFieldSubmitted: onFieldSubmitted,
     textInputAction: TextInputAction.search,
     autofocus: false,

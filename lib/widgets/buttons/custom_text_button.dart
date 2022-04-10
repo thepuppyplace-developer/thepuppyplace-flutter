@@ -9,10 +9,12 @@ class CustomTextButton extends StatelessWidget {
   final EdgeInsets? padding;
   final Color? color;
 
-  const CustomTextButton(this.text, this.onPressed, {
-    this.padding,
-    this.color,
-    Key? key}) : super(key: key);
+  const CustomTextButton(
+      this.text,
+      this.onPressed, {
+        this.padding,
+        this.color,
+        Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -1,8 +1,8 @@
 
 import 'package:get/get.dart';
 import 'package:thepuppyplace_flutter/util/common.dart';
+import '../../config/config.dart';
 import '../../models/Version.dart';
-import '../../.config.dart';
 
 class VersionRepository extends GetConnect with Config{
 

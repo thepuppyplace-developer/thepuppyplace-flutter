@@ -1,5 +1,5 @@
 class LocalDB{
-  final String dbName = 'test28';
+  final String dbName = 'test32';
   final int version = 1;
 
   final String searchTable = 'Search';
@@ -36,11 +36,14 @@ class LocalDB{
   CREATE TABLE IF NOT EXISTS User(
   id INTEGER PRIMARY KEY NOT NULL,
   email TEXT,
+  password TEXT,
   nickname TEXT,
   name TEXT,
   phone_number TEXT,
   photo_url TEXT,
   gender TEXT,
+  fcm_token TEXT,
+  is_alarm INTEGER,
   location TEXT,
   createdAt TEXT,
   updatedAt TEXT,

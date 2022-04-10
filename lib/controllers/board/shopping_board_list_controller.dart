@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../../models/Board.dart';
 import 'board_repository.dart';
@@ -7,7 +8,9 @@ class ShoppingListController extends GetxController with StateMixin<List<Board>>
   final BoardRepository _repository = BoardRepository();
 
   final RxList<Board> _boardList = RxList<Board>([]);
-  final RxInt limit = RxInt(5);
+  final RxInt page = RxInt(1);
+
+  final RefreshController refreshController = RefreshController();
 
   List<Board> get boardList => _boardList;
 
@@ -31,9 +34,9 @@ class ShoppingListController extends GetxController with StateMixin<List<Board>>
     }
   }
 
-  Future refreshBoardList() => _repository.refreshBoardList().whenComplete(() => getBoardList);
-
-  Future get getBoardList async{
-    _boardList.value = await _repository.shoppingBoardList(limit.value);
-  }
+  Future get getBoardList => _repository.categoryBoardList(
+      _boardList,
+      page: page.value,
+      category: '쇼핑몰'
+  );
 }

@@ -1,11 +1,13 @@
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sqflite/sqflite.dart';
 import 'package:thepuppyplace_flutter/controllers/database_controller.dart';
+import '../../config/config.dart';
+import '../../config/local_db.dart';
 import '../../models/User.dart';
 import '../../util/common.dart';
-import '../../.config.dart';
 
-class UserRepository extends GetConnect with Config{
+class UserRepository extends GetConnect with Config, LocalDB{
   Future<bool?> signUp({required String email, required String password, required String nickname}) async{
     Response res = await post('$API_URL/user/signup', {
       'email': email,
@@ -28,22 +30,29 @@ class UserRepository extends GetConnect with Config{
 
   Future<String?> login(String email, String password) async{
     SharedPreferences spf = await SharedPreferences.getInstance();
-
     Response res = await post('$API_URL/user', {
       'email': email,
-      'password': password
+      'password': password,
+      'fcm_token': await fcm_token
     });
+
 
     switch(res.statusCode){
       case 200: {
-        await spf.setString('email', email);
-        await spf.setString('password', password);
-        return res.body['data']['jwt'];
+        String jwt = res.body['data']['jwt'];
+        spf.setString('jwt', jwt);
+        return jwt;
       }
       default: {
         return null;
       }
     }
+  }
+
+  Future<User?> logout(String? email) async{
+    SharedPreferences spf = await SharedPreferences.getInstance();
+    await spf.remove('jwt');
+    return null;
   }
   
   Future<User?> getUser(String? jwt) async{
@@ -51,7 +60,8 @@ class UserRepository extends GetConnect with Config{
 
     switch(res.statusCode){
       case 200: {
-        return User.fromJson(res.body['data']);
+        User user = User.fromJson(res.body['data']);
+        return user;
       }
       default: {
         return null;

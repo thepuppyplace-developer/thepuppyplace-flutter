@@ -22,7 +22,12 @@ mixin CustomThemeData implements ThemeData{
             TargetPlatform.android: ZoomPageTransitionsBuilder(),
             TargetPlatform.iOS: ZoomPageTransitionsBuilder(),
           }
+      ),
+    dialogTheme: DialogTheme(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15)
       )
+    )
   );
 }
 

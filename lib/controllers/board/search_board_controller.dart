@@ -16,8 +16,6 @@ class SearchController extends GetxController with StateMixin<List<Board>>{
   void onReady() {
     super.onReady();
     ever(_boardList, _searchListListener);
-    getSearchBoardList();
-    getSearchList();
   }
 
   void _searchListListener(List<Board> searchList){
@@ -32,18 +30,4 @@ class SearchController extends GetxController with StateMixin<List<Board>>{
       change(null, status: RxStatus.error(error.toString()));
     }
   }
-
-  Future getSearchBoardList() async{
-    if(keywordController.value.text.isNotEmpty){
-      _boardList.value = await _repository.searchBoardList(keywordController.value.text).whenComplete(() => getSearchList());
-    } else {
-      change(null, status: RxStatus.error('검색어를 입력해주세요'));
-    }
-  }
-
-  Future getSearchList() async{
-    _searchList.value = await _repository.searchList();
-  }
-
-  Future deleteSearch(int id) => _repository.deleteSearch(id).whenComplete(() => getSearchList());
 }

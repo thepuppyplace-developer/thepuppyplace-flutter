@@ -36,7 +36,7 @@ class CustomButton extends StatelessWidget {
         borderRadius: BorderRadius.circular(borderRadius ?? 5),
       ),
       margin: margin,
-      height: height ?? mediaHeight(context, 0.05),
+      height: height ?? mediaHeight(context, 0.06),
       padding: padding ?? EdgeInsets.zero,
       width: width ?? mediaWidth(context, 1),
       child: CupertinoButton(

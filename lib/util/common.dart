@@ -1,29 +1,29 @@
 import 'dart:io';
-
+import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:multi_image_picker2/multi_image_picker2.dart';
 import 'package:thepuppyplace_flutter/util/png_list.dart';
-
 import '../models/BoardComment.dart';
 import '../widgets/animations/SizedAnimation.dart';
-import 'customs.dart';
 
 double mediaHeight(BuildContext context, double scale) => MediaQuery.of(context).size.height * scale;
 double mediaWidth(BuildContext context, double scale) => MediaQuery.of(context).size.width * scale;
 
 void unFocus(BuildContext context) => FocusScope.of(context).unfocus();
 
-Future<List<String>> pickMultiImage() async{
+Future<List<String>> pickMultiImage({int? limit}) async{
   ImagePicker picker = ImagePicker();
-  List<XFile>? imageList = await picker.pickMultiImage();
+  List<XFile>? imageList = await picker.pickMultiImage(imageQuality: 10);
   if(imageList == null){
     return <String>[];
   } else {
-    return imageList.map((image) => image.path).toList();
+    return imageList.take(limit ?? 10).map((image) => image.path).toList();
   }
 }
 
@@ -37,7 +37,7 @@ Future showToast(String msg) async{
   return Fluttertoast.showToast(msg: msg);
 }
 
-Future showIndicator({required Future future, String? text}) => Get.dialog(FutureBuilder(
+Future showIndicator(Future future) => Get.dialog(FutureBuilder(
   future: future.whenComplete(() => Get.back()),
   builder: (context, snapshot) => Center(
     child: Column(
@@ -87,7 +87,7 @@ mixin CustomColors implements Color{
   static const Color main = Color(0xFF7DCE70);
   static const Color mainEmpty = Color(0xFFEAFFE6);
   static const Color hint = Color(0xFFB6B6B6);
-  static const Color empty = Color(0xFFF2F2F2);
+  static const Color empty = Color(0xFFFBFBFB);
   static const Color emptySide = Color(0xFFEAEAEA);
 }
 
@@ -126,4 +126,9 @@ int commentCount(List<BoardComment>? commentList){
     commentCount += commentList[i].nestedCommentList!.length;
   }
   return commentCount;
+}
+
+int randomImage(){
+  int random = Random().nextInt(12);
+  return random;
 }

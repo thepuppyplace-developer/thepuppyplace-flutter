@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:thepuppyplace_flutter/pages/search_page/search_page.dart';
 import 'package:thepuppyplace_flutter/util/common.dart';
 import 'package:thepuppyplace_flutter/widgets/buttons/category_button.dart';
 import '../../controllers/board/board_list_controller.dart';
@@ -72,42 +71,22 @@ class _HomePageState extends State<HomePage> {
               child: SmartRefresher(
                 enablePullUp: controller.boardList.isEmpty ? false : true,
                 controller: _refreshController,
+                onRefresh: () async{
+                  controller.getBoardList.whenComplete((){
+                    _refreshController.refreshCompleted(resetFooterState: true);
+                  });
+                },
+                onLoading: () async{
+                  controller.page.value++;
+                  controller.getBoardList.whenComplete((){
+                    _refreshController.loadComplete();
+                  });
+                },
                 header: CustomHeader(
-                  builder: (BuildContext context, RefreshStatus? status) => RefreshContents(status,
-                    idleText: controller.refreshDate.value,
-                  ),
-                  readyToRefresh: () async{
-                    controller.refreshBoardList().whenComplete(() async{
-                      switch(controller.refreshStatus.value){
-                        case RefreshStatus.failed: {
-                          _refreshController.refreshFailed();
-                          break;
-                        }
-                        case RefreshStatus.idle: {
-                          _refreshController.refreshToIdle();
-                          break;
-                        }
-                        default: {
-                          _refreshController.refreshCompleted(resetFooterState: true);
-                        }
-                      }
-                    });
-                  },
+                  builder: (BuildContext context, RefreshStatus? status) => RefreshContents(status),
                 ),
                 footer: controller.status.isEmpty ? null : CustomFooter(
                   loadStyle: LoadStyle.ShowWhenLoading,
-                  readyLoading: () async{
-                    Future.delayed(const Duration(seconds: 1), (){
-                      controller.limit.value += 5;
-                      controller.getBoardList.whenComplete((){
-                        if(controller.limit.value >= controller.boardList.length){
-                          _refreshController.loadNoData();
-                        } else {
-                          _refreshController.loadComplete();
-                        }
-                      });
-                    });
-                  },
                   builder: (BuildContext context, LoadStatus? status) => LoadContents(status),
                 ),
                 child: SingleChildScrollView(

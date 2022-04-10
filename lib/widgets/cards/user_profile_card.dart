@@ -16,10 +16,7 @@ class UserProfileCard extends StatelessWidget {
       children: [
         CircleAvatar(
           radius: mediaHeight(context, 0.018),
-          backgroundImage: const CachedNetworkImageProvider(PngList.defaultProfile),
-          foregroundImage: user.photo_url == null
-              ? null
-              : CachedNetworkImageProvider(user.photo_url!),
+          backgroundImage: CachedNetworkImageProvider(user.photo_url ?? PngList.defaultProfile),
         ),
         Container(
             margin: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.015)),

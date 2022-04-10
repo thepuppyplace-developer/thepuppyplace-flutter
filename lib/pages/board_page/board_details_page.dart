@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:thepuppyplace_flutter/util/common.dart';
 import '../../controllers/board/board_controller.dart';
 import '../../models/Board.dart';
@@ -24,6 +25,7 @@ class BoardDetailsPage extends StatefulWidget {
 
 class _BoardDetailsPageState extends State<BoardDetailsPage> {
   final RefreshController _refreshController = RefreshController();
+  int _photoIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -60,36 +62,25 @@ class _BoardDetailsPageState extends State<BoardDetailsPage> {
                     child: SmartRefresher(
                         controller: _refreshController,
                         enablePullUp: true,
+                        onRefresh: () async{
+                          controller.getBoard().whenComplete((){
+                            _refreshController.refreshCompleted(resetFooterState: true);
+                          });
+                        },
+                        onLoading: () async{
+                          controller.page.value += 5;
+                          controller.getBoard().whenComplete((){
+                            _refreshController.refreshCompleted(resetFooterState: true);
+                          });
+                        },
                         header: CustomHeader(
                           builder: (BuildContext context, RefreshStatus? status) => RefreshContents(status),
                           readyToRefresh: () async{
-                            controller.refreshBoard().whenComplete(() async{
-                              switch(controller.refreshStatus.value){
-                                case RefreshStatus.failed: {
-                                  _refreshController.refreshFailed();
-                                  break;
-                                }
-                                default: {
-                                  _refreshController.refreshCompleted(resetFooterState: true);
-                                }
-                              }
-                            });
+
                           },
                         ),
                         footer: controller.status.isEmpty ? null : CustomFooter(
                           loadStyle: LoadStyle.ShowWhenLoading,
-                          readyLoading: () async{
-                            Future.delayed(const Duration(seconds: 1), (){
-                              controller.limit.value += 5;
-                              controller.getBoard().whenComplete((){
-                                if(controller.limit.value >= controller.board!.commentList!.length){
-                                  _refreshController.loadNoData();
-                                } else {
-                                  _refreshController.loadComplete();
-                                }
-                              });
-                            });
-                          },
                           builder: (BuildContext context, LoadStatus? status) => LoadContents(status,
                             noMoreText: '마지막 댓글입니다.',
                           ),
@@ -119,26 +110,47 @@ class _BoardDetailsPageState extends State<BoardDetailsPage> {
                                   ],
                                 ),
                               ),
-                              if(board.board_photos!.isNotEmpty) CarouselSlider.builder(
-                                itemCount: board.board_photos!.length,
-                                options: CarouselOptions(
-                                    height: mediaWidth(context, 1),
-                                    enableInfiniteScroll: false,
-                                    viewportFraction: 1
-                                ),
-                                itemBuilder: (context, index, index2){
-                                  String photo = board.board_photos![index];
-                                  return Container(
-                                    margin: EdgeInsets.all(mediaWidth(context, 0.033)),
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(20),
-                                        image: DecorationImage(
-                                          fit: BoxFit.cover,
-                                          image: CachedNetworkImageProvider(photo),
-                                        )
+                              if(board.board_photos!.isNotEmpty) Stack(
+                                alignment: Alignment.bottomCenter,
+                                children: [
+                                  CarouselSlider.builder(
+                                    itemCount: board.board_photos!.length,
+                                    options: CarouselOptions(
+                                        height: mediaWidth(context, 1),
+                                        enableInfiniteScroll: false,
+                                        viewportFraction: 1,
+                                        onPageChanged: (int index, index2){
+                                          setState(() {
+                                            _photoIndex = index;
+                                          });
+                                        }
                                     ),
-                                  );
-                                },
+                                    itemBuilder: (context, index, index2){
+                                      String photo = board.board_photos![index];
+                                      return Container(
+                                        decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(20),
+                                            image: DecorationImage(
+                                              fit: BoxFit.cover,
+                                              image: CachedNetworkImageProvider(photo),
+                                            )
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                  Positioned(
+                                    bottom: mediaHeight(context, 0.02),
+                                    child: AnimatedSmoothIndicator(
+                                      activeIndex: _photoIndex,
+                                      count: board.board_photos!.length,
+                                      effect: WormEffect(
+                                        activeDotColor: CustomColors.main,
+                                        dotWidth: mediaWidth(context, 0.015),
+                                        dotHeight: mediaWidth(context, 0.015),
+                                      ),
+                                    ),
+                                  )
+                                ],
                               ),
                               Container(
                                   margin: EdgeInsets.all(mediaWidth(context, 0.033)),
@@ -147,7 +159,7 @@ class _BoardDetailsPageState extends State<BoardDetailsPage> {
                                 margin: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.033)).copyWith(bottom: mediaWidth(context, 0.033)),
                                 child: Text(board.description, style: CustomTextStyle.w400(context)),
                               ),
-                              const Divider(height: 0),
+                              const Divider(height: 0, color: CustomColors.emptySide,),
                               Container(
                                 margin: EdgeInsets.all(mediaWidth(context, 0.033)),
                                 child: Row(
@@ -167,8 +179,8 @@ class _BoardDetailsPageState extends State<BoardDetailsPage> {
                                 margin: EdgeInsets.all(mediaWidth(context, 0.033)),
                                 child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: List.generate(controller.limit.value < board.commentList!.length
-                                        ? controller.limit.value
+                                    children: List.generate(controller.page.value < board.commentList!.length
+                                        ? controller.page.value
                                         : board.commentList!.length, (index) => CommentCard(board.commentList![index]))
                                 ),
                               ),

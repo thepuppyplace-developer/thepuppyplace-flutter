@@ -55,9 +55,17 @@ class _NavigatorPageState extends State<NavigatorPage> {
     selectedItemColor: CustomColors.main,
       currentIndex: _currentIndex,
       onTap: (int index){
-        setState(() {
-          _currentIndex = index;
-        });
+      switch(index){
+        case 1: {
+          Get.to(() => const InsertPage(), fullscreenDialog: true);
+          break;
+        }
+        default: {
+          setState(() {
+            _currentIndex = index;
+          });
+        }
+      }
       },
       items: _items
   );

@@ -1,3 +1,5 @@
+import 'package:thepuppyplace_flutter/util/common.dart';
+
 class PngList{
   static const String splash = 'assets/png/splash.png';
   static const String cafe = 'assets/png/cafe.png';
@@ -14,5 +16,5 @@ class PngList{
     cafe, restaurant, shopping_mall, hotel, ground
   ];
 
-  static const defaultProfile = 'https://thepuppyplace.s3.ap-northeast-2.amazonaws.com/uploads/default_profile.png';
+  static String defaultProfile = 'https://thepuppyplace.s3.ap-northeast-2.amazonaws.com/uploads/thepuppy_profile_${randomImage()}.jpeg';
 }

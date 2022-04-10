@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'controllers/database_controller.dart';
 import 'pages/auth_page/login_page.dart';
+import 'pages/my_page/update_nickname_page.dart';
 import 'pages/navigator_page.dart';
 import 'util/customs.dart';
 import 'pages/splash_page.dart';

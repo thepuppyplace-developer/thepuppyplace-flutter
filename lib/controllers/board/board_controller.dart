@@ -13,7 +13,7 @@ class BoardController extends GetxController with StateMixin<Board>{
   final Rxn<Board> _board = Rxn<Board>();
   Board? get board => _board.value;
 
-  final RxInt limit = RxInt(5);
+  final RxInt page = RxInt(1);
   final Rx<TextEditingController> commentController = Rx(TextEditingController());
   final Rxn<RefreshStatus> refreshStatus = Rxn<RefreshStatus>();
 
@@ -37,11 +37,6 @@ class BoardController extends GetxController with StateMixin<Board>{
     }
   }
 
-  Future refreshBoard() async{
-    refreshStatus.value = await _repository.refreshBoard(board_id);
-    return getBoard();
-  }
-
   Future getBoard() async{
     _board.value = await _repository.findOneBoard(board_id);
   }
@@ -50,7 +45,7 @@ class BoardController extends GetxController with StateMixin<Board>{
     _repository.insertComment(
         board_id: board_id,
         user_id: 1,
-        comment: commentController.value.text).whenComplete(() => refreshBoard());
+        comment: commentController.value.text).whenComplete(() => getBoard());
     commentController.value.clear();
   }
 }

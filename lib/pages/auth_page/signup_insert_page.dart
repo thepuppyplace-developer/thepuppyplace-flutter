@@ -37,9 +37,11 @@ class _SignupInsertPageState extends State<SignupInsertPage> {
                     children: [
                       Text('필수 정보 입력', style: CustomTextStyle.w500(context, scale: 0.03)),
                       UnderlineTextField(
+                        onChanged: (String email){
+
+                        },
                         controller: _email,
                         keyboardType: TextInputType.emailAddress,
-                        height: mediaHeight(context, 0.05),
                         hintText: '이메일 주소 (아이디)',
                         margin: EdgeInsets.symmetric(vertical: mediaHeight(context, 0.05)),
                       ),
@@ -47,9 +49,11 @@ class _SignupInsertPageState extends State<SignupInsertPage> {
                         children: [
                           Expanded(
                             child: UnderlineTextField(
+                              onChanged: (String otp){
+
+                              },
                               controller: _otp,
                               keyboardType: TextInputType.number,
-                              height: mediaHeight(context, 0.05),
                               hintText: '인증번호',
                               maxLength: 6,
                             ),
@@ -66,26 +70,32 @@ class _SignupInsertPageState extends State<SignupInsertPage> {
                         ],
                       ),
                       UnderlineTextField(
+                        onChanged: (String password){
+
+                        },
                         controller: _password,
                         keyboardType: TextInputType.visiblePassword,
                         hintText: '비밀번호(8~20자 이내)',
                         maxLength: 20,
-                        height: mediaHeight(context, 0.05),
                         margin: EdgeInsets.symmetric(vertical: mediaHeight(context, 0.05)),
                       ),
                       UnderlineTextField(
+                        onChanged: (String password){
+
+                        },
                         controller: _passwordCheck,
                         keyboardType: TextInputType.visiblePassword,
                         hintText: '비밀번호 확인',
                         maxLength: 20,
-                        height: mediaHeight(context, 0.05),
                       ),
                       UnderlineTextField(
+                        onChanged: (String nickname){
+
+                        },
                         controller: _nickname,
                         keyboardType: TextInputType.text,
                         hintText: '닉네임',
                         maxLength: 16,
-                        height: mediaHeight(context, 0.05),
                         margin: EdgeInsets.only(top: mediaHeight(context, 0.05)),
                       )
                     ],

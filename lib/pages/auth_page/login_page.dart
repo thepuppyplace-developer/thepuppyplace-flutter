@@ -1,3 +1,4 @@
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -17,8 +18,10 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final TextEditingController _email = TextEditingController();
-  final TextEditingController _password = TextEditingController();
+  String _email = '';
+  String _password = '';
+
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -50,70 +53,95 @@ class _LoginPageState extends State<LoginPage> {
         ),
         body: Container(
           margin: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.055)),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Column(
-                children: [
-                  UnderlineTextField(
-                    controller: _email,
-                    keyboardType: TextInputType.emailAddress,
-                    hintText: '이메일 아이디',
-                  ),
-                  UnderlineTextField(
-                    controller: _password,
-                    keyboardType: TextInputType.visiblePassword,
-                    obscureText: true,
-                    hintText: '비밀번호',
-                  ),
-                ],
-              ),
-              Column(
-                children: [
-                  GetBuilder<UserController>(
-                      builder: (UserController controller) {
-                        return CustomButton(
-                          title: '로그인',
-                          textColor: Colors.white,
-                          onPressed: (){
-                            showIndicator(
-                                future: controller.login(
-                                    email: _email.text.trim(),
-                                    password: _password.text.trim()
-                                ),
-                                text: '로그인 중입니다...'
-                            );
-                          },
-                        );
-                      }
-                  ),
-                  CustomButton(
-                    margin: EdgeInsets.symmetric(vertical: mediaHeight(context, 0.01)),
-                    color: Colors.white,
-                    sideColor: CustomColors.main,
-                    title: '회원가입',
-                    textColor: CustomColors.main,
-                    onPressed: (){
-                      Get.to(() => const SignupPage());
-                    },
-                  ),
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      CustomTextButton('아이디 찾기', (){}, color: CustomColors.hint),
-                      VerticalDivider(color: CustomColors.hint, width: mediaWidth(context, 0.1)),
-                      CustomTextButton('비밀번호 재설정', (){}, color: CustomColors.hint),
-                    ],
-                  )
-                ],
-              ),
-              Column(
-                children: [
-                  Text('다른 SNS로 로그인', style: CustomTextStyle.w500(context, scale: 0.018)),
-
-                ],
-              )
-            ],
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Column(
+                  children: [
+                    UnderlineTextField(
+                      margin: EdgeInsets.symmetric(vertical: mediaHeight(context, 0.03)),
+                      onChanged: (String email){
+                        setState(() {
+                          _email = email;
+                        });
+                      },
+                      validator: (String? email){
+                        if(_email.isEmpty){
+                          return '이메일을 입력해주세요.';
+                        } else if(!EmailValidator.validate(_email)){
+                          return '이메일 형식에 맞게 입력해주세요.';
+                        } else {
+                          return null;
+                        }
+                      },
+                      keyboardType: TextInputType.emailAddress,
+                      hintText: '이메일 아이디',
+                    ),
+                    UnderlineTextField(
+                      onChanged: (String password){
+                        setState(() {
+                          _password = password;
+                        });
+                      },
+                      validator: (String? password){
+                        if(password!.isEmpty){
+                          return '비밀번호를 입력해주세요.';
+                        } else if(password.length < 8){
+                          return '비밀번호를 8자 이상 입력해주세요.';
+                        } else {
+                          return null;
+                        }
+                      },
+                      keyboardType: TextInputType.visiblePassword,
+                      obscureText: true,
+                      hintText: '비밀번호',
+                    ),
+                  ],
+                ),
+                Column(
+                  children: [
+                    CustomButton(
+                      title: '로그인',
+                      textColor: Colors.white,
+                      onPressed: (){
+                        if(_formKey.currentState!.validate()){
+                          _formKey.currentState!.save();
+                          showIndicator(UserController.to.login(
+                            email: _email.trim(),
+                            password: _password.trim(),
+                          ));
+                        }
+                      },
+                    ),
+                    CustomButton(
+                      margin: EdgeInsets.symmetric(vertical: mediaHeight(context, 0.01)),
+                      color: Colors.white,
+                      sideColor: CustomColors.main,
+                      title: '회원가입',
+                      textColor: CustomColors.main,
+                      onPressed: (){
+                        Get.to(() => const SignupPage());
+                      },
+                    ),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        CustomTextButton('아이디 찾기', (){}, color: CustomColors.hint),
+                        VerticalDivider(color: CustomColors.hint, width: mediaWidth(context, 0.1)),
+                        CustomTextButton('비밀번호 재설정', (){}, color: CustomColors.hint),
+                      ],
+                    )
+                  ],
+                ),
+                Column(
+                  children: [
+                    Text('다른 SNS로 로그인', style: CustomTextStyle.w500(context, scale: 0.018)),
+                  ],
+                )
+              ],
+            ),
           ),
         ),
       ),

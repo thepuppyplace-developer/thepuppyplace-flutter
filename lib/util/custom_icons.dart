@@ -12,14 +12,6 @@
 ///       - asset: fonts/CustomIcons.ttf
 ///
 /// 
-/// * Maki, Copyright (C) Mapbox, LCC
-///         Author:    Mapbox
-///         License:   BSD (https://github.com/mapbox/maki/blob/gh-pages/LICENSE.txt)
-///         Homepage:  http://mapbox.com/maki/
-/// * Font Awesome 4, Copyright (C) 2016 by Dave Gandy
-///         Author:    Dave Gandy
-///         License:   SIL ()
-///         Homepage:  http://fortawesome.github.com/Font-Awesome/
 ///
 import 'package:flutter/widgets.dart';
 
@@ -31,11 +23,11 @@ class CustomIcons {
 
   static const IconData clock = IconData(0xe800, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData comment = IconData(0xe801, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData heart = IconData(0xe803, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData home = IconData(0xe804, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData insert = IconData(0xe805, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData dog_foot = IconData(0xe802, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData home = IconData(0xe803, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData insert = IconData(0xe804, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData setting = IconData(0xe805, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData my_page = IconData(0xe806, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData setting = IconData(0xe807, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData cafe = IconData(0xe80c, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData food = IconData(0xf0f5, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData menu = IconData(0xe807, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData heart = IconData(0xe808, fontFamily: _kFontFam, fontPackage: _kFontPkg);
 }

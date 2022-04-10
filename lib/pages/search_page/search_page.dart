@@ -31,10 +31,8 @@ class SearchPage extends StatelessWidget {
                     hintText: '찾으시는 검색어를 입력하세요.',
                     controller: controller.keywordController.value,
                     onSearchTap: (){
-                      controller.getSearchBoardList();
                     },
                     onFieldSubmitted: (String value){
-                      controller.getSearchBoardList();
                     },
                   ),
                 ),
@@ -58,7 +56,6 @@ class SearchPage extends StatelessWidget {
                           delegate: SliverChildBuilderDelegate((context, index){
                             Search search = controller.searchList[index];
                             return CustomTextButton(search.keyword, (){
-                              controller.deleteSearch(search.id!);
                             });
                           },
                             childCount: controller.searchList.length
