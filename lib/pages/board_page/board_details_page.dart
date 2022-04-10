@@ -8,6 +8,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:thepuppyplace_flutter/util/common.dart';
 import '../../controllers/board/board_controller.dart';
 import '../../models/Board.dart';
+import '../../util/custom_icons.dart';
 import '../../widgets/buttons/tag_text.dart';
 import '../../widgets/cards/comment_card.dart';
 import '../../widgets/cards/user_profile_card.dart';
@@ -164,11 +165,29 @@ class _BoardDetailsPageState extends State<BoardDetailsPage> {
                                 margin: EdgeInsets.all(mediaWidth(context, 0.033)),
                                 child: Row(
                                   children: [
-                                    GestureDetector(
-                                      child: Icon(CupertinoIcons.heart, color: CustomColors.hint, size: mediaHeight(context, 0.035)),
-                                      onTap: (){},
+                                    Expanded(
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            margin: EdgeInsets.only(right: mediaWidth(context, 0.02)),
+                                            child: GestureDetector(
+                                              child: Icon(CustomIcons.heart, color: CustomColors.hint, size: mediaHeight(context, 0.025)),
+                                              onTap: (){},
+                                            ),
+                                          ),
+                                          Text(board.likeList!.length.toString(), style: CustomTextStyle.w400(context, scale: 0.02)),
+                                          Container(
+                                            margin: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.02)),
+                                            child: GestureDetector(
+                                              child: Icon(CustomIcons.comment, color: CustomColors.hint, size: mediaHeight(context, 0.025)),
+                                              onTap: (){},
+                                            ),
+                                          ),
+                                          Text(board.commentList!.length.toString(), style: CustomTextStyle.w400(context, scale: 0.02))
+                                        ],
+                                      ),
                                     ),
-                                    Text(board.likeList!.length.toString(), style: CustomTextStyle.w400(context, scale: 0.02),)
+                                    Text(board.view_count.toString())
                                   ],
                                 ),
                               ),

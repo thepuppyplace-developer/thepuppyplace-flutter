@@ -49,6 +49,7 @@ class BoardCard extends StatelessWidget {
               ),
             ),
             Text(board.title, style: CustomTextStyle.w600(context, scale: 0.018), overflow: TextOverflow.ellipsis),
+            Text(board.view_count.toString()),
             Container(
                 margin: EdgeInsets.symmetric(vertical: mediaHeight(context, 0.005)),
                 child: Text(board.description, style: CustomTextStyle.w400(context, scale: 0.015), maxLines: 2, overflow: TextOverflow.ellipsis)),

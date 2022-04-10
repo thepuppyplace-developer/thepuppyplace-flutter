@@ -5,7 +5,7 @@ import '../../util/common.dart';
 
 class SelectButton extends StatelessWidget {
   final String text;
-  final int currentIndex;
+  final int? currentIndex;
   final int index;
   final Function(int) onChanged;
 

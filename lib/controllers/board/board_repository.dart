@@ -24,7 +24,8 @@ class BoardRepository extends GetConnect with Config, LocalDB{
 
   Future<List<Board>> getBoardList(List<Board> boardList, int page) async{
     Response res = await post('$API_URL/board', {
-      'page': page
+      'page': page,
+      'view': 'view'
     });
 
     switch(res.statusCode){
@@ -38,10 +39,28 @@ class BoardRepository extends GetConnect with Config, LocalDB{
     }
   }
 
-  Future<List<Board>> categoryBoardList(List<Board> boardList, {required int page, required String category}) async{
+  Future<List<Board>> refreshCategoryBoardList({required int page, required String category, required String order}) async{
     Response res = await post('$API_URL/board', {
       'page': page,
-      'category': category
+      'category': category,
+      'order': order
+    });
+
+    switch(res.statusCode){
+      case 200: {
+        return List.from(res.body['data']).map((board) => Board.fromJson(board)).toList();
+      }
+      default: {
+        return [];
+      }
+    }
+  }
+
+  Future<List<Board>> categoryBoardList(List<Board> boardList, {required int page, required String category, required String order}) async{
+    Response res = await post('$API_URL/board', {
+      'page': page,
+      'category': category,
+      'order': order
     });
 
     switch(res.statusCode){
@@ -55,8 +74,16 @@ class BoardRepository extends GetConnect with Config, LocalDB{
     }
   }
 
-  Future<Board?> findOneBoard(int board_id) async{
+  Future<Board?> getBoard(int board_id) async{
     Response res = await get('$API_URL/board/$board_id');
-    return Board.fromJson(res.body['data']);
+
+    switch(res.statusCode){
+      case 200: {
+        return Board.fromJson(res.body['data']);
+      }
+      default: {
+        return null;
+      }
+    }
   }
 }

@@ -38,7 +38,7 @@ class BoardController extends GetxController with StateMixin<Board>{
   }
 
   Future getBoard() async{
-    _board.value = await _repository.findOneBoard(board_id);
+    _board.value = await _repository.getBoard(board_id);
   }
 
   Future insertComment() async{

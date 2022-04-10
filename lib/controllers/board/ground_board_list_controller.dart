@@ -7,17 +7,16 @@ import 'board_repository.dart';
 class GroundBoardListController extends GetxController with StateMixin<List<Board>>{
   final BoardRepository _repository = BoardRepository();
 
-  final RxList<Board> _boardList = RxList<Board>([]);
+  final RxList<Board> boardList = RxList<Board>([]);
   final RxInt page = RxInt(1);
+  final RxString order = RxString('date');
 
   final RefreshController refreshController = RefreshController();
-
-  List<Board> get boardList => _boardList;
 
   @override
   void onReady() {
     super.onReady();
-    ever(_boardList, _boardListListener);
+    ever(boardList, _boardListListener);
     getBoardList;
   }
 
@@ -35,8 +34,17 @@ class GroundBoardListController extends GetxController with StateMixin<List<Boar
   }
 
   Future get getBoardList => _repository.categoryBoardList(
-      _boardList,
+      boardList,
       page: page.value,
-      category: '운동장'
+      category: '운동장',
+      order: order.value
   );
+
+  Future refreshBoardList() async{
+    boardList.value = await _repository.refreshCategoryBoardList(
+        page: page.value,
+        category: '운동장',
+        order: order.value
+    );
+  }
 }

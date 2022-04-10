@@ -22,7 +22,7 @@ class InsertPage extends StatefulWidget {
 
 class _InsertPageState extends State<InsertPage> {
   int _categoryIndex = 0;
-  int _locationIndex = 0;
+  int? _locationIndex;
   int _locationDetailIndex = 0;
   
   List<String> photoList = <String>[];
@@ -31,11 +31,8 @@ class _InsertPageState extends State<InsertPage> {
     '수다방', '카페', '음식점', '호텔', '운동장', '쇼핑몰'
   ];
 
-  List<String> _locationDetailList = const <String>[];
-
   String _title = '';
   String _description = '';
-
 
   @override
   Widget build(BuildContext context) {

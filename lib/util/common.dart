@@ -132,3 +132,11 @@ int randomImage(){
   int random = Random().nextInt(12);
   return random;
 }
+
+String orderText(String order){
+  switch(order){
+    case 'date': return '최신순';
+    case 'view': return '인기순';
+    default: return '';
+  }
+}

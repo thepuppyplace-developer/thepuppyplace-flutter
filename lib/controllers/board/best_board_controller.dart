@@ -3,19 +3,19 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../models/Board.dart';
 import 'board_repository.dart';
 
-class CafeBoardListController extends GetxController with StateMixin<List<Board>>{
+class BestBoardController extends GetxController with StateMixin<List<Board>>{
+  static BestBoardController get to => Get.put(BestBoardController());
   final BoardRepository _repository = BoardRepository();
 
-  final RxList<Board> boardList = RxList<Board>([]);
+  final RxList<Board> _boardList = RxList<Board>([]);
+  List<Board> get boardList => _boardList;
+  final Rxn<RefreshStatus> refreshStatus = Rxn<RefreshStatus>();
   final RxInt page = RxInt(1);
-  final RxString order = RxString('date');
-
-  final RefreshController refreshController = RefreshController();
 
   @override
   void onReady() {
     super.onReady();
-    ever(boardList, _boardListListener);
+    ever(_boardList, _boardListListener);
     getBoardList;
   }
 
@@ -32,18 +32,5 @@ class CafeBoardListController extends GetxController with StateMixin<List<Board>
     }
   }
 
-  Future get getBoardList => _repository.categoryBoardList(
-      boardList,
-      page: page.value,
-      category: '카페',
-      order: order.value
-  );
-
-  Future refreshBoardList() async{
-    boardList.value = await _repository.refreshCategoryBoardList(
-        page: page.value,
-        category: '카페',
-        order: order.value
-    );
-  }
+  Future get getBoardList => _repository.getBoardList(_boardList, page.value);
 }

@@ -4,6 +4,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../../controllers/board/shopping_board_list_controller.dart';
 import '../../../models/Board.dart';
 import '../../../util/customs.dart';
+import '../../../widgets/buttons/order_button.dart';
 import '../../../widgets/cards/board_card.dart';
 import '../../../widgets/loadings/refresh_contents.dart';
 
@@ -20,7 +21,7 @@ class ShoppingBoardListView extends StatelessWidget {
               enablePullUp: controller.status.isSuccess,
               controller: controller.refreshController,
               onRefresh: () async{
-                controller.getBoardList.whenComplete((){
+                controller.refreshBoardList().whenComplete((){
                   controller.refreshController.refreshCompleted(
                       resetFooterState: true
                   );
@@ -42,7 +43,16 @@ class ShoppingBoardListView extends StatelessWidget {
               child: controller.obx((List<Board>? boardList) => SingleChildScrollView(
                   physics: const NeverScrollableScrollPhysics(),
                   child: Column(
-                    children: boardList!.map((Board board) => BoardCard(board)).toList(),
+                    children: [
+                      OrderButton(
+                        order: controller.order.value,
+                        onSelected: (String order){
+                          controller.order.value = order;
+                          controller.refreshBoardList();
+                        },
+                      ),
+                      for(Board board in boardList!) BoardCard(board)
+                    ],
                   )),
                   onLoading: const LoadingView(),
                   onEmpty: const EmptyView()
