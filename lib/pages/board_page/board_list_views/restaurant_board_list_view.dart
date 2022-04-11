@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:thepuppyplace_flutter/util/common.dart';
 import '../../../controllers/board/restaurant_board_list_controller.dart';
 import '../../../models/Board.dart';
 import '../../../util/customs.dart';
@@ -22,6 +21,7 @@ class RestaurantBoardListView extends StatelessWidget {
               enablePullUp: controller.status.isSuccess,
               controller: controller.refreshController,
               onRefresh: () async{
+                controller.page.value = 0;
                 controller.refreshBoardList().whenComplete((){
                   controller.refreshController.refreshCompleted(
                       resetFooterState: true
@@ -30,7 +30,7 @@ class RestaurantBoardListView extends StatelessWidget {
               },
               onLoading: () async{
                 controller.page.value++;
-                controller.getBoardList.whenComplete((){
+                controller.getBoardList().whenComplete((){
                   controller.refreshController.loadComplete();
                 });
               },
@@ -48,6 +48,7 @@ class RestaurantBoardListView extends StatelessWidget {
                       OrderButton(
                         order: controller.order.value,
                         onSelected: (String order){
+                          controller.page.value = 0;
                           controller.order.value = order;
                           controller.refreshBoardList();
                         },

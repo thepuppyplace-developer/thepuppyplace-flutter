@@ -4,7 +4,7 @@ import 'package:sqflite/sqflite.dart';
 import 'package:thepuppyplace_flutter/controllers/database_controller.dart';
 import '../../config/local_db.dart';
 import '../../models/User.dart';
-import 'user_repository.dart';
+import '../../repositories/user_repository.dart';
 
 class UserController extends GetxController with StateMixin<User>, LocalDB{
   static UserController get to => Get.put(UserController());

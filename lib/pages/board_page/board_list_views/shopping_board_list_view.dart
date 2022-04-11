@@ -29,7 +29,7 @@ class ShoppingBoardListView extends StatelessWidget {
               },
               onLoading: () async{
                 controller.page.value++;
-                controller.getBoardList.whenComplete((){
+                controller.getBoardList().whenComplete((){
                   controller.refreshController.loadComplete();
                 });
               },

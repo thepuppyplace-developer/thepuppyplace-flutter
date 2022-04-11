@@ -22,6 +22,7 @@ class HotelBoardListView extends StatelessWidget {
               enablePullUp: controller.status.isSuccess,
               controller: controller.refreshController,
               onRefresh: () async{
+                controller.page.value = 0;
                 controller.refreshBoardList().whenComplete((){
                   controller.refreshController.refreshCompleted(
                       resetFooterState: true
@@ -30,7 +31,7 @@ class HotelBoardListView extends StatelessWidget {
               },
               onLoading: () async{
                 controller.page.value++;
-                controller.getBoardList.whenComplete((){
+                controller.getBoardList().whenComplete((){
                   controller.refreshController.loadComplete();
                 });
               },
@@ -48,6 +49,7 @@ class HotelBoardListView extends StatelessWidget {
                       OrderButton(
                         order: controller.order.value,
                         onSelected: (String order){
+                          controller.page.value = 0;
                           controller.order.value = order;
                           controller.refreshBoardList();
                         },

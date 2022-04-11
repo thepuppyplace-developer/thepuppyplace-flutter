@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import '../../models/Version.dart';
-import 'version_repository.dart';
+import '../../repositories/version_repository.dart';
 
 class VersionController extends GetxController with StateMixin<Version>{
   final VersionRepository _repo = VersionRepository();

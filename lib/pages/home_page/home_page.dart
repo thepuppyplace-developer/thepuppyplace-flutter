@@ -72,13 +72,13 @@ class _HomePageState extends State<HomePage> {
                 enablePullUp: controller.boardList.isEmpty ? false : true,
                 controller: _refreshController,
                 onRefresh: () async{
-                  controller.getBoardList.whenComplete((){
+                  controller.refreshBoardList().whenComplete((){
                     _refreshController.refreshCompleted(resetFooterState: true);
                   });
                 },
                 onLoading: () async{
                   controller.page.value++;
-                  controller.getBoardList.whenComplete((){
+                  controller.getBoardList().whenComplete((){
                     _refreshController.loadComplete();
                   });
                 },
@@ -94,6 +94,10 @@ class _HomePageState extends State<HomePage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const BannerCard(),
+                      Container(
+                        margin: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.033)),
+                        child: Text('어떤 정보를 찾으시나요?', style: CustomTextStyle.w600(context, scale: 0.02)),
+                      ),
                       Container(
                         margin: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.033)),
                         child: Wrap(

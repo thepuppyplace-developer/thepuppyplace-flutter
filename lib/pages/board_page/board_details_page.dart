@@ -42,6 +42,7 @@ class _BoardDetailsPageState extends State<BoardDetailsPage> {
                   pinned: true,
                   centerTitle: true,
                   elevation: 0.5,
+                  leading: const BackButton(),
                   title: Text(controller.board!.category, style: CustomTextStyle.w600(context, scale: 0.02),),
                   actions: [
                     CupertinoButton(

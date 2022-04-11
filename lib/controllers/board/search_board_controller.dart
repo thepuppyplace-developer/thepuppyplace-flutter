@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import '../../models/Board.dart';
 import '../../models/Search.dart';
-import 'board_repository.dart';
+import '../../repositories/board_repository.dart';
 
 class SearchController extends GetxController with StateMixin<List<Board>>{
   final RxList<Board> _boardList = RxList<Board>([]);

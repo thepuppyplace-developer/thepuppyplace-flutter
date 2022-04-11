@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../models/Board.dart';
-import 'board_repository.dart';
+import '../../repositories/board_repository.dart';
 
 class BoardController extends GetxController with StateMixin<Board>{
   final int board_id;

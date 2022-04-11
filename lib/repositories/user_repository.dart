@@ -2,10 +2,10 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:thepuppyplace_flutter/controllers/database_controller.dart';
-import '../../config/config.dart';
-import '../../config/local_db.dart';
-import '../../models/User.dart';
-import '../../util/common.dart';
+import '../config/config.dart';
+import '../config/local_db.dart';
+import '../models/User.dart';
+import '../util/common.dart';
 
 class UserRepository extends GetConnect with Config, LocalDB{
   Future<bool?> signUp({required String email, required String password, required String nickname}) async{
