@@ -232,14 +232,13 @@ class _InsertPageState extends State<InsertPage> {
                     margin: EdgeInsets.all(mediaWidth(context, 0.033)),
                     title: '등록하기',
                     onPressed: (){
-                      showIndicator(BoardRepository.from.insertBoard(context, Board(
-                          userId: user!.id!,
-                          title: _title.trim(),
-                          description: _description.trim(),
-                          location: '${LocationList.location[_locationIndex!]} ${LocationList.details(_locationIndex)[_locationDetailIndex]}',
-                          category: _categoryList[_categoryIndex],
-                          board_photos: photoList
-                      )));
+                      showIndicator(BoardRepository.from.insertBoard(
+                        context,
+                        title: _title,
+                        description: _description,
+                        location: '${LocationList.location[_locationIndex!]} ${LocationList.details(_locationIndex)[_locationDetailIndex]}',
+                        category: _categoryList[_categoryIndex],
+                      ));
                     },
                   )
                 ],

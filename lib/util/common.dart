@@ -44,6 +44,7 @@ Future showIndicator(Future future) => Get.dialog(FutureBuilder(
       mainAxisSize: MainAxisSize.min,
       children: [
         SizedAnimation(child: Image.asset(PngList.loading, height: mediaHeight(context, 0.15))),
+
         Container(
             margin: EdgeInsets.symmetric(vertical: mediaHeight(context, 0.04)),
             child: const CupertinoActivityIndicator())

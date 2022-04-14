@@ -95,8 +95,18 @@ class _HomePageState extends State<HomePage> {
                     children: [
                       const BannerCard(),
                       Container(
-                        margin: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.033)),
-                        child: Text('어떤 정보를 찾으시나요?', style: CustomTextStyle.w600(context, scale: 0.02)),
+                        margin: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.033), vertical: mediaHeight(context, 0.02)),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('어떤 정보를 찾으시나요?', style: CustomTextStyle.w600(
+                                context, scale: 0.02)),
+                            Text('클릭해서 원하시는 컨텐츠를 둘러보세요',
+                              style: CustomTextStyle.w400(
+                                  context, color: Colors.grey,
+                                  height: 2),)
+                          ],
+                        ),
                       ),
                       Container(
                         margin: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.033)),
@@ -115,8 +125,22 @@ class _HomePageState extends State<HomePage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            Text('베스트', style: CustomTextStyle.w600(
+                                context, scale: 0.02)),
+                            Text('지금 가장 인기있는 게시물을 확인해보세요',
+                              style: CustomTextStyle.w400(
+                                  context, color: Colors.grey,
+                                  height: 2),)
+                          ],
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.033), vertical: mediaHeight(context, 0.02)),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
                             Text('최신글', style: CustomTextStyle.w600(
-                                context, scale: 0.024)),
+                                context, scale: 0.02)),
                             Text('더퍼피플레이스의 최신글을 확인해보세요',
                               style: CustomTextStyle.w400(
                                   context, color: Colors.grey,

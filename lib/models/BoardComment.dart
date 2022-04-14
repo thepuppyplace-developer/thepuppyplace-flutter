@@ -4,7 +4,7 @@ import 'User.dart';
 class BoardComment{
   int? commentId;
   String comment;
-  int userId;
+  int? userId;
   int boardId;
   User? user;
   List<NestedComment>? nestedCommentList;
@@ -15,7 +15,7 @@ class BoardComment{
   BoardComment({
     this.commentId,
     required this.comment,
-    required this.userId,
+    this.userId,
     required this.boardId,
     this.user,
     this.nestedCommentList,
@@ -37,14 +37,7 @@ class BoardComment{
   );
 
   Map<String, dynamic> toJson() => {
-    'id': commentId,
     'comment': comment,
-    'user_id': userId,
     'board_id': boardId,
-    'User': user,
-    'NestedComments': nestedCommentList,
-    'createdAt': createdAt == null ? null : createdAt!.toIso8601String(),
-    'updatedAt': updatedAt == null ? null : updatedAt!.toIso8601String(),
-    'deletedAt': deletedAt == null ? null : deletedAt!.toIso8601String(),
   };
 }

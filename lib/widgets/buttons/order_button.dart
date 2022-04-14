@@ -21,7 +21,7 @@ class OrderButton extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(orderText(order), style: CustomTextStyle.w500(context, color: CustomColors.hint)),
-            Icon(Icons.keyboard_arrow_down_sharp, size: mediaHeight(context, 0.02), color: CustomColors.hint)
+            Icon(Icons.keyboard_arrow_down_sharp, size: mediaHeight(context, 0.02), color: CustomColors.hint),
           ],
         ),
         onSelected: onSelected,

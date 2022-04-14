@@ -35,7 +35,7 @@ class MyPage extends GetWidget<UserController> {
                   children: [
                     CircleAvatar(
                       radius: mediaHeight(context, 0.03),
-                      backgroundImage: CachedNetworkImageProvider(user!.photo_url ?? PngList.defaultProfile),
+                      backgroundImage: user!.photo_url == null ? null : CachedNetworkImageProvider(user.photo_url!),
                     ),
                     Expanded(
                       child: Container(
@@ -106,10 +106,14 @@ class MyPage extends GetWidget<UserController> {
                     CustomTextButton('버전정보', null, color: Colors.black,),
                     CustomTextButton('서비스 이용약관', (){}, color: Colors.black),
                     CustomTextButton('로그아웃', (){
-                      showCupertinoDialog(context: context, builder: (context) => CustomDialog(
+                      showCupertinoDialog(
+                          context: context,
+                          routeSettings: RouteSettings(name: '/logout'),
+                          builder: (context) => CustomDialog(
                         title: '로그아웃 하시겠습니까?',
                         onTap: (){
-                          controller.logout();
+                          Get.back(closeOverlays: true);
+                          showIndicator(controller.logout());
                         },
                         tabText: '로그아웃',
                       ));

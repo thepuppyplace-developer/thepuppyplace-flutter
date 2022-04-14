@@ -1,14 +1,14 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sqflite/sqflite.dart';
-import 'package:thepuppyplace_flutter/controllers/database_controller.dart';
 import '../config/config.dart';
 import '../config/local_db.dart';
 import '../models/User.dart';
 import '../util/common.dart';
 
 class UserRepository extends GetConnect with Config, LocalDB{
-  Future<bool?> signUp({required String email, required String password, required String nickname}) async{
+
+  Future<String?> signUp({required String email, required String password, required String nickname}) async{
     Response res = await post('$API_URL/user/signup', {
       'email': email,
       'password': password,
@@ -16,11 +16,21 @@ class UserRepository extends GetConnect with Config, LocalDB{
     });
 
     switch(res.statusCode){
-      case 200: {
-        return true;
+      case 201: {
+        return '$nickname님 환영합니다!';
       }
-      case 204: {
-        return false;
+      case 401: {
+        switch(res.body['message']){
+          case 'already-use-email': {
+            return '이미 사용중인 이메일 주소입니다.';
+          }
+          case 'already-use-nickname': {
+            return '이미 사용중인 닉네임입니다.';
+          }
+          default: {
+            return '사용할 수 없는 이메일 주소입니다.';
+          }
+        }
       }
       default: {
         return null;
@@ -39,8 +49,10 @@ class UserRepository extends GetConnect with Config, LocalDB{
 
     switch(res.statusCode){
       case 200: {
-        String jwt = res.body['data']['jwt'];
-        spf.setString('jwt', jwt);
+        String? jwt = res.body['data']['jwt'];
+        if(jwt != null){
+          spf.setString('jwt', jwt);
+        }
         return jwt;
       }
       default: {
@@ -69,42 +81,57 @@ class UserRepository extends GetConnect with Config, LocalDB{
     }
   }
 
-  Future<bool> emailCheck(String email) async{
-    Response res = await post('$API_URL/user/emailcheck', {'email': email.trim()});
+  Future<String?> sendOTP(BuildContext context, String email) async{
+    final Response res = await post('$API_URL/user/auth/mail/send', {
+      'email': email
+    });
 
     switch(res.statusCode){
       case 200: {
-        return res.body['data'];
-      }
-      case 401: {
-        await showToast(res.body['message']);
-        return res.body['data'];
-      }
-      case 500: {
-        return false;
+        await showSnackBar(context, '인증번호가 전송되었습니다.');
+        return res.body['data']['authNumber'];
       }
       default: {
-        return false;
+        return null;
       }
     }
   }
 
-  Future<bool> nicknameCheck(String email) async{
-    Response res = await post('$API_URL/user/nicknamecheck', {'email': email.trim()});
+  Future<String?> emailCheck(BuildContext context, String email) async{
+    Response res = await post('$API_URL/user/emailcheck', {'email': email.trim()});
 
     switch(res.statusCode){
       case 200: {
-        return res.body['data'];
+        return null;
       }
       case 401: {
-        await showToast(res.body['message']);
-        return res.body['data'];
-      }
-      case 500: {
-        return false;
+        switch(res.body['message']){
+          case 'already-user-email': return '이미 사용중인 이메일주소입니다.';
+          default: return null;
+        }
       }
       default: {
-        return false;
+        await network_check(context);
+        return null;
+      }
+    }
+  }
+
+  Future<String?> nicknameCheck(String nickname) async{
+    Response res = await post('$API_URL/user/nicknamecheck', {'nickname': nickname.trim()});
+
+    switch(res.statusCode){
+      case 200: {
+        return null;
+      }
+      case 401: {
+        switch(res.body['message']){
+          case 'already-user-nickname': return '이미 사용중인 닉네임입니다.';
+          default: return null;
+        }
+      }
+      default: {
+        return null;
       }
     }
   }

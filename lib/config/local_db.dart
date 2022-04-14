@@ -1,9 +1,22 @@
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sqflite/sqflite.dart';
+
+import '../controllers/database/database_controller.dart';
+import '../models/User.dart';
+
 class LocalDB{
-  final String dbName = 'test32';
+  final String dbName = 'test34';
   final int version = 1;
 
-  final String searchTable = 'Search';
-  final String createSearchTable = '''
+  Future<Database> get database => DatabaseController.to.db;
+
+  Future<String?> get jwt async{
+    SharedPreferences spf = await SharedPreferences.getInstance();
+    return spf.getString('jwt');
+  }
+
+  final String SEARCH_TABLE = 'Search';
+  final String CREATE_SEARCH_TABLE = '''
   CREATE TABLE Search(
   id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
   keyword TEXT NOT NULL UNIQUE,
@@ -11,28 +24,8 @@ class LocalDB{
   )
   ''';
 
-  final String boardTable = 'Board';
-  final String createBoardTable = '''
-  CREATE TABLE IF NOT EXISTS Board(
-  id INTEGER PRIMARY KEY NOT NULL,
-  user_id INTEGER,
-  title TEXT,
-  description TEXT,
-  location TEXT,
-  category TEXT,
-  view_count INTEGER,
-  User TEXT,
-  board_photos TEXT,
-  BoardLikes TEXT,
-  Comments TEXT,
-  createdAt TEXT,
-  updatedAt TEXT,
-  deletedAt TEXT
-  )
-  ''';
-
-  final String userTable = 'User';
-  final String createUserTable = '''
+  final String USER_TABLE = 'User';
+  final String CREATE_USER_TABLE = '''
   CREATE TABLE IF NOT EXISTS User(
   id INTEGER PRIMARY KEY NOT NULL,
   email TEXT,
@@ -47,6 +40,22 @@ class LocalDB{
   location TEXT,
   createdAt TEXT,
   updatedAt TEXT,
+  deletedAt TEXT
+  )
+  ''';
+  Future<List<User>> get userList async{
+    Database db = await database;
+    return List.from(await db.query(USER_TABLE)).map((user) => User.fromJson(user)).toList();
+  }
+
+  final String BOARD_CATEGORY_TABLE = 'BoardCategory';
+  final String CREATE_BOARD_CATEGORY_TABLE = '''
+  CREATE TABLE IF NOT EXISTS BoardCategory(
+  id INTEGER PRIMARY KEY NOT NULL,
+  category TEXT NOT NULL,
+  image_url TEXT NOT NULL,
+  createdAt TEXT NOT NULL,
+  updatedAt TEXT NOT NULL,
   deletedAt TEXT
   )
   ''';

@@ -1,7 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sqflite/sqflite.dart';
-import 'package:thepuppyplace_flutter/controllers/database_controller.dart';
+import 'package:thepuppyplace_flutter/util/common.dart';
 import '../../config/local_db.dart';
 import '../../models/User.dart';
 import '../../repositories/user_repository.dart';
@@ -16,7 +15,7 @@ class UserController extends GetxController with StateMixin<User>, LocalDB{
   void onReady() async{
     super.onReady();
     ever(_user, _userListener);
-    _autoLogin();
+    await _getUser;
   }
 
   void _userListener(User? user){
@@ -32,27 +31,30 @@ class UserController extends GetxController with StateMixin<User>, LocalDB{
     }
   }
 
-  Future _autoLogin() async{
-    SharedPreferences spf = await SharedPreferences.getInstance();
-    String? jwt = spf.getString('jwt');
-    _getUser(jwt);
-  }
+  Future signup(BuildContext context, {
+    required String email,
+    required String password,
+    required String passwordCheck,
+    required String nickname
+  })
+  => _repository.signUp(email: email, password: password, nickname: nickname).whenComplete(()
+  => login(email: email, password: password)).whenComplete(()
+  => _getUser).whenComplete(()
+  => Get.until((route) => route.isFirst)).whenComplete(()
+  => showSnackBar(context, '$nickname님 환영합니다!'));
 
-  Future login({required String email, required String password}) async{
-    String? jwt = await _repository.login(email, password);
-    await _getUser(jwt);
-    return Get.back();
-
-  }
+  Future login({required String email, required String password}) => _repository.login(email, password)
+      .whenComplete(() => _getUser
+      .whenComplete(() => Get.until((route) => route.isFirst)));
 
   Future logout() async{
     _user.value = await _repository.logout(_user.value!.email);
-    return Get.back();
+    return Get.toNamed('/loginPage');
   }
 
-  Future _getUser(String? jwt) async{
-    if(jwt != null){
-      _user.value = await _repository.getUser(jwt);
+  Future get _getUser async{
+    if(await jwt != null){
+      _user.value = await _repository.getUser(await jwt);
     } else {
       _user.value = null;
     }

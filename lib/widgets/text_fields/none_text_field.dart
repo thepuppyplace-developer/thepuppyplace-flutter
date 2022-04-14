@@ -6,26 +6,46 @@ import '../../util/common.dart';
 class NoneTextField extends StatelessWidget {
   TextEditingController? controller;
   TextInputType? keyboardType;
+  TextInputAction? textInputAction;
   TextStyle? textStyle;
   TextAlign? textAlign;
-  bool? autofocus, obscureText, readOnly;
-  int? maxLength, maxLines, minLines;
-  double? height, width, borderRadius;
-  String? hintText, labelText, counterText, helperText;
+  bool? autofocus;
+  bool? obscureText;
+  bool? readOnly;
+  bool? enabled;
+  int? maxLength;
+  int? maxLines;
+  int? minLines;
+  double? height;
+  double? width;
+  double? borderRadius;
+  String? hintText;
+  String? labelText;
+  String? counterText;
+  String? helperText;
   Widget? suffixIcon;
-  EdgeInsets? margin, padding;
-  Color? sideColor, fillColor;
+  Widget? prefixIcon;
+  EdgeInsets? margin;
+  EdgeInsets? padding;
+  EdgeInsets? contentPadding;
+  Color? sideColor;
+  Color? fillColor;
   List<TextInputFormatter>? inputFormatters;
   Function()? onTap;
+  Function(String value)? onFieldSubmitted;
+  Function(String) onChanged;
+  String? Function(String?)? validator;
 
   NoneTextField({
-    required this.controller,
-    required this.keyboardType,
+    this.controller,
+    this.keyboardType,
+    this.textInputAction,
     this.textAlign,
     this.textStyle,
     this.autofocus,
     this.obscureText,
     this.readOnly,
+    this.enabled,
     this.maxLength,
     this.maxLines,
     this.minLines,
@@ -37,12 +57,17 @@ class NoneTextField extends StatelessWidget {
     this.counterText,
     this.helperText,
     this.suffixIcon,
+    this.prefixIcon,
     this.margin,
     this.padding,
+    this.contentPadding,
     this.sideColor,
     this.fillColor,
     this.inputFormatters,
     this.onTap,
+    required this.onFieldSubmitted,
+    required this.onChanged,
+    this.validator,
     Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -51,6 +76,7 @@ class NoneTextField extends StatelessWidget {
       width: width,
       margin: margin,
       child: TextFormField(
+        onChanged: onChanged,
         style: CustomTextStyle.w500(context),
         onTap: onTap,
         readOnly: readOnly ?? false,
@@ -64,6 +90,8 @@ class NoneTextField extends StatelessWidget {
         maxLines: maxLines ?? 1,
         minLines: minLines,
         keyboardType: keyboardType,
+        onFieldSubmitted: onFieldSubmitted,
+        validator: validator,
         decoration: InputDecoration(
           hintStyle: CustomTextStyle.w500(context, color: CustomColors.hint),
           filled: true,

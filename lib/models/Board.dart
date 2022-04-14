@@ -6,7 +6,7 @@ import 'Like.dart';
 import 'User.dart';
 
 class Board{
-  final int? id;
+  final int id;
   final int userId;
   final String title;
   final String description;
@@ -22,7 +22,7 @@ class Board{
   final DateTime? deletedAt;
 
   Board({
-    this.id,
+    required this.id,
     required this.userId,
     required this.title,
     required this.description,

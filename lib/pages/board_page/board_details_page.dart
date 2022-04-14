@@ -16,9 +16,9 @@ import '../../widgets/loadings/refresh_contents.dart';
 import '../../widgets/text_fields/comment_field.dart';
 
 class BoardDetailsPage extends StatefulWidget {
-  final int board_id;
+  final Board board;
 
-  const BoardDetailsPage(this.board_id, {Key? key}) : super(key: key);
+  const BoardDetailsPage(this.board, {Key? key}) : super(key: key);
 
   @override
   State<BoardDetailsPage> createState() => _BoardDetailsPageState();
@@ -32,7 +32,7 @@ class _BoardDetailsPageState extends State<BoardDetailsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: GetBuilder<BoardController>(
-            init: BoardController(widget.board_id),
+            init: BoardController(widget.board),
             builder: (BoardController controller) => controller.obx((Board? board) => NestedScrollView(
               physics: const NeverScrollableScrollPhysics(),
               headerSliverBuilder: (BuildContext context, bool inner) => [
@@ -43,7 +43,7 @@ class _BoardDetailsPageState extends State<BoardDetailsPage> {
                   centerTitle: true,
                   elevation: 0.5,
                   leading: const BackButton(),
-                  title: Text(controller.board!.category, style: CustomTextStyle.w600(context, scale: 0.02),),
+                  title: Text(controller.board.category, style: CustomTextStyle.w600(context, scale: 0.02),),
                   actions: [
                     CupertinoButton(
                       padding: EdgeInsets.zero,
@@ -65,13 +65,13 @@ class _BoardDetailsPageState extends State<BoardDetailsPage> {
                         controller: _refreshController,
                         enablePullUp: true,
                         onRefresh: () async{
-                          controller.getBoard().whenComplete((){
+                          controller.getBoard.whenComplete((){
                             _refreshController.refreshCompleted(resetFooterState: true);
                           });
                         },
                         onLoading: () async{
                           controller.page.value += 5;
-                          controller.getBoard().whenComplete((){
+                          controller.getBoard.whenComplete((){
                             _refreshController.refreshCompleted(resetFooterState: true);
                           });
                         },
@@ -193,7 +193,6 @@ class _BoardDetailsPageState extends State<BoardDetailsPage> {
                                 ),
                               ),
                               const Divider(height: 0, thickness: 5, color: CustomColors.empty),
-
                               //댓글 리스트
                               if(board.commentList!.isNotEmpty) Container(
                                 margin: EdgeInsets.all(mediaWidth(context, 0.033)),
@@ -209,14 +208,11 @@ class _BoardDetailsPageState extends State<BoardDetailsPage> {
                         )
                     ),
                   ),
-                  CommentField(
-                      controller.commentController.value,
-                          (){
-                        controller.insertComment();
-                      })
+                  CommentField(board)
                 ],
               ),
             ))
-        ));
+        )
+    );
   }
 }

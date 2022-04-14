@@ -1,7 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'controllers/database_controller.dart';
+import 'controllers/database/database_controller.dart';
 import 'pages/auth_page/login_page.dart';
 import 'pages/my_page/update_nickname_page.dart';
 import 'pages/navigator_page.dart';

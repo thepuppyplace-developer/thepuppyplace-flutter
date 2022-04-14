@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thepuppyplace_flutter/util/common.dart';
 import '../../controllers/version/version_controller.dart';
-import '../controllers/database_controller.dart';
+import '../controllers/database/database_controller.dart';
 import '../util/png_list.dart';
 import 'navigator_page.dart';
 

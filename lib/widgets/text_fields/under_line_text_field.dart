@@ -24,11 +24,13 @@ class UnderlineTextField extends StatelessWidget {
   final String? helperText;
   final Widget? suffixIcon;
   final Widget? prefixIcon;
+  final Widget? counter;
   final EdgeInsets? margin;
   final EdgeInsets? padding;
   final EdgeInsets? contentPadding;
   final Color? sideColor;
   final Color? fillColor;
+  final Color? helperColor;
   final List<TextInputFormatter>? inputFormatters;
   final Function()? onTap;
   final Function(String value)? onFieldSubmitted;
@@ -57,11 +59,13 @@ class UnderlineTextField extends StatelessWidget {
     this.helperText,
     this.suffixIcon,
     this.prefixIcon,
+    this.counter,
     this.margin,
     this.padding,
     this.contentPadding,
     this.sideColor,
     this.fillColor,
+    this.helperColor,
     this.inputFormatters,
     this.onTap,
     this.onFieldSubmitted,
@@ -102,7 +106,7 @@ class UnderlineTextField extends StatelessWidget {
           isDense: true,
           floatingLabelStyle: CustomTextStyle.w500(context, color: CustomColors.main),
           focusColor: Colors.green,
-          hintStyle: CustomTextStyle.w500(context, color: CustomColors.hint),
+          helperStyle: CustomTextStyle.w500(context, color: helperColor ?? CustomColors.hint),
           labelStyle: CustomTextStyle.w500(context, color: CustomColors.hint),
           errorStyle: CustomTextStyle.w500(context, color: Colors.red),
           filled: true,
@@ -118,6 +122,7 @@ class UnderlineTextField extends StatelessWidget {
           enabledBorder: border.copyWith(borderSide: BorderSide(color: sideColor ?? CustomColors.hint, width: 1)),
           disabledBorder: border.copyWith(borderSide: const BorderSide(color: CustomColors.hint, width: 1)),
           focusedBorder: border,
+          counter: counter
         ),
       ),
     );

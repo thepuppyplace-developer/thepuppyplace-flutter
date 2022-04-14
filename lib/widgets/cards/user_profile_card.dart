@@ -1,9 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-
 import '../../models/User.dart';
 import '../../util/common.dart';
-import '../../util/png_list.dart';
 
 class UserProfileCard extends StatelessWidget {
   final User user;
@@ -16,7 +14,7 @@ class UserProfileCard extends StatelessWidget {
       children: [
         CircleAvatar(
           radius: mediaHeight(context, 0.018),
-          backgroundImage: CachedNetworkImageProvider(user.photo_url ?? PngList.defaultProfile),
+          backgroundImage: user.photo_url == null ? null : CachedNetworkImageProvider(user.photo_url!),
         ),
         Container(
             margin: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.015)),

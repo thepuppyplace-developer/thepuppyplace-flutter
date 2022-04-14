@@ -7,17 +7,28 @@ import 'package:thepuppyplace_flutter/util/common.dart';
 import '../../config/config.dart';
 import '../../config/local_db.dart';
 import '../../models/Board.dart';
+import '../models/BoardComment.dart';
 import '../pages/insert_page/insert_page.dart';
 
 class BoardRepository extends GetConnect with Config, LocalDB{
   static BoardRepository get from => BoardRepository();
 
-  Future insertBoard(BuildContext context, Board board) async{
+  Future insertBoard(BuildContext context, {
+    required String title,
+    required String description,
+    required String location,
+    required String category,
+}) async{
     SharedPreferences spf = await SharedPreferences.getInstance();
     String? jwt = spf.getString('jwt');
     String message;
     if(jwt != null){
-      Response res = await post('$API_URL/board/insert', FormData(board.toJson()), headers: headers(jwt));
+      Response res = await post('$API_URL/board/insert', FormData({
+        'title': title.trim(),
+        'description': description.trim(),
+        'location': location.trim(),
+        'category': category.trim(),
+      }), headers: headers(jwt));
       switch(res.statusCode){
         case 201: {
           Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => BoardDetailsPage(res.body['data']['id'])), (route) => route.isFirst);
@@ -64,20 +75,15 @@ class BoardRepository extends GetConnect with Config, LocalDB{
     }
   }
 
-  Future insertComment({required int board_id, required int user_id, required String comment}) async{
-    Response res = await post('$API_URL/comment', {
-      'board_id': board_id,
-      'user_id': user_id,
-      'comment': comment
-    });
-
-    switch(res.statusCode){
-      case 201: {
-        return showToast('댓글을 성공적으로 등록했습니다');
+  Future insertComment(BuildContext context, BoardComment comment) async{
+    if(await jwt != null){
+      Response res = await post('$API_URL/comment', comment.toJson(), headers: headers(await jwt));
+      switch(res.statusCode){
+        case 201: return showSnackBar(context, '성공적으로 게시되었습니다.');
+        default: return network_check(context);
       }
-      default: {
-        return showToast('인터넷 연결을 해주세요');
-      }
+    } else {
+      return expiration_token(context);
     }
   }
 }

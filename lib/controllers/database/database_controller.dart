@@ -3,7 +3,7 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sqflite/sqlite_api.dart';
 
-import '../config/local_db.dart';
+import '../../config/local_db.dart';
 
 class DatabaseController extends GetxController with LocalDB{
   static DatabaseController get to => DatabaseController();
@@ -12,9 +12,9 @@ class DatabaseController extends GetxController with LocalDB{
     return openDatabase(join(await getDatabasesPath(), dbName),
       version: version,
       onCreate: (Database db, int version) async{
-      await db.execute(createSearchTable);
-      await db.execute(createBoardTable);
-      await db.execute(createUserTable);
+      await db.execute(CREATE_SEARCH_TABLE);
+      await db.execute(CREATE_USER_TABLE);
+      await db.execute(CREATE_BOARD_CATEGORY_TABLE);
       }
     );
   }
