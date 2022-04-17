@@ -15,7 +15,7 @@ class LoginRequestPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            CircleAvatar(),
+            const CircleAvatar(),
             Text('로그인 후 이용해주세요', style: CustomTextStyle.w600(context, scale: 0.025, height: 3)),
             Text('로그인 한번으로\nThe Puppy Place를\n이용해보세요.', style: CustomTextStyle.w400(context, scale: 0.018, height: 1.3), textAlign: TextAlign.center),
             CustomButton(

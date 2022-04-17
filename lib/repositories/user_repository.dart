@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sqflite/sqflite.dart';
 import '../config/config.dart';
 import '../config/local_db.dart';
 import '../models/User.dart';
@@ -8,11 +8,11 @@ import '../util/common.dart';
 
 class UserRepository extends GetConnect with Config, LocalDB{
 
-  Future<String?> signUp({required String email, required String password, required String nickname}) async{
-    Response res = await post('$API_URL/user/signup', {
-      'email': email,
-      'password': password,
-      'nickname': nickname
+  Future<String?> signUp(BuildContext context, {required String email, required String password, required String nickname}) async{
+    final Response res = await post('$API_URL/user/signup', {
+      'email': email.trim(),
+      'password': password.trim(),
+      'nickname': nickname.trim()
     });
 
     switch(res.statusCode){
@@ -33,27 +33,26 @@ class UserRepository extends GetConnect with Config, LocalDB{
         }
       }
       default: {
+        await network_check_message(context);
         return null;
       }
     }
   }
 
   Future<String?> login(String email, String password) async{
-    SharedPreferences spf = await SharedPreferences.getInstance();
-    Response res = await post('$API_URL/user', {
+    final Response res = await post('$API_URL/user', {
       'email': email,
       'password': password,
       'fcm_token': await fcm_token
     });
 
-
     switch(res.statusCode){
       case 200: {
         String? jwt = res.body['data']['jwt'];
-        if(jwt != null){
-          spf.setString('jwt', jwt);
-        }
         return jwt;
+      }
+      case 204: {
+        return 'email-password-check';
       }
       default: {
         return null;
@@ -61,29 +60,48 @@ class UserRepository extends GetConnect with Config, LocalDB{
     }
   }
 
-  Future<User?> logout(String? email) async{
-    SharedPreferences spf = await SharedPreferences.getInstance();
-    await spf.remove('jwt');
-    return null;
-  }
-  
-  Future<User?> getUser(String? jwt) async{
-    Response res = await get('$API_URL/user/my', headers: headers(jwt!));
+  Future<User?> logout(BuildContext context) async{
+    final Database db = await database;
+    final List<User> userList = await USER_LIST();
 
-    switch(res.statusCode){
-      case 200: {
-        User user = User.fromJson(res.body['data']);
-        return user;
+    if(userList.isNotEmpty){
+      await db.delete(USER_TABLE, where: 'id = ?', whereArgs: [userList.first.id]);
+      await showSnackBar(context, '로그아웃 되었습니다.');
+      return null;
+    } else {
+      await showSnackBar(context, '로그아웃 되었습니다.');
+      return null;
+    }
+  }
+
+  Future<User?> getUser(String? token) async{
+    if(token != null){
+      final Response res = await get('$API_URL/user/my', headers: headers(token));
+
+      switch(res.statusCode){
+        case 200: {
+          final Database db = await database;
+          final User user = User.fromJson(res.body['data']);
+          final userList = await USER_LIST(where: 'id = ?', whereArgs: [user.id]);
+          if(userList.isNotEmpty){
+            await db.update(USER_TABLE, user.toJson(), where: 'id = ?', whereArgs: [user.id]);
+          } else {
+            await db.insert(USER_TABLE, user.toJson());
+          }
+          return user;
+        }
+        default: {
+          return null;
+        }
       }
-      default: {
-        return null;
-      }
+    } else {
+      return null;
     }
   }
 
   Future<String?> sendOTP(BuildContext context, String email) async{
     final Response res = await post('$API_URL/user/auth/mail/send', {
-      'email': email
+      'email': email.trim()
     });
 
     switch(res.statusCode){
@@ -92,6 +110,7 @@ class UserRepository extends GetConnect with Config, LocalDB{
         return res.body['data']['authNumber'];
       }
       default: {
+        await network_check_message(context);
         return null;
       }
     }
@@ -111,7 +130,7 @@ class UserRepository extends GetConnect with Config, LocalDB{
         }
       }
       default: {
-        await network_check(context);
+        await network_check_message(context);
         return null;
       }
     }

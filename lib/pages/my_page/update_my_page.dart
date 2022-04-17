@@ -63,7 +63,7 @@ class UpdateMyPage extends GetView<UserController> {
                         ),
                         UpdateTextButton(
                           title: '이메일 아이디',
-                          content: user!.email ?? '',
+                          content: user!.email,
                           onTap: null,
                         ),
                         UpdateTextButton(
@@ -73,9 +73,9 @@ class UpdateMyPage extends GetView<UserController> {
                         ),
                         UpdateTextButton(
                           title: '닉네임 변경',
-                          content: user.nickname ?? '',
+                          content: user.nickname,
                           onTap: (){
-                            Get.to(() => UpdateNicknamePage());
+                            Get.to(() => const UpdateNicknamePage());
                           },
                         ),
                       ],

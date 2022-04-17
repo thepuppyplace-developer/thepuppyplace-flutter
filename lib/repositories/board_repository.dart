@@ -1,14 +1,17 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:thepuppyplace_flutter/models/BoardCategory.dart';
 import 'package:thepuppyplace_flutter/pages/board_page/board_details_page.dart';
 import 'package:thepuppyplace_flutter/util/common.dart';
 import '../../config/config.dart';
 import '../../config/local_db.dart';
 import '../../models/Board.dart';
+import '../controllers/board/board_list_controller.dart';
 import '../models/BoardComment.dart';
-import '../pages/insert_page/insert_page.dart';
+import '../models/NestedComment.dart';
 
 class BoardRepository extends GetConnect with Config, LocalDB{
   static BoardRepository get from => BoardRepository();
@@ -18,31 +21,37 @@ class BoardRepository extends GetConnect with Config, LocalDB{
     required String description,
     required String location,
     required String category,
-}) async{
-    SharedPreferences spf = await SharedPreferences.getInstance();
-    String? jwt = spf.getString('jwt');
-    String message;
-    if(jwt != null){
+    required List<File> board_photos
+  }) async{
+    if(await jwt != null){
       Response res = await post('$API_URL/board/insert', FormData({
         'title': title.trim(),
         'description': description.trim(),
         'location': location.trim(),
         'category': category.trim(),
-      }), headers: headers(jwt));
+        'images': board_photos
+      }), headers: headers(await jwt));
+
       switch(res.statusCode){
         case 201: {
-          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => BoardDetailsPage(res.body['data']['id'])), (route) => route.isFirst);
-          message = '성공적으로 게시되었습니다.';
-          break;
+          final Board? board = await getBoard(res.body['data']['id']);
+          if(board != null){
+            Get.offUntil(MaterialPageRoute(builder: (context) => BoardDetailsPage(board)), (route) => route.isFirst);
+          } else {
+            Get.until((route) => route.isFirst);
+          }
+          return showSnackBar(context, '게시글이 업로드되었습니다!');
+        }
+        case 204: {
+          return unknown_message(context);
         }
         default: {
-          message = '네트워크를 확인해주세요.';
+          return network_check_message(context);
         }
       }
     } else {
-      message = '토큰이 만료되었습니다.';
+      return expiration_token_message(context);
     }
-    return showSnackBar(context, message);
   }
 
   Future<List<Board>> getBoardList({required int page, String? category , String? order}) async{
@@ -63,7 +72,7 @@ class BoardRepository extends GetConnect with Config, LocalDB{
   }
 
   Future<Board?> getBoard(int board_id) async{
-    Response res = await get('$API_URL/board/$board_id');
+    final Response res = await get('$API_URL/board/$board_id');
 
     switch(res.statusCode){
       case 200: {
@@ -75,15 +84,122 @@ class BoardRepository extends GetConnect with Config, LocalDB{
     }
   }
 
-  Future insertComment(BuildContext context, BoardComment comment) async{
+  Future deleteBoard(BuildContext context, {required Board board}) async{
     if(await jwt != null){
-      Response res = await post('$API_URL/comment', comment.toJson(), headers: headers(await jwt));
+      final Response res = await delete('$API_URL/board/${board.id}', headers: headers(await jwt));
+
       switch(res.statusCode){
-        case 201: return showSnackBar(context, '성공적으로 게시되었습니다.');
-        default: return network_check(context);
+        case 200: {
+          BoardListController.to.refreshBoardList();
+          Get.until((route) => route.isFirst);
+          return showSnackBar(context, '게시글이 삭제되었습니다.');
+        }
+        case 204: {
+          return unknown_message(context);
+        }
+        default: {
+          return network_check_message(context);
+        }
       }
     } else {
-      return expiration_token(context);
+      return expiration_token_message(context);
+    }
+  }
+
+  Future likeBoard(BuildContext context, int board_id) async{
+    if(await jwt != null){
+      Response res = await post('$API_URL/like/board/$board_id', {}, headers: headers(await jwt));
+      switch(res.statusCode){
+        case 200:
+          return null;
+        case 204:
+          return unknown_message(context);
+        default:
+          return network_check_message(context);
+      }
+    } else {
+      return expiration_token_message(context);
+    }
+  }
+
+  Future insertComment(BuildContext context, {required int board_id, required String comment}) async{
+    if(await jwt != null){
+      Response res = await post('$API_URL/comment', {
+        'board_id': board_id,
+        'comment': comment.trim()
+      }, headers: headers(await jwt));
+      switch(res.statusCode){
+        case 201:
+          return showSnackBar(context, '댓글이 등록되었습니다.');
+        case 204:
+          return unknown_message(context);
+        default:
+          return network_check_message(context);
+      }
+    } else {
+      return expiration_token_message(context);
+    }
+  }
+
+  Future deleteComment(BuildContext context, {required int comment_id}) async{
+    if(await jwt != null){
+      final Response res = await delete('$API_URL/comment/$comment_id');
+
+      switch(res.statusCode) {
+        case 201:
+          return showSnackBar(context, '댓글이 삭제되었습니다.');
+        case 204:
+          return unknown_message(context);
+        default:
+          return network_check_message(context);
+      }
+    } else {
+      return expiration_token_message(context);
+    }
+  }
+
+  Future insertNestedComment(BuildContext context, {required int comment_id, required String comment}) async{
+    if(await jwt != null){
+      Response res = await post('$API_URL/comment/nested', {
+        'comment_id': comment_id,
+        'comment': comment.trim()
+      }, headers: headers(await jwt));
+      switch(res.statusCode){
+        case 201:
+          return showSnackBar(context, '댓글이 등록되었습니다.');
+        case 204:
+          return unknown_message(context);
+        default:
+          return network_check_message(context);
+      }
+    } else {
+      return expiration_token_message(context);
+    }
+  }
+
+  Future deleteNestedComment(BuildContext context, {required int comment_id}) async{
+    if(await jwt != null){
+      final Response res = await delete('$API_URL/comment/nested/$comment_id');
+
+      switch(res.statusCode) {
+        case 201:
+          return showSnackBar(context, '댓글이 삭제되었습니다.');
+        case 204:
+          return unknown_message(context);
+        default:
+          return network_check_message(context);
+      }
+    } else {
+      return expiration_token_message(context);
+    }
+  }
+
+  Future<List<BoardCategory>> getBoardCategory() async{
+    final Response res = await get('$API_URL/board_category');
+
+    switch(res.statusCode){
+      case 200: return List.from(res.body['data']).map((category) => BoardCategory.fromJson(category)).toList();
+      default: return <BoardCategory>[];
     }
   }
 }

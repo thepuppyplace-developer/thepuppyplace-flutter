@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thepuppyplace_flutter/util/common.dart';
 import '../../pages/search_page/search_page.dart';
-import '../buttons/custom_text_button.dart';
-import '../text_fields/out_line_text_field.dart';
+import '../text_fields/custom_text_field.dart';
 
 class SearchTabBar extends StatelessWidget with PreferredSizeWidget{
 
@@ -16,9 +15,9 @@ class SearchTabBar extends StatelessWidget with PreferredSizeWidget{
     Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => OutlineTextField(
+  Widget build(BuildContext context) => CustomTextField(
+    textFieldType: TextFieldType.outline,
     height: height,
-    onChanged: (String search){},
     onTap: (){
       Get.to(() => const SearchPage());
     },
@@ -58,8 +57,8 @@ class InsertSearchTabBar extends StatelessWidget{
     Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => OutlineTextField(
-    onChanged: (String search){},
+  Widget build(BuildContext context) => CustomTextField(
+    textFieldType: TextFieldType.outline,
     onFieldSubmitted: onFieldSubmitted,
     textInputAction: TextInputAction.search,
     autofocus: false,

@@ -1,10 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import '../../models/User.dart';
+import '../../models/UserNicknameAndPhotoURL.dart';
 import '../../util/common.dart';
 
 class UserProfileCard extends StatelessWidget {
-  final User user;
+  final UserNicknameAndPhotoURL user;
 
   const UserProfileCard(this.user, {Key? key}) : super(key: key);
 
@@ -18,7 +18,7 @@ class UserProfileCard extends StatelessWidget {
         ),
         Container(
             margin: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.015)),
-            child: Text(user.nickname ?? '', style: CustomTextStyle.w600(context)))
+            child: Text(user.nickname, style: CustomTextStyle.w600(context)))
       ],
     );
   }

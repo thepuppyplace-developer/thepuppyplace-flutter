@@ -31,14 +31,10 @@ mixin CustomThemeData implements ThemeData{
   );
 }
 
-class LoadingView extends StatefulWidget {
-  const LoadingView({Key? key}) : super(key: key);
+class LoadingView extends StatelessWidget {
+  final String? message;
 
-  @override
-  State<LoadingView> createState() => _LoadingViewState();
-}
-
-class _LoadingViewState extends State<LoadingView> {
+  const LoadingView({this.message, Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,7 +46,7 @@ class _LoadingViewState extends State<LoadingView> {
               SizedAnimation(child: Image.asset(PngList.loading, height: mediaHeight(context, 0.15))),
               Container(
                   margin: EdgeInsets.symmetric(vertical: mediaHeight(context, 0.04)),
-                  child: Text('페이지 이동중입니다', style: CustomTextStyle.w500(context, color: CustomColors.hint))),
+                  child: Text(message ?? '페이지 이동중입니다', style: CustomTextStyle.w500(context, color: CustomColors.hint))),
               const CupertinoActivityIndicator()
             ],
           ),
@@ -61,7 +57,8 @@ class _LoadingViewState extends State<LoadingView> {
 }
 
 class EmptyView extends StatelessWidget {
-  const EmptyView({Key? key}) : super(key: key);
+  final String? message;
+  const EmptyView({this.message, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +70,7 @@ class EmptyView extends StatelessWidget {
             Image.asset(PngList.empty, height: mediaHeight(context, 0.15)),
             Container(
                 margin: EdgeInsets.symmetric(vertical: mediaHeight(context, 0.04)),
-                child: Text('등록된 게시글이 없습니다', style: CustomTextStyle.w500(context, color: CustomColors.hint))),
+                child: Text(message ?? '등록된 게시글이 없습니다', style: CustomTextStyle.w500(context, color: CustomColors.hint))),
           ],
         ),
       ),

@@ -1,18 +1,37 @@
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
-
 import '../controllers/database/database_controller.dart';
+import '../models/BoardCategory.dart';
 import '../models/User.dart';
 
 class LocalDB{
-  final String dbName = 'test34';
+  final String dbName = 'test36';
   final int version = 1;
 
   Future<Database> get database => DatabaseController.to.db;
 
   Future<String?> get jwt async{
-    SharedPreferences spf = await SharedPreferences.getInstance();
-    return spf.getString('jwt');
+    List<User> userList = await USER_LIST();
+    if(userList.isNotEmpty){
+      return userList.first.jwt_token;
+    } else {
+      return null;
+    }
+  }
+
+  final String BOARD_CATEGORY_TABLE = 'BoardCategory';
+  final String CREATE_BOARD_CATEGORY_TABLE = '''
+  CREATE TABLE IF NOT EXISTS BoardCategory(
+  id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+  category TEXT NOT NULL,
+  image_url TEXT NOT NULL,
+  createdAT TEXT NOT NULL,
+  updatedAt TEXT NOT NULL,
+  deletedAt TEXT NOT NULL
+  )
+  ''';
+  Future<List<BoardCategory>> CATEGORY_LIST({String? where, List<Object?>? whereArgs, int? limit, String? orderBy}) async{
+    Database db = await database;
+    return List.from(await db.query(BOARD_CATEGORY_TABLE, where: where, whereArgs: whereArgs, limit: limit, orderBy: orderBy)).map((category) => BoardCategory.fromJson(category)).toList();
   }
 
   final String SEARCH_TABLE = 'Search';
@@ -28,35 +47,23 @@ class LocalDB{
   final String CREATE_USER_TABLE = '''
   CREATE TABLE IF NOT EXISTS User(
   id INTEGER PRIMARY KEY NOT NULL,
-  email TEXT,
-  password TEXT,
-  nickname TEXT,
+  email TEXT NOT NULL,
+  nickname TEXT NOT NULL,
   name TEXT,
   phone_number TEXT,
   photo_url TEXT,
   gender TEXT,
   fcm_token TEXT,
-  is_alarm INTEGER,
+  jwt_token TEXT,
+  is_alarm INTEGER NOT NULL,
   location TEXT,
-  createdAt TEXT,
-  updatedAt TEXT,
-  deletedAt TEXT
-  )
-  ''';
-  Future<List<User>> get userList async{
-    Database db = await database;
-    return List.from(await db.query(USER_TABLE)).map((user) => User.fromJson(user)).toList();
-  }
-
-  final String BOARD_CATEGORY_TABLE = 'BoardCategory';
-  final String CREATE_BOARD_CATEGORY_TABLE = '''
-  CREATE TABLE IF NOT EXISTS BoardCategory(
-  id INTEGER PRIMARY KEY NOT NULL,
-  category TEXT NOT NULL,
-  image_url TEXT NOT NULL,
   createdAt TEXT NOT NULL,
   updatedAt TEXT NOT NULL,
   deletedAt TEXT
   )
   ''';
+  Future<List<User>> USER_LIST({String? where, List<Object?>? whereArgs, int? limit, String? orderBy}) async{
+    Database db = await database;
+    return List.from(await db.query(USER_TABLE, where: where, whereArgs: whereArgs, limit: limit, orderBy: orderBy)).map((user) => User.fromJson(user)).toList();
+  }
 }

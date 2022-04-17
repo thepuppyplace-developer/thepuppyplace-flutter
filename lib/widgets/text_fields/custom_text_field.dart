@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
 import '../../util/common.dart';
 
-class UnderlineTextField extends StatelessWidget {
+class CustomTextField extends StatelessWidget {
+
   final TextEditingController? controller;
   final TextInputType? keyboardType;
   final TextInputAction? textInputAction;
@@ -16,6 +16,7 @@ class UnderlineTextField extends StatelessWidget {
   final int? maxLength;
   final int? maxLines;
   final int? minLines;
+  final double? height;
   final double? width;
   final double? borderRadius;
   final String? hintText;
@@ -24,7 +25,7 @@ class UnderlineTextField extends StatelessWidget {
   final String? helperText;
   final Widget? suffixIcon;
   final Widget? prefixIcon;
-  final Widget? counter;
+  final Alignment? alignment;
   final EdgeInsets? margin;
   final EdgeInsets? padding;
   final EdgeInsets? contentPadding;
@@ -34,11 +35,12 @@ class UnderlineTextField extends StatelessWidget {
   final List<TextInputFormatter>? inputFormatters;
   final Function()? onTap;
   final Function(String value)? onFieldSubmitted;
-  final Function(String) onChanged;
+  final Function(String)? onChanged;
   final String? Function(String?)? validator;
-  final Alignment? alignment;
+  final TextFieldType textFieldType;
 
-  UnderlineTextField({
+  const CustomTextField({Key? key,
+    required this.textFieldType,
     this.controller,
     this.keyboardType,
     this.textInputAction,
@@ -51,6 +53,7 @@ class UnderlineTextField extends StatelessWidget {
     this.maxLength,
     this.maxLines,
     this.minLines,
+    this.height,
     this.width,
     this.borderRadius,
     this.hintText,
@@ -59,7 +62,7 @@ class UnderlineTextField extends StatelessWidget {
     this.helperText,
     this.suffixIcon,
     this.prefixIcon,
-    this.counter,
+    this.alignment,
     this.margin,
     this.padding,
     this.contentPadding,
@@ -69,20 +72,38 @@ class UnderlineTextField extends StatelessWidget {
     this.inputFormatters,
     this.onTap,
     this.onFieldSubmitted,
-    required this.onChanged,
-    this.validator,
-    this.alignment,
-  });
+    this.onChanged,
+    this.validator}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    UnderlineInputBorder border = UnderlineInputBorder(
-        borderSide: BorderSide(color: sideColor ?? CustomColors.main)
-    );
+
+    InputBorder _border(textFieldType){
+      switch(textFieldType){
+        case TextFieldType.underline: return UnderlineInputBorder(
+            borderSide: BorderSide(color: sideColor ?? CustomColors.main)
+        );
+        case TextFieldType.outline: return OutlineInputBorder(
+            borderRadius: BorderRadius.circular(borderRadius ?? 10),
+            borderSide: BorderSide(color: sideColor ?? CustomColors.main)
+        );
+        default: return InputBorder.none;
+      }
+    }
+
+    EdgeInsets _contentPadding(textFieldType){
+      switch(textFieldType){
+        case TextFieldType.underline: return contentPadding ?? EdgeInsets.symmetric(vertical: mediaWidth(context, 0.03));
+        case TextFieldType.outline: return contentPadding ?? EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.03), vertical: mediaHeight(context, 0.015));
+        default: return contentPadding ?? EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.03));
+      }
+    }
+
     return Container(
       width: width,
+      height: height,
+      alignment: alignment ?? Alignment.center,
       margin: margin,
       padding: padding,
-      alignment: alignment,
       child: TextFormField(
         validator: validator,
         enabled: enabled,
@@ -106,7 +127,7 @@ class UnderlineTextField extends StatelessWidget {
           isDense: true,
           floatingLabelStyle: CustomTextStyle.w500(context, color: CustomColors.main),
           focusColor: Colors.green,
-          helperStyle: CustomTextStyle.w500(context, color: helperColor ?? CustomColors.hint),
+          hintStyle: CustomTextStyle.w500(context, color: CustomColors.hint),
           labelStyle: CustomTextStyle.w500(context, color: CustomColors.hint),
           errorStyle: CustomTextStyle.w500(context, color: Colors.red),
           filled: true,
@@ -115,16 +136,18 @@ class UnderlineTextField extends StatelessWidget {
           labelText: labelText,
           counterText: counterText ?? '',
           helperText: helperText,
+          helperStyle: CustomTextStyle.w500(context, color: helperColor),
           prefixIcon: prefixIcon,
           suffixIcon: suffixIcon,
-          contentPadding: contentPadding ?? EdgeInsets.symmetric(vertical: mediaHeight(context, 0.015)),
-          border: border,
-          enabledBorder: border.copyWith(borderSide: BorderSide(color: sideColor ?? CustomColors.hint, width: 1)),
-          disabledBorder: border.copyWith(borderSide: const BorderSide(color: CustomColors.hint, width: 1)),
-          focusedBorder: border,
-          counter: counter
+          contentPadding: _contentPadding(textFieldType),
+          border: _border(textFieldType),
+          enabledBorder: _border(textFieldType).copyWith(borderSide: BorderSide(color: sideColor ?? CustomColors.hint, width: 1)),
+          disabledBorder: _border(textFieldType).copyWith(borderSide: const BorderSide(color: CustomColors.hint, width: 1)),
+          focusedBorder: _border(textFieldType),
         ),
       ),
     );
   }
 }
+
+enum TextFieldType { outline, none, underline }

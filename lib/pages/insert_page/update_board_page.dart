@@ -1,7 +1,9 @@
 import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:thepuppyplace_flutter/models/Board.dart';
 import '../../controllers/user/user_controller.dart';
 import '../../models/User.dart';
 import '../../repositories/board_repository.dart';
@@ -13,14 +15,15 @@ import '../../widgets/tab_bars/select_category_tab_bar.dart';
 import '../../widgets/text_fields/custom_text_field.dart';
 import '../my_page/login_request_page.dart';
 
-class InsertPage extends StatefulWidget {
-  const InsertPage({Key? key}) : super(key: key);
+class UpdateBoardPage extends StatefulWidget {
+  final Board board;
+  const UpdateBoardPage(this.board, {Key? key}) : super(key: key);
 
   @override
-  _InsertPageState createState() => _InsertPageState();
+  _UpdateBoardPageState createState() => _UpdateBoardPageState();
 }
 
-class _InsertPageState extends State<InsertPage> {
+class _UpdateBoardPageState extends State<UpdateBoardPage> {
   int _categoryIndex = 0;
   int? _locationIndex;
   int _locationDetailIndex = 0;
@@ -33,6 +36,16 @@ class _InsertPageState extends State<InsertPage> {
 
   String _title = '';
   String _description = '';
+
+  late TextEditingController _titleController;
+  late TextEditingController _descriptionController;
+
+  @override
+  void initState() {
+    super.initState();
+    _titleController = TextEditingController(text: widget.board.title);
+    _descriptionController = TextEditingController(text: widget.board.description);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -149,6 +162,7 @@ class _InsertPageState extends State<InsertPage> {
                                           _title = title;
                                         });
                                       },
+                                      controller: _titleController,
                                       margin: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.033)),
                                       keyboardType: TextInputType.text,
                                       hintText: '제목을 입력해주세요.(최대 20자)',
@@ -162,6 +176,7 @@ class _InsertPageState extends State<InsertPage> {
                                           _description = description;
                                         });
                                       },
+                                      controller: _descriptionController,
                                       margin: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.033)),
                                       minLines: 20,
                                       maxLines: 50,
@@ -200,7 +215,7 @@ class _InsertPageState extends State<InsertPage> {
                                   ),
                                 ),
                                 onPressed: () async{
-                                  photoList.addAll(await pickMultiImage(limit: 10));
+                                  photoList = await pickMultiImage();
                                   setState(() {});
                                 },
                               ),
@@ -230,7 +245,7 @@ class _InsertPageState extends State<InsertPage> {
                   ),
                   CustomButton(
                     margin: EdgeInsets.all(mediaWidth(context, 0.033)),
-                    title: '등록하기',
+                    title: '수정하기',
                     onPressed: (){
                       showIndicator(BoardRepository.from.insertBoard(
                         context,

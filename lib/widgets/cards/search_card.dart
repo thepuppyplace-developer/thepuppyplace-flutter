@@ -40,7 +40,7 @@ class SearchBoardCard extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      UserProfileCard(board.user!),
+                      UserProfileCard(board.user),
                       Row(
                         children: [
                           TagText(board.category, margin: EdgeInsets.symmetric(vertical: mediaHeight(context, 0.01))),
@@ -51,14 +51,14 @@ class SearchBoardCard extends StatelessWidget {
                     ],
                   ),
                 ),
-                if(board.board_photos!.isNotEmpty) Container(
+                if(board.board_photos.isNotEmpty) Container(
                   height: mediaHeight(context, 0.1),
                   width: mediaHeight(context, 0.1),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       image: DecorationImage(
                           fit: BoxFit.cover,
-                          image: CachedNetworkImageProvider(board.board_photos!.first)
+                          image: CachedNetworkImageProvider(board.board_photos.first)
                       )
                   ),
                 )

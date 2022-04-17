@@ -6,6 +6,7 @@ import 'package:thepuppyplace_flutter/util/common.dart';
 import 'package:thepuppyplace_flutter/widgets/buttons/category_button.dart';
 import '../../controllers/board/board_list_controller.dart';
 import '../../models/Board.dart';
+import '../../util/cached_network_image_list.dart';
 import '../../util/png_list.dart';
 import '../../widgets/cards/banner_card.dart';
 import '../../widgets/cards/recent_board_card.dart';
@@ -25,27 +26,27 @@ class _HomePageState extends State<HomePage> {
   final List<Map<String, dynamic>> _categoryList = <Map<String, dynamic>>[
     {
       'category': '카페',
-      'image': PngList.cafe
+      'image': CachedNetworkImageList.cafe
     },
     {
       'category': '음식점',
-      'image': PngList.restaurant
+      'image': CachedNetworkImageList.restaurant
     },
     {
       'category': '쇼핑몰',
-      'image': PngList.shopping_mall
+      'image': CachedNetworkImageList.shopping
     },
     {
       'category': '호텔',
-      'image': PngList.hotel
+      'image': CachedNetworkImageList.hotel
     },
     {
       'category': '운동장',
-      'image': PngList.ground
+      'image': CachedNetworkImageList.ground
     },
     {
       'category': '수다방',
-      'image': PngList.cafe
+      'image': CachedNetworkImageList.cafe
     },
   ];
 

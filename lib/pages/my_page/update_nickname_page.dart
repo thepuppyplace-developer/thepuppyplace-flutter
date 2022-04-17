@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../util/common.dart';
 import '../../widgets/buttons/custom_button.dart';
-import '../../widgets/text_fields/under_line_text_field.dart';
+import '../../widgets/text_fields/custom_text_field.dart';
 
 class UpdateNicknamePage extends StatelessWidget {
   const UpdateNicknamePage({Key? key}) : super(key: key);
@@ -26,7 +26,8 @@ class UpdateNicknamePage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text('변경하실 새로운 닉네임을\n입력해주세요.', style: CustomTextStyle.w500(context, scale: 0.025), textAlign: TextAlign.center),
-                    UnderlineTextField(
+                    CustomTextField(
+                      textFieldType: TextFieldType.underline,
                       alignment: Alignment.center,
                       margin: EdgeInsets.only(top: mediaHeight(context, 0.1)),
                       onChanged: (String nickname){},

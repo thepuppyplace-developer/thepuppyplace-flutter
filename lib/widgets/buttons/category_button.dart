@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -16,19 +17,25 @@ class CategoryButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return CupertinoButton(
       padding: EdgeInsets.zero,
-      child: Container(
-        width: mediaWidth(context, 1/3),
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: CustomColors.emptySide),
-        ),
-        child: Column(
-          children: [
-            Image.asset(image),
-            Text(category, style: CustomTextStyle.w600(context)),
-          ],
-        ),
+      child: Column(
+        children: [
+          Container(
+            alignment: Alignment.center,
+            height: mediaHeight(context, 0.1),
+            width: mediaWidth(context, 0.3),
+            decoration: BoxDecoration(
+                border: Border.all(color: CustomColors.emptySide),
+                borderRadius: BorderRadius.circular(12),
+              image: DecorationImage(
+                opacity: 0.7,
+                colorFilter: const ColorFilter.mode(Colors.black, BlendMode.colorDodge),
+                fit: BoxFit.cover,
+                image: CachedNetworkImageProvider(image)
+              )
+            ),
+            child: Text(category, style: CustomTextStyle.w500(context, color: Colors.white)),
+          ),
+        ],
       ),
       onPressed: (){
         Get.to(() => BoardListPage(currentIndex));

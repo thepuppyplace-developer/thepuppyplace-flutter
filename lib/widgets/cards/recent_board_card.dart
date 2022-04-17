@@ -30,7 +30,7 @@ class RecentBoardCard extends StatelessWidget {
           children: [
             ListTile(
               contentPadding: EdgeInsets.zero,
-              title: board.user == null ? null : UserProfileCard(board.user!),
+              title: UserProfileCard(board.user),
               subtitle: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -50,7 +50,7 @@ class RecentBoardCard extends StatelessWidget {
                   Text(board.description, style: CustomTextStyle.w400(context, scale: 0.013), maxLines: 3, overflow: TextOverflow.ellipsis),
                   Builder(
                     builder: (context) {
-                      if(board.board_photos!.isEmpty){
+                      if(board.board_photos.isEmpty){
                         return Container(
                           margin: EdgeInsets.symmetric(vertical: mediaWidth(context, 0.02)),
                         );
@@ -61,7 +61,7 @@ class RecentBoardCard extends StatelessWidget {
                           child: ListView.separated(
                             separatorBuilder: (context, index) => SizedBox(width: mediaWidth(context, 0.02),),
                             scrollDirection: Axis.horizontal,
-                            itemCount: board.board_photos!.length,
+                            itemCount: board.board_photos.length,
                             itemBuilder: (context, index) => Container(
                               height: mediaHeight(context, 0.1),
                               width: mediaHeight(context, 0.1),
@@ -69,7 +69,7 @@ class RecentBoardCard extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(5),
                                   image: DecorationImage(
                                       image: CachedNetworkImageProvider(
-                                          board.board_photos![index]
+                                          board.board_photos[index]
                                       ),
                                       fit: BoxFit.cover
                                   )
@@ -93,7 +93,7 @@ class RecentBoardCard extends StatelessWidget {
                         Icon(CupertinoIcons.heart, color: Colors.black54, size: mediaHeight(context, 0.022)),
                         Container(
                             margin: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.01)),
-                            child: Text(board.likeList != null ? '${board.likeList!.length}': '0', style: CustomTextStyle.w400(context, scale: 0.012, color: Colors.black54))),
+                            child: Text('${board.likeList.length}', style: CustomTextStyle.w400(context, scale: 0.012, color: Colors.black54))),
                         Icon(CupertinoIcons.chat_bubble_2, color: Colors.black54, size: mediaHeight(context, 0.022)),
                         Container(
                             margin: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.01)),
@@ -101,7 +101,7 @@ class RecentBoardCard extends StatelessWidget {
                       ],
                     ),
                   ),
-                  Text(beforeDate(board.createdAt ?? DateTime.now()), style: CustomTextStyle.w500(context, scale: 0.012, color: CustomColors.hint))
+                  Text(beforeDate(board.createdAt), style: CustomTextStyle.w500(context, scale: 0.012, color: CustomColors.hint))
                 ],
               ),
             )

@@ -1,10 +1,11 @@
 import 'User.dart';
+import 'UserNicknameAndPhotoURL.dart';
 
 class Like{
   final int? likeId;
   final int boardId;
   final int userId;
-  final User? user;
+  final UserNicknameAndPhotoURL? user;
   final DateTime? createdAt;
   final DateTime? updatedAt;
   final DateTime? deletedAt;
@@ -23,14 +24,9 @@ class Like{
     likeId: json['id'],
     boardId: json['board_id'],
     userId: json['user_id'],
-    user: json['User'] == null ? null : User.fromNicknameAndPhotoURL(json['User']),
+    user: json['User'] == null ? null : UserNicknameAndPhotoURL.fromJson(json['User']),
     createdAt: json['createdAt'] == null ? null : DateTime.parse(json['createdAt']),
     updatedAt: json['updatedAt'] == null ? null : DateTime.parse(json['updatedAt']),
     deletedAt: json['deletedAt'] == null ? null : DateTime.parse(json['deletedAt']),
   );
-
-  Map<String, dynamic> toJson() => {
-    'board_id': boardId,
-    'user_id': userId,
-  };
 }

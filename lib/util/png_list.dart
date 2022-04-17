@@ -1,19 +1,19 @@
 import 'package:thepuppyplace_flutter/util/common.dart';
 
+import 'cached_network_image_list.dart';
+
 class PngList{
-  static const String splash = 'assets/png/splash.png';
-  static const String cafe = 'assets/png/cafe.png';
-  static const String ground = 'assets/png/ground.png';
-  static const String hotel = 'assets/png/hotel.png';
-  static const String notice = 'assets/png/notice.png';
-  static const String restaurant = 'assets/png/restaurant.png';
-  static const String shopping_mall = 'assets/png/shopping_mall.png';
   static const String logo = 'assets/png/logo.png';
   static const String loading = 'assets/png/loading.png';
   static const String empty = 'assets/png/empty.png';
 
-  static const List<String> categoryList = <String>[
-    cafe, restaurant, shopping_mall, hotel, ground
+  static final List<String> categoryList = <String>[
+    CachedNetworkImageList.cafe,
+    CachedNetworkImageList.restaurant,
+    CachedNetworkImageList.shopping,
+    CachedNetworkImageList.hotel,
+    CachedNetworkImageList.ground,
+    CachedNetworkImageList.talk,
   ];
 
   static String defaultProfile = 'https://thepuppyplace.s3.ap-northeast-2.amazonaws.com/uploads/thepuppy_profile_${randomImage()}.jpeg';

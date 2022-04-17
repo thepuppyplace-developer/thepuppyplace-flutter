@@ -47,7 +47,7 @@ class MyPage extends GetWidget<UserController> {
                               text: TextSpan(
                                   children: [
                                     TextSpan(
-                                      text: user.nickname ?? '',
+                                      text: user.nickname,
                                       style: CustomTextStyle.w600(context, scale: 0.02),
                                     ),
                                     TextSpan(
@@ -103,7 +103,7 @@ class MyPage extends GetWidget<UserController> {
                   children: [
                     Text('설정', style: CustomTextStyle.w500(context, color: CustomColors.hint),),
                     CustomTextButton('환경설정', (){}, color: Colors.black),
-                    CustomTextButton('버전정보', null, color: Colors.black,),
+                    const CustomTextButton('버전정보', null, color: Colors.black,),
                     CustomTextButton('서비스 이용약관', (){}, color: Colors.black),
                     CustomTextButton('로그아웃', (){
                       showCupertinoDialog(
@@ -112,8 +112,8 @@ class MyPage extends GetWidget<UserController> {
                           builder: (context) => CustomDialog(
                         title: '로그아웃 하시겠습니까?',
                         onTap: (){
-                          Get.back(closeOverlays: true);
-                          showIndicator(controller.logout());
+                          Get.back();
+                          showIndicator(controller.logout(context));
                         },
                         tabText: '로그아웃',
                       ));

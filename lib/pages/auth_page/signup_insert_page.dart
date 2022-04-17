@@ -5,7 +5,7 @@ import 'package:thepuppyplace_flutter/repositories/user_repository.dart';
 import 'package:thepuppyplace_flutter/util/common.dart';
 
 import '../../widgets/buttons/custom_button.dart';
-import '../../widgets/text_fields/under_line_text_field.dart';
+import '../../widgets/text_fields/custom_text_field.dart';
 
 class SignupInsertPage extends StatefulWidget {
   const SignupInsertPage({Key? key}) : super(key: key);
@@ -29,6 +29,7 @@ class _SignupInsertPageState extends State<SignupInsertPage> {
 
   final GlobalKey<FormState> _otpKey = GlobalKey<FormState>();
   final GlobalKey<FormState> _emailKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _passwordKey = GlobalKey<FormState>();
   final GlobalKey<FormState> _nicknameKey = GlobalKey<FormState>();
 
   bool _sendOTP = false;
@@ -60,7 +61,8 @@ class _SignupInsertPageState extends State<SignupInsertPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Expanded(
-                                child: UnderlineTextField(
+                                child: CustomTextField(
+                                  textFieldType: TextFieldType.underline,
                                   onChanged: (String email){
                                     setState(() {
                                       _email = email;
@@ -120,7 +122,8 @@ class _SignupInsertPageState extends State<SignupInsertPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Expanded(
-                                child: UnderlineTextField(
+                                child: CustomTextField(
+                                  textFieldType: TextFieldType.underline,
                                   onChanged: (String otp){
                                     setState(() {
                                       _otp = otp;
@@ -166,32 +169,49 @@ class _SignupInsertPageState extends State<SignupInsertPage> {
                           ),
                         )
                       ),
-                      UnderlineTextField(
-                        onChanged: (String password){
-                          setState(() {
-                            _password = password;
-                          });
-                        },
-                          obscureText: true,
-                          keyboardType: TextInputType.visiblePassword,
-                          hintText: '비밀번호(8~20자 이내)',
-                          maxLength: 20,
-                          margin: EdgeInsets.only(bottom: mediaHeight(context, 0.05))
-                      ),
-                      UnderlineTextField(
-                        onChanged: (String password){
-                          setState(() {
-                            _passwordCheck = password;
-                          });
-                        },
-                        obscureText: true,
-                        keyboardType: TextInputType.visiblePassword,
-                        hintText: '비밀번호 확인',
-                        maxLength: 20,
+                      Form(
+                        key: _passwordKey,
+                        child: Column(
+                          children: [
+                            CustomTextField(
+                                textFieldType: TextFieldType.underline,
+                                onChanged: (String password){
+                                setState(() {
+                                  _password = password;
+                                });
+                              },
+                                obscureText: true,
+                                keyboardType: TextInputType.visiblePassword,
+                                hintText: '비밀번호(8~20자 이내)',
+                                maxLength: 20,
+                                margin: EdgeInsets.only(bottom: mediaHeight(context, 0.05))
+                            ),
+                            CustomTextField(
+                              textFieldType: TextFieldType.underline,
+                              onChanged: (String password){
+                                setState(() {
+                                  _passwordCheck = password;
+                                });
+                              },
+                              validator: (String? password){
+                                if(password != _password){
+                                  return '비밀번호가 일치하지 않습니다.';
+                                } else {
+                                  return null;
+                                }
+                              },
+                              obscureText: true,
+                              keyboardType: TextInputType.visiblePassword,
+                              hintText: '비밀번호 확인',
+                              maxLength: 20,
+                            ),
+                          ],
+                        ),
                       ),
                       Form(
                         key: _nicknameKey,
-                        child: UnderlineTextField(
+                        child: CustomTextField(
+                          textFieldType: TextFieldType.underline,
                           onChanged: (String nickname){
                             setState(() {
                               _nickname = nickname;
@@ -223,9 +243,12 @@ class _SignupInsertPageState extends State<SignupInsertPage> {
                 margin: EdgeInsets.all(mediaWidth(context, 0.033)),
                 onPressed: !_auth || _password.length < 8 || _passwordCheck.length < 8 || _nickname.length < 6 ? null : () async{
                   _nicknameValidator = await _repository.nicknameCheck(_nickname);
-                  if(_nicknameKey.currentState!.validate()){
-                    _nicknameKey.currentState!.save();
-                    UserController.to.signup(context, email: _email, password: _password, passwordCheck: _passwordCheck, nickname: _nickname);
+                  if(_passwordKey.currentState!.validate()){
+                    _passwordKey.currentState!.save();
+                    if(_nicknameKey.currentState!.validate()){
+                      _nicknameKey.currentState!.save();
+                      showIndicator(UserController.to.signup(context, email: _email, password: _password, passwordCheck: _passwordCheck, nickname: _nickname));;
+                    }
                   }
                 }
             )

@@ -19,7 +19,7 @@ void unFocus(BuildContext context) => FocusScope.of(context).unfocus();
 
 Future<List<String>> pickMultiImage({int? limit}) async{
   ImagePicker picker = ImagePicker();
-  List<XFile>? imageList = await picker.pickMultiImage(imageQuality: 10);
+  List<XFile>? imageList = await picker.pickMultiImage();
   if(imageList == null){
     return <String>[];
   } else {
@@ -124,7 +124,7 @@ String beforeDate(DateTime date){
 int commentCount(List<BoardComment>? commentList){
   int commentCount = commentList!.length;
   for(int i = 0; i < commentList.length; i++){
-    commentCount += commentList[i].nestedCommentList!.length;
+    commentCount += commentList[i].nestedCommentList.length;
   }
   return commentCount;
 }

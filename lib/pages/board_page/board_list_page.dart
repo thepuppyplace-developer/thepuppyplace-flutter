@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:thepuppyplace_flutter/util/common.dart';
 import '../../widgets/tab_bars/search_tab_bar.dart';
-import '../../widgets/text_fields/out_line_text_field.dart';
 import 'board_list_views/cafe_board_list_view.dart';
 import 'board_list_views/ground_board_list_view.dart';
 import 'board_list_views/hotel_board_list_view.dart';

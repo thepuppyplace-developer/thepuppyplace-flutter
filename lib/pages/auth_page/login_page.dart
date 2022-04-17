@@ -7,7 +7,7 @@ import '../../controllers/user/user_controller.dart';
 import '../../util/common.dart';
 import '../../widgets/buttons/custom_button.dart';
 import '../../widgets/buttons/custom_text_button.dart';
-import '../../widgets/text_fields/under_line_text_field.dart';
+import '../../widgets/text_fields/custom_text_field.dart';
 import 'signup_page.dart';
 
 class LoginPage extends StatefulWidget {
@@ -60,7 +60,8 @@ class _LoginPageState extends State<LoginPage> {
               children: [
                 Column(
                   children: [
-                    UnderlineTextField(
+                    CustomTextField(
+                      textFieldType: TextFieldType.underline,
                       margin: EdgeInsets.symmetric(vertical: mediaHeight(context, 0.03)),
                       onChanged: (String email){
                         setState(() {
@@ -79,7 +80,8 @@ class _LoginPageState extends State<LoginPage> {
                       keyboardType: TextInputType.emailAddress,
                       hintText: '이메일 아이디',
                     ),
-                    UnderlineTextField(
+                    CustomTextField(
+                      textFieldType: TextFieldType.underline,
                       onChanged: (String password){
                         setState(() {
                           _password = password;
@@ -109,8 +111,9 @@ class _LoginPageState extends State<LoginPage> {
                         if(_formKey.currentState!.validate()){
                           _formKey.currentState!.save();
                           showIndicator(UserController.to.login(
-                            email: _email.trim(),
-                            password: _password.trim(),
+                            context,
+                            email: _email,
+                            password: _password,
                           ));
                         }
                       },
