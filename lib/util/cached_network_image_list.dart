@@ -8,4 +8,5 @@ class CachedNetworkImageList{
   static final String shopping = _S3URL('shopping');
   static final String talk = _S3URL('talk');
   static final String hotel = _S3URL('hotel');
+  static final String thepuppy_profile_0 = _S3URL('thepuppy_profile_0');
 }
