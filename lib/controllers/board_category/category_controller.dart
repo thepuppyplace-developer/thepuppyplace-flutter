@@ -4,7 +4,7 @@ import '../../config/local_db.dart';
 import '../../models/BoardCategory.dart';
 import '../../repositories/board_repository.dart';
 
-class CategoryController extends GetxController with StateMixin<List<BoardCategory>>, LocalDB{
+class CategoryController extends GetxController with StateMixin<List<BoardCategory>>, LocalConfig{
   final BoardRepository _repository = BoardRepository();
 
   final RxList<BoardCategory> _categoryList = RxList<BoardCategory>();

@@ -2,15 +2,14 @@ import 'dart:io';
 import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
-import 'package:multi_image_picker2/multi_image_picker2.dart';
 import 'package:thepuppyplace_flutter/util/png_list.dart';
 import '../models/BoardComment.dart';
 import '../widgets/animations/SizedAnimation.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 double mediaHeight(BuildContext context, double scale) => MediaQuery.of(context).size.height * scale;
 double mediaWidth(BuildContext context, double scale) => MediaQuery.of(context).size.width * scale;
@@ -140,4 +139,13 @@ String orderText(String order){
     case 'view': return '인기순';
     default: return '';
   }
+}
+
+Future openURL({required String url, bool? inApp}) async{
+  launch(
+      url,
+      forceSafariVC: inApp,
+      forceWebView: inApp ?? false,
+      enableJavaScript: true
+  );
 }

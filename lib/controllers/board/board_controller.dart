@@ -7,13 +7,12 @@ import '../../config/config.dart';
 import '../../models/Board.dart';
 import '../../models/BoardComment.dart';
 import '../../models/NestedComment.dart';
-import '../../pages/board_page/board_details_page.dart';
 import '../../repositories/board_repository.dart';
 import 'board_list_controller.dart';
 
 class BoardController extends GetxController with StateMixin<Board>, Config{
-  final Board board;
-  BoardController(this.board);
+  final int board_id;
+  BoardController(this.board_id);
 
   final BoardRepository _repository = BoardRepository();
 
@@ -44,19 +43,19 @@ class BoardController extends GetxController with StateMixin<Board>, Config{
   }
 
   Future get getBoard async{
-    _board.value = await _repository.getBoard(board.id);
+    _board.value = await _repository.getBoard(board_id);
   }
 
   Future deleteBoard(BuildContext context)
-  => _repository.deleteBoard(context, board: board).whenComplete(()
+  => _repository.deleteBoard(context, board_id: board_id).whenComplete(()
   => BoardListController.to.refreshBoardList());
 
-  Future likeBoard(BuildContext context) => _repository.likeBoard(context, board.id).whenComplete(()
+  Future likeBoard(BuildContext context) => _repository.likeBoard(context, board_id).whenComplete(()
   => getBoard);
 
   Future insertComment(BuildContext context, {required String comment}) async{
     if(comment.trim().isNotEmpty){
-      await _repository.insertComment(context, board_id: board.id, comment: comment);
+      await _repository.insertComment(context, board_id: board_id, comment: comment);
       return getBoard;
     } else {
       return showSnackBar(context, '댓글을 입력해주세요.');

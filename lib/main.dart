@@ -1,17 +1,25 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'controllers/database/database_controller.dart';
+import 'controllers/notification/notification_controller.dart';
 import 'pages/auth_page/login_page.dart';
-import 'pages/my_page/update_nickname_page.dart';
 import 'pages/navigator_page.dart';
 import 'util/customs.dart';
 import 'pages/splash_page.dart';
 
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
+  print('Handling a background message ${message.messageId}');
+  print('Notification Message: ${message.data}');
+}
 
 Future main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  Get.put(NotificationController());
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   Get.put(DatabaseController());
   runApp(const MyApp());
 }

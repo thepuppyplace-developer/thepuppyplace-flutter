@@ -11,9 +11,11 @@ import '../../config/local_db.dart';
 import '../../models/Board.dart';
 import '../controllers/board/board_list_controller.dart';
 import '../models/BoardComment.dart';
+import '../models/LikeBoard.dart';
 import '../models/NestedComment.dart';
+import '../models/Search.dart';
 
-class BoardRepository extends GetConnect with Config, LocalDB{
+class BoardRepository extends GetConnect with Config, LocalConfig{
   static BoardRepository get from => BoardRepository();
 
   Future insertBoard(BuildContext context, {
@@ -36,7 +38,7 @@ class BoardRepository extends GetConnect with Config, LocalDB{
         case 201: {
           final Board? board = await getBoard(res.body['data']['id']);
           if(board != null){
-            Get.offUntil(MaterialPageRoute(builder: (context) => BoardDetailsPage(board)), (route) => route.isFirst);
+            Get.offUntil(MaterialPageRoute(builder: (context) => BoardDetailsPage(board.id)), (route) => route.isFirst);
           } else {
             Get.until((route) => route.isFirst);
           }
@@ -54,11 +56,53 @@ class BoardRepository extends GetConnect with Config, LocalDB{
     }
   }
 
-  Future<List<Board>> getBoardList({required int page, String? category , String? order}) async{
-    Response res = await post('$API_URL/board', {
+  Future<List<LikeBoard>> getLikeBoardList(BuildContext context, int? user_id) async{
+    try{
+      if(await jwt != null){
+        final Response res = await post('$API_URL/board/like', {
+          'user_like_id': user_id
+        });
+
+        switch(res.statusCode){
+          case 200: {
+            return List.from(res.body['data']).map((board) => LikeBoard.fromJson(board)).toList();
+          }
+          default: {
+            await network_check_message(context);
+            return <LikeBoard>[];
+          }
+        }
+      } else {
+        await expiration_token_message(context);
+        return <LikeBoard>[];
+      }
+    } catch(error) {
+      throw unknown_message(context);
+    }
+  }
+
+  Future<List<Search>> getPopularSearchList(BuildContext context) async{
+    try{
+      final Response res = await get('$API_URL/search');
+
+      switch(res.statusCode){
+        case 200: return List.from(res.body['data']).map((search) => Search.fromJson(search)).toList();
+        default:
+          await network_check_message(context);
+          return <Search>[];
+      }
+    } catch(error){
+      throw unknown_message(context);
+    }
+  }
+
+  Future<List<Board>> getBoardList({required int page, String? category , String? order, int? userId, String? query}) async{
+    final Response res = await post('$API_URL/board', {
       'page': page,
       'category': category,
       'order': order,
+      'user_id': userId,
+      'query': query
     });
 
     switch(res.statusCode){
@@ -84,9 +128,9 @@ class BoardRepository extends GetConnect with Config, LocalDB{
     }
   }
 
-  Future deleteBoard(BuildContext context, {required Board board}) async{
+  Future deleteBoard(BuildContext context, {required int board_id}) async{
     if(await jwt != null){
-      final Response res = await delete('$API_URL/board/${board.id}', headers: headers(await jwt));
+      final Response res = await delete('$API_URL/board/${board_id}', headers: headers(await jwt));
 
       switch(res.statusCode){
         case 200: {

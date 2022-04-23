@@ -6,7 +6,7 @@ import '../../config/local_db.dart';
 import '../../models/User.dart';
 import '../../repositories/user_repository.dart';
 
-class UserController extends GetxController with StateMixin<User>, Config, LocalDB{
+class UserController extends GetxController with StateMixin<User>, Config, LocalConfig{
   static UserController get to => Get.put(UserController());
   final UserRepository _repository = UserRepository();
   static final Rxn<User> _user = Rxn<User>();
@@ -86,5 +86,10 @@ class UserController extends GetxController with StateMixin<User>, Config, Local
       _user.value = null;
       return null;
     }
+  }
+
+  Future changeNotification(BuildContext context) async{
+    await _repository.changeNotification(context);
+    return _getUser(await jwt);
   }
 }

@@ -6,7 +6,7 @@ import '../config/local_db.dart';
 import '../models/User.dart';
 import '../util/common.dart';
 
-class UserRepository extends GetConnect with Config, LocalDB{
+class UserRepository extends GetConnect with Config, LocalConfig{
 
   Future<String?> signUp(BuildContext context, {required String email, required String password, required String nickname}) async{
     final Response res = await post('$API_URL/user/signup', {
@@ -61,15 +61,31 @@ class UserRepository extends GetConnect with Config, LocalDB{
   }
 
   Future<User?> logout(BuildContext context) async{
-    final Database db = await database;
-    final List<User> userList = await USER_LIST();
-
-    if(userList.isNotEmpty){
-      await db.delete(USER_TABLE, where: 'id = ?', whereArgs: [userList.first.id]);
-      await showSnackBar(context, '로그아웃 되었습니다.');
-      return null;
-    } else {
-      await showSnackBar(context, '로그아웃 되었습니다.');
+    try{
+      if(await jwt != null){
+        final Database db = await database;
+        final Response res = await patch('$API_URL/user/my', {
+          'fcm_token': null,
+        });
+        switch(res.statusCode){
+          case 200:
+            final userList = await db.rawQuery('SELECT * FROM User');
+            if(userList.isNotEmpty){
+              await db.rawDelete('TRUNCATE User');
+              await showSnackBar(context, '로그아웃 되었습니다.');
+              return null;
+            } else {
+              await showSnackBar(context, '로그아웃 되었습니다.');
+              return null;
+            }
+          default: return null;
+        }
+      } else {
+        await expiration_token_message(context);
+        return null;
+      }
+    } catch(error){
+      await unknown_message(context);
       return null;
     }
   }
@@ -84,9 +100,9 @@ class UserRepository extends GetConnect with Config, LocalDB{
           final User user = User.fromJson(res.body['data']);
           final userList = await USER_LIST(where: 'id = ?', whereArgs: [user.id]);
           if(userList.isNotEmpty){
-            await db.update(USER_TABLE, user.toJson(), where: 'id = ?', whereArgs: [user.id]);
+            await db.update(User.TABLE, user.toJson(), where: 'id = ?', whereArgs: [user.id]);
           } else {
-            await db.insert(USER_TABLE, user.toJson());
+            await db.insert(User.TABLE, user.toJson());
           }
           return user;
         }
@@ -152,6 +168,28 @@ class UserRepository extends GetConnect with Config, LocalDB{
       default: {
         return null;
       }
+    }
+  }
+
+  Future changeNotification(BuildContext context) async{
+    try{
+      if(await jwt != null){
+        final res = await patch('$API_URL/user/isalarm', {}, headers: headers(await jwt));
+
+        switch(res.statusCode){
+          case 200:
+            await showSnackBar(context, '알람 설정이 변경되었습니다.');
+            return null;
+          default:
+            await network_check_message(context);
+            return null;
+        }
+      } else {
+        await expiration_token_message(context);
+        return null;
+      }
+    } catch(error){
+      throw unknown_message(context);
     }
   }
 }

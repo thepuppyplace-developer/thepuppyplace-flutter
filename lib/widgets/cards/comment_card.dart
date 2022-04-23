@@ -46,9 +46,7 @@ class CommentCard extends GetWidget<UserController> {
               child: Row(
                 children: [
                   CustomTextButton('좋아요', (){}, color: CustomColors.hint),
-                  CustomTextButton('답글달기', (){
-                    onComment(comment);
-                  }, color: CustomColors.hint),
+                  CustomTextButton('답글달기', (){}, color: CustomColors.hint),
                 ],
               ),
             ),

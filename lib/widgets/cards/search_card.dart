@@ -68,7 +68,7 @@ class SearchBoardCard extends StatelessWidget {
         ),
       ),
       onPressed: (){
-        Get.to(() => BoardDetailsPage(board));
+        Get.to(() => BoardDetailsPage(board.id));
       },
     );
   }

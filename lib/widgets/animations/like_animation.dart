@@ -19,7 +19,7 @@ class _LikeAnimationState extends State<LikeAnimation> with SingleTickerProvider
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(vsync: this, duration: const Duration(seconds: 2))..forward(from: 0);
+    _controller = AnimationController(vsync: this, duration: const Duration(milliseconds: 800))..forward(from: 0);
     _animation = Tween(begin: 1.0, end: 1.5).animate(CurvedAnimation(parent: _controller, curve: const Interval(0, 1, curve: Curves.bounceOut)));
     _animation.addStatusListener((status) {
       switch(status){

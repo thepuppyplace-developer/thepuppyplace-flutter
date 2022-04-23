@@ -23,9 +23,9 @@ import '../../widgets/text_fields/comment_field.dart';
 import '../insert_page/update_board_page.dart';
 
 class BoardDetailsPage extends StatefulWidget {
-  final Board board;
+  int board_id;
 
-  const BoardDetailsPage(this.board, {Key? key}) : super(key: key);
+  BoardDetailsPage(this.board_id, {Key? key}) : super(key: key);
 
   @override
   State<BoardDetailsPage> createState() => _BoardDetailsPageState();
@@ -38,68 +38,69 @@ class _BoardDetailsPageState extends State<BoardDetailsPage> {
   final TextEditingController _commentController = TextEditingController();
 
   @override
+  void initState() {
+    super.initState();
+    widget.board_id = Get.arguments ?? widget.board_id;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return GetBuilder<BoardController>(
-        init: BoardController(widget.board),
+        init: BoardController(widget.board_id),
         builder: (BoardController controller) => controller.obx((Board? board) => Scaffold(
           body: NestedScrollView(
             physics: const NeverScrollableScrollPhysics(),
             headerSliverBuilder: (BuildContext context, bool inner) => [
-              GetBuilder<UserController>(
-                  init: UserController(),
-                  builder: (UserController userController) {
-                    return SliverAppBar(
-                      snap: true,
-                      floating: true,
-                      pinned: true,
-                      centerTitle: true,
-                      elevation: 0.5,
-                      leading: const BackButton(),
-                      title: Text(controller.board.category, style: CustomTextStyle.w600(context, scale: 0.02),),
-                      actions: [
-                        CupertinoButton(
-                          padding: EdgeInsets.zero,
-                          child: Icon(Icons.ios_share, color: Colors.black, size: mediaHeight(context, 0.03),),
-                          onPressed: (){},
+              SliverAppBar(
+                snap: true,
+                floating: true,
+                pinned: true,
+                centerTitle: true,
+                elevation: 0.5,
+                leading: const BackButton(),
+                title: Text(board!.category, style: CustomTextStyle.w600(context, scale: 0.02),),
+                actions: [
+                  CupertinoButton(
+                    padding: EdgeInsets.zero,
+                    child: Icon(Icons.ios_share, color: Colors.black, size: mediaHeight(context, 0.03),),
+                    onPressed: (){},
+                  ),
+                  if(UserController.user != null && UserController.user!.id == board.userId)CupertinoButton(
+                    padding: EdgeInsets.zero,
+                    onPressed: null,
+                    child: PopupMenuButton(
+                      child: Icon(Icons.more_vert, color: Colors.black, size: mediaHeight(context, 0.03)),
+                      itemBuilder: (BuildContext context) => [
+                        PopupMenuItem(
+                          value: 'edit',
+                          child: Text('게시글 수정', style: CustomTextStyle.w500(context)),
                         ),
-                        if(UserController.user != null && UserController.user!.id == board!.userId)CupertinoButton(
-                          padding: EdgeInsets.zero,
-                          onPressed: null,
-                          child: PopupMenuButton(
-                            child: Icon(Icons.more_vert, color: Colors.black, size: mediaHeight(context, 0.03)),
-                            itemBuilder: (BuildContext context) => [
-                              PopupMenuItem(
-                                value: 'edit',
-                                child: Text('게시글 수정', style: CustomTextStyle.w500(context)),
-                              ),
-                              PopupMenuItem(
-                                value: 'delete',
-                                child: Text('게시글 삭제', style: CustomTextStyle.w500(context)),
-                              )
-                            ],
-                            onSelected: (String value){
-                              switch(value){
-                                case 'delete': {
-                                  showCupertinoDialog(context: context, builder: (context) => CustomDialog(
-                                      title: '게시글을 삭제하시겠습니까?',
-                                      content: '삭제한 게시글은 복원되지 않습니다.\n삭제하시겠습니까?',
-                                      onTap: (){
-                                        showIndicator(controller.deleteBoard(context));
-                                      }
-                                  ));
-                                  break;
-                                }
-                                default: {
-                                  Get.to(() => UpdateBoardPage(board));
-                                }
-                              }
-                            },
-                          ),
+                        PopupMenuItem(
+                          value: 'delete',
+                          child: Text('게시글 삭제', style: CustomTextStyle.w500(context)),
                         )
                       ],
-                    );
-                  }
-              ),
+                      onSelected: (String value){
+                        switch(value){
+                          case 'delete': {
+                            showCupertinoDialog(context: context, builder: (context) => CustomDialog(
+                                title: '게시글을 삭제하시겠습니까?',
+                                content: '삭제한 게시글은 복원되지 않습니다.\n삭제하시겠습니까?',
+                                onTap: (){
+                                  showIndicator(controller.deleteBoard(context));
+                                }
+                            ));
+                            break;
+                          }
+                          default: {
+                            Get.to(() => UpdateBoardPage(board));
+                          }
+                        }
+                      },
+                    ),
+                  )
+                ],
+              )
             ],
             body: Column(
               children: [
@@ -214,11 +215,32 @@ class _BoardDetailsPageState extends State<BoardDetailsPage> {
                                       children: [
                                         Container(
                                           margin: EdgeInsets.only(right: mediaWidth(context, 0.02)),
-                                          child: GestureDetector(
-                                            child: Icon(CustomIcons.heart, color: CustomColors.hint, size: mediaHeight(context, 0.025)),
-                                            onTap: (){
-                                              showDialog(context: context, builder: (context) => LikeAnimation(controller.likeBoard(context)));
+                                          child: GetBuilder<UserController>(
+                                            init: UserController(),
+                                            builder: (UserController userController) => userController.obx((user) {
+                                              if(board.likeList.where((like) => like.userId == user!.id).isEmpty){
+                                                return GestureDetector(
+                                                  child: Icon(CustomIcons.heart, color: CustomColors.hint, size: mediaHeight(context, 0.025)),
+                                                  onTap: (){
+                                                    showDialog(context: context, builder: (context) => LikeAnimation(controller.likeBoard(context)));
+                                                  },
+                                                );
+                                              } else {
+                                                return GestureDetector(
+                                                  child: Icon(CustomIcons.heart, color: Colors.red, size: mediaHeight(context, 0.025)),
+                                                  onTap: (){
+                                                    showDialog(context: context, builder: (context) => LikeAnimation(controller.likeBoard(context)));
+                                                  },
+                                                );
+                                              }
                                             },
+                                              onEmpty: GestureDetector(
+                                                child: Icon(CustomIcons.heart, color: CustomColors.hint, size: mediaHeight(context, 0.025)),
+                                                onTap: (){
+                                                  showSnackBar(context, '로그인을 해주세요.');
+                                                },
+                                              )
+                                            )
                                           ),
                                         ),
                                         Text(board.likeList.length.toString(), style: CustomTextStyle.w400(context, scale: 0.02)),
@@ -233,7 +255,6 @@ class _BoardDetailsPageState extends State<BoardDetailsPage> {
                                       ],
                                     ),
                                   ),
-                                  Text(board.view_count.toString())
                                 ],
                               ),
                             ),
@@ -250,7 +271,7 @@ class _BoardDetailsPageState extends State<BoardDetailsPage> {
                                       });
                                     },
                                       onCommentDelete: (){
-                                      controller.deleteComment(context, comment);
+                                        controller.deleteComment(context, comment);
                                       },
                                       onNestedCommentDelete: (NestedComment nestedComment){
                                         controller.deleteNestedComment(context, nestedComment);

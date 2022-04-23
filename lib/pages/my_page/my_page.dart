@@ -6,11 +6,14 @@ import 'package:thepuppyplace_flutter/util/common.dart';
 import 'package:thepuppyplace_flutter/util/custom_icons.dart';
 import '../../controllers/user/user_controller.dart';
 import '../../models/User.dart';
-import '../../util/png_list.dart';
 import '../../widgets/buttons/custom_icon_button.dart';
 import '../../widgets/buttons/custom_text_button.dart';
 import '../../widgets/dialogs/custom_dialog.dart';
+import '../notice_page/notice_list_page.dart';
+import '../setting_page/setting_page.dart';
 import 'login_request_page.dart';
+import 'my_board_list.dart';
+import 'my_like_board_list_page.dart';
 import 'update_my_page.dart';
 
 class MyPage extends GetWidget<UserController> {
@@ -80,14 +83,18 @@ class MyPage extends GetWidget<UserController> {
                   child: CustomIconButton(
                     icon: CustomIcons.menu,
                     text: '내가 쓴 게시물',
-                    onTap: (){},
+                    onTap: (){
+                      Get.to(() => const MyBoardListPage());
+                    },
                   ),
                 ),
                 Expanded(
                   child: CustomIconButton(
                     icon: CustomIcons.heart,
                     text: '내가 좋아한 게시물',
-                    onTap: (){},
+                    onTap: (){
+                      Get.to(() => const MyLikeBoardListPage());
+                    },
                   ),
                 ),
               ],
@@ -102,9 +109,14 @@ class MyPage extends GetWidget<UserController> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text('설정', style: CustomTextStyle.w500(context, color: CustomColors.hint),),
-                    CustomTextButton('환경설정', (){}, color: Colors.black),
-                    const CustomTextButton('버전정보', null, color: Colors.black,),
-                    CustomTextButton('서비스 이용약관', (){}, color: Colors.black),
+                    CustomTextButton('환경설정', (){
+                      Get.to(() => const SettingPage());
+                    }, color: Colors.black, alignment: Alignment.centerLeft),
+                    CustomTextButton('공지사항', (){
+                      Get.to(() => const NoticeListPage());
+                    }, color: Colors.black, alignment: Alignment.centerLeft),
+                    CustomTextButton('버전정보', null, color: Colors.black, alignment: Alignment.centerLeft),
+                    CustomTextButton('서비스 이용약관', (){}, color: Colors.black, alignment: Alignment.centerLeft),
                     CustomTextButton('로그아웃', (){
                       showCupertinoDialog(
                           context: context,
@@ -117,12 +129,8 @@ class MyPage extends GetWidget<UserController> {
                         },
                         tabText: '로그아웃',
                       ));
-                      // showDialog(context: context, builder: (context) => CustomDialog(
-                      //   title: '로그아웃 하시겠습니까?',
-                      //   onTap: (){},
-                      // ));
-                    }, color: Colors.black),
-                    CustomTextButton('회원탈퇴', (){}, color: Colors.black),
+                    }, color: Colors.black, alignment: Alignment.centerLeft),
+                    CustomTextButton('회원탈퇴', (){}, color: Colors.black, alignment: Alignment.centerLeft),
                   ],
                 ))
           ],

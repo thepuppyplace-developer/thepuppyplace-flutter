@@ -17,6 +17,9 @@
                  while the Flutter UI initializes. After that, this theme continues
                  to determine the Window background behind the Flutter UI. -->
             <meta-data
+                android:name="com.google.firebase.messaging.default_notification_icon"
+                android:resource="@mipmap/ic_launcher"/>
+            <meta-data
               android:name="io.flutter.embedding.android.NormalTheme"
               android:resource="@style/NormalTheme"
               />
@@ -31,4 +34,12 @@
             android:name="flutterEmbedding"
             android:value="2" />
     </application>
+    <!--    부팅 시 서비스 실행하기-->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <!--    진동 사용-->
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <!--    휴대폰이 꺼져 있을 시에 알람이 오면 화면을 깨우는 기능-->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <!--    알람이 울릴 시 푸시 알람 대신 앱이 띄워짐-->
+    <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
 </manifest>

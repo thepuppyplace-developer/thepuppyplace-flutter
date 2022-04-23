@@ -64,4 +64,24 @@ class User{
     'updatedAt': updatedAt.toIso8601String(),
     'deletedAt': deletedAt == null ? null : deletedAt!.toIso8601String(),
   };
+
+  static const String TABLE = 'User';
+  static String get CREATE_TABLE => '''
+  CREATE TABLE IF NOT EXISTS $TABLE(
+  id INTEGER PRIMARY KEY NOT NULL,
+  email STRING NOT NULL,
+  nickname STRING NOT NULL,
+  name STRING,
+  phone_number STRING,
+  photo_url STRING,
+  gender STRING,
+  fcm_token STRING,
+  jwt_token STRING,
+  is_alarm INTEGER NOT NULL,
+  location STRING,
+  createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+  updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+  deletedAt TIMESTAMP
+  )
+  ''';
 }

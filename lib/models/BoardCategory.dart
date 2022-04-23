@@ -32,4 +32,17 @@ class BoardCategory{
     'updatedAt': updatedAt,
     'deletedAt': deletedAt,
   };
+
+  static const String TABLE = 'BoardCategory';
+  static String get CREATE_TABLE => '''
+  CREATE TABLE IF NOT EXISTS $TABLE(
+  id INTEGER NOT NULL,
+  category STRING NOT NULL,
+  image_url STRING NOT NULL,
+  createdAT TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+  updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+  deletedAt TIMESTAMP NOT NULL,
+  PRIMARY KEY(id)
+  )
+  ''';
 }
