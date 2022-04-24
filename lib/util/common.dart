@@ -116,7 +116,7 @@ String beforeDate(DateTime date){
   } else if(time.inDays < 7){
     return '${time.inDays}일 전';
   } else {
-    return DateFormat('yyyy.MM.DD').format(date);
+    return DateFormat('yyyy.MM.dd').format(date);
   }
 }
 

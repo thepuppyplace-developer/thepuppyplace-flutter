@@ -716,13 +716,6 @@
             </list>
           </value>
         </entry>
-        <entry key="thepuppyplace_flutter">
-          <value>
-            <list>
-              <option value="$PROJECT_DIR$/../lib" />
-            </list>
-          </value>
-        </entry>
         <entry key="timezone">
           <value>
             <list>
@@ -948,7 +941,6 @@
       <root url="file://$USER_HOME$/Developer/flutter/packages/flutter_localizations/lib" />
       <root url="file://$USER_HOME$/Developer/flutter/packages/flutter_test/lib" />
       <root url="file://$USER_HOME$/Developer/flutter/packages/flutter_web_plugins/lib" />
-      <root url="file://$PROJECT_DIR$/../lib" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

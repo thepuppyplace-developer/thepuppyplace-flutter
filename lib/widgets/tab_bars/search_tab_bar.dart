@@ -58,6 +58,7 @@ class InsertSearchTabBar extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) => CustomTextField(
+    height: height,
     textFieldType: TextFieldType.outline,
     onFieldSubmitted: onFieldSubmitted,
     textInputAction: TextInputAction.search,
