@@ -15,22 +15,22 @@ class SearchBoardCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CupertinoButton(
-      padding: EdgeInsets.zero,
-      child: Container(
-        margin: EdgeInsets.all(mediaWidth(context, 0.033)),
-        padding: EdgeInsets.all(mediaWidth(context, 0.033)),
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            boxShadow: const [
-              BoxShadow(
-                  color: CustomColors.empty,
-                  blurStyle: BlurStyle.outer,
-                  blurRadius: 10,
-                  spreadRadius: 0.1
-              )
-            ]
-        ),
+    return Container(
+      margin: EdgeInsets.all(mediaWidth(context, 0.033)),
+      padding: EdgeInsets.all(mediaWidth(context, 0.033)),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          boxShadow: const [
+            BoxShadow(
+                color: CustomColors.emptySide,
+                blurStyle: BlurStyle.outer,
+                blurRadius: 10,
+                spreadRadius: 10
+            )
+          ]
+      ),
+      child: CupertinoButton(
+        padding: EdgeInsets.zero,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -47,7 +47,7 @@ class SearchBoardCard extends StatelessWidget {
                           TagText(board.location, margin: EdgeInsets.symmetric(vertical: mediaHeight(context, 0.01))),
                         ],
                       ),
-                      Text(board.title, style: CustomTextStyle.w600(context))
+                      Text(board.title, style: CustomTextStyle.w600(context), overflow: TextOverflow.ellipsis)
                     ],
                   ),
                 ),
@@ -66,10 +66,10 @@ class SearchBoardCard extends StatelessWidget {
             )
           ],
         ),
+        onPressed: (){
+          Get.to(() => BoardDetailsPage(board.id));
+        },
       ),
-      onPressed: (){
-        Get.to(() => BoardDetailsPage(board.id));
-      },
     );
   }
 }

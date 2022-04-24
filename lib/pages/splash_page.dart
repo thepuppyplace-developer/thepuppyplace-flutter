@@ -6,7 +6,7 @@ import '../../controllers/version/version_controller.dart';
 import '../controllers/database/database_controller.dart';
 import '../util/cached_network_image_list.dart';
 import '../util/png_list.dart';
-import 'navigator_page.dart';
+import '../navigators/navigator_page.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({Key? key}) : super(key: key);

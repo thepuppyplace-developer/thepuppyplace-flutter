@@ -21,7 +21,7 @@ class CustomDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CupertinoAlertDialog(
-      title: Text(title, style: CustomTextStyle.w500(context, scale: 0.02), textAlign: TextAlign.center),
+      title: Text(title, style: CustomTextStyle.w600(context, scale: 0.02), textAlign: TextAlign.center),
       content: content == null ? null : Text(content ?? '', style: CustomTextStyle.w500(context), textAlign: TextAlign.center),
       actions: [
         CustomTextButton('취소', (){

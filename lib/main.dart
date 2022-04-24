@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'controllers/database/database_controller.dart';
 import 'controllers/notification/notification_controller.dart';
 import 'pages/auth_page/login_page.dart';
-import 'pages/navigator_page.dart';
+import 'navigators/navigator_page.dart';
 import 'util/customs.dart';
 import 'pages/splash_page.dart';
 

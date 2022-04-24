@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:math';
+import 'dart:typed_data';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -148,4 +149,15 @@ Future openURL({required String url, bool? inApp}) async{
       forceWebView: inApp ?? false,
       enableJavaScript: true
   );
+}
+
+Future<File?> photoPick(BuildContext context, ImageSource imageSource) async{
+  final imagePicker = ImagePicker();
+  final photo = await imagePicker.pickImage(source: imageSource, imageQuality: 20);
+  if(photo != null){
+    return photo as File;
+  } else {
+    showSnackBar(context, '프로필 수정이 취소되었습니다.');
+    return null;
+  }
 }

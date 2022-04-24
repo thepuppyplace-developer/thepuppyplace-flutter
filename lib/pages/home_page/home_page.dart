@@ -63,8 +63,20 @@ class _HomePageState extends State<HomePage> {
                 pinned: true,
                 centerTitle: false,
                 elevation: 0.1,
-                title: Image.asset(PngList.logo,
-                  width: mediaWidth(context, 0.4),),
+                title: RichText(
+                  text: TextSpan(
+                    style: CustomTextStyle.w500(context, scale: 0.025),
+                    children: [
+                      const TextSpan(
+                        text: 'the '
+                      ),
+                      TextSpan(
+                        text: 'puppy place',
+                        style: CustomTextStyle.w900(context, scale: 0.025)
+                      )
+                    ]
+                  ),
+                ),
                 bottom: SearchTabBar(mediaHeight(context, 0.07)),
               )
             ],

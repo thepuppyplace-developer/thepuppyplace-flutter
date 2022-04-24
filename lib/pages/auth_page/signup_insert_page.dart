@@ -242,7 +242,7 @@ class _SignupInsertPageState extends State<SignupInsertPage> {
                 height: mediaHeight(context, 0.06),
                 margin: EdgeInsets.all(mediaWidth(context, 0.033)),
                 onPressed: !_auth || _password.length < 8 || _passwordCheck.length < 8 || _nickname.length < 6 ? null : () async{
-                  _nicknameValidator = await _repository.nicknameCheck(_nickname);
+                  _nicknameValidator = await _repository.nicknameCheck(context, _nickname);
                   if(_passwordKey.currentState!.validate()){
                     _passwordKey.currentState!.save();
                     if(_nicknameKey.currentState!.validate()){

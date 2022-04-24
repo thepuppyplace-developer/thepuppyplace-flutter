@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:thepuppyplace_flutter/util/common.dart';
@@ -54,7 +55,7 @@ class UserController extends GetxController with StateMixin<User>, Config, Local
 
   //로그인
   Future login(BuildContext context, {required String email, required String password})
-  => _repository.login(email, password).then((token){
+  => _repository.login(context, email, password).then((token){
 
     switch(token){
       case null:
@@ -90,6 +91,11 @@ class UserController extends GetxController with StateMixin<User>, Config, Local
 
   Future changeNotification(BuildContext context) async{
     await _repository.changeNotification(context);
+    return _getUser(await jwt);
+  }
+
+  Future updatePhotoURL(BuildContext context, File? photo) async{
+    await _repository.updatePhotoURL(context, photo);
     return _getUser(await jwt);
   }
 }

@@ -18,6 +18,7 @@ class NoticeDetailsPage extends StatelessWidget {
             snap: true,
             floating: true,
             pinned: true,
+            elevation: 0.5,
             title: Text('공지사항', style: CustomTextStyle.w600(context, scale: 0.02)),
           ),
           SliverToBoxAdapter(

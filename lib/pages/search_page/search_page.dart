@@ -59,13 +59,34 @@ class _SearchPageState extends State<SearchPage> {
                     if(_search.text.isNotEmpty){
                       return CustomScrollView(
                         slivers: [
+                          SliverToBoxAdapter(
+                            child: Container(
+                                margin: EdgeInsets.all(mediaWidth(context, 0.033)),
+                                child: RichText(
+                                  text: TextSpan(
+                                    style: CustomTextStyle.w500(context, color: Colors.grey),
+                                    children: [
+                                      TextSpan(
+                                        text: "'${_search.text}'",
+                                        style: CustomTextStyle.w600(context, color: Colors.black)
+                                      ),
+                                      TextSpan(
+                                          text: '(으)로 검색한 ${controller.boardList.length}건의 검색결과'),
+                                    ]
+                                  ),
+                                )
+                    ),
+                          ),
                           controller.obx((List<Board>? boardList){
-                            return SliverList(
-                              delegate: SliverChildBuilderDelegate((context, index){
-                                Board board = boardList![index];
-                                return SearchBoardCard(board);
-                              },
-                                  childCount: boardList!.length
+                            return SliverPadding(
+                              padding: EdgeInsets.all(mediaWidth(context, 0.033)),
+                              sliver: SliverList(
+                                delegate: SliverChildBuilderDelegate((context, index){
+                                  Board board = boardList![index];
+                                  return SearchBoardCard(board);
+                                },
+                                    childCount: boardList!.length,
+                                ),
                               ),
                             );
                           },

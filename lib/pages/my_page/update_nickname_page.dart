@@ -72,7 +72,7 @@ class _UpdateNicknamePageState extends State<UpdateNicknamePage> {
                 CustomButton(
                   title: '변경하기',
                   onPressed: _nickname.isEmpty || _nickname.length < 6 ? null : () async{
-                    _nicknameValidator = await _repository.nicknameCheck(_nickname);
+                    _nicknameValidator = await _repository.nicknameCheck(context, _nickname);
                     if(_nicknameKey.currentState!.validate()){
                       _nicknameKey.currentState!.save();
                     }
