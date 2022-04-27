@@ -75,6 +75,7 @@ class _UpdateNicknamePageState extends State<UpdateNicknamePage> {
                     _nicknameValidator = await _repository.nicknameCheck(context, _nickname);
                     if(_nicknameKey.currentState!.validate()){
                       _nicknameKey.currentState!.save();
+                      controller.updateNickname(context, _nickname);
                     }
                   },
                 )

@@ -94,6 +94,11 @@ class UserController extends GetxController with StateMixin<User>, Config, Local
     return _getUser(await jwt);
   }
 
+  Future updateNickname(BuildContext context, String nickname) async{
+    await _repository.updateNickname(context, nickname);
+    return _getUser(await jwt);
+  }
+
   Future updatePhotoURL(BuildContext context, File? photo) async{
     await _repository.updatePhotoURL(context, photo);
     return _getUser(await jwt);
