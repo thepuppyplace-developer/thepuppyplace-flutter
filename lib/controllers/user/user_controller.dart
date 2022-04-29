@@ -18,6 +18,7 @@ class UserController extends GetxController with StateMixin<User>, Config, Local
     super.onReady();
     ever(_user, _userListener);
     _autoLogin;
+    print(await jwt);
   }
 
   void _userListener(User? user){

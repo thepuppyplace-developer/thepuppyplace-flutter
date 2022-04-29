@@ -17,13 +17,21 @@ double mediaWidth(BuildContext context, double scale) => MediaQuery.of(context).
 
 void unFocus(BuildContext context) => FocusScope.of(context).unfocus();
 
-Future<List<String>> pickMultiImage({int? limit}) async{
-  ImagePicker picker = ImagePicker();
+Future<List<XFile>> pickMultiImage({int? limit}) async{
+  final ImagePicker picker = ImagePicker();
   List<XFile>? imageList = await picker.pickMultiImage();
   if(imageList == null){
-    return <String>[];
+    return <XFile>[];
   } else {
-    return imageList.take(limit ?? 10).map((image) => image.path).toList();
+    return imageList.take(limit ?? 10).map((image) => image).toList();
+  }
+}
+
+Future<XFile?> imagePicker(ImageSource imageSource) async{
+  final ImagePicker picker = ImagePicker();
+  final XFile? image = await picker.pickImage(source: imageSource, imageQuality: 10);
+  if(image != null){
+    return image;
   }
 }
 

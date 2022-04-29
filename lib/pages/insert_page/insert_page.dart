@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import '../../controllers/user/user_controller.dart';
 import '../../models/User.dart';
 import '../../repositories/board_repository.dart';
@@ -26,7 +27,7 @@ class _InsertPageState extends State<InsertPage> {
   int? _locationIndex;
   int _locationDetailIndex = 0;
 
-  List<String> photoList = <String>[];
+  List<XFile> photoList = <XFile>[];
 
   final List<String> _categoryList = const <String>[
     '수다방', '카페', '음식점', '호텔', '운동장', '쇼핑몰'
@@ -209,7 +210,7 @@ class _InsertPageState extends State<InsertPage> {
                                   setState(() {});
                                 },
                               ),
-                              for(String? photo in photoList) CupertinoButton(
+                              if(photoList.isNotEmpty) for(XFile photo in photoList) CupertinoButton(
                                 padding: EdgeInsets.only(right: mediaWidth(context, 0.033)),
                                 child: Container(
                                   alignment: Alignment.center,
@@ -221,7 +222,7 @@ class _InsertPageState extends State<InsertPage> {
                                       border: Border.all(color: CustomColors.hint),
                                       image: DecorationImage(
                                           fit: BoxFit.cover,
-                                          image: FileImage(File(photo!))
+                                          image: FileImage(File(photo.path))
                                       )
                                   ),
                                 ),
@@ -236,14 +237,14 @@ class _InsertPageState extends State<InsertPage> {
                   CustomButton(
                     margin: EdgeInsets.all(mediaWidth(context, 0.033)),
                     title: '등록하기',
-                    onPressed: (){
+                    onPressed: () async{
                       showIndicator(BoardRepository.from.insertBoard(
                           context,
                           title: _title,
                           description: _description,
                           location: '${LocationList.location[_locationIndex!]} ${LocationList.details(_locationIndex)[_locationDetailIndex]}',
                           category: _categoryList[_categoryIndex],
-                          board_photos: photoList.map((photo) => File.new(photo)).toList()
+                          board_photos: photoList
                       ));
                     },
                   )

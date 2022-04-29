@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:thepuppyplace_flutter/models/BoardCategory.dart';
 import 'package:thepuppyplace_flutter/pages/board_page/board_details_page.dart';
 import 'package:thepuppyplace_flutter/util/common.dart';
@@ -23,7 +24,7 @@ class BoardRepository extends GetConnect with Config, LocalConfig{
     required String description,
     required String location,
     required String category,
-    required List<File> board_photos
+    required List<XFile> board_photos
   }) async{
     if(await jwt != null){
       Response res = await post('$API_URL/board/insert', FormData({
@@ -31,7 +32,7 @@ class BoardRepository extends GetConnect with Config, LocalConfig{
         'description': description.trim(),
         'location': location.trim(),
         'category': category.trim(),
-        'images': board_photos
+        'images': board_photos.map((image) => image.readAsBytes()).toList()
       }), headers: headers(await jwt));
 
       switch(res.statusCode){

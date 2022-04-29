@@ -8,12 +8,14 @@ class CustomIconButton extends StatelessWidget {
   final IconData icon;
   final String? text;
   final Function() onTap;
+  final EdgeInsets? margin;
 
   const CustomIconButton({
     this.type,
     this.color,
     required this.icon,
     this.text,
+    this.margin,
     required this.onTap,
     Key? key}) : super(key: key);
 
@@ -29,7 +31,7 @@ class CustomIconButton extends StatelessWidget {
         child: Column(
           children: [
             Container(
-                margin: EdgeInsets.only(bottom: mediaHeight(context, 0.01)),
+                margin: margin ?? EdgeInsets.only(bottom: mediaHeight(context, 0.01)),
                 child: Icon(_baseIcon, size: mediaHeight(context, 0.03), color: _baseColor)),
             Text(text ?? '', style: CustomTextStyle.w500(context, scale: 0.02))
           ],
@@ -38,7 +40,9 @@ class CustomIconButton extends StatelessWidget {
       );
       default: return CupertinoButton(
         padding: EdgeInsets.zero,
-        child: Icon(_baseIcon, size: mediaHeight(context, 0.03), color: _baseColor),
+        child: Container(
+            margin: margin,
+            child: Icon(_baseIcon, size: mediaHeight(context, 0.03), color: _baseColor)),
         onPressed: _baseFunction,
       );
     }

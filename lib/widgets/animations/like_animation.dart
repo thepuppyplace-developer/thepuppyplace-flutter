@@ -4,9 +4,10 @@ import 'package:get/get.dart';
 import 'package:thepuppyplace_flutter/util/common.dart';
 
 class LikeAnimation extends StatefulWidget {
+  final IconData icon;
   final Future onCompleted;
 
-  const LikeAnimation(this.onCompleted, {Key? key}) : super(key: key);
+  const LikeAnimation(this.icon, this.onCompleted, {Key? key}) : super(key: key);
 
   @override
   _LikeAnimationState createState() => _LikeAnimationState();
@@ -41,7 +42,7 @@ class _LikeAnimationState extends State<LikeAnimation> with SingleTickerProvider
     return ScaleTransition(
       alignment: Alignment.center,
       scale: _animation,
-      child: Icon(CupertinoIcons.heart_fill, color: Colors.red, size: mediaHeight(context, 0.1)),
+      child: Icon(widget.icon, color: Colors.red, size: mediaHeight(context, 0.1)),
     );
   }
 }

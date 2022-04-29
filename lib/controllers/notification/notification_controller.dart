@@ -24,103 +24,107 @@ class NotificationController extends GetxController with Config{
   late NotificationDetails _notificationDetails;
   late InitializationSettings _settings;
 
+  late NotificationSettings _notificationSettings;
+
   @override
   void onInit() async {
-    _androidDetails = AndroidNotificationDetails(
-      channelId,
-      channelName,
-      channelDescription: channelDescription,
-      priority: Priority.high,
-      importance: Importance.max,
-      largeIcon: const DrawableResourceAndroidBitmap('@mipmap/ic_launcher'),
-      color: CustomColors.main,
+    _notificationSettings = await _fcm.requestPermission(
+      alert: true,
+      sound: true,
+      badge: true
     );
 
-    _settings = InitializationSettings(
-        android: _androidSettings,
-        iOS: _iosSettings
-    );
+    if(_notificationSettings.authorizationStatus == AuthorizationStatus.authorized || _notificationSettings.authorizationStatus == AuthorizationStatus.provisional){
+      _androidDetails = AndroidNotificationDetails(
+        channelId,
+        channelName,
+        channelDescription: channelDescription,
+        priority: Priority.high,
+        importance: Importance.max,
+        largeIcon: const DrawableResourceAndroidBitmap('@mipmap/ic_launcher'),
+        color: CustomColors.main,
+      );
 
-    _localNotifications.initialize(
-      _settings,
-      onSelectNotification: (String? payload){
-        print(payload);
-        if(payload != null){
-          final data = jsonDecode(payload);
-          String action = data['action'];
-          String actionType = data['action_type'];
-          int board_id = int.parse(data['board_id']);
-          switch (actionType) {
-            case 'web':
-              {
-                openURL(url: action, inApp: false);
-                break;
+      _settings = InitializationSettings(
+          android: _androidSettings,
+          iOS: _iosSettings
+      );
+
+      _iosDetails = const IOSNotificationDetails(
+        presentAlert: true,
+        presentBadge: true,
+        presentSound: true,
+      );
+
+      _notificationDetails = NotificationDetails(
+          android: _androidDetails,
+          iOS: _iosDetails
+      );
+
+      _localNotifications.initialize(
+          _settings,
+          onSelectNotification: (String? payload){
+            print(payload);
+            if(payload != null){
+              final data = jsonDecode(payload);
+              String action = data['action'];
+              String actionType = data['action_type'];
+              int board_id = int.parse(data['board_id']);
+              switch (actionType) {
+                case 'web':
+                  {
+                    openURL(url: action, inApp: false);
+                    break;
+                  }
+                default:
+                  switch(action){
+                    case '/board_details_page': Get.to(() => BoardDetailsPage(board_id));
+                    break;
+                    default: return;
+                  }
               }
-            default:
-              switch(action){
-                case '/board_details_page': Get.to(() => BoardDetailsPage(board_id));
-                break;
-                default: return;
-              }
+            }
           }
+      );
+
+      FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+        RemoteNotification? notification = message.notification;
+        if (notification != null) {
+          _localNotifications.show(
+              notification.hashCode,
+              notification.title,
+              notification.body,
+              _notificationDetails,
+              payload: jsonEncode(message.data)
+          );
         }
-      }
-    );
+      });
 
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      RemoteNotification? notification = message.notification;
-      if (notification != null) {
-        _localNotifications.show(
-            notification.hashCode,
-            notification.title,
-            notification.body,
-            _notificationDetails,
-            payload: jsonEncode(message.data)
-        );
-      }
-    });
+      _fcm.setForegroundNotificationPresentationOptions(
+          alert: true,
+          badge: true,
+          sound: true
+      );
 
-    _fcm.requestPermission(
-        alert: true,
-        badge: true,
-        sound: true
-    );
-
-    _fcm.setForegroundNotificationPresentationOptions(
-        alert: true,
-        badge: true,
-        sound: true
-    );
-
-    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      print(message.data);
-      String action = message.data['action'];
-      String actionType = message.data['action_type'];
-      int board_id = int.parse(message.data['board_id']);
-      switch (actionType) {
-        case 'web':
-          {
-            openURL(url: action, inApp: false);
-            break;
-          }
-        default:
-          switch(action){
-            case '/board_details_page': Get.to(() => BoardDetailsPage(board_id));
-            break;
-            default: return;
-          }
-      }
-    });
-
-    _iosDetails = const IOSNotificationDetails(
-      presentAlert: true,
-      presentBadge: true,
-      presentSound: true,
-    );
-
-    _notificationDetails = NotificationDetails(
-        android: _androidDetails,
-        iOS: _iosDetails
-    );
+      FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+        print(message.data);
+        String action = message.data['action'];
+        String actionType = message.data['action_type'];
+        int board_id = int.parse(message.data['board_id']);
+        switch (actionType) {
+          case 'web':
+            {
+              openURL(url: action, inApp: false);
+              break;
+            }
+          default:
+            switch(action){
+              case '/board_details_page': Get.to(() => BoardDetailsPage(board_id));
+              break;
+              default: return;
+            }
+        }
+      });
+    }
   }
 }

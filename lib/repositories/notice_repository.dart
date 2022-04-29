@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:thepuppyplace_flutter/util/common.dart';
 
 import '../config/config.dart';
@@ -26,11 +27,11 @@ class NoticeRepository extends GetConnect with Config, LocalConfig{
     }
   }
 
-  Future<int?> insertNotice(BuildContext context, {required File? image, required String notice_title, required String notice_main_text}) async{
+  Future<int?> insertNotice(BuildContext context, {required XFile? image, required String notice_title, required String notice_main_text}) async{
     try{
       if(await jwt != null){
         final Response res = await post('$API_URL/notice', FormData({
-          'image': image,
+          'image': image!.readAsBytes(),
           'notice_title': notice_title.trim(),
           'notice_main_text': notice_main_text.trim()
         }));
@@ -48,6 +49,7 @@ class NoticeRepository extends GetConnect with Config, LocalConfig{
         return null;
       }
     } catch(error){
+      print(error);
       throw unknown_message(context);
     }
   }

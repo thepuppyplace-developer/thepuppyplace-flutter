@@ -222,14 +222,14 @@ class _BoardDetailsPageState extends State<BoardDetailsPage> {
                                                 return GestureDetector(
                                                   child: Icon(CustomIcons.heart, color: CustomColors.hint, size: mediaHeight(context, 0.025)),
                                                   onTap: (){
-                                                    showDialog(context: context, builder: (context) => LikeAnimation(controller.likeBoard(context)));
+                                                    showDialog(context: context, builder: (context) => LikeAnimation(CupertinoIcons.heart_fill, controller.likeBoard(context)));
                                                   },
                                                 );
                                               } else {
                                                 return GestureDetector(
                                                   child: Icon(CustomIcons.heart, color: Colors.red, size: mediaHeight(context, 0.025)),
                                                   onTap: (){
-                                                    showDialog(context: context, builder: (context) => LikeAnimation(controller.likeBoard(context)));
+                                                    showDialog(context: context, builder: (context) => LikeAnimation(CustomIcons.heart, controller.likeBoard(context)));
                                                   },
                                                 );
                                               }
