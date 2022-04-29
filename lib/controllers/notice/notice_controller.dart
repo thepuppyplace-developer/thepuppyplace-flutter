@@ -4,25 +4,25 @@ import 'package:get/get.dart';
 import '../../models/Notice.dart';
 import '../../repositories/notice_repository.dart';
 
-class NoticeListController extends GetxController with StateMixin<List<Notice>>{
+class NoticeController extends GetxController with StateMixin<Notice>{
+  final int? notice_id;
   final BuildContext context;
-  NoticeListController(this.context);
+  NoticeController(this.notice_id, this.context);
 
   final NoticeRepository _repository = NoticeRepository();
-  final RxList<Notice> _noticeList = RxList<Notice>();
+  final Rxn<Notice> _notice = Rxn<Notice>();
 
   @override
   void onReady() {
     super.onReady();
-    ever(_noticeList, _boardListListener);
-    getNoticeList;
+    ever(_notice, _noticeListener);
   }
 
-  void _boardListListener(List<Notice> noticeList){
+  void _noticeListener(Notice? notice){
     try{
       change(null, status: RxStatus.loading());
-      if(noticeList.isNotEmpty){
-        change(noticeList, status: RxStatus.success());
+      if(notice != null){
+        change(notice, status: RxStatus.success());
       } else {
         change(null, status: RxStatus.empty());
       }
@@ -31,7 +31,12 @@ class NoticeListController extends GetxController with StateMixin<List<Notice>>{
     }
   }
 
-  Future get getNoticeList async{
-    _noticeList.addAll(await _repository.getNoticeList(context));
+  Future get deleteNotice async{
+    Get.back();
+    int? statusCode = await _repository.deleteNotice(context, notice_id);
+
+    if(statusCode == 200){
+      return Get.until((route) => route.isFirst);
+    }
   }
 }

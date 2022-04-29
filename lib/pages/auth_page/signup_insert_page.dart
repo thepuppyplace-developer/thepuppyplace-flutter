@@ -184,6 +184,7 @@ class _SignupInsertPageState extends State<SignupInsertPage> {
                                 keyboardType: TextInputType.visiblePassword,
                                 hintText: '비밀번호(8~20자 이내)',
                                 maxLength: 20,
+                                maxLines: 1,
                                 margin: EdgeInsets.only(bottom: mediaHeight(context, 0.05))
                             ),
                             CustomTextField(
@@ -200,6 +201,7 @@ class _SignupInsertPageState extends State<SignupInsertPage> {
                                   return null;
                                 }
                               },
+                              maxLines: 1,
                               obscureText: true,
                               keyboardType: TextInputType.visiblePassword,
                               hintText: '비밀번호 확인',

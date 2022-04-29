@@ -14,7 +14,7 @@ class NoticeCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       onTap: (){
-        Get.to(() => NoticeDetailsPage(notice), routeName: 'details');
+        Get.to(() => NoticeDetailsPage(notice), arguments: notice.id);
       },
       title: Container(
         padding: EdgeInsets.all(mediaWidth(context, 0.033)),

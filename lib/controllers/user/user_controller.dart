@@ -95,7 +95,11 @@ class UserController extends GetxController with StateMixin<User>, Config, Local
   }
 
   Future updateNickname(BuildContext context, String nickname) async{
-    await _repository.updateNickname(context, nickname);
+    int? statusCode = await _repository.updateNickname(context, nickname);
+
+    if(statusCode == 200){
+      Get.back();
+    }
     return _getUser(await jwt);
   }
 

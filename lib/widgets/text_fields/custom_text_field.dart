@@ -120,7 +120,7 @@ class CustomTextField extends StatelessWidget {
         obscureText: obscureText ?? false,
         controller: controller,
         maxLength: maxLength,
-        maxLines: maxLines ?? 1,
+        maxLines: maxLines,
         minLines: minLines,
         keyboardType: keyboardType,
         decoration: InputDecoration(

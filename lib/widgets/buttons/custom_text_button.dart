@@ -23,7 +23,7 @@ class CustomTextButton extends StatelessWidget {
     return CupertinoButton(
       padding: padding ?? EdgeInsets.zero,
       alignment: alignment ?? Alignment.center,
-      child: Text(text, style: CustomTextStyle.w500(context, color: color ?? Colors.blue)),
+      child: Text(text, style: CustomTextStyle.w500(context, color: color ?? CustomColors.main)),
       onPressed: onPressed,
     );
   }

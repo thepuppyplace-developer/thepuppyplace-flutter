@@ -211,7 +211,7 @@ class UserRepository extends GetConnect with Config, LocalConfig{
     }
   }
 
-  Future updateNickname(BuildContext context, String nickname) async{
+  Future<int?> updateNickname(BuildContext context, String nickname) async{
     try{
       if(await jwt != null){
         final Response res = await patch('$API_URL/user/my', { "nickname": nickname }, headers: headers(await jwt));
@@ -219,15 +219,18 @@ class UserRepository extends GetConnect with Config, LocalConfig{
         switch(res.statusCode){
           case 200:
             await showSnackBar(context, '닉네임이 $nickname으로 변경되었습니다.');
-            return null;
+            return res.statusCode;
           default:
-            return network_check_message(context);
+            await network_check_message(context);
+            return res.statusCode;
         }
       } else {
-        return expiration_token_message(context);
+        await expiration_token_message(context);
+        return null;
       }
     } catch(error){
-      return unknown_message(context);
+      await unknown_message(context);
+      return null;
     }
   }
 
