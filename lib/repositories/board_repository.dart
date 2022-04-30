@@ -61,7 +61,7 @@ class BoardRepository extends GetConnect with Config, LocalConfig{
     try{
       if(await jwt != null){
         final Response res = await post('$API_URL/board/like', {
-          'user_like_id': user_id
+          'like_user_id': user_id
         });
 
         switch(res.statusCode){
@@ -97,13 +97,14 @@ class BoardRepository extends GetConnect with Config, LocalConfig{
     }
   }
 
-  Future<List<Board>> getBoardList({required int page, String? category , String? order, int? userId, String? query}) async{
+  Future<List<Board>> getBoardList({int? page, int? limit,  String? category , String? order, int? userId, String? query}) async{
     final Response res = await post('$API_URL/board', {
       'page': page,
       'category': category,
       'order': order,
       'user_id': userId,
-      'query': query
+      'query': query,
+      'limit': limit
     });
 
     switch(res.statusCode){

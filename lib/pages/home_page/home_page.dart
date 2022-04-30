@@ -7,7 +7,6 @@ import 'package:thepuppyplace_flutter/widgets/buttons/category_button.dart';
 import '../../controllers/board/board_list_controller.dart';
 import '../../models/Board.dart';
 import '../../util/cached_network_image_list.dart';
-import '../../util/png_list.dart';
 import '../../widgets/cards/banner_card.dart';
 import '../../widgets/cards/recent_board_card.dart';
 import '../../widgets/loadings/refresh_contents.dart';
@@ -143,7 +142,7 @@ class _HomePageState extends State<HomePage> {
                             Text('지금 가장 인기있는 게시물을 확인해보세요',
                               style: CustomTextStyle.w400(
                                   context, color: Colors.grey,
-                                  height: 2),)
+                                  height: 2))
                           ],
                         ),
                       ),

@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
@@ -30,12 +31,20 @@ class NoticeRepository extends GetConnect with Config, LocalConfig{
   Future<int?> insertNotice(BuildContext context, {required XFile? image, required String notice_title, required String notice_main_text}) async{
     try{
       if(await jwt != null){
-        final Response res = await post('$API_URL/notice', FormData({
-          'image': image!.readAsBytes(),
-          'notice_title': notice_title.trim(),
-          'notice_main_text': notice_main_text.trim()
-        }));
-
+        final Response res;
+        if(image != null){
+          res = await post('$API_URL/notice', FormData({
+            'image': image.path,
+            'notice_title': notice_title.trim(),
+            'notice_main_text': notice_main_text.trim()
+          }));
+          print(image.path);
+        } else {
+          res = await post('$API_URL/notice', FormData({
+            'notice_title': notice_title.trim(),
+            'notice_main_text': notice_main_text.trim()
+          }));
+        }
         switch(res.statusCode){
           case 201:
             await showSnackBar(context, '공지사항이 게시되었습니다!');

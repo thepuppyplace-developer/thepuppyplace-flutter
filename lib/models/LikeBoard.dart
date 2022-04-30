@@ -19,10 +19,10 @@ class LikeBoard{
 
   factory LikeBoard.fromJson(Map<String, dynamic> json) => LikeBoard(
     id: json['id'],
-    createdAt: json['createdAt'],
-    updatedAt: json['updatedAt'],
+    createdAt: DateTime.parse(json['createdAt']),
+    updatedAt: DateTime.parse(json['updatedAt']),
     board_id: json['board_id'],
     user_id: json['user_id'],
-    board: json['Board'],
+    board: Board.fromJson(json['Board']),
   );
 }

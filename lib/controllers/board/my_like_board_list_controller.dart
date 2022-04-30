@@ -9,7 +9,7 @@ class MyLikeBoardListController extends GetxController with StateMixin<List<Like
   MyLikeBoardListController(this.context);
 
   final _repository = BoardRepository();
-  final _boardList = RxList<LikeBoard>();
+  final RxList<LikeBoard> _boardList = RxList<LikeBoard>();
 
   @override
   void onReady() {

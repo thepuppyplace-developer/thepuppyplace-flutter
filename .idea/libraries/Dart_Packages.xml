@@ -128,48 +128,6 @@
             </list>
           </value>
         </entry>
-        <entry key="device_info_plus">
-          <value>
-            <list>
-              <option value="$USER_HOME$/Developer/flutter/.pub-cache/hosted/pub.dartlang.org/device_info_plus-3.2.3/lib" />
-            </list>
-          </value>
-        </entry>
-        <entry key="device_info_plus_linux">
-          <value>
-            <list>
-              <option value="$USER_HOME$/Developer/flutter/.pub-cache/hosted/pub.dartlang.org/device_info_plus_linux-2.1.1/lib" />
-            </list>
-          </value>
-        </entry>
-        <entry key="device_info_plus_macos">
-          <value>
-            <list>
-              <option value="$USER_HOME$/Developer/flutter/.pub-cache/hosted/pub.dartlang.org/device_info_plus_macos-2.2.3/lib" />
-            </list>
-          </value>
-        </entry>
-        <entry key="device_info_plus_platform_interface">
-          <value>
-            <list>
-              <option value="$USER_HOME$/Developer/flutter/.pub-cache/hosted/pub.dartlang.org/device_info_plus_platform_interface-2.3.0+1/lib" />
-            </list>
-          </value>
-        </entry>
-        <entry key="device_info_plus_web">
-          <value>
-            <list>
-              <option value="$USER_HOME$/Developer/flutter/.pub-cache/hosted/pub.dartlang.org/device_info_plus_web-2.1.0/lib" />
-            </list>
-          </value>
-        </entry>
-        <entry key="device_info_plus_windows">
-          <value>
-            <list>
-              <option value="$USER_HOME$/Developer/flutter/.pub-cache/hosted/pub.dartlang.org/device_info_plus_windows-2.1.1/lib" />
-            </list>
-          </value>
-        </entry>
         <entry key="dot_navigation_bar">
           <value>
             <list>
@@ -842,12 +800,6 @@
       <root url="file://$USER_HOME$/Developer/flutter/.pub-cache/hosted/pub.dartlang.org/crypto-3.0.1/lib" />
       <root url="file://$USER_HOME$/Developer/flutter/.pub-cache/hosted/pub.dartlang.org/cupertino_icons-1.0.4/lib" />
       <root url="file://$USER_HOME$/Developer/flutter/.pub-cache/hosted/pub.dartlang.org/dbus-0.7.3/lib" />
-      <root url="file://$USER_HOME$/Developer/flutter/.pub-cache/hosted/pub.dartlang.org/device_info_plus-3.2.3/lib" />
-      <root url="file://$USER_HOME$/Developer/flutter/.pub-cache/hosted/pub.dartlang.org/device_info_plus_linux-2.1.1/lib" />
-      <root url="file://$USER_HOME$/Developer/flutter/.pub-cache/hosted/pub.dartlang.org/device_info_plus_macos-2.2.3/lib" />
-      <root url="file://$USER_HOME$/Developer/flutter/.pub-cache/hosted/pub.dartlang.org/device_info_plus_platform_interface-2.3.0+1/lib" />
-      <root url="file://$USER_HOME$/Developer/flutter/.pub-cache/hosted/pub.dartlang.org/device_info_plus_web-2.1.0/lib" />
-      <root url="file://$USER_HOME$/Developer/flutter/.pub-cache/hosted/pub.dartlang.org/device_info_plus_windows-2.1.1/lib" />
       <root url="file://$USER_HOME$/Developer/flutter/.pub-cache/hosted/pub.dartlang.org/dot_navigation_bar-1.0.1+4/lib" />
       <root url="file://$USER_HOME$/Developer/flutter/.pub-cache/hosted/pub.dartlang.org/email_validator-2.0.1/lib" />
       <root url="file://$USER_HOME$/Developer/flutter/.pub-cache/hosted/pub.dartlang.org/fake_async-1.2.0/lib" />
