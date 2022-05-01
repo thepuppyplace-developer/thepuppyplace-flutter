@@ -2,7 +2,7 @@ import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../../models/Board.dart';
-import '../../repositories/board_repository.dart';
+import '../../repositories/board/board_repository.dart';
 
 class TalkBoardListController extends GetxController with StateMixin<List<Board>>{
   final BoardRepository _repository = BoardRepository();

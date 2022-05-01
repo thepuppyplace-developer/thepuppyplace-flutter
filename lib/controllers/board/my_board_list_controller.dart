@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 
 import '../../models/Board.dart';
-import '../../repositories/board_repository.dart';
+import '../../repositories/board/board_repository.dart';
 import '../user/user_controller.dart';
 
 class MyBoardListController extends GetxController with StateMixin<List<Board>>{

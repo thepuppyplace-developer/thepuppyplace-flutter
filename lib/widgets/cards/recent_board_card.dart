@@ -1,10 +1,10 @@
-import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thepuppyplace_flutter/pages/board_page/board_details_page.dart';
 import 'package:thepuppyplace_flutter/util/common.dart';
+import 'package:thepuppyplace_flutter/util/custom_icons.dart';
 import 'package:thepuppyplace_flutter/widgets/cards/user_profile_card.dart';
 import '../../models/Board.dart';
 import '../buttons/tag_text.dart';
@@ -23,7 +23,7 @@ class RecentBoardCard extends StatelessWidget {
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
             boxShadow: const [
-              BoxShadow(color: Colors.black12, blurStyle: BlurStyle.outer, blurRadius: 2),
+              BoxShadow(color: CustomColors.emptySide, blurStyle: BlurStyle.outer, blurRadius: 10),
             ]
         ),
         child: Column(
@@ -90,14 +90,14 @@ class RecentBoardCard extends StatelessWidget {
                   Expanded(
                     child: Row(
                       children: [
-                        Icon(CupertinoIcons.heart, color: Colors.black54, size: mediaHeight(context, 0.022)),
+                        Icon(CustomIcons.heart, color: CustomColors.hint, size: mediaHeight(context, 0.02)),
                         Container(
-                            margin: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.01)),
-                            child: Text('${board.likeList.length}', style: CustomTextStyle.w400(context, scale: 0.012, color: Colors.black54))),
-                        Icon(CupertinoIcons.chat_bubble_2, color: Colors.black54, size: mediaHeight(context, 0.022)),
+                            margin: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.015)),
+                            child: Text('${board.likeList.length}', style: CustomTextStyle.w400(context, scale: 0.015, color: Colors.black54))),
+                        Icon(CustomIcons.comment, color: CustomColors.hint, size: mediaHeight(context, 0.02)),
                         Container(
-                            margin: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.01)),
-                            child: Text('${commentCount(board.commentList)}', style: CustomTextStyle.w400(context, scale: 0.012, color: Colors.black54))),
+                            margin: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.015)),
+                            child: Text('${commentCount(board.commentList)}', style: CustomTextStyle.w400(context, scale: 0.015, color: Colors.black54))),
                       ],
                     ),
                   ),

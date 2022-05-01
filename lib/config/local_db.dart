@@ -13,6 +13,7 @@ class LocalConfig{
         onCreate: (Database db, int version) async{
           await db.execute(User.CREATE_TABLE);
           await db.execute(BoardCategory.CREATE_TABLE);
+          await db.execute(BoardCategory.TRIGGER);
         }
     );
   }

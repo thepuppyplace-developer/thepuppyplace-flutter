@@ -20,86 +20,97 @@ class CommentCard extends GetWidget<UserController> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          children: [
-            Expanded(
-                child: UserProfileCard(comment.user)
-            ),
-            controller.obx((User? user){
-              if(user!.id == comment.userId){
-                return CustomTextButton('삭제', (){
-                  showDialog(context: context, builder: (context) => CustomDialog(title: '댓글을 삭제하시겠습니까?', onTap: onCommentDelete));
-                }, color: CustomColors.main);
-              } else {
-                return Container();
-              }
-            })
-          ],
-        ),
-        Text(comment.comment, style: CustomTextStyle.w500(context)),
-        Row(
-          children: [
-            Expanded(
-              child: Row(
-                children: [
-                  CustomTextButton('좋아요', (){}, color: CustomColors.hint),
-                  CustomTextButton('답글달기', (){}, color: CustomColors.hint),
-                ],
-              ),
-            ),
-            Text(beforeDate(comment.createdAt), style: CustomTextStyle.w500(context, color: CustomColors.hint))
-          ],
-        ),
-        if(comment.nestedCommentList.isNotEmpty) Column(
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: mediaHeight(context, 0.01)),
+      padding: EdgeInsets.all(mediaWidth(context, 0.033)),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          boxShadow: const [
+            BoxShadow(color: CustomColors.emptySide, blurStyle: BlurStyle.outer, blurRadius: 20)
+          ]
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
             children: [
-              for(NestedComment nestedComment in comment.nestedCommentList)
-                Container(
-                    margin: EdgeInsets.only(left: mediaWidth(context, 0.05)),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Expanded(
-                                child: UserProfileCard(comment.user)
-                            ),
-                            controller.obx((User? user){
-                              if(comment.userId == user!.id) {
-                                return CustomTextButton(
-                                    '삭제', () {
-                                  showDialog(context: context, builder: (context) => CustomDialog(title: '댓글을 삭제하시겠습니까?', onTap: (){
-                                    onNestedCommentDelete(nestedComment);
-                                  }));
-                                }, color: CustomColors.main);
-                              } else {
-                                return Container();
-                              }
-                            })
-                          ],
-                        ),
-                        Text(nestedComment.comment, style: CustomTextStyle.w500(context)),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: Row(
-                                children: [
-                                  CustomTextButton('좋아요', (){}, color: CustomColors.hint),
-                                  CustomTextButton('답글달기', (){}, color: CustomColors.hint),
-                                ],
+              Expanded(
+                  child: UserProfileCard(comment.user)
+              ),
+              controller.obx((User? user){
+                if(user!.id == comment.userId){
+                  return CustomTextButton('삭제', (){
+                    showDialog(context: context, builder: (context) => CustomDialog(title: '댓글을 삭제하시겠습니까?', onTap: onCommentDelete));
+                  }, color: CustomColors.main);
+                } else {
+                  return Container();
+                }
+              })
+            ],
+          ),
+          Text(comment.comment, style: CustomTextStyle.w500(context)),
+          Row(
+            children: [
+              Expanded(
+                child: Row(
+                  children: [
+                    CustomTextButton('좋아요', (){}, color: CustomColors.hint),
+                    CustomTextButton('답글달기', (){
+                      onComment(comment);
+                    }, color: CustomColors.hint),
+                  ],
+                ),
+              ),
+              Text(beforeDate(comment.createdAt), style: CustomTextStyle.w500(context, color: CustomColors.hint))
+            ],
+          ),
+          if(comment.nestedCommentList.isNotEmpty) Column(
+              children: [
+                for(NestedComment nestedComment in comment.nestedCommentList)
+                  Container(
+                      padding: EdgeInsets.all(mediaWidth(context, 0.033)),
+                      margin: EdgeInsets.symmetric(vertical: mediaHeight(context, 0.01)),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: const [
+                            BoxShadow(color: CustomColors.emptySide, blurStyle: BlurStyle.outer, blurRadius: 20)
+                          ]
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Expanded(
+                                  child: UserProfileCard(comment.user)
                               ),
-                            ),
-                            Text(beforeDate(comment.createdAt), style: CustomTextStyle.w500(context, color: CustomColors.hint))
-                          ],
-                        ),
-                      ],
-                    )
-                )
-            ]
-        )
-      ],
+                              controller.obx((User? user){
+                                if(comment.userId == user!.id) {
+                                  return CustomTextButton(
+                                      '삭제', () {
+                                    showDialog(context: context, builder: (context) => CustomDialog(title: '댓글을 삭제하시겠습니까?', onTap: (){
+                                      onNestedCommentDelete(nestedComment);
+                                    }));
+                                  }, color: CustomColors.main);
+                                } else {
+                                  return Container();
+                                }
+                              })
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Expanded(child: Text(nestedComment.comment, style: CustomTextStyle.w500(context))),
+                              Text(beforeDate(comment.createdAt), style: CustomTextStyle.w500(context, color: CustomColors.hint)),
+                            ],
+                          ),
+                        ],
+                      )
+                  )
+              ]
+          )
+        ],
+      ),
     );
   }
 }

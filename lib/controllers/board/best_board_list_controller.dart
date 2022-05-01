@@ -1,13 +1,15 @@
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../models/Board.dart';
-import '../../repositories/board_repository.dart';
+import '../../repositories/board/board_repository.dart';
 
 class BestBoardListController extends GetxController with StateMixin<List<Board>>{
   final BoardRepository _repository = BoardRepository();
 
+  final RxInt pageIndex = RxInt(0);
+
   final RxList<Board> boardList = RxList<Board>([]);
-  final RxInt limit = RxInt(6);
+  final RxInt limit = RxInt(12);
 
   final RefreshController refreshController = RefreshController();
 
@@ -39,6 +41,7 @@ class BestBoardListController extends GetxController with StateMixin<List<Board>
   }
 
   Future refreshBoardList() async{
+    boardList.clear();
     boardList.value = await _repository.getBoardList(
       limit: limit.value,
       order: 'view',

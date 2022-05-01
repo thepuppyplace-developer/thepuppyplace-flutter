@@ -16,33 +16,51 @@ class BoardCategory{
   });
 
   factory BoardCategory.fromJson(Map<String, dynamic> json) => BoardCategory(
-      id: json['id'],
-      category: json['category'],
-      image_url: json['image_url'],
-      createdAt: DateTime.parse(json['createdAt']),
-      updatedAt: DateTime.parse(json['updatedAt']),
-      deletedAt: DateTime.parse(json['deletedAt'])
+      id: json[ID],
+      category: json[CATEGORY],
+      image_url: json[IMAGE_URL],
+      createdAt: DateTime.parse(json[CRETAED_AT]),
+      updatedAt: DateTime.parse(json[UPDATED_AT]),
+      deletedAt: DateTime.parse(json[DELETED_AT])
   );
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'id': id,
-    'category': category,
-    'image_url': image_url,
-    'createdAt': createdAt,
-    'updatedAt': updatedAt,
-    'deletedAt': deletedAt,
+    ID: id,
+    CATEGORY: category,
+    IMAGE_URL: image_url,
+    CRETAED_AT: createdAt,
+    UPDATED_AT: updatedAt,
+    DELETED_AT: deletedAt,
   };
 
   static const String TABLE = 'BoardCategory';
+
+  static const String ID = 'id';
+  static const String CATEGORY = 'category';
+  static const String IMAGE_URL = 'image_url';
+  static const String CRETAED_AT = 'createdAt';
+  static const String UPDATED_AT = 'updatedAt';
+  static const String DELETED_AT = 'deletedAt';
+
   static String get CREATE_TABLE => '''
   CREATE TABLE IF NOT EXISTS $TABLE(
-  id INTEGER NOT NULL,
-  category STRING NOT NULL,
-  image_url STRING NOT NULL,
-  createdAT TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
-  updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
-  deletedAt TIMESTAMP NOT NULL,
-  PRIMARY KEY(id)
+  $ID INTEGER NOT NULL,
+  $CATEGORY STRING NOT NULL,
+  $IMAGE_URL STRING NOT NULL,
+  $CRETAED_AT TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+  $UPDATED_AT TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+  $DELETED_AT TIMESTAMP NOT NULL,
+  PRIMARY KEY($ID)
   )
+  ''';
+
+  static String get TRIGGER => '''
+  CREATE TRIGGER ${TABLE}_${UPDATED_AT}_TRIGGER
+  AFTER UPDATE ON $TABLE
+  BEGIN UPDATE $TABLE SET $UPDATED_AT = CURRENT_TIMESTAMP WHERE $ID = NEW.$ID; END
+  ''';
+
+  static String get INSERT_CATEGORIES => '''
+  INSERT INTO 
   ''';
 }

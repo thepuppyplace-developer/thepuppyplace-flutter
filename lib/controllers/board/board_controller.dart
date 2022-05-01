@@ -7,7 +7,7 @@ import '../../config/config.dart';
 import '../../models/Board.dart';
 import '../../models/BoardComment.dart';
 import '../../models/NestedComment.dart';
-import '../../repositories/board_repository.dart';
+import '../../repositories/board/board_repository.dart';
 import 'board_list_controller.dart';
 
 class BoardController extends GetxController with StateMixin<Board>, Config{
@@ -70,8 +70,8 @@ class BoardController extends GetxController with StateMixin<Board>, Config{
 
   Future insertNestedComment(BuildContext context, {required int comment_id, required String comment}) async{
     if(comment.trim().isNotEmpty){
-      await _repository.insertNestedComment(context, comment_id: comment_id, comment: comment).whenComplete(()
-      => getBoard);
+      await _repository.insertNestedComment(context, comment_id: comment_id, comment: comment);
+      return getBoard;
     } else {
       showSnackBar(context, '댓글을 입력해주세요.');
     }

@@ -7,7 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:thepuppyplace_flutter/models/Board.dart';
 import '../../controllers/user/user_controller.dart';
 import '../../models/User.dart';
-import '../../repositories/board_repository.dart';
+import '../../repositories/board/board_repository.dart';
 import '../../util/common.dart';
 import '../../util/location_list.dart';
 import '../../widgets/buttons/custom_button.dart';

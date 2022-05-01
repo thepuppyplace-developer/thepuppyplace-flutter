@@ -7,14 +7,14 @@ import 'package:image_picker/image_picker.dart';
 import 'package:thepuppyplace_flutter/models/BoardCategory.dart';
 import 'package:thepuppyplace_flutter/pages/board_page/board_details_page.dart';
 import 'package:thepuppyplace_flutter/util/common.dart';
-import '../../config/config.dart';
-import '../../config/local_db.dart';
-import '../../models/Board.dart';
-import '../controllers/board/board_list_controller.dart';
-import '../models/BoardComment.dart';
-import '../models/LikeBoard.dart';
-import '../models/NestedComment.dart';
-import '../models/Search.dart';
+import '../../../config/config.dart';
+import '../../../config/local_db.dart';
+import '../../../models/Board.dart';
+import '../../controllers/board/board_list_controller.dart';
+import '../../models/BoardComment.dart';
+import '../../models/LikeBoard.dart';
+import '../../models/NestedComment.dart';
+import '../../models/Search.dart';
 
 class BoardRepository extends GetConnect with Config, LocalConfig{
   static BoardRepository get from => BoardRepository();
@@ -188,27 +188,31 @@ class BoardRepository extends GetConnect with Config, LocalConfig{
   }
 
   Future deleteComment(BuildContext context, {required int comment_id}) async{
-    if(await jwt != null){
-      final Response res = await delete('$API_URL/comment/$comment_id');
+    try{
+      if(await jwt != null){
+        final Response res = await delete('$API_URL/comment/$comment_id', headers: headers(await jwt));
 
-      switch(res.statusCode) {
-        case 201:
-          return showSnackBar(context, '댓글이 삭제되었습니다.');
-        case 204:
-          return unknown_message(context);
-        default:
-          return network_check_message(context);
+        switch(res.statusCode) {
+          case 200:
+            return showSnackBar(context, '댓글이 삭제되었습니다.');
+          case 204:
+            return unknown_message(context);
+          default:
+            return network_check_message(context);
+        }
+      } else {
+        return expiration_token_message(context);
       }
-    } else {
-      return expiration_token_message(context);
+    } catch(error){
+      throw unknown_message(context);
     }
   }
 
   Future insertNestedComment(BuildContext context, {required int comment_id, required String comment}) async{
     if(await jwt != null){
       Response res = await post('$API_URL/comment/nested', {
+        'comment': comment.trim(),
         'comment_id': comment_id,
-        'comment': comment.trim()
       }, headers: headers(await jwt));
       switch(res.statusCode){
         case 201:

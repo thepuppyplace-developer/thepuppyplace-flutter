@@ -5,7 +5,7 @@ import 'package:thepuppyplace_flutter/util/common.dart';
 import '../../config/config.dart';
 import '../../config/local_db.dart';
 import '../../models/User.dart';
-import '../../repositories/user_repository.dart';
+import '../../repositories/user/user_repository.dart';
 
 class UserController extends GetxController with StateMixin<User>, Config, LocalConfig{
   static UserController get to => Get.put(UserController());

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../controllers/user/user_controller.dart';
-import '../../repositories/user_repository.dart';
+import '../../repositories/user/user_repository.dart';
 import '../../util/common.dart';
 import '../../widgets/buttons/custom_button.dart';
 import '../../widgets/text_fields/custom_text_field.dart';

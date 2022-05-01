@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:thepuppyplace_flutter/widgets/buttons/custom_icon_button.dart';
-import '../../repositories/notice_repository.dart';
+import '../../repositories/notice/notice_repository.dart';
 import '../../util/common.dart';
 import '../../widgets/buttons/custom_button.dart';
 import '../../widgets/buttons/custom_text_button.dart';

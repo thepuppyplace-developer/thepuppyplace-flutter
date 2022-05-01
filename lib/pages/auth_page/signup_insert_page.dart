@@ -1,7 +1,7 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:thepuppyplace_flutter/controllers/user/user_controller.dart';
-import 'package:thepuppyplace_flutter/repositories/user_repository.dart';
+import 'package:thepuppyplace_flutter/repositories/user/user_repository.dart';
 import 'package:thepuppyplace_flutter/util/common.dart';
 
 import '../../widgets/buttons/custom_button.dart';

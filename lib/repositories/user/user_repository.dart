@@ -3,11 +3,11 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sqflite/sqflite.dart';
-import '../config/config.dart';
-import '../config/local_db.dart';
-import '../models/User.dart';
-import '../util/cached_network_image_list.dart';
-import '../util/common.dart';
+import '../../config/config.dart';
+import '../../config/local_db.dart';
+import '../../models/User.dart';
+import '../../util/cached_network_image_list.dart';
+import '../../util/common.dart';
 
 class UserRepository extends GetConnect with Config, LocalConfig{
 

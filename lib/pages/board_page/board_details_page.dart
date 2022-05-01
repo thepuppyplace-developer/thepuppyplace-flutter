@@ -107,23 +107,13 @@ class _BoardDetailsPageState extends State<BoardDetailsPage> {
                 Expanded(
                   child: SmartRefresher(
                       controller: _refreshController,
-                      enablePullUp: true,
                       onRefresh: () async{
-                        controller.getBoard.whenComplete((){
-                          _refreshController.refreshCompleted(resetFooterState: true);
-                        });
-                      },
-                      onLoading: () async{
-                        controller.page.value += 5;
                         controller.getBoard.whenComplete((){
                           _refreshController.refreshCompleted(resetFooterState: true);
                         });
                       },
                       header: CustomHeader(
                         builder: (BuildContext context, RefreshStatus? status) => RefreshContents(status),
-                        readyToRefresh: () async{
-
-                        },
                       ),
                       footer: controller.status.isEmpty ? null : CustomFooter(
                         loadStyle: LoadStyle.ShowWhenLoading,
@@ -336,6 +326,7 @@ class _BoardDetailsPageState extends State<BoardDetailsPage> {
                     }
                     setState(() {
                       _commentController.clear();
+                      _selectComment == null;
                     });
                   },
                 )

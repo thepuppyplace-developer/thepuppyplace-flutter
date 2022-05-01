@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../models/LikeBoard.dart';
-import '../../repositories/board_repository.dart';
+import '../../repositories/board/board_repository.dart';
 import '../user/user_controller.dart';
 
 class MyLikeBoardListController extends GetxController with StateMixin<List<LikeBoard>> {

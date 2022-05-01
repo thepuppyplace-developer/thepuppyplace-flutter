@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
 import '../../models/Notice.dart';
-import '../../repositories/notice_repository.dart';
+import '../../repositories/notice/notice_repository.dart';
 
 class NoticeListController extends GetxController with StateMixin<List<Notice>>{
   final BuildContext context;

@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import '../../models/Search.dart';
-import '../../repositories/board_repository.dart';
+import '../../repositories/board/board_repository.dart';
 
 class PopularSearchListController extends GetxController with StateMixin<List<Search>>{
   final BuildContext context;

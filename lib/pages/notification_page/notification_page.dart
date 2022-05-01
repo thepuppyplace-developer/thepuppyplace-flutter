@@ -22,6 +22,7 @@ class NotificationPage extends StatelessWidget {
           body: NestedScrollView(
             headerSliverBuilder: (context, inner) => [
               SliverAppBar(
+                elevation: 0.5,
                 snap: true,
                 floating: true,
                 pinned: true,

@@ -6,9 +6,9 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:thepuppyplace_flutter/util/common.dart';
 
-import '../config/config.dart';
-import '../config/local_db.dart';
-import '../models/Notice.dart';
+import '../../config/config.dart';
+import '../../config/local_db.dart';
+import '../../models/Notice.dart';
 
 class NoticeRepository extends GetConnect with Config, LocalConfig{
 

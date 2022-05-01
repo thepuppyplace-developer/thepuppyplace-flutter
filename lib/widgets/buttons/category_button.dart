@@ -19,21 +19,22 @@ class CategoryButton extends StatelessWidget {
       padding: EdgeInsets.zero,
       child: Column(
         children: [
-          Container(
-            alignment: Alignment.center,
-            height: mediaHeight(context, 0.1),
-            width: mediaWidth(context, 0.3),
-            decoration: BoxDecoration(
-                border: Border.all(color: CustomColors.emptySide),
-                borderRadius: BorderRadius.circular(12),
-              image: DecorationImage(
-                opacity: 0.7,
-                colorFilter: const ColorFilter.mode(Colors.black, BlendMode.colorDodge),
-                fit: BoxFit.cover,
-                image: CachedNetworkImageProvider(image)
-              )
+          AspectRatio(
+            aspectRatio: 3/2,
+            child: Container(
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                  border: Border.all(color: CustomColors.emptySide),
+                  borderRadius: BorderRadius.circular(12),
+                image: DecorationImage(
+                  opacity: 0.7,
+                  colorFilter: const ColorFilter.mode(Colors.black, BlendMode.colorDodge),
+                  fit: BoxFit.cover,
+                  image: CachedNetworkImageProvider(image)
+                )
+              ),
+              child: Text(category, style: CustomTextStyle.w500(context, color: Colors.white)),
             ),
-            child: Text(category, style: CustomTextStyle.w500(context, color: Colors.white)),
           ),
         ],
       ),

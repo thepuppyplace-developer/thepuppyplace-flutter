@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:thepuppyplace_flutter/models/NotificationLog.dart';
-import 'package:thepuppyplace_flutter/repositories/notification_repository.dart';
+import 'package:thepuppyplace_flutter/repositories/notification/notification_repository.dart';
 
 class NotificationLogListController extends GetxController with StateMixin<List<NotificationLog>>{
   final BuildContext context;
@@ -40,7 +40,6 @@ class NotificationLogListController extends GetxController with StateMixin<List<
   }
 
   Future get refreshLogList async{
-    _logList.clear();
     _logList.value = await _repo.getNotificationLogList(context);
   }
 }
