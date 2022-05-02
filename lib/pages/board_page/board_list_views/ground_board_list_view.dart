@@ -9,13 +9,19 @@ import '../../../widgets/buttons/order_button.dart';
 import '../../../widgets/cards/board_card.dart';
 import '../../../widgets/loadings/refresh_contents.dart';
 
-class GroundBoardListView extends StatelessWidget {
-  const GroundBoardListView({Key? key}) : super(key: key);
+class GroundBoardListView extends StatefulWidget {
+  final String? query;
+  const GroundBoardListView(this.query, {Key? key}) : super(key: key);
 
+  @override
+  State<GroundBoardListView> createState() => _GroundBoardListViewState();
+}
+
+class _GroundBoardListViewState extends State<GroundBoardListView> {
   @override
   Widget build(BuildContext context) => GetBuilder<GroundBoardListController>(
       autoRemove: false,
-      init: GroundBoardListController(),
+      init: GroundBoardListController(widget.query),
       builder: (GroundBoardListController controller) {
         return Scrollbar(
           child: SmartRefresher(

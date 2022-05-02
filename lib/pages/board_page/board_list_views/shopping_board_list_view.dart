@@ -8,13 +8,19 @@ import '../../../widgets/buttons/order_button.dart';
 import '../../../widgets/cards/board_card.dart';
 import '../../../widgets/loadings/refresh_contents.dart';
 
-class ShoppingBoardListView extends StatelessWidget {
-  const ShoppingBoardListView({Key? key}) : super(key: key);
+class ShoppingBoardListView extends StatefulWidget {
+  final String? query;
+  const ShoppingBoardListView(this.query, {Key? key}) : super(key: key);
 
+  @override
+  State<ShoppingBoardListView> createState() => _ShoppingBoardListViewState();
+}
+
+class _ShoppingBoardListViewState extends State<ShoppingBoardListView> {
   @override
   Widget build(BuildContext context) => GetBuilder<ShoppingListController>(
       autoRemove: false,
-      init: ShoppingListController(),
+      init: ShoppingListController(widget.query),
       builder: (ShoppingListController controller) {
         return Scrollbar(
           child: SmartRefresher(

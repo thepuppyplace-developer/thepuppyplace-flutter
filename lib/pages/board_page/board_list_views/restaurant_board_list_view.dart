@@ -8,13 +8,19 @@ import '../../../widgets/buttons/order_button.dart';
 import '../../../widgets/cards/board_card.dart';
 import '../../../widgets/loadings/refresh_contents.dart';
 
-class RestaurantBoardListView extends StatelessWidget {
-  const RestaurantBoardListView({Key? key}) : super(key: key);
+class RestaurantBoardListView extends StatefulWidget {
+  final String? query;
+  const RestaurantBoardListView(this.query, {Key? key}) : super(key: key);
 
+  @override
+  State<RestaurantBoardListView> createState() => _RestaurantBoardListViewState();
+}
+
+class _RestaurantBoardListViewState extends State<RestaurantBoardListView> {
   @override
   Widget build(BuildContext context) => GetBuilder<RestaurantBoardListController>(
       autoRemove: false,
-      init: RestaurantBoardListController(),
+      init: RestaurantBoardListController(widget.query),
       builder: (RestaurantBoardListController controller) {
         return Scrollbar(
           child: SmartRefresher(

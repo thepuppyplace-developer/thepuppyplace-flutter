@@ -9,13 +9,19 @@ import '../../../widgets/buttons/order_button.dart';
 import '../../../widgets/cards/board_card.dart';
 import '../../../widgets/loadings/refresh_contents.dart';
 
-class HotelBoardListView extends StatelessWidget {
-  const HotelBoardListView({Key? key}) : super(key: key);
+class HotelBoardListView extends StatefulWidget {
+  final String? query;
+  const HotelBoardListView(this.query, {Key? key}) : super(key: key);
 
+  @override
+  State<HotelBoardListView> createState() => _HotelBoardListViewState();
+}
+
+class _HotelBoardListViewState extends State<HotelBoardListView> {
   @override
   Widget build(BuildContext context) => GetBuilder<HotelBoardListController>(
       autoRemove: false,
-      init: HotelBoardListController(),
+      init: HotelBoardListController(widget.query),
       builder: (HotelBoardListController controller) {
         return Scrollbar(
           child: SmartRefresher(

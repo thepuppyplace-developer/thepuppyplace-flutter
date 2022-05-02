@@ -250,7 +250,7 @@ class _SearchPageState extends State<SearchPage> {
                             ),
                             if(controller.talkList.length > 3) SliverToBoxAdapter(
                               child: CustomTextButton('수다방 검색 결과 더보기', (){
-                                Get.to(() => BoardListPage(5));
+                                Get.to(() => BoardListPage(5, query: _search.text));
                               }, color: CustomColors.hint),
                             ),
                           ],

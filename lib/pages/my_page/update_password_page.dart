@@ -142,7 +142,7 @@ class _UpdatePasswordPageState extends State<UpdatePasswordPage> {
     print(statusCode);
     if(statusCode == 200){
       return Get.until((route) => route.isCurrent);
-    } else if(statusCode == 403) {
+    } else if(statusCode == 403 || statusCode == 204) {
       return showSnackBar(context, '비밀번호가 일치하지 않습니다.');
     }
   }

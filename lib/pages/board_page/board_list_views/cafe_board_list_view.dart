@@ -10,12 +10,13 @@ import '../../../widgets/cards/board_card.dart';
 import '../../../widgets/loadings/refresh_contents.dart';
 
 class CafeBoardListView extends StatelessWidget {
-  const CafeBoardListView({Key? key}) : super(key: key);
+  final String? query;
+  const CafeBoardListView(this.query, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) => GetBuilder<CafeBoardListController>(
       autoRemove: false,
-      init: CafeBoardListController(),
+      init: CafeBoardListController(query),
       builder: (CafeBoardListController controller) {
         return Scrollbar(
           child: SmartRefresher(

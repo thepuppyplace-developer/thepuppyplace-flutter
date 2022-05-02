@@ -8,13 +8,19 @@ import '../../../widgets/buttons/order_button.dart';
 import '../../../widgets/cards/board_card.dart';
 import '../../../widgets/loadings/refresh_contents.dart';
 
-class TalkBoardListView extends StatelessWidget {
-  const TalkBoardListView({Key? key}) : super(key: key);
+class TalkBoardListView extends StatefulWidget {
+  final String? query;
+  const TalkBoardListView(this.query, {Key? key}) : super(key: key);
 
+  @override
+  State<TalkBoardListView> createState() => _TalkBoardListViewState();
+}
+
+class _TalkBoardListViewState extends State<TalkBoardListView> {
   @override
   Widget build(BuildContext context) => GetBuilder<TalkBoardListController>(
       autoRemove: false,
-      init: TalkBoardListController(),
+      init: TalkBoardListController(widget.query),
       builder: (TalkBoardListController controller) {
         return Scrollbar(
           child: SmartRefresher(

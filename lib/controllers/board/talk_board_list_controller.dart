@@ -5,11 +5,14 @@ import '../../models/Board.dart';
 import '../../repositories/board/board_repository.dart';
 
 class TalkBoardListController extends GetxController with StateMixin<List<Board>>{
+  final String? queryString;
+  TalkBoardListController(this.queryString);
   final BoardRepository _repository = BoardRepository();
 
   final RxList<Board> boardList = RxList<Board>([]);
   final RxInt page = RxInt(1);
   final RxString order = RxString('date');
+  RxnString get query => RxnString(queryString);
 
   final RefreshController refreshController = RefreshController();
 
@@ -17,7 +20,7 @@ class TalkBoardListController extends GetxController with StateMixin<List<Board>
   void onReady() {
     super.onReady();
     ever(boardList, _boardListListener);
-    getBoardList();
+    refreshBoardList();
   }
 
   void _boardListListener(List<Board> boardList){
@@ -37,7 +40,8 @@ class TalkBoardListController extends GetxController with StateMixin<List<Board>
     boardList.addAll(await _repository.getBoardList(
         page: page.value,
         category: '수다방',
-        order: order.value
+        order: order.value,
+        query: query.value
     ));
   }
 
@@ -46,7 +50,8 @@ class TalkBoardListController extends GetxController with StateMixin<List<Board>
     boardList.value = await _repository.getBoardList(
         page: page.value,
         category: '수다방',
-        order: order.value
+        order: order.value,
+        query: query.value
     );
   }
 }

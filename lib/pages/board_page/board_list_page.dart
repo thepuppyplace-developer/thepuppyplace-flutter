@@ -10,7 +10,8 @@ import 'board_list_views/talk_board_list_view.dart';
 
 class BoardListPage extends StatefulWidget {
   int currentIndex;
-  BoardListPage(this.currentIndex, {Key? key}) : super(key: key);
+  final String? query;
+  BoardListPage(this.currentIndex, {this.query, Key? key}) : super(key: key);
 
   @override
   State<BoardListPage> createState() => _BoardListPageState();
@@ -21,20 +22,20 @@ class _BoardListPageState extends State<BoardListPage> {
     '카페', '음식점', '쇼핑몰', '호텔', '운동장', '수다방'
   ];
 
-  final List<Widget> _pageList = const [
-    CafeBoardListView(),
-    RestaurantBoardListView(),
-    ShoppingBoardListView(),
-    HotelBoardListView(),
-    GroundBoardListView(),
-    TalkBoardListView(),
+  List<Widget> _pageList(String? query) => [
+    CafeBoardListView(query),
+    RestaurantBoardListView(query),
+    ShoppingBoardListView(query),
+    HotelBoardListView(query),
+    GroundBoardListView(query),
+    TalkBoardListView(query),
   ];
 
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       initialIndex: widget.currentIndex,
-      length: _pageList.length,
+      length: _pageList(widget.query).length,
       child: Scaffold(
         body: NestedScrollView(
           headerSliverBuilder: (context, index) => [
@@ -64,7 +65,7 @@ class _BoardListPageState extends State<BoardListPage> {
           ],
           body: TabBarView(
             physics: const NeverScrollableScrollPhysics(),
-            children: _pageList,
+            children: _pageList(widget.query),
           ),
         ),
       ),
