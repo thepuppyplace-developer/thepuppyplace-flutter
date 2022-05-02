@@ -2,6 +2,8 @@ import 'package:email_validator/email_validator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:thepuppyplace_flutter/pages/auth_page/send_password_page.dart';
+import 'package:thepuppyplace_flutter/repositories/user/user_repository.dart';
 
 import '../../controllers/user/user_controller.dart';
 import '../../util/common.dart';
@@ -134,7 +136,9 @@ class _LoginPageState extends State<LoginPage> {
                       children: [
                         CustomTextButton('아이디 찾기', (){}, color: CustomColors.hint),
                         VerticalDivider(color: CustomColors.hint, width: mediaWidth(context, 0.1)),
-                        CustomTextButton('비밀번호 재설정', (){}, color: CustomColors.hint),
+                        CustomTextButton('비밀번호 재설정', (){
+                          Get.to(() => const SendPasswordPage());
+                        }, color: CustomColors.hint),
                       ],
                     )
                   ],

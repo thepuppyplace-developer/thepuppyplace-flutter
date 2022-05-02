@@ -1,3 +1,4 @@
+import 'CommentLike.dart';
 import 'NestedComment.dart';
 import 'UserNicknameAndPhotoURL.dart';
 
@@ -8,6 +9,7 @@ class BoardComment{
   int boardId;
   UserNicknameAndPhotoURL user;
   List<NestedComment> nestedCommentList;
+  List<CommentLike> commentLikeList;
   DateTime createdAt;
   DateTime updatedAt;
   DateTime? deletedAt;
@@ -19,6 +21,7 @@ class BoardComment{
     required this.boardId,
     required this.user,
     required this.nestedCommentList,
+    required this.commentLikeList,
     required this.createdAt,
     required this.updatedAt,
     this.deletedAt,
@@ -31,6 +34,7 @@ class BoardComment{
     boardId: json['board_id'],
     user: UserNicknameAndPhotoURL.fromJson(json['User']),
     nestedCommentList: List.from(json['NestedComments']).map((comment) => NestedComment.fromJson(comment)).toList(),
+    commentLikeList: List.from(json['CommentLikes']).map((comment) => CommentLike.fromJson(comment)).toList(),
     createdAt: DateTime.parse(json['createdAt']),
     updatedAt: DateTime.parse(json['updatedAt']),
     deletedAt: json['deletedAt'] == null ? null : DateTime.parse(json['deletedAt']),

@@ -108,4 +108,9 @@ class UserController extends GetxController with StateMixin<User>, Config, Local
     await _repository.updatePhotoURL(context, photo);
     return _getUser(await jwt);
   }
+
+  Future deleteUser(BuildContext context) async{
+    await _repository.deleteUser(context, _user.value!.id);
+    return Get.toNamed('/loginPage');
+  }
 }

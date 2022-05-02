@@ -1,12 +1,10 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sqflite/sqflite.dart';
 import '../../config/config.dart';
 import '../../config/local_db.dart';
 import '../../models/User.dart';
-import '../../util/cached_network_image_list.dart';
 import '../../util/common.dart';
 
 class UserRepository extends GetConnect with Config, LocalConfig{
@@ -117,6 +115,33 @@ class UserRepository extends GetConnect with Config, LocalConfig{
       }
     } else {
       return null;
+    }
+  }
+
+  Future<User?> deleteUser(BuildContext context, int user_id) async{
+    try{
+      if(await jwt != null){
+        final Response res = await delete('$API_URL/user/my', headers: headers(await jwt));
+
+        switch(res.statusCode){
+          case 200:
+            final Database db = await database;
+            await db.rawDelete('''
+            DELETE FROM ${User.TABLE}
+            WHERE id = ?
+            ''', [user_id]);
+
+            await showSnackBar(context, '회원이 탈퇴되었습니다.');
+            break;
+          default:
+            await network_check_message(context);
+        }
+      } else {
+        await expiration_token_message(context);
+      }
+      return null;
+    } catch(error){
+      throw unknown_message(context);
     }
   }
 
@@ -253,6 +278,54 @@ class UserRepository extends GetConnect with Config, LocalConfig{
       }
     } catch(error){
       return unknown_message(context);
+    }
+  }
+
+  Future<int?> updatePassword(BuildContext context, {
+    required String before_password,
+    required String after_password
+  }) async{
+    try{
+      if(await jwt != null){
+        final Response res = await patch('$API_URL/user/password', {
+          'before_password': before_password.trim(),
+          'after_password': after_password.trim()
+        }, headers: headers(await jwt));
+
+        switch(res.statusCode){
+          case 200:
+            await showSnackBar(context, '비밀번호가 변경되었습니다.');
+            return res.statusCode;
+          case 204:
+            return res.statusCode;
+          default:
+            await network_check_message(context);
+            return res.statusCode;
+        }
+      } else {
+        return null;
+      }
+    } catch(error){
+      throw unknown_message(context);
+    }
+  }
+
+  Future<int?> sendPassword(BuildContext context, String email) async{
+    try{
+      final Response res = await post('$API_URL//user/temppw/mail/send', {
+        'email': email.trim()
+      });
+
+      switch(res.statusCode){
+        case 200:
+          await showSnackBar(context, '임시 비밀번호가 발송되었습니다.');
+          return res.statusCode;
+        default:
+          await network_check_message(context);
+          return res.statusCode;
+      }
+    } catch(error){
+      throw unknown_message(context);
     }
   }
 }

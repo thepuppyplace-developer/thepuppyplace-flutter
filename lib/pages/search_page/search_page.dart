@@ -255,7 +255,7 @@ class _SearchPageState extends State<SearchPage> {
                             ),
                           ],
                         ),
-                            onLoading: const SliverLoading(message: '검색중입니다...'),
+                            onLoading: const LoadingView(message: '검색중입니다...',),
                             onEmpty: SliverEmpty('${_search.text}에 대한 검색 결과가 없습니다.')
                         );
                       } else {

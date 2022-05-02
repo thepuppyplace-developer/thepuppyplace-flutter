@@ -32,8 +32,8 @@ class _SplashPageState extends State<SplashPage> {
           onError: (error) => CustomErrorView(error: error),
           onLoading: Scaffold(
               body: Container(
-                height: mediaHeight(context, 1),
-                width: mediaWidth(context, 1),
+                padding: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.033), vertical: mediaHeight(context, 0.1)),
+                alignment: Alignment.center,
                 decoration: BoxDecoration(
                   image: DecorationImage(
                     fit: BoxFit.cover,
@@ -41,14 +41,20 @@ class _SplashPageState extends State<SplashPage> {
                   )
                 ),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     RichText(
                       text: TextSpan(
                         children: [
-                          TextSpan(text: 'The', style: CustomTextStyle.w500(context, scale: 0.03, fontFamily: 'Dongle')),
-                          TextSpan(text: 'Puppy Place', style: CustomTextStyle.w600(context, scale: 0.03, fontFamily: 'Dongle')),
+                          TextSpan(text: 'The ', style: CustomTextStyle.w500(context, scale: 0.08, color: Colors.white, fontFamily: 'Dongle')),
+                          TextSpan(text: 'Puppy Place', style: CustomTextStyle.w600(context, scale: 0.08, color: Colors.white, fontFamily: 'Dongle')),
                         ]
                       ),
+                    ),
+                    Text('강아지들과 함께 갈 수 있는\n대한민국 모든 곳!',
+                      style: CustomTextStyle.w500(context, color: Colors.white, scale: 0.025, height: 2),
+                      textAlign: TextAlign.center,
                     )
                   ],
                 ),

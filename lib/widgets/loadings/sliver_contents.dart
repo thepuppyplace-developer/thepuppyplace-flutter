@@ -7,9 +7,11 @@ import '../animations/SizedAnimation.dart';
 
 class SliverLoading extends StatelessWidget {
   final String? message;
+  final bool? animated;
 
   const SliverLoading({
     this.message,
+    this.animated = true,
     Key? key}) : super(key: key);
 
   @override
@@ -20,7 +22,7 @@ class SliverLoading extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            SizedAnimation(child: Image.asset(PngList.loading, height: mediaHeight(context, 0.15))),
+            if(animated ?? true)SizedAnimation(child: Image.asset(PngList.loading, height: mediaHeight(context, 0.15))),
             Container(
                 margin: EdgeInsets.symmetric(vertical: mediaHeight(context, 0.04)),
                 child: Text(message ?? '페이지 이동중입니다', style: CustomTextStyle.w500(context, color: CustomColors.hint))),

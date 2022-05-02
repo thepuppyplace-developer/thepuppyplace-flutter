@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:thepuppyplace_flutter/pages/my_page/update_password_page.dart';
 import 'package:thepuppyplace_flutter/util/cached_network_image_list.dart';
 import '../../controllers/user/user_controller.dart';
 import '../../models/User.dart';
@@ -105,7 +106,9 @@ class _UpdateMyPageState extends State<UpdateMyPage> {
                             UpdateTextButton(
                               title: '비밀번호 변경',
                               content: '********',
-                              onTap: (){},
+                              onTap: (){
+                                Get.to(() => const UpdatePasswordPage());
+                              },
                             ),
                             UpdateTextButton(
                               title: '닉네임 변경',

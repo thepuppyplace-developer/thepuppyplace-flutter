@@ -25,20 +25,22 @@ class MyBoardListPage extends StatelessWidget {
                 title: Text('내가 쓴 게시물', style: CustomTextStyle.w600(context, scale: 0.02)),
               )
             ],
-            body: CustomScrollView(
-              slivers: [
-                controller.obx((boardList) => SliverList(
-                    delegate: SliverChildBuilderDelegate((context, index){
-                      final board = boardList![index];
-                      return BoardCard(board);
-                    },
-                      childCount: boardList!.length
-                    ),
-                ),
-                  onLoading: const SliverLoading(),
-                  onEmpty: const SliverEmpty('등록한 게시글이 없습니다.')
-                )
-              ],
+            body: Scrollbar(
+              child: CustomScrollView(
+                slivers: [
+                  controller.obx((boardList) => SliverList(
+                      delegate: SliverChildBuilderDelegate((context, index){
+                        final board = boardList![index];
+                        return BoardCard(board);
+                      },
+                        childCount: boardList!.length
+                      ),
+                  ),
+                    onLoading: const SliverLoading(),
+                    onEmpty: const SliverEmpty('등록한 게시글이 없습니다.')
+                  )
+                ],
+              ),
             ),
           )
         );

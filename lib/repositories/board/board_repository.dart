@@ -12,6 +12,7 @@ import '../../../config/local_db.dart';
 import '../../../models/Board.dart';
 import '../../controllers/board/board_list_controller.dart';
 import '../../models/BoardComment.dart';
+import '../../models/CommentLike.dart';
 import '../../models/LikeBoard.dart';
 import '../../models/NestedComment.dart';
 import '../../models/Search.dart';
@@ -187,28 +188,58 @@ class BoardRepository extends GetConnect with Config, LocalConfig{
     }
   }
 
-  Future deleteComment(BuildContext context, {required int comment_id}) async{
+  Future<BoardComment?> deleteComment(BuildContext context, {required int comment_id}) async{
     try{
       if(await jwt != null){
         final Response res = await delete('$API_URL/comment/$comment_id', headers: headers(await jwt));
 
         switch(res.statusCode) {
           case 200:
-            return showSnackBar(context, '댓글이 삭제되었습니다.');
+            await showSnackBar(context, '댓글이 삭제되었습니다.');
+            return res.body['data'];
           case 204:
-            return unknown_message(context);
+            await unknown_message(context);
+            return null;
           default:
-            return network_check_message(context);
+            await network_check_message(context);
+            return null;
         }
       } else {
-        return expiration_token_message(context);
+        await expiration_token_message(context);
+        return null;
       }
     } catch(error){
       throw unknown_message(context);
     }
   }
 
-  Future insertNestedComment(BuildContext context, {required int comment_id, required String comment}) async{
+  Future<CommentLike?> likeComment(BuildContext context, {required int comment_id}) async{
+    try{
+      if(await jwt != null){
+        final Response res = await delete('$API_URL/like/comment/$comment_id', headers: headers(await jwt));
+
+        switch(res.statusCode) {
+          case 200:
+            await showSnackBar(context, '댓글이 삭제되었습니다.');
+            return CommentLike.fromJson(res.body['data']);
+          case 204:
+            await unknown_message(context);
+            return null;
+          default:
+            await network_check_message(context);
+            return null;
+        }
+      } else {
+        await expiration_token_message(context);
+        return null;
+      }
+    } catch(error){
+      await unknown_message(context);
+      return null;
+    }
+  }
+
+  Future<int?> insertNestedComment(BuildContext context, {required int comment_id, required String comment}) async{
     if(await jwt != null){
       Response res = await post('$API_URL/comment/nested', {
         'comment': comment.trim(),
@@ -216,31 +247,39 @@ class BoardRepository extends GetConnect with Config, LocalConfig{
       }, headers: headers(await jwt));
       switch(res.statusCode){
         case 201:
-          return showSnackBar(context, '댓글이 등록되었습니다.');
+          await showSnackBar(context, '댓글이 등록되었습니다.');
+          return res.statusCode;
         case 204:
-          return unknown_message(context);
+          await unknown_message(context);
+          return res.statusCode;
         default:
-          return network_check_message(context);
+          await network_check_message(context);
+          return res.statusCode;
       }
     } else {
-      return expiration_token_message(context);
+      await expiration_token_message(context);
+      return null;
     }
   }
 
-  Future deleteNestedComment(BuildContext context, {required int comment_id}) async{
+  Future<NestedComment?> deleteNestedComment(BuildContext context, {required int nested_comment_id}) async{
     if(await jwt != null){
-      final Response res = await delete('$API_URL/comment/nested/$comment_id');
+      final Response res = await delete('$API_URL/comment/nested/$nested_comment_id');
 
       switch(res.statusCode) {
-        case 201:
-          return showSnackBar(context, '댓글이 삭제되었습니다.');
+        case 200:
+          await showSnackBar(context, '댓글이 삭제되었습니다.');
+          return NestedComment.fromJson(res.body['data']);
         case 204:
-          return unknown_message(context);
+          await unknown_message(context);
+          return null;
         default:
-          return network_check_message(context);
+          await network_check_message(context);
+          return null;
       }
     } else {
-      return expiration_token_message(context);
+      await expiration_token_message(context);
+      return null;
     }
   }
 

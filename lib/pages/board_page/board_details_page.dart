@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:thepuppyplace_flutter/repositories/board/board_repository.dart';
 import 'package:thepuppyplace_flutter/util/common.dart';
 import 'package:thepuppyplace_flutter/util/customs.dart';
 import 'package:thepuppyplace_flutter/widgets/dialogs/custom_dialog.dart';
@@ -12,6 +13,7 @@ import '../../controllers/board/board_controller.dart';
 import '../../controllers/user/user_controller.dart';
 import '../../models/Board.dart';
 import '../../models/BoardComment.dart';
+import '../../models/CommentLike.dart';
 import '../../models/NestedComment.dart';
 import '../../util/custom_icons.dart';
 import '../../widgets/buttons/tag_text.dart';
@@ -36,6 +38,7 @@ class _BoardDetailsPageState extends State<BoardDetailsPage> {
   int _photoIndex = 0;
   BoardComment? _selectComment;
   final TextEditingController _commentController = TextEditingController();
+  final repo = BoardRepository();
 
   @override
   void initState() {
@@ -107,11 +110,9 @@ class _BoardDetailsPageState extends State<BoardDetailsPage> {
                 Expanded(
                   child: SmartRefresher(
                       controller: _refreshController,
-                      onRefresh: () async{
-                        controller.getBoard.whenComplete((){
-                          _refreshController.refreshCompleted(resetFooterState: true);
-                        });
-                      },
+                      onRefresh: () => controller.getBoard.whenComplete((){
+                        _refreshController.refreshCompleted(resetFooterState: true);
+                      }),
                       header: CustomHeader(
                         builder: (BuildContext context, RefreshStatus? status) => RefreshContents(status),
                       ),
@@ -138,7 +139,7 @@ class _BoardDetailsPageState extends State<BoardDetailsPage> {
                               ),
                             ),
                             Container(
-                              margin: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.033), vertical: mediaHeight(context, 0.01)),
+                              margin: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.033)),
                               child: Row(
                                 children: [
                                   TagText(board.category),
@@ -164,6 +165,7 @@ class _BoardDetailsPageState extends State<BoardDetailsPage> {
                                   itemBuilder: (context, index, index2){
                                     String photo = board.board_photos[index];
                                     return Container(
+                                      margin: EdgeInsets.all(mediaWidth(context, 0.033)),
                                       decoration: BoxDecoration(
                                           borderRadius: BorderRadius.circular(20),
                                           image: DecorationImage(
@@ -174,16 +176,14 @@ class _BoardDetailsPageState extends State<BoardDetailsPage> {
                                     );
                                   },
                                 ),
-                                Positioned(
-                                  bottom: mediaHeight(context, 0.02),
-                                  child: AnimatedSmoothIndicator(
-                                    activeIndex: _photoIndex,
-                                    count: board.board_photos.length,
-                                    effect: WormEffect(
-                                      activeDotColor: CustomColors.main,
-                                      dotWidth: mediaWidth(context, 0.015),
-                                      dotHeight: mediaWidth(context, 0.015),
-                                    ),
+                                AnimatedSmoothIndicator(
+                                  activeIndex: _photoIndex,
+                                  count: board.board_photos.length,
+                                  effect: WormEffect(
+                                    activeDotColor: CustomColors.main,
+                                    dotColor: CustomColors.hint,
+                                    dotWidth: mediaWidth(context, 0.015),
+                                    dotHeight: mediaWidth(context, 0.015),
                                   ),
                                 )
                               ],
@@ -195,9 +195,13 @@ class _BoardDetailsPageState extends State<BoardDetailsPage> {
                               margin: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.033)).copyWith(bottom: mediaWidth(context, 0.033)),
                               child: Text(board.description, style: CustomTextStyle.w400(context)),
                             ),
-                            const Divider(height: 0, color: CustomColors.emptySide,),
                             Container(
-                              margin: EdgeInsets.all(mediaWidth(context, 0.033)),
+                              decoration: const BoxDecoration(
+                                  boxShadow: [
+                                    BoxShadow(color: CustomColors.emptySide, blurStyle: BlurStyle.outer, blurRadius: 5)
+                                  ]
+                              ),
+                              padding: EdgeInsets.all(mediaWidth(context, 0.033)),
                               child: Row(
                                 children: [
                                   Expanded(
@@ -206,31 +210,31 @@ class _BoardDetailsPageState extends State<BoardDetailsPage> {
                                         Container(
                                           margin: EdgeInsets.only(right: mediaWidth(context, 0.02)),
                                           child: GetBuilder<UserController>(
-                                            init: UserController(),
-                                            builder: (UserController userController) => userController.obx((user) {
-                                              if(board.likeList.where((like) => like.userId == user!.id).isEmpty){
-                                                return GestureDetector(
-                                                  child: Icon(CustomIcons.heart, color: CustomColors.hint, size: mediaHeight(context, 0.025)),
-                                                  onTap: (){
-                                                    showDialog(context: context, builder: (context) => LikeAnimation(CupertinoIcons.heart_fill, controller.likeBoard(context)));
-                                                  },
-                                                );
-                                              } else {
-                                                return GestureDetector(
-                                                  child: Icon(CustomIcons.heart, color: Colors.red, size: mediaHeight(context, 0.025)),
-                                                  onTap: (){
-                                                    showDialog(context: context, builder: (context) => LikeAnimation(CustomIcons.heart, controller.likeBoard(context)));
-                                                  },
-                                                );
-                                              }
-                                            },
-                                              onEmpty: GestureDetector(
-                                                child: Icon(CustomIcons.heart, color: CustomColors.hint, size: mediaHeight(context, 0.025)),
-                                                onTap: (){
-                                                  showSnackBar(context, '로그인을 해주세요.');
-                                                },
+                                              init: UserController(),
+                                              builder: (UserController userController) => userController.obx((user) {
+                                                if(board.likeList.where((like) => like.userId == user!.id).isEmpty){
+                                                  return GestureDetector(
+                                                    child: Icon(CustomIcons.heart, color: CustomColors.hint, size: mediaHeight(context, 0.025)),
+                                                    onTap: (){
+                                                      showDialog(context: context, builder: (context) => LikeAnimation(CupertinoIcons.heart_fill, controller.likeBoard(context)));
+                                                    },
+                                                  );
+                                                } else {
+                                                  return GestureDetector(
+                                                    child: Icon(CustomIcons.heart, color: Colors.red, size: mediaHeight(context, 0.025)),
+                                                    onTap: (){
+                                                      showDialog(context: context, builder: (context) => LikeAnimation(CustomIcons.heart, controller.likeBoard(context)));
+                                                    },
+                                                  );
+                                                }
+                                              },
+                                                  onEmpty: GestureDetector(
+                                                    child: Icon(CustomIcons.heart, color: CustomColors.hint, size: mediaHeight(context, 0.025)),
+                                                    onTap: (){
+                                                      showSnackBar(context, '로그인을 해주세요.');
+                                                    },
+                                                  )
                                               )
-                                            )
                                           ),
                                         ),
                                         Text(board.likeList.length.toString(), style: CustomTextStyle.w400(context, scale: 0.02)),
@@ -248,23 +252,42 @@ class _BoardDetailsPageState extends State<BoardDetailsPage> {
                                 ],
                               ),
                             ),
-                            const Divider(height: 0, thickness: 5, color: CustomColors.empty),
                             //댓글 리스트
                             if(board.commentList.isNotEmpty) Container(
                               margin: EdgeInsets.all(mediaWidth(context, 0.033)),
                               child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    for(BoardComment comment in board.commentList) CommentCard(comment, (BoardComment boardComment){
-                                      setState(() {
-                                        _selectComment = boardComment;
-                                      });
-                                    },
-                                      onCommentDelete: (){
+                                    for(BoardComment comment in board.commentList) CommentCard(comment,
+                                      onComment: (BoardComment boardComment){
+                                        setState(() {
+                                          _selectComment = boardComment;
+                                        });
+                                      },
+                                      onLike: (BoardComment boardComment) async{
+                                        final CommentLike? like = await repo.likeComment(context, comment_id: boardComment.commentId);
+                                        if(like != null){
+                                          setState(() {
+                                            boardComment.commentLikeList.add(like);
+                                          });
+                                        }
+                                      },
+                                      onCommentDelete: () async{
+                                        final BoardComment? bComment = await repo.deleteComment(context, comment_id: comment.commentId);
+                                        if(bComment != null){
+                                          setState(() {
+                                            board.commentList.removeWhere((c) => c.commentId == bComment.commentId);
+                                          });
+                                        }
                                         controller.deleteComment(context, comment);
                                       },
-                                      onNestedCommentDelete: (NestedComment nestedComment){
-                                        controller.deleteNestedComment(context, nestedComment);
+                                      onNestedCommentDelete: (NestedComment nestedComment) async{
+                                        final NestedComment? c = await repo.deleteNestedComment(context, nested_comment_id: nestedComment.id);
+                                        if(c != null){
+                                          setState(() {
+                                            comment.nestedCommentList.removeWhere((com) => com.id == c.id);
+                                          });
+                                        }
                                       },
                                     )
                                   ]
@@ -315,12 +338,18 @@ class _BoardDetailsPageState extends State<BoardDetailsPage> {
                 ),
                 CommentField(
                   commentController: _commentController,
-                  onPressed: (){
+                  onPressed: () async{
                     if(_selectComment != null){
-                      controller.insertNestedComment(context,
+                      final int? statusCode = await repo.insertNestedComment(
+                          context,
                           comment_id: _selectComment!.commentId,
                           comment: _commentController.text
                       );
+                      if(statusCode != null){
+                        controller.getBoard;
+                      } else {
+                        print('ho');
+                      }
                     } else {
                       controller.insertComment(context, comment: _commentController.text);
                     }

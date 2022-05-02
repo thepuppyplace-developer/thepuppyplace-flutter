@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:thepuppyplace_flutter/repositories/board/board_repository.dart';
 import 'package:thepuppyplace_flutter/widgets/dialogs/custom_dialog.dart';
 import '../../controllers/user/user_controller.dart';
 import '../../models/BoardComment.dart';
@@ -13,10 +14,11 @@ import 'user_profile_card.dart';
 class CommentCard extends GetWidget<UserController> {
   final BoardComment comment;
   final Function(BoardComment) onComment;
+  final Function(BoardComment) onLike;
   final Function() onCommentDelete;
   final Function(NestedComment) onNestedCommentDelete;
 
-  const CommentCard(this.comment, this.onComment, {required this.onCommentDelete, required this.onNestedCommentDelete, Key? key}) : super(key: key);
+  const CommentCard(this.comment, {required this.onComment, required this.onLike, required this.onCommentDelete, required this.onNestedCommentDelete, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +56,14 @@ class CommentCard extends GetWidget<UserController> {
               Expanded(
                 child: Row(
                   children: [
-                    CustomTextButton('좋아요', (){}, color: CustomColors.hint),
+                    Row(
+                      children: [
+                        CustomTextButton('좋아요', (){
+                          onLike(comment);
+                        }, color: CustomColors.hint),
+                        if(comment.commentLikeList.isNotEmpty) Text(comment.commentLikeList.length .toString(), style: CustomTextStyle.w500(context, color: CustomColors.hint),)
+                      ],
+                    ),
                     CustomTextButton('답글달기', (){
                       onComment(comment);
                     }, color: CustomColors.hint),

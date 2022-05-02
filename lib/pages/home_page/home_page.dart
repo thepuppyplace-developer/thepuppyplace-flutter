@@ -202,7 +202,10 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                       onEmpty: const SliverEmpty('등록되어 있는 베스트글이 없습니다.'),
-                      onLoading: const SliverLoading()
+                      onLoading: const SliverLoading(
+                        animated: false,
+                        message: '게시글을 불러오는 중입니다...',
+                      )
                     ),
                   ),
                   SliverToBoxAdapter(
@@ -229,8 +232,11 @@ class _HomePageState extends State<HomePage> {
                       childCount: boardList!.length
                     ),
                   ),
-                    onLoading: const SliverLoading(),
-                    onEmpty: const SliverEmpty('등록된 게시글이 없습니다.')
+                      onEmpty: const SliverEmpty('등록되어 있는 베스트글이 없습니다.'),
+                      onLoading: const SliverLoading(
+                        animated: false,
+                        message: '게시글을 불러오는 중입니다...',
+                      )
                   )
                 ],
               ),
