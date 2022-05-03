@@ -15,7 +15,6 @@ class NotificationPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<NotificationLogListController>(
-      autoRemove: false,
       init: NotificationLogListController(context),
       builder: (NotificationLogListController controller) {
         return Scaffold(

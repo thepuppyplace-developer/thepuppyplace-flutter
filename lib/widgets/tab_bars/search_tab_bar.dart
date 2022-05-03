@@ -45,6 +45,7 @@ class InsertSearchTabBar extends StatelessWidget{
   final TextEditingController controller;
   final EdgeInsets? margin;
   final String? hintText;
+  final Function(String) onChanged;
   final Function() onSearchTap;
   final Function(String) onFieldSubmitted;
 
@@ -52,6 +53,7 @@ class InsertSearchTabBar extends StatelessWidget{
     required this.controller,
     this.margin,
     this.hintText,
+    required this.onChanged,
     required this.onSearchTap,
     required this.onFieldSubmitted,
     Key? key}) : super(key: key);
@@ -76,5 +78,6 @@ class InsertSearchTabBar extends StatelessWidget{
       onPressed: onSearchTap,
     ),
     borderRadius: mediaHeight(context, 1),
+    onChanged: onChanged,
   );
 }

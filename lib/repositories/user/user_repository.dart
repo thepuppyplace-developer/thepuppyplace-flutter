@@ -69,16 +69,19 @@ class UserRepository extends GetConnect with Config, LocalConfig{
     }
   }
 
-  Future<User?> logout(BuildContext context) async{
+  Future<User?> logout(BuildContext context, int user_id) async{
     try{
       if(await jwt != null){
         final Database db = await database;
         final Response res = await patch('$API_URL/user/my', {
           'fcm_token': null,
-        });
+        }, headers: headers(await jwt));
         switch(res.statusCode){
           case 200:
-            await db.rawDelete('TRUNCATE User');
+            await db.rawDelete('''
+            DELETE FROM ${User.TABLE}
+            WHERE id = ?
+            ''', [user_id]);
             await showSnackBar(context, '로그아웃 되었습니다.');
             return null;
           default: return null;

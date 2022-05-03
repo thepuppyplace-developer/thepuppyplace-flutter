@@ -48,190 +48,187 @@ class _InsertPageState extends State<InsertPage> {
               body: controller.obx((User? user) => Column(
                 children: [
                   Expanded(
-                    child: Stack(
-                      alignment: Alignment.bottomCenter,
-                      children: [
-                        NestedScrollView(
-                          headerSliverBuilder: (context, inner) => [
-                            SliverAppBar(
-                              elevation: 0.5,
-                              snap: true,
-                              floating: true,
-                              pinned: true,
-                              title: Text('글쓰기', style: CustomTextStyle.w600(context, scale: 0.02)),
-                              actions: [
-                                CupertinoButton(
-                                  child: Text('등록', style: CustomTextStyle.w500(context, scale: 0.018, color: CustomColors.hint)),
-                                  onPressed: null,
-                                )
-                              ],
-                              bottom: SelectCategoryTabBar(mediaHeight(context, 0.06),
-                                categoryIndex: _categoryIndex,
-                                categoryList: _categoryList,
-                                onChanged: (int index){
-                                  setState(() {
-                                    _categoryIndex = index;
-                                  });
-                                },
-                              ),
-                            ),
+                    child: NestedScrollView(
+                      headerSliverBuilder: (context, inner) => [
+                        SliverAppBar(
+                          elevation: 0.5,
+                          snap: true,
+                          floating: true,
+                          pinned: true,
+                          title: Text('글쓰기', style: CustomTextStyle.w600(context, scale: 0.02)),
+                          actions: [
+                            CupertinoButton(
+                              child: Text('등록', style: CustomTextStyle.w500(context, scale: 0.018, color: CustomColors.hint)),
+                              onPressed: null,
+                            )
                           ],
-                          body: CustomScrollView(
-                            slivers: [
-                              SliverToBoxAdapter(
-                                child: Container(
-                                    margin: EdgeInsets.symmetric(vertical: mediaHeight(context, 0.02), horizontal: mediaWidth(context, 0.033)),
-                                    child: Text('지역태그', style: CustomTextStyle.w600(context, scale: 0.018))),
-                              ),
-                              SliverPadding(
-                                padding: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.033)),
-                                sliver: SliverGrid(
-                                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 4,
-                                      mainAxisExtent: mediaHeight(context, 0.06),
-                                      crossAxisSpacing: mediaWidth(context, 0.01)
-                                  ),
-                                  delegate: SliverChildBuilderDelegate((context, index){
-                                    String text = LocationList.location[index];
-                                    return SelectButton(
-                                      text: text,
-                                      currentIndex: _locationIndex,
-                                      index: index,
-                                      onChanged: (int index){
-                                        setState(() {
-                                          _locationIndex = index;
-                                        });
-                                      },
-                                    );
-                                  },
-                                      childCount: LocationList.location.length
-                                  ),
-                                ),
-                              ),
-                              SliverToBoxAdapter(
-                                child: Container(
-                                    margin: EdgeInsets.symmetric(vertical: mediaHeight(context, 0.02), horizontal: mediaWidth(context, 0.033)),
-                                    child: Text('세부지역선택', style: CustomTextStyle.w600(context, scale: 0.018))),
-                              ),
-                              SliverPadding(
-                                padding: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.033)),
-                                sliver: SliverGrid(
-                                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 4,
-                                      mainAxisExtent: mediaHeight(context, 0.06),
-                                      crossAxisSpacing: mediaWidth(context, 0.01)
-                                  ),
-                                  delegate: SliverChildBuilderDelegate((context, index){
-                                    String text = LocationList.details(_locationIndex)[index];
-                                    return SelectButton(
-                                      text: text,
-                                      currentIndex: _locationDetailIndex,
-                                      index: index,
-                                      onChanged: (int index){
-                                        setState(() {
-                                          _locationDetailIndex = index;
-                                        });
-                                      },
-                                    );
-                                  },
-                                      childCount: LocationList.details(_locationIndex).length
-                                  ),
-                                ),
-                              ),
-                              SliverPadding(
-                                padding: EdgeInsets.only(bottom: mediaHeight(context, 0.15)),
-                                sliver: SliverToBoxAdapter(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Container(
-                                          margin: EdgeInsets.symmetric(vertical: mediaHeight(context, 0.02), horizontal: mediaWidth(context, 0.033)),
-                                          child: Text('글작성', style: CustomTextStyle.w600(context, scale: 0.018))),
-                                      CustomTextField(
-                                        textFieldType: TextFieldType.underline,
-                                        onChanged: (String title){
-                                          setState(() {
-                                            _title = title;
-                                          });
-                                        },
-                                        margin: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.033)),
-                                        keyboardType: TextInputType.text,
-                                        hintText: '제목을 입력해주세요.(최대 20자)',
-                                        textInputAction: TextInputAction.next,
-                                        maxLength: 20,
-                                      ),
-                                      CustomTextField(
-                                        textFieldType: TextFieldType.underline,
-                                        onChanged: (String description){
-                                          setState(() {
-                                            _description = description;
-                                          });
-                                        },
-                                        margin: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.033)),
-                                        minLines: 20,
-                                        maxLines: 50,
-                                        keyboardType: TextInputType.text,
-                                        hintText: '내용을 입력해주세요.',
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          height: mediaHeight(context, 0.1),
-                          margin: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.033)),
-                          child: ListView(
-                            scrollDirection: Axis.horizontal,
-                            children: [
-                              CupertinoButton(
-                                padding: EdgeInsets.only(right: mediaWidth(context, 0.033)),
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  height: mediaHeight(context, 0.1),
-                                  width: mediaHeight(context, 0.1),
-                                  decoration: BoxDecoration(
-                                      color: CustomColors.empty,
-                                      borderRadius: BorderRadius.circular(5),
-                                      border: Border.all(color: CustomColors.hint)
-                                  ),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Icon(Icons.image_outlined, size: mediaHeight(context, 0.03), color: CustomColors.hint),
-                                      Text('사진 올리기', style: CustomTextStyle.w500(context, color: CustomColors.hint, scale: 0.012))
-                                    ],
-                                  ),
-                                ),
-                                onPressed: () async{
-                                  photoList.addAll(await pickMultiImage(limit: 10));
-                                  setState(() {});
-                                },
-                              ),
-                              if(photoList.isNotEmpty) for(XFile photo in photoList) CupertinoButton(
-                                padding: EdgeInsets.only(right: mediaWidth(context, 0.033)),
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  height: mediaHeight(context, 0.1),
-                                  width: mediaHeight(context, 0.1),
-                                  decoration: BoxDecoration(
-                                      color: CustomColors.empty,
-                                      borderRadius: BorderRadius.circular(5),
-                                      border: Border.all(color: CustomColors.hint),
-                                      image: DecorationImage(
-                                          fit: BoxFit.cover,
-                                          image: FileImage(File(photo.path))
-                                      )
-                                  ),
-                                ),
-                                onPressed: (){},
-                              ),
-                            ],
+                          bottom: SelectCategoryTabBar(mediaHeight(context, 0.06),
+                            categoryIndex: _categoryIndex,
+                            categoryList: _categoryList,
+                            onChanged: (int index){
+                              setState(() {
+                                _categoryIndex = index;
+                              });
+                            },
                           ),
                         ),
                       ],
+                      body: CustomScrollView(
+                        slivers: [
+                          SliverToBoxAdapter(
+                            child: Container(
+                                margin: EdgeInsets.symmetric(vertical: mediaHeight(context, 0.02), horizontal: mediaWidth(context, 0.033)),
+                                child: Text('지역태그', style: CustomTextStyle.w600(context, scale: 0.018))),
+                          ),
+                          SliverPadding(
+                            padding: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.033)),
+                            sliver: SliverGrid(
+                              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 4,
+                                  mainAxisExtent: mediaHeight(context, 0.06),
+                                  crossAxisSpacing: mediaWidth(context, 0.01)
+                              ),
+                              delegate: SliverChildBuilderDelegate((context, index){
+                                String text = LocationList.location[index];
+                                return SelectButton(
+                                  text: text,
+                                  currentIndex: _locationIndex,
+                                  index: index,
+                                  onChanged: (int index){
+                                    setState(() {
+                                      _locationIndex = index;
+                                    });
+                                  },
+                                );
+                              },
+                                  childCount: LocationList.location.length
+                              ),
+                            ),
+                          ),
+                          SliverToBoxAdapter(
+                            child: Container(
+                                margin: EdgeInsets.symmetric(vertical: mediaHeight(context, 0.02), horizontal: mediaWidth(context, 0.033)),
+                                child: Text('세부지역선택', style: CustomTextStyle.w600(context, scale: 0.018))),
+                          ),
+                          SliverPadding(
+                            padding: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.033)),
+                            sliver: SliverGrid(
+                              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 4,
+                                  mainAxisExtent: mediaHeight(context, 0.06),
+                                  crossAxisSpacing: mediaWidth(context, 0.01)
+                              ),
+                              delegate: SliverChildBuilderDelegate((context, index){
+                                String text = LocationList.details(_locationIndex)[index];
+                                return SelectButton(
+                                  text: text,
+                                  currentIndex: _locationDetailIndex,
+                                  index: index,
+                                  onChanged: (int index){
+                                    setState(() {
+                                      _locationDetailIndex = index;
+                                    });
+                                  },
+                                );
+                              },
+                                  childCount: LocationList.details(_locationIndex).length
+                              ),
+                            ),
+                          ),
+                          SliverPadding(
+                            padding: EdgeInsets.only(bottom: mediaWidth(context, 0.033)),
+                            sliver: SliverToBoxAdapter(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                      margin: EdgeInsets.symmetric(vertical: mediaHeight(context, 0.02), horizontal: mediaWidth(context, 0.033)),
+                                      child: Text('글작성', style: CustomTextStyle.w600(context, scale: 0.018))),
+                                  CustomTextField(
+                                    textFieldType: TextFieldType.underline,
+                                    onChanged: (String title){
+                                      setState(() {
+                                        _title = title;
+                                      });
+                                    },
+                                    margin: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.033)),
+                                    keyboardType: TextInputType.text,
+                                    hintText: '제목을 입력해주세요.(최대 20자)',
+                                    textInputAction: TextInputAction.next,
+                                    maxLength: 20,
+                                  ),
+                                  CustomTextField(
+                                    textFieldType: TextFieldType.underline,
+                                    onChanged: (String description){
+                                      setState(() {
+                                        _description = description;
+                                      });
+                                    },
+                                    margin: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.033)),
+                                    minLines: 20,
+                                    maxLines: 50,
+                                    keyboardType: TextInputType.text,
+                                    hintText: '내용을 입력해주세요.',
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                          SliverToBoxAdapter(
+                            child: Container(
+                              height: mediaHeight(context, 0.1),
+                              margin: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.033)),
+                              child: ListView(
+                                scrollDirection: Axis.horizontal,
+                                children: [
+                                  CupertinoButton(
+                                    padding: EdgeInsets.only(right: mediaWidth(context, 0.033)),
+                                    child: Container(
+                                      alignment: Alignment.center,
+                                      height: mediaHeight(context, 0.1),
+                                      width: mediaHeight(context, 0.1),
+                                      decoration: BoxDecoration(
+                                          color: CustomColors.empty,
+                                          borderRadius: BorderRadius.circular(5),
+                                          border: Border.all(color: CustomColors.hint)
+                                      ),
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Icon(Icons.image_outlined, size: mediaHeight(context, 0.03), color: CustomColors.hint),
+                                          Text('사진 올리기', style: CustomTextStyle.w500(context, color: CustomColors.hint, scale: 0.012))
+                                        ],
+                                      ),
+                                    ),
+                                    onPressed: () async{
+                                      photoList.addAll(await pickMultiImage(limit: 10));
+                                      setState(() {});
+                                    },
+                                  ),
+                                  if(photoList.isNotEmpty) for(XFile photo in photoList) CupertinoButton(
+                                    padding: EdgeInsets.only(right: mediaWidth(context, 0.033)),
+                                    child: Container(
+                                      alignment: Alignment.center,
+                                      height: mediaHeight(context, 0.1),
+                                      width: mediaHeight(context, 0.1),
+                                      decoration: BoxDecoration(
+                                          color: CustomColors.empty,
+                                          borderRadius: BorderRadius.circular(5),
+                                          border: Border.all(color: CustomColors.hint),
+                                          image: DecorationImage(
+                                              fit: BoxFit.cover,
+                                              image: FileImage(File(photo.path))
+                                          )
+                                      ),
+                                    ),
+                                    onPressed: (){},
+                                  ),
+                                ],
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
                     ),
                   ),
                   CustomButton(

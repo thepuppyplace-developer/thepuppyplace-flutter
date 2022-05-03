@@ -41,6 +41,11 @@ class _SearchPageState extends State<SearchPage> {
                     margin: EdgeInsets.zero,
                     hintText: '찾으시는 검색어를 입력하세요.',
                     controller: _search,
+                    onChanged: (keyword){
+                    if(keyword.isNotEmpty){
+                      controller.getSearchBoardList(keyword: keyword);
+                    }
+                    },
                     onSearchTap: (){
                       if(_search.text.isNotEmpty){
                         controller.getSearchBoardList(keyword: _search.text);
@@ -256,7 +261,7 @@ class _SearchPageState extends State<SearchPage> {
                           ],
                         ),
                             onLoading: const LoadingView(message: '검색중입니다...',),
-                            onEmpty: SliverEmpty('${_search.text}에 대한 검색 결과가 없습니다.')
+                            onEmpty: EmptyView(message: '${_search.text}에 대한 검색 결과가 없습니다.')
                         );
                       } else {
                         return GetBuilder<PopularSearchListController>(
