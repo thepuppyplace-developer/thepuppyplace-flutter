@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:thepuppyplace_flutter/controllers/user/user_controller.dart';
 import 'package:thepuppyplace_flutter/widgets/buttons/custom_icon_button.dart';
 import '../../repositories/notice/notice_repository.dart';
 import '../../util/common.dart';
@@ -33,7 +34,7 @@ class _NoticeInsertPageState extends State<NoticeInsertPage> {
       onTap: (){
         unFocus(context);
       },
-      child:Scaffold(
+      child: Scaffold(
         body: NestedScrollView(
           headerSliverBuilder: (context, inner) => [
             SliverAppBar(
@@ -100,10 +101,10 @@ class _NoticeInsertPageState extends State<NoticeInsertPage> {
                         Container(
                           margin: EdgeInsets.symmetric(vertical: mediaWidth(context, 0.033)),
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            image: DecorationImage(
-                                fit: BoxFit.cover,
-                                image: FileImage(File(_image!.path)))
+                              borderRadius: BorderRadius.circular(10),
+                              image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: FileImage(File(_image!.path)))
                           ),
                         ),
                         Positioned(
@@ -112,10 +113,10 @@ class _NoticeInsertPageState extends State<NoticeInsertPage> {
                               icon: Icons.cancel,
                               color: Colors.black45,
                               onTap: (){
-                            setState(() {
-                              _image = null;
-                            });
-                          }),
+                                setState(() {
+                                  _image = null;
+                                });
+                              }),
                         )
                       ],
                     ),
@@ -149,7 +150,7 @@ class _NoticeInsertPageState extends State<NoticeInsertPage> {
   Future get insertNotice async{
     if(_formKey.currentState!.validate()){
       _formKey.currentState!.save();
-      int? statusCode = await _repository.insertNotice(context, image: _image, notice_title: _notice_title, notice_main_text: _notice_main_text);
+      int? statusCode = await _repository.insertNotice(context, UserController.to.user!.jwt_token, image: _image, notice_title: _notice_title, notice_main_text: _notice_main_text);
       if(statusCode == 201){
         Get.until((route) => route.isFirst);
       }

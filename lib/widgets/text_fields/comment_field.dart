@@ -10,7 +10,7 @@ import 'custom_text_field.dart';
 
 class CommentField extends StatelessWidget {
   final TextEditingController commentController;
-  final Function()? onPressed;
+  final Function(User)? onPressed;
 
   const CommentField(
       {required this.commentController, required this.onPressed, Key? key})
@@ -41,15 +41,14 @@ class CommentField extends StatelessWidget {
                             child: CustomTextField(
                               textFieldType: TextFieldType.none,
                               controller: commentController,
-                              onFieldSubmitted: (String comment) {
-                                onPressed;
-                              },
                               height: mediaHeight(context, 0.07),
                               keyboardType: TextInputType.text,
                               hintText: '댓글을 입력하세요.',
                             ),
                           ),
-                          CustomTextButton('등록', onPressed, color: CustomColors.main)
+                          CustomTextButton('등록', (){
+                            onPressed!(user!);
+                          }, color: CustomColors.main)
                         ],
                       )
                   ),

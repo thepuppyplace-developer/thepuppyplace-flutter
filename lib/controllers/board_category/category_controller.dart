@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 
-import '../../config/local_db.dart';
+import '../../config/local_config.dart';
 import '../../models/BoardCategory.dart';
 import '../../repositories/board/board_repository.dart';
 

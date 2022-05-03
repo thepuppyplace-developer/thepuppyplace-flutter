@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sqflite/sqflite.dart';
 import '../../config/config.dart';
-import '../../config/local_db.dart';
+import '../../config/local_config.dart';
 import '../../models/User.dart';
 import '../../util/common.dart';
 
-class UserRepository extends GetConnect with Config, LocalConfig{
+class UserRepository extends GetConnect with Config{
 
   Future<String?> signUp(BuildContext context, {required String email, required String password, required String nickname}) async{
     try{
@@ -69,16 +69,14 @@ class UserRepository extends GetConnect with Config, LocalConfig{
     }
   }
 
-  Future<User?> logout(BuildContext context) async{
+  Future<User?> logout(BuildContext context, String? jwt) async{
     try{
-      if(await jwt != null){
-        final Database db = await database;
+      if(jwt != null){
         final Response res = await patch('$API_URL/user/my', {
           'fcm_token': null,
-        });
+        }, headers: headers(jwt));
         switch(res.statusCode){
           case 200:
-            await db.rawDelete('TRUNCATE User');
             await showSnackBar(context, '로그아웃 되었습니다.');
             return null;
           default: return null;
@@ -93,20 +91,13 @@ class UserRepository extends GetConnect with Config, LocalConfig{
     }
   }
 
-  Future<User?> getUser(String? token) async{
-    if(token != null){
-      final Response res = await get('$API_URL/user/my', headers: headers(token));
+  Future<User?> refreshUser(String? jwt) async{
+    if(jwt != null){
+      final Response res = await get('$API_URL/user/my', headers: headers(jwt));
 
       switch(res.statusCode){
         case 200: {
-          final Database db = await database;
           final User user = User.fromJson(res.body['data']);
-          final userList = await USER_LIST(where: 'id = ?', whereArgs: [user.id]);
-          if(userList.isNotEmpty){
-            await db.update(User.TABLE, user.toJson(), where: 'id = ?', whereArgs: [user.id]);
-          } else {
-            await db.insert(User.TABLE, user.toJson());
-          }
           return user;
         }
         default: {
@@ -118,19 +109,13 @@ class UserRepository extends GetConnect with Config, LocalConfig{
     }
   }
 
-  Future<User?> deleteUser(BuildContext context, int user_id) async{
+  Future<User?> deleteUser(BuildContext context, int user_id, String? jwt) async{
     try{
-      if(await jwt != null){
-        final Response res = await delete('$API_URL/user/my', headers: headers(await jwt));
+      if(jwt != null){
+        final Response res = await delete('$API_URL/user/my', headers: headers(jwt));
 
         switch(res.statusCode){
           case 200:
-            final Database db = await database;
-            await db.rawDelete('''
-            DELETE FROM ${User.TABLE}
-            WHERE id = ?
-            ''', [user_id]);
-
             await showSnackBar(context, '회원이 탈퇴되었습니다.');
             break;
           default:
@@ -214,10 +199,10 @@ class UserRepository extends GetConnect with Config, LocalConfig{
     }
   }
 
-  Future changeNotification(BuildContext context) async{
+  Future changeNotification(BuildContext context, String? jwt) async{
     try{
-      if(await jwt != null){
-        final Response res = await patch('$API_URL/user/isalarm', {}, headers: headers(await jwt));
+      if(jwt != null){
+        final Response res = await patch('$API_URL/user/isalarm', {}, headers: headers(jwt));
 
         switch(res.statusCode){
           case 200:
@@ -236,11 +221,12 @@ class UserRepository extends GetConnect with Config, LocalConfig{
     }
   }
 
-  Future<int?> updateNickname(BuildContext context, String nickname) async{
+  Future<int?> updateNickname(BuildContext context, String nickname, String? jwt) async{
     try{
-      if(await jwt != null){
-        final Response res = await patch('$API_URL/user/my', { "nickname": nickname }, headers: headers(await jwt));
+      if(jwt != null){
+        final Response res = await patch('$API_URL/user/my', { "nickname": nickname }, headers: headers(jwt));
 
+        print(res.body['message']);
         switch(res.statusCode){
           case 200:
             await showSnackBar(context, '닉네임이 $nickname으로 변경되었습니다.');
@@ -259,13 +245,13 @@ class UserRepository extends GetConnect with Config, LocalConfig{
     }
   }
 
-  Future updatePhotoURL(BuildContext context, File? photo) async{
+  Future updatePhotoURL(BuildContext context, File? photo, String? jwt) async{
     try{
-      if(await jwt != null){
+      if(jwt != null){
         final Response res = await patch('$API_URL/user/my', FormData({
           "image": photo
         }),
-            headers: headers(await jwt));
+            headers: headers(jwt));
 
         switch(res.statusCode){
           case 200:
@@ -281,16 +267,16 @@ class UserRepository extends GetConnect with Config, LocalConfig{
     }
   }
 
-  Future<int?> updatePassword(BuildContext context, {
+  Future<int?> updatePassword(BuildContext context, String? jwt, {
     required String before_password,
     required String after_password
   }) async{
     try{
-      if(await jwt != null){
+      if(jwt != null){
         final Response res = await patch('$API_URL/user/password', {
           'before_password': before_password.trim(),
           'after_password': after_password.trim()
-        }, headers: headers(await jwt));
+        }, headers: headers(jwt));
 
         switch(res.statusCode){
           case 200:

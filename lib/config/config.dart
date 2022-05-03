@@ -1,17 +1,19 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:sqflite/sqflite.dart';
 import 'package:thepuppyplace_flutter/util/common.dart';
-
-import '../models/User.dart';
-import 'local_db.dart';
 
 class Config{
   final String API_URL = 'http://3.36.65.93:3000';
 
-  Map<String, String> headers(String? jwt) => {
-    'thepuppyplace': jwt!
-  };
+  Map<String, String>? headers(String? jwt_token){
+    if(jwt_token != null){
+      return {
+        'thepuppyplace': jwt_token
+      };
+    } else {
+      return null;
+    }
+  }
 
   Future<String?> get fcm_token async{
     FirebaseMessaging fcm = FirebaseMessaging.instance;
@@ -28,5 +30,5 @@ class Config{
   final String channelName = 'thepuppyplace';
   final String channelDescription = 'thepuppyplace_notification_channel';
 
-  static String ADMIN_EMAIL = 'hpodong@naver.com';
+  static const String ADMIN_EMAIL = 'hpodong@naver.com';
 }

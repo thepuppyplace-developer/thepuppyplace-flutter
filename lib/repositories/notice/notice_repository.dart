@@ -7,7 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:thepuppyplace_flutter/util/common.dart';
 
 import '../../config/config.dart';
-import '../../config/local_db.dart';
+import '../../config/local_config.dart';
 import '../../models/Notice.dart';
 
 class NoticeRepository extends GetConnect with Config, LocalConfig{
@@ -28,9 +28,9 @@ class NoticeRepository extends GetConnect with Config, LocalConfig{
     }
   }
 
-  Future<int?> insertNotice(BuildContext context, {required XFile? image, required String notice_title, required String notice_main_text}) async{
+  Future<int?> insertNotice(BuildContext context, String? jwt, {required XFile? image, required String notice_title, required String notice_main_text}) async{
     try{
-      if(await jwt != null){
+      if(jwt != null){
         final Response res;
         if(image != null){
           res = await post('$API_URL/notice', FormData({
@@ -63,9 +63,9 @@ class NoticeRepository extends GetConnect with Config, LocalConfig{
     }
   }
 
-  Future<int?> deleteNotice(BuildContext context, int? notice_id) async{
+  Future<int?> deleteNotice(BuildContext context, String? jwt, int? notice_id) async{
     try{
-      if(await jwt != null){
+      if(jwt != null){
         final Response res = await delete('$API_URL/notice/$notice_id');
 
         switch(res.statusCode){

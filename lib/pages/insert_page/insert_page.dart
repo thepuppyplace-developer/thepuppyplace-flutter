@@ -240,6 +240,7 @@ class _InsertPageState extends State<InsertPage> {
                     onPressed: () async{
                       showIndicator(BoardRepository.from.insertBoard(
                           context,
+                          user!.jwt_token,
                           title: _title,
                           description: _description,
                           location: '${LocationList.location[_locationIndex!]} ${LocationList.details(_locationIndex)[_locationDetailIndex]}',

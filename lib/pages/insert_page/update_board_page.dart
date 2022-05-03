@@ -250,6 +250,7 @@ class _UpdateBoardPageState extends State<UpdateBoardPage> {
                     onPressed: (){
                       showIndicator(BoardRepository.from.insertBoard(
                         context,
+                        user!.jwt_token,
                         title: _title,
                         description: _description,
                         location: '${LocationList.location[_locationIndex!]} ${LocationList.details(_locationIndex)[_locationDetailIndex]}',

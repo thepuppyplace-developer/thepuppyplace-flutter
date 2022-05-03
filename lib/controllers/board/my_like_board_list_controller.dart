@@ -32,6 +32,6 @@ class MyLikeBoardListController extends GetxController with StateMixin<List<Like
   }
 
   Future get getBoardList async{
-    _boardList.value = await _repository.getLikeBoardList(context, UserController.user!.id);
+    _boardList.value = await _repository.getLikeBoardList(context, UserController.to.user!.id);
   }
 }

@@ -18,14 +18,14 @@ class LocalConfig{
     );
   }
 
-  Future<String?> get jwt async{
-    List<User> userList = await USER_LIST();
-    if(userList.isNotEmpty){
-      return userList.first.jwt_token;
-    } else {
-      return null;
-    }
-  }
+  // Future<String?> get jwt async{
+  //   List<User> userList = await USER_LIST();
+  //   if(userList.isNotEmpty){
+  //     return userList.first.jwt_token;
+  //   } else {
+  //     return null;
+  //   }
+  // }
 
   Future<List<BoardCategory>> CATEGORY_LIST({String? where, List<Object?>? whereArgs, int? limit, String? orderBy}) async{
     Database db = await database;

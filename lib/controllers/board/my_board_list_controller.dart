@@ -32,6 +32,6 @@ class MyBoardListController extends GetxController with StateMixin<List<Board>>{
   }
 
   Future get getBoardList async{
-    _boardList.value = await _repository.getBoardList(page: page.value, userId: UserController.user!.id);
+    _boardList.value = await _repository.getBoardList(page: page.value, userId: UserController.to.user!.id);
   }
 }

@@ -28,16 +28,23 @@ class NoticeListPage extends StatelessWidget {
                   pinned: true,
                   elevation: 0.5,
                   title: Text('공지사항', style: CustomTextStyle.w600(context, scale: 0.02)),
-                  actions: UserController.user!.email != Config.ADMIN_EMAIL
-                      ? null
-                      : [
-                        CustomIconButton(
-                          icon: CustomIcons.insert,
-                          onTap: (){
-                            Get.to(() => const NoticeInsertPage());
-                          },
-                        )
-                  ],
+                  actions: [
+                    GetBuilder<UserController>(
+                        init: UserController(),
+                        builder: (UserController userCtr) => userCtr.obx((user){
+                          switch(user!.email){
+                            case Config.ADMIN_EMAIL:
+                              return CustomIconButton(
+                                icon: CustomIcons.insert,
+                                onTap: (){
+                                  Get.to(() => const NoticeInsertPage());
+                                },
+                              );
+                            default: return Container();
+                          }
+                        })
+                    )
+                  ]
                 )
               ],
               body: controller.obx((noticeList) => CustomScrollView(

@@ -68,39 +68,44 @@ class _BoardDetailsPageState extends State<BoardDetailsPage> {
                     child: Icon(Icons.ios_share, color: Colors.black, size: mediaHeight(context, 0.03),),
                     onPressed: (){},
                   ),
-                  if(UserController.user != null && UserController.user!.id == board.userId)CupertinoButton(
-                    padding: EdgeInsets.zero,
-                    onPressed: null,
-                    child: PopupMenuButton(
-                      child: Icon(Icons.more_vert, color: Colors.black, size: mediaHeight(context, 0.03)),
-                      itemBuilder: (BuildContext context) => [
-                        PopupMenuItem(
-                          value: 'edit',
-                          child: Text('게시글 수정', style: CustomTextStyle.w500(context)),
+                  GetBuilder<UserController>(
+                    init: UserController(),
+                    builder: (UserController userCtr) {
+                      return userCtr.obx((user) => CupertinoButton(
+                        padding: EdgeInsets.zero,
+                        onPressed: null,
+                        child: PopupMenuButton(
+                          child: Icon(Icons.more_vert, color: Colors.black, size: mediaHeight(context, 0.03)),
+                          itemBuilder: (BuildContext context) => [
+                            PopupMenuItem(
+                              value: 'edit',
+                              child: Text('게시글 수정', style: CustomTextStyle.w500(context)),
+                            ),
+                            PopupMenuItem(
+                              value: 'delete',
+                              child: Text('게시글 삭제', style: CustomTextStyle.w500(context)),
+                            )
+                          ],
+                          onSelected: (String value){
+                            switch(value){
+                              case 'delete': {
+                                showCupertinoDialog(context: context, builder: (context) => CustomDialog(
+                                    title: '게시글을 삭제하시겠습니까?',
+                                    content: '삭제한 게시글은 복원되지 않습니다.\n삭제하시겠습니까?',
+                                    onTap: (){
+                                      showIndicator(controller.deleteBoard(context));
+                                    }
+                                ));
+                                break;
+                              }
+                              default: {
+                                Get.to(() => UpdateBoardPage(board));
+                              }
+                            }
+                          },
                         ),
-                        PopupMenuItem(
-                          value: 'delete',
-                          child: Text('게시글 삭제', style: CustomTextStyle.w500(context)),
-                        )
-                      ],
-                      onSelected: (String value){
-                        switch(value){
-                          case 'delete': {
-                            showCupertinoDialog(context: context, builder: (context) => CustomDialog(
-                                title: '게시글을 삭제하시겠습니까?',
-                                content: '삭제한 게시글은 복원되지 않습니다.\n삭제하시겠습니까?',
-                                onTap: (){
-                                  showIndicator(controller.deleteBoard(context));
-                                }
-                            ));
-                            break;
-                          }
-                          default: {
-                            Get.to(() => UpdateBoardPage(board));
-                          }
-                        }
-                      },
-                    ),
+                      ));
+                    }
                   )
                 ],
               )
@@ -211,7 +216,7 @@ class _BoardDetailsPageState extends State<BoardDetailsPage> {
                                           margin: EdgeInsets.only(right: mediaWidth(context, 0.02)),
                                           child: GetBuilder<UserController>(
                                               init: UserController(),
-                                              builder: (UserController userController) => userController.obx((user) {
+                                              builder: (UserController userCtr) => userCtr.obx((user) {
                                                 if(board.likeList.where((like) => like.userId == user!.id).isEmpty){
                                                   return GestureDetector(
                                                     child: Icon(CustomIcons.heart, color: CustomColors.hint, size: mediaHeight(context, 0.025)),
@@ -258,37 +263,40 @@ class _BoardDetailsPageState extends State<BoardDetailsPage> {
                               child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    for(BoardComment comment in board.commentList) CommentCard(comment,
-                                      onComment: (BoardComment boardComment){
-                                        setState(() {
-                                          _selectComment = boardComment;
-                                        });
-                                      },
-                                      onLike: (BoardComment boardComment) async{
-                                        final CommentLike? like = await repo.likeComment(context, comment_id: boardComment.commentId);
-                                        if(like != null){
+                                    for(BoardComment comment in board.commentList) GetBuilder<UserController>(
+                                      init: UserController(),
+                                      builder: (UserController userCtr) => userCtr.obx((user) => CommentCard(comment,
+                                        onComment: (BoardComment boardComment){
                                           setState(() {
-                                            boardComment.commentLikeList.add(like);
+                                            _selectComment = boardComment;
                                           });
-                                        }
-                                      },
-                                      onCommentDelete: () async{
-                                        final BoardComment? bComment = await repo.deleteComment(context, comment_id: comment.commentId);
-                                        if(bComment != null){
-                                          setState(() {
-                                            board.commentList.removeWhere((c) => c.commentId == bComment.commentId);
-                                          });
-                                        }
-                                        controller.deleteComment(context, comment);
-                                      },
-                                      onNestedCommentDelete: (NestedComment nestedComment) async{
-                                        final NestedComment? c = await repo.deleteNestedComment(context, nested_comment_id: nestedComment.id);
-                                        if(c != null){
-                                          setState(() {
-                                            comment.nestedCommentList.removeWhere((com) => com.id == c.id);
-                                          });
-                                        }
-                                      },
+                                        },
+                                        onLike: (BoardComment boardComment) async{
+                                          final CommentLike? like = await repo.likeComment(context, user!.jwt_token, comment_id: boardComment.commentId);
+                                          if(like != null){
+                                            setState(() {
+                                              boardComment.commentLikeList.add(like);
+                                            });
+                                          }
+                                        },
+                                        onCommentDelete: () async{
+                                          final BoardComment? bComment = await repo.deleteComment(context, user!.jwt_token, comment_id: comment.commentId);
+                                          if(bComment != null){
+                                            setState(() {
+                                              board.commentList.removeWhere((c) => c.commentId == bComment.commentId);
+                                            });
+                                          }
+                                          controller.deleteComment(context, comment);
+                                        },
+                                        onNestedCommentDelete: (NestedComment nestedComment) async{
+                                          final NestedComment? c = await repo.deleteNestedComment(context, user!.jwt_token, nested_comment_id: nestedComment.id);
+                                          if(c != null){
+                                            setState(() {
+                                              comment.nestedCommentList.removeWhere((com) => com.id == c.id);
+                                            });
+                                          }
+                                        },
+                                      ))
                                     )
                                   ]
                               ),
@@ -338,10 +346,11 @@ class _BoardDetailsPageState extends State<BoardDetailsPage> {
                 ),
                 CommentField(
                   commentController: _commentController,
-                  onPressed: () async{
+                  onPressed: (user) async{
                     if(_selectComment != null){
                       final int? statusCode = await repo.insertNestedComment(
                           context,
+                          user.jwt_token,
                           comment_id: _selectComment!.commentId,
                           comment: _commentController.text
                       );
