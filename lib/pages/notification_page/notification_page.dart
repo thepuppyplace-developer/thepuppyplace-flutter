@@ -17,67 +17,67 @@ class NotificationPage extends GetWidget<UserController> {
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<NotificationLogListController>(
-      init: NotificationLogListController(context),
-      builder: (NotificationLogListController notificationCtr) {
-        return Scaffold(
-          body: NestedScrollView(
-            headerSliverBuilder: (context, inner) => [
-              SliverAppBar(
-                elevation: 0.5,
-                snap: true,
-                floating: true,
-                pinned: true,
-                title: Text('알림', style: CustomTextStyle.w600(context, scale: 0.02)),
-              )
-            ],
-            body: controller.obx((user) => Scrollbar(
-              child: SmartRefresher(
-                enablePullUp: notificationCtr.logList.isEmpty ? false : true,
-                controller: notificationCtr.refreshController,
-                onRefresh: () async{
-                  notificationCtr.refreshLogList.whenComplete((){
-                    notificationCtr.refreshController.refreshCompleted(resetFooterState: true);
-                  });
-                },
-                onLoading: () async{
-                  notificationCtr.getLogList.whenComplete((){
-                    notificationCtr.refreshController.loadComplete();
-                  });
-                },
-                header: CustomHeader(
-                  builder: (BuildContext context, RefreshStatus? status) => RefreshContents(status),
-                ),
-                footer: notificationCtr.status.isEmpty ? null : CustomFooter(
-                  loadStyle: LoadStyle.ShowWhenLoading,
-                  builder: (BuildContext context, LoadStatus? status) => LoadContents(status),
-                ),
-                child: CustomScrollView(
-                  slivers: [
-                    notificationCtr.obx((logList) => SliverPadding(
-                      padding: EdgeInsets.all(mediaWidth(context, 0.033)),
-                      sliver: SliverList(
-                        delegate: SliverChildBuilderDelegate((context, index){
-                          final NotificationLog log = logList![index];
-                          return NotificationLogCard(log);
-                        },
-                            childCount: logList!.length
+    return Scaffold(
+      body: NestedScrollView(
+        headerSliverBuilder: (context, inner) => [
+          SliverAppBar(
+            elevation: 0.5,
+            snap: true,
+            floating: true,
+            pinned: true,
+            title: Text('알림', style: CustomTextStyle.w600(context, scale: 0.02)),
+          )
+        ],
+        body: controller.obx((user) => GetBuilder<NotificationLogListController>(
+            init: NotificationLogListController(context),
+            builder: (NotificationLogListController notificationCtr) {
+              return Scrollbar(
+                child: SmartRefresher(
+                  enablePullUp: notificationCtr.logList.isEmpty ? false : true,
+                  controller: notificationCtr.refreshController,
+                  onRefresh: () async{
+                    notificationCtr.refreshLogList.whenComplete((){
+                      notificationCtr.refreshController.refreshCompleted(resetFooterState: true);
+                    });
+                  },
+                  onLoading: () async{
+                    notificationCtr.getLogList.whenComplete((){
+                      notificationCtr.refreshController.loadComplete();
+                    });
+                  },
+                  header: CustomHeader(
+                    builder: (BuildContext context, RefreshStatus? status) => RefreshContents(status),
+                  ),
+                  footer: notificationCtr.status.isEmpty ? null : CustomFooter(
+                    loadStyle: LoadStyle.ShowWhenLoading,
+                    builder: (BuildContext context, LoadStatus? status) => LoadContents(status),
+                  ),
+                  child: CustomScrollView(
+                    slivers: [
+                      notificationCtr.obx((logList) => SliverPadding(
+                        padding: EdgeInsets.all(mediaWidth(context, 0.033)),
+                        sliver: SliverList(
+                          delegate: SliverChildBuilderDelegate((context, index){
+                            final NotificationLog log = logList![index];
+                            return NotificationLogCard(log);
+                          },
+                              childCount: logList!.length
+                          ),
                         ),
                       ),
-                    ),
-                        onEmpty: const SliverEmpty('알람 로그가 없습니다.'),
-                        onLoading: const SliverLoading(message: '알림 로그를 불러오고 있습니다.',)
-                    )
-                  ],
+                          onEmpty: const SliverEmpty('알람 로그가 없습니다.'),
+                          onLoading: const SliverLoading(message: '알림 로그를 불러오고 있습니다.',)
+                      )
+                    ],
+                  ),
                 ),
-              ),
-            ),
-              onEmpty: const LoginRequestPage(),
-              onLoading: const LoadingView(message: '알림 목록을 불러오는 중입니다.')
-            ),
-          ),
-        );
-      }
+              );
+            }
+        ),
+            onEmpty: const LoginRequestPage(),
+            onLoading: const LoadingView(message: '알림 목록을 불러오는 중입니다.')
+        ),
+      ),
     );
   }
 }
