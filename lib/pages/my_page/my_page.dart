@@ -7,7 +7,6 @@ import 'package:thepuppyplace_flutter/util/common.dart';
 import 'package:thepuppyplace_flutter/util/custom_icons.dart';
 import '../../controllers/user/user_controller.dart';
 import '../../controllers/version/version_controller.dart';
-import '../../models/User.dart';
 import '../../widgets/buttons/custom_icon_button.dart';
 import '../../widgets/buttons/custom_text_button.dart';
 import '../../widgets/dialogs/custom_dialog.dart';
@@ -24,12 +23,12 @@ class MyPage extends GetWidget<UserController> {
 
   @override
   Widget build(BuildContext context) {
-    return controller.obx((User? user) => Scaffold(
+    return Scaffold(
       appBar: AppBar(
         centerTitle: false,
         title: Text('마이페이지', style: CustomTextStyle.w500(context, scale: 0.025)),
       ),
-      body: Scrollbar(
+      body: controller.obx((user) => Scrollbar(
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -161,10 +160,10 @@ class MyPage extends GetWidget<UserController> {
           ),
         ),
       ),
-    ),
-        onLoading: const CustomIndicator(),
-        onError: (error) => CustomErrorView(error: error),
-        onEmpty: const LoginRequestPage()
+          onLoading: const CustomIndicator(),
+          onError: (error) => CustomErrorView(error: error),
+          onEmpty: const LoginRequestPage()
+      ),
     );
   }
 }

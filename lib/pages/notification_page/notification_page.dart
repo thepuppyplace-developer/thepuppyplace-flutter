@@ -2,21 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:thepuppyplace_flutter/controllers/notification/notification_log_list_controller.dart';
+import 'package:thepuppyplace_flutter/pages/my_page/login_request_page.dart';
+import 'package:thepuppyplace_flutter/util/customs.dart';
 import 'package:thepuppyplace_flutter/widgets/loadings/sliver_contents.dart';
 
+import '../../controllers/user/user_controller.dart';
 import '../../models/NotificationLog.dart';
 import '../../util/common.dart';
 import '../../widgets/cards/notification_log_card.dart';
 import '../../widgets/loadings/refresh_contents.dart';
 
-class NotificationPage extends StatelessWidget {
+class NotificationPage extends GetWidget<UserController> {
   const NotificationPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GetBuilder<NotificationLogListController>(
       init: NotificationLogListController(context),
-      builder: (NotificationLogListController controller) {
+      builder: (NotificationLogListController notificationCtr) {
         return Scaffold(
           body: NestedScrollView(
             headerSliverBuilder: (context, inner) => [
@@ -28,46 +31,49 @@ class NotificationPage extends StatelessWidget {
                 title: Text('알림', style: CustomTextStyle.w600(context, scale: 0.02)),
               )
             ],
-            body: Scrollbar(
+            body: controller.obx((user) => Scrollbar(
               child: SmartRefresher(
-                enablePullUp: controller.logList.isEmpty ? false : true,
-                controller: controller.refreshController,
+                enablePullUp: notificationCtr.logList.isEmpty ? false : true,
+                controller: notificationCtr.refreshController,
                 onRefresh: () async{
-                  controller.refreshLogList.whenComplete((){
-                    controller.refreshController.refreshCompleted(resetFooterState: true);
+                  notificationCtr.refreshLogList.whenComplete((){
+                    notificationCtr.refreshController.refreshCompleted(resetFooterState: true);
                   });
                 },
                 onLoading: () async{
-                  controller.getLogList.whenComplete((){
-                    controller.refreshController.loadComplete();
+                  notificationCtr.getLogList.whenComplete((){
+                    notificationCtr.refreshController.loadComplete();
                   });
                 },
                 header: CustomHeader(
                   builder: (BuildContext context, RefreshStatus? status) => RefreshContents(status),
                 ),
-                footer: controller.status.isEmpty ? null : CustomFooter(
+                footer: notificationCtr.status.isEmpty ? null : CustomFooter(
                   loadStyle: LoadStyle.ShowWhenLoading,
                   builder: (BuildContext context, LoadStatus? status) => LoadContents(status),
                 ),
                 child: CustomScrollView(
                   slivers: [
-                    controller.obx((logList) => SliverPadding(
+                    notificationCtr.obx((logList) => SliverPadding(
                       padding: EdgeInsets.all(mediaWidth(context, 0.033)),
                       sliver: SliverList(
                         delegate: SliverChildBuilderDelegate((context, index){
                           final NotificationLog log = logList![index];
                           return NotificationLogCard(log);
                         },
-                          childCount: logList!.length
+                            childCount: logList!.length
                         ),
                       ),
                     ),
-                      onEmpty: const SliverEmpty('알람 로그가 없습니다.'),
-                      onLoading: const SliverLoading(message: '알림 로그를 불러오고 있습니다.',)
+                        onEmpty: const SliverEmpty('알람 로그가 없습니다.'),
+                        onLoading: const SliverLoading(message: '알림 로그를 불러오고 있습니다.',)
                     )
                   ],
                 ),
               ),
+            ),
+              onEmpty: const LoginRequestPage(),
+              onLoading: const LoadingView(message: '알림 목록을 불러오는 중입니다.')
             ),
           ),
         );
