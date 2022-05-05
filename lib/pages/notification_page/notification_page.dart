@@ -25,7 +25,7 @@ class NotificationPage extends GetWidget<UserController> {
             snap: true,
             floating: true,
             pinned: true,
-            title: Text('알림', style: CustomTextStyle.w600(context, scale: 0.02)),
+            title: Text('알림', style: CustomTextStyle.w500(context, scale: 0.025)),
           )
         ],
         body: controller.obx((user) => GetBuilder<NotificationLogListController>(

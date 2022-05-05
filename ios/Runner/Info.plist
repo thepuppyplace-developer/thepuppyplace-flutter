@@ -5,7 +5,7 @@
 	<key>FirebaseScreenReportingEnabled</key>
 	<true/>
 	<key>FirebaseAppDelegateProxyEnabled</key>
-	<string>NO</string>
+	<false/>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>
