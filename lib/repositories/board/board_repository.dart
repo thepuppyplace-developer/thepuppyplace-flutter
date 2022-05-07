@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get/get_connect/http/src/request/request.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:thepuppyplace_flutter/models/BoardCategory.dart';
 import 'package:thepuppyplace_flutter/pages/board_page/board_details_page.dart';
@@ -23,18 +24,25 @@ class BoardRepository extends GetConnect with Config, LocalConfig{
     required String description,
     required String location,
     required String category,
-    required List<XFile> board_photos
+    required List<XFile?> photoList
   }) async{
     if(await jwt != null){
-      Response res = await post('$API_URL/board/insert', FormData({
+      final FormData formData = FormData({
         'title': title.trim(),
         'description': description.trim(),
         'location': location.trim(),
         'category': category.trim(),
-        'images': board_photos.isEmpty ? null : board_photos.map((image) async{
-          return MultipartFile(await image.readAsBytes(), filename: image.path);
-        }).toList()
-      }), headers: headers(await jwt));
+      });
+
+      for(XFile? photo in photoList){
+        if(photo != null){
+          formData.files.addAll([
+            MapEntry('images', MultipartFile(await photo.readAsBytes(), filename: photo.path))
+          ]);
+        }
+      }
+
+      final Response res = await post('$API_URL/board/insert', formData, headers: headers(await jwt));
 
       switch(res.statusCode){
         case 201: {
@@ -226,9 +234,6 @@ class BoardRepository extends GetConnect with Config, LocalConfig{
 
         switch(res.statusCode) {
           case 200:
-            print(await jwt);
-            print('like!');
-            print(comment_id);
             return CommentLike.fromJson(res.body['data']);
           default:
             await network_check_message(context);
@@ -240,7 +245,7 @@ class BoardRepository extends GetConnect with Config, LocalConfig{
       }
     } catch(error){
       await unknown_message(context);
-      return null;
+      throw Exception(error);
     }
   }
 

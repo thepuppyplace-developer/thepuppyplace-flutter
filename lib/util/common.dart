@@ -19,11 +19,11 @@ void unFocus(BuildContext context) => FocusScope.of(context).unfocus();
 
 Future<List<XFile>> pickMultiImage({int? limit}) async{
   final ImagePicker picker = ImagePicker();
-  List<XFile>? imageList = await picker.pickMultiImage();
+  final imageList = await picker.pickMultiImage();
   if(imageList == null){
     return <XFile>[];
   } else {
-    return imageList.take(limit ?? 10).map((image) => image).toList();
+    return imageList;
   }
 }
 
@@ -157,13 +157,8 @@ Future openURL({required String url, bool? inApp}) async{
   );
 }
 
-Future<File?> photoPick(BuildContext context, ImageSource imageSource) async{
+Future<XFile?> photoPick(BuildContext context, ImageSource imageSource) async{
   final imagePicker = ImagePicker();
-  final photo = await imagePicker.pickImage(source: imageSource, imageQuality: 20);
-  if(photo != null){
-    return photo as File;
-  } else {
-    showSnackBar(context, '프로필 수정이 취소되었습니다.');
-    return null;
-  }
+  final XFile? photo = await imagePicker.pickImage(source: imageSource, imageQuality: 10);
+  return photo;
 }

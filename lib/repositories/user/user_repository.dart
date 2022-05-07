@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:sqflite/sqflite.dart';
 import '../../config/config.dart';
 import '../../config/local_db.dart';
@@ -262,19 +263,21 @@ class UserRepository extends GetConnect with Config, LocalConfig{
     }
   }
 
-  Future updatePhotoURL(BuildContext context, File? photo) async{
+  Future updatePhotoURL(BuildContext context, XFile? photo) async{
     try{
       if(await jwt != null){
-        final Response res = await patch('$API_URL/user/my', FormData({
-          "image": photo
-        }),
-            headers: headers(await jwt));
+        if(photo != null){
+          final Response res = await patch('$API_URL/user/my', FormData({
+            "image": MultipartFile(await photo.readAsBytes(), filename: photo.path)
+          }),
+              headers: headers(await jwt));
 
-        switch(res.statusCode){
-          case 200:
-            return null;
-          default:
-            return network_check_message(context);
+          switch(res.statusCode){
+            case 200:
+              return null;
+            default:
+              return network_check_message(context);
+          }
         }
       } else {
         return expiration_token_message(context);

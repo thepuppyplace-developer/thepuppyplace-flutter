@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:thepuppyplace_flutter/util/common.dart';
 import '../../config/config.dart';
 import '../../config/local_db.dart';
@@ -104,8 +105,12 @@ class UserController extends GetxController with StateMixin<User>, Config, Local
     return _getUser(await jwt);
   }
 
-  Future updatePhotoURL(BuildContext context, File? photo) async{
-    await _repository.updatePhotoURL(context, photo);
+  Future updatePhotoURL(BuildContext context, XFile? photo) async{
+    if(photo != null){
+      await _repository.updatePhotoURL(context, photo);
+    } else {
+      showSnackBar(context, '프로필 사진 변경이 취소되었습니다.');
+    }
     return _getUser(await jwt);
   }
 

@@ -8,7 +8,7 @@ import '../controllers/user/user_controller.dart';
 import '../pages/notification_page/notification_page.dart';
 import '../util/common.dart';
 import '../util/custom_icons.dart';
-import '../pages/insert_page/insert_page.dart';
+import '../pages/insert_page/insert_board_page.dart';
 
 class NavigatorPage extends StatefulWidget {
   const NavigatorPage({Key? key}) : super(key: key);
@@ -22,7 +22,7 @@ class _NavigatorPageState extends State<NavigatorPage> {
 
   final List<Widget> _bodies = const <Widget>[
     HomePage(),
-    InsertPage(),
+    InsertBoardPage(),
     NotificationPage(),
     MyPage(),
   ];
@@ -63,7 +63,7 @@ class _NavigatorPageState extends State<NavigatorPage> {
       onTap: (int index){
       switch(index){
         case 1: {
-          Get.to(() => const InsertPage(), fullscreenDialog: true);
+          Get.to(() => const InsertBoardPage(), fullscreenDialog: true);
           break;
         }
         default: {

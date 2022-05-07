@@ -15,19 +15,19 @@ import '../../widgets/tab_bars/select_category_tab_bar.dart';
 import '../../widgets/text_fields/custom_text_field.dart';
 import '../my_page/login_request_page.dart';
 
-class InsertPage extends StatefulWidget {
-  const InsertPage({Key? key}) : super(key: key);
+class InsertBoardPage extends StatefulWidget {
+  const InsertBoardPage({Key? key}) : super(key: key);
 
   @override
-  _InsertPageState createState() => _InsertPageState();
+  _InsertBoardPageState createState() => _InsertBoardPageState();
 }
 
-class _InsertPageState extends State<InsertPage> {
+class _InsertBoardPageState extends State<InsertBoardPage> {
   int _categoryIndex = 0;
   int? _locationIndex;
   int _locationDetailIndex = 0;
 
-  List<XFile> photoList = <XFile>[];
+  List<XFile?> photoList = <XFile?>[];
 
   final List<String> _categoryList = const <String>[
     '수다방', '카페', '음식점', '호텔', '운동장', '쇼핑몰'
@@ -105,7 +105,7 @@ class _InsertPageState extends State<InsertPage> {
                               ),
                             ),
                           ),
-                          SliverToBoxAdapter(
+                          if(_locationIndex != null) SliverToBoxAdapter(
                             child: Container(
                                 margin: EdgeInsets.symmetric(vertical: mediaHeight(context, 0.02), horizontal: mediaWidth(context, 0.033)),
                                 child: Text('세부지역선택', style: CustomTextStyle.w600(context, scale: 0.018))),
@@ -145,6 +145,7 @@ class _InsertPageState extends State<InsertPage> {
                                       margin: EdgeInsets.symmetric(vertical: mediaHeight(context, 0.02), horizontal: mediaWidth(context, 0.033)),
                                       child: Text('글작성', style: CustomTextStyle.w600(context, scale: 0.018))),
                                   CustomTextField(
+                                    autofocus: false,
                                     textFieldType: TextFieldType.underline,
                                     onChanged: (String title){
                                       setState(() {
@@ -158,6 +159,7 @@ class _InsertPageState extends State<InsertPage> {
                                     maxLength: 20,
                                   ),
                                   CustomTextField(
+                                    autofocus: false,
                                     textFieldType: TextFieldType.underline,
                                     onChanged: (String description){
                                       setState(() {
@@ -201,11 +203,11 @@ class _InsertPageState extends State<InsertPage> {
                                       ),
                                     ),
                                     onPressed: () async{
-                                      photoList.addAll(await pickMultiImage(limit: 10));
+                                      photoList.add(await imagePicker(ImageSource.gallery));
                                       setState(() {});
                                     },
                                   ),
-                                  if(photoList.isNotEmpty) for(XFile photo in photoList) CupertinoButton(
+                                  if(photoList.isNotEmpty) for(XFile? photo in photoList) CupertinoButton(
                                     padding: EdgeInsets.only(right: mediaWidth(context, 0.033)),
                                     child: Container(
                                       alignment: Alignment.center,
@@ -217,7 +219,7 @@ class _InsertPageState extends State<InsertPage> {
                                           border: Border.all(color: CustomColors.hint),
                                           image: DecorationImage(
                                               fit: BoxFit.cover,
-                                              image: FileImage(File(photo.path))
+                                              image: FileImage(File(photo!.path))
                                           )
                                       ),
                                     ),
@@ -234,16 +236,7 @@ class _InsertPageState extends State<InsertPage> {
                   CustomButton(
                     margin: EdgeInsets.all(mediaWidth(context, 0.033)),
                     title: '등록하기',
-                    onPressed: () async{
-                      showIndicator(BoardRepository.from.insertBoard(
-                          context,
-                          title: _title,
-                          description: _description,
-                          location: '${LocationList.location[_locationIndex!]} ${LocationList.details(_locationIndex)[_locationDetailIndex]}',
-                          category: _categoryList[_categoryIndex],
-                          board_photos: photoList
-                      ));
-                    },
+                    onPressed: insertBoard
                   )
                 ],
               ),
@@ -265,5 +258,20 @@ class _InsertPageState extends State<InsertPage> {
           }
       ),
     );
+  }
+
+  void insertBoard() {
+    if(_locationIndex == null){
+      showSnackBar(context, '지역을 선택해주세요.');
+    } else {
+      showIndicator(BoardRepository.from.insertBoard(
+          context,
+          title: _title,
+          description: _description,
+          location: '${LocationList.location[_locationIndex!]} ${LocationList.details(_locationIndex)[_locationDetailIndex]}',
+          category: _categoryList[_categoryIndex],
+          photoList: photoList
+      ));
+    }
   }
 }

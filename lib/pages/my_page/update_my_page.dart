@@ -21,7 +21,7 @@ class UpdateMyPage extends StatefulWidget {
 }
 
 class _UpdateMyPageState extends State<UpdateMyPage> {
-  File? _photo;
+ XFile? _photo;
 
   @override
   Widget build(BuildContext context) {

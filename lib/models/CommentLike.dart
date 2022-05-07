@@ -19,7 +19,7 @@ class CommentLike{
     id: json['id'],
     createdAt: DateTime.parse(json['createdAt']),
     updatedAt: DateTime.parse(json['updatedAt']),
-    comment_id: json['comment_id'],
+    comment_id: json['comment_id'].runtimeType == int ? json['comment_id'] : int.parse(json['comment_id']),
     user_id: json['user_id'],
   );
 }

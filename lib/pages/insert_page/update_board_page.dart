@@ -254,7 +254,7 @@ class _UpdateBoardPageState extends State<UpdateBoardPage> {
                         description: _description,
                         location: '${LocationList.location[_locationIndex!]} ${LocationList.details(_locationIndex)[_locationDetailIndex]}',
                         category: _categoryList[_categoryIndex],
-                        board_photos: photoList
+                        photoList: photoList
                       ));
                     },
                   )
