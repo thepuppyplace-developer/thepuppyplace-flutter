@@ -30,9 +30,7 @@ Future<List<XFile>> pickMultiImage({int? limit}) async{
 Future<XFile?> imagePicker(ImageSource imageSource) async{
   final ImagePicker picker = ImagePicker();
   final XFile? image = await picker.pickImage(source: imageSource, imageQuality: 10);
-  if(image != null){
-    return image;
-  }
+  return image;
 }
 
 Future showSnackBar(BuildContext context, String msg) async{

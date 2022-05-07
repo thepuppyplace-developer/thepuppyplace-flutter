@@ -1,3 +1,4 @@
+import 'package:animations/animations.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:thepuppyplace_flutter/util/common.dart';
@@ -19,8 +20,8 @@ mixin CustomThemeData implements ThemeData{
       scaffoldBackgroundColor: Colors.white,
       pageTransitionsTheme: const PageTransitionsTheme(
           builders: <TargetPlatform, PageTransitionsBuilder>{
-            TargetPlatform.android: ZoomPageTransitionsBuilder(),
-            TargetPlatform.iOS: ZoomPageTransitionsBuilder(),
+            TargetPlatform.android: FadeThroughPageTransitionsBuilder(),
+            TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
           }
       ),
     dialogTheme: DialogTheme(
@@ -29,62 +30,6 @@ mixin CustomThemeData implements ThemeData{
       )
     )
   );
-}
-
-class LoadingView extends StatelessWidget {
-  final String? message;
-
-  const LoadingView({this.message, Key? key}) : super(key: key);
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              SizedAnimation(child: Image.asset(PngList.loading, height: mediaHeight(context, 0.15))),
-              Container(
-                  margin: EdgeInsets.symmetric(vertical: mediaHeight(context, 0.04)),
-                  child: Text(message ?? '페이지 이동중입니다', style: CustomTextStyle.w500(context, color: CustomColors.hint))),
-              const CupertinoActivityIndicator()
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class EmptyView extends StatelessWidget {
-  final String? message;
-  const EmptyView({this.message, Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Image.asset(PngList.empty, height: mediaHeight(context, 0.15)),
-            Container(
-                margin: EdgeInsets.symmetric(vertical: mediaHeight(context, 0.04)),
-                child: Text(message ?? '등록된 게시글이 없습니다', style: CustomTextStyle.w500(context, color: CustomColors.hint))),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class RecentLoading extends StatelessWidget {
-  const RecentLoading({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container();
-  }
 }
 
 

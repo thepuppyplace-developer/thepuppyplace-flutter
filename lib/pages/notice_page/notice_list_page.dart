@@ -8,6 +8,7 @@ import '../../models/Notice.dart';
 import '../../util/common.dart';
 import '../../util/custom_icons.dart';
 import '../../util/customs.dart';
+import '../../views/rx_status_view.dart';
 import '../../widgets/buttons/custom_icon_button.dart';
 import '../../widgets/cards/notice_card.dart';
 import 'notice_insert_page.dart';

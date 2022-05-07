@@ -4,7 +4,7 @@ import '../models/BoardCategory.dart';
 import '../models/User.dart';
 
 class LocalConfig{
-  final String dbName = 'test36';
+  final String dbName = 'test37';
   final int version = 1;
 
   Future<Database> get database async{

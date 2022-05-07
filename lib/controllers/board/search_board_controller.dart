@@ -6,7 +6,8 @@ import '../../repositories/board/board_repository.dart';
 
 class SearchBoardListController extends GetxController with StateMixin<List<Board>>{
   final BuildContext context;
-  SearchBoardListController(this.context);
+  final String query;
+  SearchBoardListController(this.context, this.query);
   final BoardRepository _repository = BoardRepository();
 
   final RxList<Board> _boardList = RxList<Board>([]);
@@ -19,16 +20,34 @@ class SearchBoardListController extends GetxController with StateMixin<List<Boar
   List<Board> get groundList => _boardList.where((board) => board.category == '운동장').map((board) => board).toList();
   List<Board> get talkList => _boardList.where((board) => board.category == '수다방').map((board) => board).toList();
 
-  final RxInt conditionIndex = RxInt(0);
+  RxInt conditionIndex = RxInt(0);
   final RxString orderBy = RxString('date');
 
-  final page = RxInt(1);
+
+  RxnString queryType(){
+    switch(conditionIndex.value){
+      case 1: return RxnString('t');
+      case 2: return RxnString('d');
+      case 3: return RxnString('td');
+      default: return RxnString();
+    }
+  }
 
   @override
   void onReady() {
     super.onReady();
     ever(_boardList, _searchListListener);
-    getSearchBoardList();
+    ever(conditionIndex, _conditionListener);
+    ever(orderBy, _orderByListener);
+    getSearchBoardList(query);
+  }
+
+  void _conditionListener(int condition){
+    getSearchBoardList(query);
+  }
+
+  void _orderByListener(String orderBy){
+    getSearchBoardList(query);
   }
 
   void _searchListListener(List<Board> searchList){
@@ -44,11 +63,15 @@ class SearchBoardListController extends GetxController with StateMixin<List<Boar
     }
   }
 
-  Future getSearchBoardList({String? keyword}) async{
+  Future getSearchBoardList(String query) async{
     _boardList.value = <Board>[];
     change(null, status: RxStatus.loading());
-    if(keyword != null){
-      _boardList.addAll(await _repository.getBoardList(page: page.value, query: keyword));
+    if(query.isNotEmpty){
+      _boardList.addAll(await _repository.getBoardList(
+          query: query,
+          order: orderBy.value,
+          queryType: queryType().value
+      ));
     } else {
       _boardList.value = <Board>[];
     }

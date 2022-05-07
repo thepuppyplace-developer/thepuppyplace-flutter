@@ -3,12 +3,12 @@ import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:thepuppyplace_flutter/controllers/notification/notification_log_list_controller.dart';
 import 'package:thepuppyplace_flutter/pages/my_page/login_request_page.dart';
-import 'package:thepuppyplace_flutter/util/customs.dart';
 import 'package:thepuppyplace_flutter/widgets/loadings/sliver_contents.dart';
 
 import '../../controllers/user/user_controller.dart';
 import '../../models/NotificationLog.dart';
 import '../../util/common.dart';
+import '../../views/rx_status_view.dart';
 import '../../widgets/cards/notification_log_card.dart';
 import '../../widgets/loadings/refresh_contents.dart';
 

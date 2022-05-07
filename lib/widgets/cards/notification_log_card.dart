@@ -35,7 +35,7 @@ class NotificationLogCard extends StatelessWidget {
           ],
         ),
         onPressed: (){
-          Get.to(() => BoardDetailsPage(notification.log_action_id));
+          Get.toNamed(BoardDetailsPage.routeName, arguments: notification.log_action_id);
         },
       ),
     );

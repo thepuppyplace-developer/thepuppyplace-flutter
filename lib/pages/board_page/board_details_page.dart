@@ -16,6 +16,7 @@ import '../../models/BoardComment.dart';
 import '../../models/CommentLike.dart';
 import '../../models/NestedComment.dart';
 import '../../util/custom_icons.dart';
+import '../../views/rx_status_view.dart';
 import '../../widgets/buttons/tag_text.dart';
 import '../../widgets/cards/comment_card.dart';
 import '../../widgets/cards/user_profile_card.dart';
@@ -25,9 +26,8 @@ import '../../widgets/text_fields/comment_field.dart';
 import '../insert_page/update_board_page.dart';
 
 class BoardDetailsPage extends StatefulWidget {
-  int board_id;
-
-  BoardDetailsPage(this.board_id, {Key? key}) : super(key: key);
+  static const String routeName = '/board_details_page';
+  const BoardDetailsPage({Key? key}) : super(key: key);
 
   @override
   State<BoardDetailsPage> createState() => _BoardDetailsPageState();
@@ -35,21 +35,17 @@ class BoardDetailsPage extends StatefulWidget {
 
 class _BoardDetailsPageState extends State<BoardDetailsPage> {
   final RefreshController _refreshController = RefreshController();
+  final int board_id = Get.arguments;
   int _photoIndex = 0;
   BoardComment? _selectComment;
   final TextEditingController _commentController = TextEditingController();
   final repo = BoardRepository();
 
-  @override
-  void initState() {
-    super.initState();
-    widget.board_id = Get.arguments ?? widget.board_id;
-  }
 
   @override
   Widget build(BuildContext context) {
     return GetBuilder<BoardController>(
-        init: BoardController(widget.board_id),
+        init: BoardController(board_id),
         builder: (BoardController controller) => controller.obx((Board? board) => Scaffold(
           body: NestedScrollView(
             physics: const NeverScrollableScrollPhysics(),

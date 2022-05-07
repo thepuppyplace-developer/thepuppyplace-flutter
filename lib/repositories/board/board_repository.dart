@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -33,14 +31,16 @@ class BoardRepository extends GetConnect with Config, LocalConfig{
         'description': description.trim(),
         'location': location.trim(),
         'category': category.trim(),
-        'images': board_photos.map((image) => image.readAsBytes()).toList()
+        'images': board_photos.isEmpty ? null : board_photos.map((image) async{
+          return MultipartFile(await image.readAsBytes(), filename: image.path);
+        }).toList()
       }), headers: headers(await jwt));
 
       switch(res.statusCode){
         case 201: {
           final Board? board = await getBoard(res.body['data']['id']);
           if(board != null){
-            Get.offUntil(MaterialPageRoute(builder: (context) => BoardDetailsPage(board.id)), (route) => route.isFirst);
+            Get.offNamedUntil(BoardDetailsPage.routeName, (route) => route.isFirst);
           } else {
             Get.until((route) => route.isFirst);
           }
@@ -64,10 +64,15 @@ class BoardRepository extends GetConnect with Config, LocalConfig{
         final Response res = await post('$API_URL/board/like', {
           'like_user_id': user_id
         });
+        print(res.statusCode);
+
 
         switch(res.statusCode){
           case 200: {
             return List.from(res.body['data']).map((board) => LikeBoard.fromJson(board)).toList();
+          }
+          case 204: {
+            return <LikeBoard>[];
           }
           default: {
             await network_check_message(context);
@@ -85,7 +90,7 @@ class BoardRepository extends GetConnect with Config, LocalConfig{
 
   Future<List<Search>> getPopularSearchList(BuildContext context) async{
     try{
-      final Response res = await get('$API_URL/search');
+      final Response res = await get('$API_URL/search/top');
 
       switch(res.statusCode){
         case 200: return List.from(res.body['data']).map((search) => Search.fromJson(search)).toList();
@@ -98,14 +103,15 @@ class BoardRepository extends GetConnect with Config, LocalConfig{
     }
   }
 
-  Future<List<Board>> getBoardList({int? page, int? limit,  String? category , String? order, int? userId, String? query}) async{
+  Future<List<Board>> getBoardList({int? page, int? limit,  String? category , String? order, int? userId, String? query, String? queryType}) async{
     final Response res = await post('$API_URL/board', {
       'page': page,
       'category': category,
       'order': order,
       'user_id': userId,
       'query': query,
-      'limit': limit
+      'limit': limit,
+      'queryType': queryType
     });
 
     switch(res.statusCode){
@@ -216,15 +222,14 @@ class BoardRepository extends GetConnect with Config, LocalConfig{
   Future<CommentLike?> likeComment(BuildContext context, {required int comment_id}) async{
     try{
       if(await jwt != null){
-        final Response res = await delete('$API_URL/like/comment/$comment_id', headers: headers(await jwt));
+        final Response res = await post('$API_URL/like/comment/$comment_id', {}, headers: headers(await jwt));
 
         switch(res.statusCode) {
           case 200:
-            await showSnackBar(context, '댓글이 삭제되었습니다.');
+            print(await jwt);
+            print('like!');
+            print(comment_id);
             return CommentLike.fromJson(res.body['data']);
-          case 204:
-            await unknown_message(context);
-            return null;
           default:
             await network_check_message(context);
             return null;
@@ -264,7 +269,7 @@ class BoardRepository extends GetConnect with Config, LocalConfig{
 
   Future<NestedComment?> deleteNestedComment(BuildContext context, {required int nested_comment_id}) async{
     if(await jwt != null){
-      final Response res = await delete('$API_URL/comment/nested/$nested_comment_id');
+      final Response res = await delete('$API_URL/comment/nested/$nested_comment_id', headers: headers(await jwt));
 
       switch(res.statusCode) {
         case 200:

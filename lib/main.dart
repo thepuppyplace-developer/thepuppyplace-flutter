@@ -2,6 +2,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:thepuppyplace_flutter/pages/board_page/board_details_page.dart';
+import 'package:thepuppyplace_flutter/pages/search_page/search_board_list_page.dart';
 import 'controllers/database/database_controller.dart';
 import 'controllers/notification/notification_controller.dart';
 import 'pages/auth_page/login_page.dart';
@@ -32,10 +34,11 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       theme: CustomThemeData.light,
-      getPages: [
-        GetPage(name: '/navigatorPage', page: () => const NavigatorPage()),
-        GetPage(name: '/loginPage', page: () => const LoginPage(), fullscreenDialog: true),
-      ],
+      routes: <String, WidgetBuilder>{
+        BoardDetailsPage.routeName: (context) => const BoardDetailsPage(),
+        LoginPage.routeName: (context) => const LoginPage(),
+        SearchBoardListPage.routeName: (context) => SearchBoardListPage(),
+      },
       home: const SplashPage(),
     );
   }

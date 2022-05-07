@@ -1,10 +1,6 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:sqflite/sqflite.dart';
 import 'package:thepuppyplace_flutter/util/common.dart';
-
-import '../models/User.dart';
-import 'local_db.dart';
 
 class Config{
   final String API_URL = 'http://3.36.65.93:3000';

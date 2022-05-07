@@ -42,41 +42,29 @@ class SearchTabBar extends StatelessWidget with PreferredSizeWidget{
 class InsertSearchTabBar extends StatelessWidget{
 
   final double height;
-  final TextEditingController controller;
   final EdgeInsets? margin;
   final String? hintText;
   final Function(String) onChanged;
-  final Function() onSearchTap;
-  final Function(String) onFieldSubmitted;
 
   const InsertSearchTabBar(this.height, {
-    required this.controller,
     this.margin,
     this.hintText,
     required this.onChanged,
-    required this.onSearchTap,
-    required this.onFieldSubmitted,
     Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) => CustomTextField(
     height: height,
     textFieldType: TextFieldType.outline,
-    onFieldSubmitted: onFieldSubmitted,
     textInputAction: TextInputAction.search,
     autofocus: false,
     padding: EdgeInsets.symmetric(vertical: mediaHeight(context, 0.01)),
     margin: margin ?? EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.033)),
     fillColor: CustomColors.empty,
     sideColor: CustomColors.emptySide,
-    controller: controller,
     keyboardType: TextInputType.text,
     hintText: hintText ?? '지역, 매장명 검색',
-    suffixIcon: CupertinoButton(
-      padding: EdgeInsets.zero,
-      child: const Icon(Icons.search, color: CustomColors.hint),
-      onPressed: onSearchTap,
-    ),
+    suffixIcon: Icon(Icons.search, size: mediaHeight(context, 0.03), color: CustomColors.hint),
     borderRadius: mediaHeight(context, 1),
     onChanged: onChanged,
   );

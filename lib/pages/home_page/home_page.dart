@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:thepuppyplace_flutter/util/common.dart';
+import 'package:thepuppyplace_flutter/views/home_views/best_board_list_view.dart';
 import 'package:thepuppyplace_flutter/widgets/buttons/category_button.dart';
 import 'package:thepuppyplace_flutter/widgets/loadings/sliver_contents.dart';
 import '../../controllers/board/best_board_list_controller.dart';
@@ -158,56 +159,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                   ),
-                  GetBuilder<BestBoardListController>(
-                    autoRemove: false,
-                    init: BestBoardListController(),
-                    builder: (BestBoardListController controller)
-                    => controller.obx((boardList)
-                    => SliverToBoxAdapter(
-                      child: Stack(
-                        alignment: Alignment.bottomCenter,
-                        children: [
-                          CarouselSlider.builder(
-                            itemCount: boardList!.length ~/ 3,
-                            options: CarouselOptions(
-                              viewportFraction: 1.0,
-                                height: mediaHeight(context, 0.5),
-                                onPageChanged: (index, index2){
-                                  setState(() {
-                                    controller.pageIndex.value = index;
-                                  });
-                                },
-                                disableCenter: true,
-                                enableInfiniteScroll: false
-                            ),
-                            itemBuilder: (context, index, index2){
-                              return Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: boardList.map((board) => BestBoardCard(board)).toList()
-                                      .sublist(index * 3, index * 3 + 3)
-                              );
-                            },
-                          ),
-                          AnimatedSmoothIndicator(
-                            activeIndex: controller.pageIndex.value,
-                            count: boardList.length ~/ 3,
-                            effect: WormEffect(
-                              activeDotColor: CustomColors.main,
-                              dotColor: CustomColors.hint,
-                              dotHeight: mediaHeight(context, 0.01),
-                              dotWidth: mediaHeight(context, 0.01)
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                      onEmpty: const SliverEmpty('등록되어 있는 베스트글이 없습니다.'),
-                      onLoading: const SliverLoading(
-                        animated: false,
-                        message: '게시글을 불러오는 중입니다...',
-                      )
-                    ),
-                  ),
+                  const BestBoardListView(),
                   SliverToBoxAdapter(
                     child: Container(
                       margin: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.033), vertical: mediaHeight(context, 0.02)),

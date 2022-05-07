@@ -3,8 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thepuppyplace_flutter/pages/auth_page/send_password_page.dart';
-import 'package:thepuppyplace_flutter/repositories/user/user_repository.dart';
-
 import '../../controllers/user/user_controller.dart';
 import '../../util/common.dart';
 import '../../widgets/buttons/custom_button.dart';
@@ -13,6 +11,7 @@ import '../../widgets/text_fields/custom_text_field.dart';
 import 'signup_page.dart';
 
 class LoginPage extends StatefulWidget {
+  static const String routeName = '/loginPage';
   const LoginPage({Key? key}) : super(key: key);
 
   @override

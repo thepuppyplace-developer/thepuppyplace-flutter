@@ -1,14 +1,12 @@
 import 'dart:convert';
-
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import '../../config/config.dart';
-import '../../pages/board_page/board_details_page.dart';
 import '../../util/common.dart';
 
 class NotificationController extends GetxController with Config{
+
   final FirebaseMessaging _fcm = FirebaseMessaging.instance;
 
   final FlutterLocalNotificationsPlugin _localNotifications = FlutterLocalNotificationsPlugin();
@@ -77,11 +75,7 @@ class NotificationController extends GetxController with Config{
                     break;
                   }
                 default:
-                  switch(action){
-                    case '/board_details_page': Get.to(() => BoardDetailsPage(board_id));
-                    break;
-                    default: return;
-                  }
+                  Get.toNamed(action, preventDuplicates: false, arguments: board_id);
               }
             }
           }
@@ -107,7 +101,6 @@ class NotificationController extends GetxController with Config{
       );
 
       FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-        print(message.data);
         String action = message.data['action'];
         String actionType = message.data['action_type'];
         int board_id = int.parse(message.data['board_id']);
@@ -118,11 +111,7 @@ class NotificationController extends GetxController with Config{
               break;
             }
           default:
-            switch(action){
-              case '/board_details_page': Get.to(() => BoardDetailsPage(board_id));
-              break;
-              default: return;
-            }
+            Get.toNamed(action, preventDuplicates: false, arguments: board_id);
         }
       });
     }
