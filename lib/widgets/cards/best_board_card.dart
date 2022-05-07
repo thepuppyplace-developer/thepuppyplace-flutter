@@ -17,7 +17,7 @@ class BestBoardCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.033)).copyWith(bottom: mediaHeight(context, 0.02)),
+      margin: EdgeInsets.only(bottom: mediaHeight(context, 0.02)),
       alignment: Alignment.centerLeft,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),

@@ -8,6 +8,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:thepuppyplace_flutter/repositories/board/board_repository.dart';
 import 'package:thepuppyplace_flutter/util/common.dart';
 import 'package:thepuppyplace_flutter/util/customs.dart';
+import 'package:thepuppyplace_flutter/views/photo_view/photo_list_view.dart';
 import 'package:thepuppyplace_flutter/widgets/dialogs/custom_dialog.dart';
 import '../../controllers/board/board_controller.dart';
 import '../../controllers/user/user_controller.dart';
@@ -160,15 +161,20 @@ class _BoardDetailsPageState extends State<BoardDetailsPage> {
                                   ),
                                   itemBuilder: (context, index, index2){
                                     String photo = board.board_photos[index];
-                                    return Container(
-                                      margin: EdgeInsets.all(mediaWidth(context, 0.033)),
-                                      decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(20),
-                                          image: DecorationImage(
-                                            fit: BoxFit.cover,
-                                            image: CachedNetworkImageProvider(photo),
-                                          )
+                                    return CupertinoButton(
+                                      padding: EdgeInsets.all(mediaWidth(context, 0.033)),
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(10),
+                                            image: DecorationImage(
+                                              fit: BoxFit.cover,
+                                              image: CachedNetworkImageProvider(photo),
+                                            )
+                                        ),
                                       ),
+                                      onPressed: (){
+                                        Get.to(() => PhotoListView(board.board_photos, PhotoType.cached), fullscreenDialog: true);
+                                      },
                                     );
                                   },
                                 ),

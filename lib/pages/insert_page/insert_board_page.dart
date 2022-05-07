@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:thepuppyplace_flutter/views/photo_view/photo_list_view.dart';
 import '../../controllers/user/user_controller.dart';
 import '../../models/User.dart';
 import '../../repositories/board/board_repository.dart';
@@ -207,23 +208,40 @@ class _InsertBoardPageState extends State<InsertBoardPage> {
                                       setState(() {});
                                     },
                                   ),
-                                  if(photoList.isNotEmpty) for(XFile? photo in photoList) CupertinoButton(
-                                    padding: EdgeInsets.only(right: mediaWidth(context, 0.033)),
-                                    child: Container(
-                                      alignment: Alignment.center,
-                                      height: mediaHeight(context, 0.1),
-                                      width: mediaHeight(context, 0.1),
-                                      decoration: BoxDecoration(
-                                          color: CustomColors.empty,
-                                          borderRadius: BorderRadius.circular(5),
-                                          border: Border.all(color: CustomColors.hint),
-                                          image: DecorationImage(
-                                              fit: BoxFit.cover,
-                                              image: FileImage(File(photo!.path))
-                                          )
+                                  if(photoList.isNotEmpty) for(XFile? photo in photoList) Stack(
+                                    alignment: Alignment.topRight,
+                                    children: [
+                                      CupertinoButton(
+                                        padding: EdgeInsets.only(right: mediaWidth(context, 0.033)),
+                                        child: Container(
+                                          alignment: Alignment.center,
+                                          height: mediaHeight(context, 0.1),
+                                          width: mediaHeight(context, 0.1),
+                                          decoration: BoxDecoration(
+                                              color: CustomColors.empty,
+                                              borderRadius: BorderRadius.circular(5),
+                                              border: Border.all(color: CustomColors.hint),
+                                              image: DecorationImage(
+                                                  fit: BoxFit.cover,
+                                                  image: FileImage(File(photo!.path))
+                                              )
+                                          ),
+                                        ),
+                                        onPressed: (){
+                                          Get.to(() => PhotoListView(photoList.map((photo) => photo!.path).toList(), PhotoType.file), fullscreenDialog: true);
+                                        },
                                       ),
-                                    ),
-                                    onPressed: (){},
+                                      GestureDetector(
+                                        child: Container(
+                                            margin: EdgeInsets.only(right: mediaWidth(context, 0.005)),
+                                            child: Icon(Icons.cancel, size: mediaHeight(context, 0.03), color: CustomColors.main)),
+                                        onTap: (){
+                                          setState(() {
+                                            photoList.remove(photo);
+                                          });
+                                        },
+                                      )
+                                    ],
                                   ),
                                 ],
                               ),

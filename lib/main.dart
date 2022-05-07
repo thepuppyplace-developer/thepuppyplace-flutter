@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thepuppyplace_flutter/pages/board_page/board_details_page.dart';
 import 'package:thepuppyplace_flutter/pages/search_page/search_board_list_page.dart';
+import 'package:thepuppyplace_flutter/views/photo_view/photo_list_view.dart';
 import 'controllers/database/database_controller.dart';
 import 'controllers/notification/notification_controller.dart';
 import 'pages/auth_page/login_page.dart';
@@ -37,7 +38,7 @@ class MyApp extends StatelessWidget {
       routes: <String, WidgetBuilder>{
         BoardDetailsPage.routeName: (context) => const BoardDetailsPage(),
         LoginPage.routeName: (context) => const LoginPage(),
-        SearchBoardListPage.routeName: (context) => SearchBoardListPage(),
+        SearchBoardListPage.routeName: (context) => const SearchBoardListPage(),
       },
       home: const SplashPage(),
     );

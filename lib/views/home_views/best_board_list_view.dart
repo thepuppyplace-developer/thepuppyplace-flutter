@@ -23,9 +23,11 @@ class BestBoardListView extends StatelessWidget {
               CarouselSlider.builder(
                 itemCount: boardList!.length ~/ 3,
                 options: CarouselOptions(
+                    enlargeCenterPage: false,
                     height: mediaHeight(context, 0.5),
                     disableCenter: true,
-                    enableInfiniteScroll: false
+                    enableInfiniteScroll: false,
+                    viewportFraction: 0.8
                 ),
                 itemBuilder: (context, index, index2){
                   return Column(

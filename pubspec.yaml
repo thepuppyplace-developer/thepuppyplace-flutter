@@ -39,6 +39,7 @@ dependencies:
   multi_image_picker2: ^5.0.02
   url_launcher: ^6.1.0
   flutter_launcher_icons: ^0.9.2
+  photo_view: ^0.13.0
 
 dev_dependencies:
   flutter_test:
