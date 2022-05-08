@@ -90,6 +90,7 @@ class _HomePageState extends State<HomePage> {
               enablePullUp: controller.boardList.isEmpty ? false : true,
               controller: _refreshController,
               onRefresh: () async{
+                BestBoardListController.to.refreshBoardList();
                 controller.refreshBoardList().whenComplete((){
                   _refreshController.refreshCompleted(resetFooterState: true);
                 });

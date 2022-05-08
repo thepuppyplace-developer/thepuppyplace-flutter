@@ -4,6 +4,7 @@ import '../../models/Board.dart';
 import '../../repositories/board/board_repository.dart';
 
 class BestBoardListController extends GetxController with StateMixin<List<Board>>{
+  static BestBoardListController get to => Get.put(BestBoardListController());
   final BoardRepository _repository = BoardRepository();
 
   final RxInt pageIndex = RxInt(0);

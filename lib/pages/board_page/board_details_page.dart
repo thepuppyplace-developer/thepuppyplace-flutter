@@ -278,7 +278,7 @@ class _BoardDetailsPageState extends State<BoardDetailsPage> {
                                         final BoardComment? bComment = await repo.deleteComment(context, comment_id: comment.commentId);
                                         if(bComment != null){
                                           setState(() {
-                                            board.commentList.removeWhere((c) => c.commentId == bComment.commentId);
+                                            board.commentList.remove(comment);
                                           });
                                         }
                                         controller.deleteComment(context, comment);
@@ -287,7 +287,7 @@ class _BoardDetailsPageState extends State<BoardDetailsPage> {
                                         final NestedComment? c = await repo.deleteNestedComment(context, nested_comment_id: nestedComment.id);
                                         if(c != null){
                                           setState(() {
-                                            comment.nestedCommentList.removeWhere((com) => com.id == c.id);
+                                            comment.nestedCommentList.remove(nestedComment);
                                           });
                                         }
                                       },

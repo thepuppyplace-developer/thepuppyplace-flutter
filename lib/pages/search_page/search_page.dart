@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thepuppyplace_flutter/controllers/search/recommend_search_list_controller.dart';
-import 'package:thepuppyplace_flutter/util/customs.dart';
+import 'package:thepuppyplace_flutter/pages/search_page/search_board_list_page.dart';
 import 'package:thepuppyplace_flutter/views/popular_search_list_view.dart';
 import 'package:thepuppyplace_flutter/views/recommend_search_list_view.dart';
 import '../../util/common.dart';
@@ -41,6 +41,9 @@ class _SearchPageState extends State<SearchPage> {
                     if(_query.isNotEmpty){
                       controller.getSearchList(_query);
                     }
+                  },
+                  onSearchTap: (query){
+                  Get.toNamed(SearchBoardListPage.routeName, arguments: query);
                   },
                 ),
               ),
