@@ -90,13 +90,13 @@ class RecentBoardCard extends StatelessWidget {
                   Expanded(
                     child: Row(
                       children: [
-                        Icon(CustomIcons.heart, color: CustomColors.hint, size: mediaHeight(context, 0.02)),
+                        Icon(CupertinoIcons.heart, color: CustomColors.hint, size: mediaHeight(context, 0.02)),
                         Container(
-                            margin: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.015)),
+                            margin: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.01)),
                             child: Text('${board.likeList.length}', style: CustomTextStyle.w400(context, scale: 0.015, color: Colors.black54))),
-                        Icon(CustomIcons.comment, color: CustomColors.hint, size: mediaHeight(context, 0.02)),
+                        Icon(CupertinoIcons.bubble_left, color: CustomColors.hint, size: mediaHeight(context, 0.02)),
                         Container(
-                            margin: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.015)),
+                            margin: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.01)),
                             child: Text('${commentCount(board.commentList)}', style: CustomTextStyle.w400(context, scale: 0.015, color: Colors.black54))),
                       ],
                     ),

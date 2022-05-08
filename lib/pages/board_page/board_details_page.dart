@@ -40,7 +40,7 @@ class _BoardDetailsPageState extends State<BoardDetailsPage> {
   int _photoIndex = 0;
   BoardComment? _selectComment;
   final TextEditingController _commentController = TextEditingController();
-  final repo = BoardRepository();
+  final _repo = BoardRepository();
 
 
   @override
@@ -216,22 +216,22 @@ class _BoardDetailsPageState extends State<BoardDetailsPage> {
                                               builder: (UserController userController) => userController.obx((user) {
                                                 if(board.likeList.where((like) => like.userId == user!.id).isEmpty){
                                                   return GestureDetector(
-                                                    child: Icon(CustomIcons.heart, color: CustomColors.hint, size: mediaHeight(context, 0.025)),
+                                                    child: Icon(CupertinoIcons.heart, color: CustomColors.hint, size: mediaHeight(context, 0.025)),
                                                     onTap: (){
                                                       showDialog(context: context, builder: (context) => LikeAnimation(CupertinoIcons.heart_fill, controller.likeBoard(context)));
                                                     },
                                                   );
                                                 } else {
                                                   return GestureDetector(
-                                                    child: Icon(CustomIcons.heart, color: Colors.red, size: mediaHeight(context, 0.025)),
+                                                    child: Icon(CupertinoIcons.heart_fill, color: Colors.red, size: mediaHeight(context, 0.025)),
                                                     onTap: (){
-                                                      showDialog(context: context, builder: (context) => LikeAnimation(CustomIcons.heart, controller.likeBoard(context)));
+                                                      controller.likeBoard(context);
                                                     },
                                                   );
                                                 }
                                               },
                                                   onEmpty: GestureDetector(
-                                                    child: Icon(CustomIcons.heart, color: CustomColors.hint, size: mediaHeight(context, 0.025)),
+                                                    child: Icon(CupertinoIcons.heart, color: CustomColors.hint, size: mediaHeight(context, 0.025)),
                                                     onTap: (){
                                                       showSnackBar(context, '로그인을 해주세요.');
                                                     },
@@ -239,15 +239,15 @@ class _BoardDetailsPageState extends State<BoardDetailsPage> {
                                               )
                                           ),
                                         ),
-                                        Text(board.likeList.length.toString(), style: CustomTextStyle.w400(context, scale: 0.02)),
+                                        Text(board.likeList.length.toString(), style: CustomTextStyle.w400(context, scale: 0.02, color: Colors.grey)),
                                         Container(
                                           margin: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.02)),
                                           child: GestureDetector(
-                                            child: Icon(CustomIcons.comment, color: CustomColors.hint, size: mediaHeight(context, 0.025)),
+                                            child: Icon(CupertinoIcons.bubble_left, color: CustomColors.hint, size: mediaHeight(context, 0.025)),
                                             onTap: (){},
                                           ),
                                         ),
-                                        Text(board.commentList.length.toString(), style: CustomTextStyle.w400(context, scale: 0.02))
+                                        Text(board.commentList.length.toString(), style: CustomTextStyle.w400(context, scale: 0.02, color: Colors.grey))
                                       ],
                                     ),
                                   ),
@@ -267,7 +267,7 @@ class _BoardDetailsPageState extends State<BoardDetailsPage> {
                                         });
                                       },
                                       onLike: (BoardComment boardComment) async{
-                                        final CommentLike? like = await repo.likeComment(context, comment_id: boardComment.commentId);
+                                        final CommentLike? like = await _repo.likeComment(context, comment_id: boardComment.commentId);
                                         if(like != null){
                                           setState(() {
                                             boardComment.commentLikeList.add(like);
@@ -275,7 +275,7 @@ class _BoardDetailsPageState extends State<BoardDetailsPage> {
                                         }
                                       },
                                       onCommentDelete: () async{
-                                        final BoardComment? bComment = await repo.deleteComment(context, comment_id: comment.commentId);
+                                        final BoardComment? bComment = await _repo.deleteComment(context, comment_id: comment.commentId);
                                         if(bComment != null){
                                           setState(() {
                                             board.commentList.remove(comment);
@@ -284,7 +284,7 @@ class _BoardDetailsPageState extends State<BoardDetailsPage> {
                                         controller.deleteComment(context, comment);
                                       },
                                       onNestedCommentDelete: (NestedComment nestedComment) async{
-                                        final NestedComment? c = await repo.deleteNestedComment(context, nested_comment_id: nestedComment.id);
+                                        final NestedComment? c = await _repo.deleteNestedComment(context, nested_comment_id: nestedComment.id);
                                         if(c != null){
                                           setState(() {
                                             comment.nestedCommentList.remove(nestedComment);
@@ -340,24 +340,24 @@ class _BoardDetailsPageState extends State<BoardDetailsPage> {
                 ),
                 CommentField(
                   commentController: _commentController,
-                  onPressed: () async{
+                  onPressed: (comment) async{
                     if(_selectComment != null){
-                      final int? statusCode = await repo.insertNestedComment(
+                      await controller.insertNestedComment(
                           context,
                           comment_id: _selectComment!.commentId,
-                          comment: _commentController.text
+                          comment: comment
                       );
-                      if(statusCode != null){
-                        controller.getBoard;
-                      } else {
-                        print('ho');
-                      }
+                      setState(() {
+                      });
                     } else {
-                      controller.insertComment(context, comment: _commentController.text);
+                      await controller.insertComment(
+                          context,
+                          comment: comment
+                      );
                     }
                     setState(() {
+                      _selectComment = null;
                       _commentController.clear();
-                      _selectComment == null;
                     });
                   },
                 )

@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_connect/http/src/request/request.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:thepuppyplace_flutter/models/BoardCategory.dart';
 import 'package:thepuppyplace_flutter/pages/board_page/board_details_page.dart';
@@ -109,6 +108,31 @@ class BoardRepository extends GetConnect with Config, LocalConfig{
     } catch(error){
       throw unknown_message(context);
     }
+  }
+
+  Future<Map<String, List<Board>>> getSearchBoardList({required String? query, required String? queryType, required String? order}) async{
+    final List<String> categoryList = <String>['카페', '음식점', '쇼핑몰', '호텔', '운동장', '수다방'];
+    Map<String, List<Board>> queryList = <String, List<Board>>{};
+
+    for(String category in categoryList){
+      final Response res = await post('$API_URL/board', {
+        'limit': 4,
+        'category': category,
+        'query': query,
+        'order': order,
+        'queryType': queryType
+      });
+
+      switch(res.statusCode){
+        case 200:
+          List<Board> boardList = List.from(res.body['data']).map((board) => Board.fromJson(board)).toList();
+          queryList.addAll({category: boardList});
+          break;
+        default:
+          queryList.addAll({category: <Board>[]});
+      }
+    }
+    return queryList;
   }
 
   Future<List<Board>> getBoardList({int? page, int? limit,  String? category , String? order, int? userId, String? query, String? queryType}) async{

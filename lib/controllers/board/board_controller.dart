@@ -73,7 +73,7 @@ class BoardController extends GetxController with StateMixin<Board>, Config{
       await _repository.insertNestedComment(context, comment_id: comment_id, comment: comment);
       return getBoard;
     } else {
-      showSnackBar(context, '댓글을 입력해주세요.');
+      return showSnackBar(context, '댓글을 입력해주세요.');
     }
   }
 

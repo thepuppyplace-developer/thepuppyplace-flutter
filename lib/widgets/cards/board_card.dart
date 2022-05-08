@@ -82,11 +82,11 @@ class BoardCard extends StatelessWidget {
                 Expanded(
                   child: Row(
                     children: [
-                      Icon(CustomIcons.heart, color: CustomColors.hint, size: mediaHeight(context, 0.02)),
+                      Icon(CupertinoIcons.heart, color: CustomColors.hint, size: mediaHeight(context, 0.02)),
                       Container(
                           margin: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.015)).copyWith(right: mediaWidth(context, 0.05)),
                           child: Text(board.likeList.length.toString(), style: CustomTextStyle.w500(context, scale: 0.02, color: CustomColors.hint))),
-                      Icon(CustomIcons.comment, color: CustomColors.hint, size: mediaHeight(context, 0.02)),
+                      Icon(CupertinoIcons.bubble_left, color: CustomColors.hint, size: mediaHeight(context, 0.02)),
                       Container(
                           margin: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.015)),
                           child: Text('${commentCount(board.commentList)}', style: CustomTextStyle.w500(context, scale: 0.02, color: CustomColors.hint))),

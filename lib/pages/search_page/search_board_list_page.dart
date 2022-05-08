@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:thepuppyplace_flutter/controllers/board/search_board_controller.dart';
+import 'package:thepuppyplace_flutter/controllers/board/search_board_list_controller.dart';
 import 'package:thepuppyplace_flutter/util/common.dart';
 import 'package:thepuppyplace_flutter/views/search_board_list_view.dart';
-import 'package:thepuppyplace_flutter/widgets/cards/search_board_card.dart';
 import 'package:thepuppyplace_flutter/widgets/tab_bars/search_condition_bar.dart';
-import 'package:thepuppyplace_flutter/widgets/tab_bars/search_tab_bar.dart';
-
 import '../../widgets/text_fields/custom_text_field.dart';
 
 class SearchBoardListPage extends StatefulWidget {
