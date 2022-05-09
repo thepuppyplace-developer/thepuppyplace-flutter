@@ -20,8 +20,12 @@ class CafeBoardListController extends GetxController with StateMixin<List<Board>
   void onReady() {
     super.onReady();
     ever(boardList, _boardListListener);
+    ever(query, _queryListener);
+    query.value = queryString;
     refreshBoardList();
   }
+
+  void _queryListener(String? query) => refreshBoardList();
 
   void _boardListListener(List<Board> boardList){
     try{

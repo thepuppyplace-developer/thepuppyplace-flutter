@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../../controllers/board/ground_board_list_controller.dart';
 import '../../../models/Board.dart';
+import '../../../util/common.dart';
 import '../../../views/rx_status_view.dart';
 import '../../../widgets/buttons/order_button.dart';
 import '../../../widgets/cards/board_card.dart';
@@ -52,7 +53,7 @@ class _GroundBoardListViewState extends State<GroundBoardListView> {
                   child: Column(
                     children: [
                       OrderButton(
-                        order: controller.order.value,
+                        order: orderText(controller.order.value),
                         onSelected: (String order){
                           controller.page.value = 0;
                           controller.order.value = order;

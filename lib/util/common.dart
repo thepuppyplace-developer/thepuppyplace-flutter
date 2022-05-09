@@ -135,17 +135,17 @@ int commentCount(List<BoardComment>? commentList){
   return commentCount;
 }
 
-int randomImage(){
-  int random = Random().nextInt(12);
-  return random;
-}
-
 String orderText(String order){
   switch(order){
     case 'date': return '최신순';
     case 'view': return '인기순';
-    default: return '';
+    default: return '최신순';
   }
+}
+
+int randomImage(){
+  int random = Random().nextInt(12);
+  return random;
 }
 
 Future openURL({required String url, bool? inApp}) async{

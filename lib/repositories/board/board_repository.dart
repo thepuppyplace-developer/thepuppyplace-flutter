@@ -116,7 +116,6 @@ class BoardRepository extends GetConnect with Config, LocalConfig{
 
     for(String category in categoryList){
       final Response res = await post('$API_URL/board', {
-        'limit': 4,
         'category': category,
         'query': query,
         'order': order,

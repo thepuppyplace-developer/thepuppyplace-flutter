@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:thepuppyplace_flutter/util/common.dart';
 import '../../../controllers/board/cafe_board_list_controller.dart';
 import '../../../models/Board.dart';
 import '../../../util/customs.dart';
@@ -49,8 +50,8 @@ class CafeBoardListView extends StatelessWidget {
                   child: Column(
                     children: [
                       OrderButton(
-                        order: controller.order.value,
-                        onSelected: (String order){
+                        order: orderText(controller.order.value),
+                        onSelected: (order){
                           controller.page.value = 0;
                           controller.order.value = order;
                           controller.refreshBoardList();

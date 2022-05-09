@@ -39,7 +39,7 @@ class CategoryButton extends StatelessWidget {
         ],
       ),
       onPressed: (){
-        Get.to(() => BoardListPage(currentIndex));
+        Get.to(() => BoardListPage(currentIndex: currentIndex));
       }
     );
   }

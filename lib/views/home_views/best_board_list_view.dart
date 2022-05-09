@@ -9,42 +9,53 @@ import 'package:thepuppyplace_flutter/widgets/loadings/sliver_contents.dart';
 
 import '../../util/common.dart';
 
-class BestBoardListView extends StatelessWidget {
+class BestBoardListView extends StatefulWidget {
   const BestBoardListView({Key? key}) : super(key: key);
 
+  @override
+  State<BestBoardListView> createState() => _BestBoardListViewState();
+}
+
+class _BestBoardListViewState extends State<BestBoardListView> {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<BestBoardListController>(
         init: BestBoardListController(),
         builder: (BestBoardListController controller) => controller.obx((boardList) => SliverToBoxAdapter(
-          child: Stack(
-            alignment: Alignment.bottomCenter,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               CarouselSlider.builder(
                 itemCount: boardList!.length ~/ 3,
                 options: CarouselOptions(
-                    enlargeCenterPage: false,
+                  onPageChanged: (index, _){
+                    setState(() {
+                      controller.pageIndex.value = index;
+                    });
+                  },
                     height: mediaHeight(context, 0.5),
                     disableCenter: true,
                     enableInfiniteScroll: false,
-                    viewportFraction: 0.8
+                    viewportFraction: 0.8,
                 ),
                 itemBuilder: (context, index, index2){
                   return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: boardList.map((board) => BestBoardCard(board)).toList()
-                          .sublist(index * 3, index * 3 + 3)
+                      children: boardList.map((board) => BestBoardCard(board)).toList().sublist(index * 3, index * 3 + 3)
                   );
                 },
               ),
-              AnimatedSmoothIndicator(
-                activeIndex: controller.pageIndex.value,
-                count: boardList.length ~/ 3,
-                effect: WormEffect(
-                    activeDotColor: CustomColors.main,
-                    dotColor: CustomColors.hint,
-                    dotHeight: mediaHeight(context, 0.01),
-                    dotWidth: mediaHeight(context, 0.01)
+              Container(
+                alignment: Alignment.center,
+                child: AnimatedSmoothIndicator(
+                  activeIndex: controller.pageIndex.value,
+                  count: boardList.length ~/ 3,
+                  effect: WormEffect(
+                      activeDotColor: CustomColors.main,
+                      dotColor: CustomColors.hint,
+                      dotHeight: mediaHeight(context, 0.01),
+                      dotWidth: mediaHeight(context, 0.01)
+                  ),
                 ),
               )
             ],

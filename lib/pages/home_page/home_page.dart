@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:thepuppyplace_flutter/pages/search_page/search_page.dart';
 import 'package:thepuppyplace_flutter/util/common.dart';
 import 'package:thepuppyplace_flutter/views/home_views/best_board_list_view.dart';
 import 'package:thepuppyplace_flutter/widgets/buttons/category_button.dart';
@@ -82,7 +83,12 @@ class _HomePageState extends State<HomePage> {
                     ]
                 ),
               ),
-              bottom: SearchTabBar(mediaHeight(context, 0.07)),
+              bottom: SearchTabBar(
+                  mediaHeight(context, 0.07),
+                onTap: (){
+                    Get.toNamed(SearchPage.routeName);
+                },
+              ),
             )
           ],
           body: Scrollbar(

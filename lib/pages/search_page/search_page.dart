@@ -9,6 +9,7 @@ import '../../views/rx_status_view.dart';
 import '../../widgets/tab_bars/search_tab_bar.dart';
 
 class SearchPage extends StatefulWidget {
+  static const String routeName = '/searchPage';
   const SearchPage({Key? key}) : super(key: key);
 
   @override
@@ -17,44 +18,52 @@ class SearchPage extends StatefulWidget {
 
 class _SearchPageState extends State<SearchPage> {
   String _query = '';
+  final TextEditingController _queryController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return GetBuilder<RecommendSearchListController>(
         init: RecommendSearchListController(context),
         builder: (RecommendSearchListController controller) {
-          return Scaffold(
-            body: NestedScrollView(
-              headerSliverBuilder: (context, inner) => [
-                SliverAppBar(
-                  snap: true,
-                  floating: true,
-                  pinned: true,
-                  elevation: 0.5,
-                  title: InsertSearchTabBar(mediaHeight(context, 0.07),
-                    margin: EdgeInsets.zero,
-                    hintText: '찾으시는 검색어를 입력하세요.',
-                    onChanged: (query){
-                      setState(() {
-                        _query = query;
-                      });
-                      if(_query.isNotEmpty){
-                        controller.getSearchList(_query);
-                      }
-                    },
-                    onSearchTap: (query){
-                      Get.toNamed(SearchBoardListPage.routeName, arguments: query);
-                    },
+          return GestureDetector(
+            onTap: (){
+              unFocus(context);
+            },
+            child: Scaffold(
+              body: NestedScrollView(
+                headerSliverBuilder: (context, inner) => [
+                  SliverAppBar(
+                    snap: true,
+                    floating: true,
+                    pinned: true,
+                    elevation: 0.5,
+                    title: InsertSearchTabBar(
+                      mediaHeight(context, 0.07),
+                      margin: EdgeInsets.zero,
+                      hintText: '찾으시는 검색어를 입력하세요.',
+                      onChanged: (query){
+                        setState(() {
+                          _query = query;
+                        });
+                        if(_query.isNotEmpty){
+                          controller.getSearchList(query);
+                        }
+                      },
+                      onSearchTap: (query){
+                        Get.toNamed(SearchBoardListPage.routeName, arguments: query);
+                      },
+                      controller: _queryController,
+                    ),
                   ),
-                ),
-              ],
-              body: Container(
-                child: controller.obx((recommendSearchList) => const RecommendSearchListView(),
-                    onEmpty: _query.isNotEmpty
-                        ? EmptyView(message: "'$_query'에 대한 검색 결과가 없습니다.")
-                        : const PopularSearchListView(),
-                    onLoading: const LoadingView(),
-                    onError: (error) => CustomErrorView(error: error)
+                ],
+                body: Container(
+                  child: controller.obx((recommendSearchList) => const RecommendSearchListView(),
+                      onEmpty: _query.isNotEmpty
+                          ? EmptyView(message: "'$_query'에 대한 검색 결과가 없습니다.")
+                          : const PopularSearchListView(),
+                      onLoading: const LoadingView(),
+                      onError: (error) => CustomErrorView(error: error)
+                  ),
                 ),
               ),
             ),

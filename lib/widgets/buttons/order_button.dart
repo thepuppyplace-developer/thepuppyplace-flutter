@@ -14,13 +14,16 @@ class OrderButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.033)),
+      padding: EdgeInsets.all(mediaWidth(context, 0.033)),
       alignment: Alignment.centerRight,
       child: PopupMenuButton(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10)
+        ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(orderText(order), style: CustomTextStyle.w500(context, color: CustomColors.hint)),
+            Text(order, style: CustomTextStyle.w500(context, color: CustomColors.hint)),
             Icon(Icons.keyboard_arrow_down_sharp, size: mediaHeight(context, 0.02), color: CustomColors.hint),
           ],
         ),
@@ -41,3 +44,5 @@ class OrderButton extends StatelessWidget {
     );
   }
 }
+
+enum OrderType{date, view}

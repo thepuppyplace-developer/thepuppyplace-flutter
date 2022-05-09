@@ -10,11 +10,13 @@ class SearchConditionBar extends StatelessWidget with PreferredSizeWidget{
 
   final double height;
   final int currentIndex;
+  final String order;
   final Function(int) onTap;
   final Function(String) orderTap;
 
   SearchConditionBar(this.height, {
     required this.currentIndex,
+    required this.order,
     required this.onTap,
     required this.orderTap,
     Key? key}) : super(key: key);
@@ -42,7 +44,10 @@ class SearchConditionBar extends StatelessWidget with PreferredSizeWidget{
             ),
           ),
         ),
-        OrderButton(order: 'date', onSelected: orderTap)
+        OrderButton(
+            order: order,
+            onSelected: orderTap
+        )
       ],
     ),
   );

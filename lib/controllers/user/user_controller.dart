@@ -115,7 +115,7 @@ class UserController extends GetxController with StateMixin<User>, Config, Local
   }
 
   Future deleteUser(BuildContext context) async{
-    _user.value = await _repository.deleteUser(context, _user.value!.id);
-    return Get.toNamed('/loginPage');
+    await _repository.deleteUser(context, _user.value!.id);
+    return logout(context);
   }
 }

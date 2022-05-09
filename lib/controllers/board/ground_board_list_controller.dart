@@ -21,8 +21,12 @@ class GroundBoardListController extends GetxController with StateMixin<List<Boar
   void onReady() {
     super.onReady();
     ever(boardList, _boardListListener);
+    ever(query, _queryListener);
+    query.value = queryString;
     refreshBoardList();
   }
+
+  void _queryListener(String? query) => refreshBoardList();
 
   void _boardListListener(List<Board> boardList){
     try{
