@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:thepuppyplace_flutter/controllers/board/best_board_list_controller.dart';
+import 'package:thepuppyplace_flutter/views/rx_status_view.dart';
 import 'package:thepuppyplace_flutter/widgets/cards/best_board_card.dart';
 import 'package:thepuppyplace_flutter/widgets/loadings/sliver_contents.dart';
 
@@ -22,11 +23,13 @@ class _BestBoardListViewState extends State<BestBoardListView> {
     return GetBuilder<BestBoardListController>(
         init: BestBoardListController(),
         builder: (BestBoardListController controller) => controller.obx((boardList) => SliverToBoxAdapter(
-          child: Column(
+          child: boardList!.length < 12
+              ? const EmptyView(message: '베스트글이 아직 없습니다.', imageVisible: false)
+              : Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               CarouselSlider.builder(
-                itemCount: boardList!.length ~/ 3,
+                itemCount: boardList.length ~/ 3,
                 options: CarouselOptions(
                   onPageChanged: (index, _){
                     setState(() {
@@ -63,7 +66,7 @@ class _BestBoardListViewState extends State<BestBoardListView> {
         ),
             onError: (error) => SliverEmpty(error ?? '알 수 없는 오류'),
             onLoading: const SliverLoading(),
-            onEmpty: const SliverEmpty('베스트 게시글이 없습니다.')
+            onEmpty: const SliverEmpty('베스트 게시글이 없습니다.', imageVisible: false)
         )
     );
   }

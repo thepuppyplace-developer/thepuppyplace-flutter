@@ -208,7 +208,7 @@ class _InsertBoardPageState extends State<InsertBoardPage> {
                                       setState(() {});
                                     },
                                   ),
-                                  if(photoList.isNotEmpty) for(XFile? photo in photoList) Stack(
+                                  if(photoList.isNotEmpty) for(int index = 0; index < photoList.length; index++) Stack(
                                     alignment: Alignment.topRight,
                                     children: [
                                       CupertinoButton(
@@ -223,12 +223,12 @@ class _InsertBoardPageState extends State<InsertBoardPage> {
                                               border: Border.all(color: CustomColors.hint),
                                               image: DecorationImage(
                                                   fit: BoxFit.cover,
-                                                  image: FileImage(File(photo!.path))
+                                                  image: FileImage(File(photoList[index]!.path))
                                               )
                                           ),
                                         ),
                                         onPressed: (){
-                                          Get.to(() => PhotoListView(photoList.map((photo) => photo!.path).toList(), PhotoType.file), fullscreenDialog: true);
+                                          Get.to(() => PhotoListView(index, photoList.map((photo) => photo!.path).toList(), PhotoType.file), fullscreenDialog: true);
                                         },
                                       ),
                                       GestureDetector(
@@ -237,7 +237,7 @@ class _InsertBoardPageState extends State<InsertBoardPage> {
                                             child: Icon(Icons.cancel, size: mediaHeight(context, 0.03), color: CustomColors.main)),
                                         onTap: (){
                                           setState(() {
-                                            photoList.remove(photo);
+                                            photoList.remove(photoList[index]);
                                           });
                                         },
                                       )

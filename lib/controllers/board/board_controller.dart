@@ -43,6 +43,7 @@ class BoardController extends GetxController with StateMixin<Board>, Config{
   }
 
   Future get getBoard async{
+    change(null, status: RxStatus.loading());
     _board.value = await _repository.getBoard(board_id);
   }
 
@@ -53,6 +54,11 @@ class BoardController extends GetxController with StateMixin<Board>, Config{
   Future likeBoard(BuildContext context) => _repository.likeBoard(context, board_id).whenComplete(()
   => getBoard);
 
+  Future likeComment(BuildContext context, int comment_id) async{
+    await _repository.likeComment(context, comment_id: comment_id);
+    return getBoard;
+  }
+
   Future insertComment(BuildContext context, {required String comment}) async{
     if(comment.trim().isNotEmpty){
       await _repository.insertComment(context, board_id: board_id, comment: comment);
@@ -62,9 +68,9 @@ class BoardController extends GetxController with StateMixin<Board>, Config{
     }
   }
 
-  Future deleteComment(BuildContext context, BoardComment comment) async{
+  Future deleteComment(BuildContext context, int comment_id) async{
     Get.back();
-    await _repository.deleteComment(context, comment_id: comment.commentId);
+    await _repository.deleteComment(context, comment_id: comment_id);
     return getBoard;
   }
 
@@ -79,7 +85,9 @@ class BoardController extends GetxController with StateMixin<Board>, Config{
 
   Future deleteNestedComment(BuildContext context, NestedComment comment) async{
     Get.back();
-    await _repository.deleteComment(context, comment_id: comment.id);
-    return getBoard;
+    final int? statusCode = await _repository.deleteNestedComment(context, nested_comment_id: comment.id);
+    if(statusCode == 200){
+      return getBoard;
+    }
   }
 }

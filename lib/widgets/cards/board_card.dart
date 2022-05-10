@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:thepuppyplace_flutter/controllers/user/user_controller.dart';
 import 'package:thepuppyplace_flutter/pages/board_page/board_details_page.dart';
 import 'package:thepuppyplace_flutter/util/common.dart';
 import 'package:thepuppyplace_flutter/widgets/buttons/tag_text.dart';
@@ -82,7 +83,20 @@ class BoardCard extends StatelessWidget {
                 Expanded(
                   child: Row(
                     children: [
-                      Icon(CupertinoIcons.heart, color: CustomColors.hint, size: mediaHeight(context, 0.02)),
+                      GetBuilder<UserController>(
+                        init: UserController(),
+                        builder: (UserController controller) => controller.obx((user) {
+                          if(board.likeList.where((like) => like.userId == user!.id).isEmpty){
+                            return Icon(CupertinoIcons.heart, color: CustomColors.hint, size: mediaHeight(context, 0.02));
+                          } else {
+                            return Icon(CupertinoIcons.heart_fill, color: Colors.red, size: mediaHeight(context, 0.02));
+                          }
+                        },
+                          onEmpty: Icon(CupertinoIcons.heart, color: CustomColors.hint, size: mediaHeight(context, 0.02)),
+                          onLoading: Icon(CupertinoIcons.heart, color: CustomColors.hint, size: mediaHeight(context, 0.02)),
+                          onError: (error) => Icon(CupertinoIcons.heart, color: CustomColors.hint, size: mediaHeight(context, 0.02)),
+                        )
+                      ),
                       Container(
                           margin: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.015)).copyWith(right: mediaWidth(context, 0.05)),
                           child: Text(board.likeList.length.toString(), style: CustomTextStyle.w500(context, scale: 0.02, color: CustomColors.hint))),

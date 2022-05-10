@@ -7,7 +7,6 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:thepuppyplace_flutter/repositories/board/board_repository.dart';
 import 'package:thepuppyplace_flutter/util/common.dart';
-import 'package:thepuppyplace_flutter/util/customs.dart';
 import 'package:thepuppyplace_flutter/views/photo_view/photo_list_view.dart';
 import 'package:thepuppyplace_flutter/widgets/dialogs/custom_dialog.dart';
 import '../../controllers/board/board_controller.dart';
@@ -16,7 +15,6 @@ import '../../models/Board.dart';
 import '../../models/BoardComment.dart';
 import '../../models/CommentLike.dart';
 import '../../models/NestedComment.dart';
-import '../../util/custom_icons.dart';
 import '../../views/rx_status_view.dart';
 import '../../widgets/buttons/tag_text.dart';
 import '../../widgets/cards/comment_card.dart';
@@ -40,8 +38,6 @@ class _BoardDetailsPageState extends State<BoardDetailsPage> {
   int _photoIndex = 0;
   BoardComment? _selectComment;
   final TextEditingController _commentController = TextEditingController();
-  final _repo = BoardRepository();
-
 
   @override
   Widget build(BuildContext context) {
@@ -173,7 +169,7 @@ class _BoardDetailsPageState extends State<BoardDetailsPage> {
                                         ),
                                       ),
                                       onPressed: (){
-                                        Get.to(() => PhotoListView(board.board_photos, PhotoType.cached), fullscreenDialog: true);
+                                        Get.to(() => PhotoListView(index, board.board_photos, PhotoType.cached), fullscreenDialog: true);
                                       },
                                     );
                                   },
@@ -247,7 +243,7 @@ class _BoardDetailsPageState extends State<BoardDetailsPage> {
                                             onTap: (){},
                                           ),
                                         ),
-                                        Text(board.commentList.length.toString(), style: CustomTextStyle.w400(context, scale: 0.02, color: Colors.grey))
+                                        Text('${commentCount(board.commentList)}', style: CustomTextStyle.w400(context, scale: 0.02, color: Colors.grey))
                                       ],
                                     ),
                                   ),
@@ -266,31 +262,9 @@ class _BoardDetailsPageState extends State<BoardDetailsPage> {
                                           _selectComment = boardComment;
                                         });
                                       },
-                                      onLike: (BoardComment boardComment) async{
-                                        final CommentLike? like = await _repo.likeComment(context, comment_id: boardComment.commentId);
-                                        if(like != null){
-                                          setState(() {
-                                            boardComment.commentLikeList.add(like);
-                                          });
-                                        }
-                                      },
-                                      onCommentDelete: () async{
-                                        final BoardComment? bComment = await _repo.deleteComment(context, comment_id: comment.commentId);
-                                        if(bComment != null){
-                                          setState(() {
-                                            board.commentList.remove(comment);
-                                          });
-                                        }
-                                        controller.deleteComment(context, comment);
-                                      },
-                                      onNestedCommentDelete: (NestedComment nestedComment) async{
-                                        final NestedComment? c = await _repo.deleteNestedComment(context, nested_comment_id: nestedComment.id);
-                                        if(c != null){
-                                          setState(() {
-                                            comment.nestedCommentList.remove(nestedComment);
-                                          });
-                                        }
-                                      },
+                                      onLike: (BoardComment boardComment) => controller.likeComment(context, boardComment.commentId),
+                                      onCommentDelete: () => controller.deleteComment(context, comment.commentId),
+                                      onNestedCommentDelete: (NestedComment nestedComment) => controller.deleteNestedComment(context, nestedComment)
                                     )
                                   ]
                               ),
@@ -365,7 +339,9 @@ class _BoardDetailsPageState extends State<BoardDetailsPage> {
             ),
           ),
         ),
-            onLoading: const LoadingView(message: '게시글을 불러오는 중입니다...'),
+            onLoading: Scaffold(
+                appBar: AppBar(),
+                body: const LoadingView(message: '게시글을 불러오는 중입니다...')),
             onEmpty: Scaffold(
                 appBar: AppBar(
                     title: const Text('삭제된 게시글')

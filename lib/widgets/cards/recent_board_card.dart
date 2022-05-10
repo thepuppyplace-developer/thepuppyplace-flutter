@@ -6,6 +6,7 @@ import 'package:thepuppyplace_flutter/pages/board_page/board_details_page.dart';
 import 'package:thepuppyplace_flutter/util/common.dart';
 import 'package:thepuppyplace_flutter/util/custom_icons.dart';
 import 'package:thepuppyplace_flutter/widgets/cards/user_profile_card.dart';
+import '../../controllers/user/user_controller.dart';
 import '../../models/Board.dart';
 import '../buttons/tag_text.dart';
 
@@ -90,7 +91,20 @@ class RecentBoardCard extends StatelessWidget {
                   Expanded(
                     child: Row(
                       children: [
-                        Icon(CupertinoIcons.heart, color: CustomColors.hint, size: mediaHeight(context, 0.02)),
+                        GetBuilder<UserController>(
+                            init: UserController(),
+                            builder: (UserController controller) => controller.obx((user) {
+                              if(board.likeList.where((like) => like.userId == user!.id).isEmpty){
+                                return Icon(CupertinoIcons.heart, color: CustomColors.hint, size: mediaHeight(context, 0.02));
+                              } else {
+                                return Icon(CupertinoIcons.heart_fill, color: Colors.red, size: mediaHeight(context, 0.02));
+                              }
+                            },
+                              onEmpty: Icon(CupertinoIcons.heart, color: CustomColors.hint, size: mediaHeight(context, 0.02)),
+                              onLoading: Icon(CupertinoIcons.heart, color: CustomColors.hint, size: mediaHeight(context, 0.02)),
+                              onError: (error) => Icon(CupertinoIcons.heart, color: CustomColors.hint, size: mediaHeight(context, 0.02)),
+                            )
+                        ),
                         Container(
                             margin: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.01)),
                             child: Text('${board.likeList.length}', style: CustomTextStyle.w400(context, scale: 0.015, color: Colors.black54))),

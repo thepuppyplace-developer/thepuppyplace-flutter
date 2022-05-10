@@ -36,7 +36,11 @@ class SliverLoading extends StatelessWidget {
 
 class SliverEmpty extends StatelessWidget {
   final String message;
-  const SliverEmpty(this.message, {Key? key}) : super(key: key);
+  final bool? imageVisible;
+  const SliverEmpty(
+      this.message, {
+        this.imageVisible = true,
+        Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +50,7 @@ class SliverEmpty extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Image.asset(PngList.empty, height: mediaHeight(context, 0.15)),
+            if(imageVisible ?? true) Image.asset(PngList.empty, height: mediaHeight(context, 0.15)),
             Container(
                 margin: EdgeInsets.symmetric(vertical: mediaHeight(context, 0.04)),
                 child: Text(message, style: CustomTextStyle.w500(context, color: CustomColors.hint))),

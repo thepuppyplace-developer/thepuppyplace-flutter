@@ -295,14 +295,14 @@ class BoardRepository extends GetConnect with Config, LocalConfig{
     }
   }
 
-  Future<NestedComment?> deleteNestedComment(BuildContext context, {required int nested_comment_id}) async{
+  Future<int?> deleteNestedComment(BuildContext context, {required int nested_comment_id}) async{
     if(await jwt != null){
       final Response res = await delete('$API_URL/comment/nested/$nested_comment_id', headers: headers(await jwt));
 
       switch(res.statusCode) {
         case 200:
           await showSnackBar(context, '댓글이 삭제되었습니다.');
-          return NestedComment.fromJson(res.body['data']);
+          return res.statusCode;
         case 204:
           await unknown_message(context);
           return null;

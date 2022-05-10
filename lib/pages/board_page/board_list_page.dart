@@ -1,13 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:thepuppyplace_flutter/controllers/board/cafe_board_list_controller.dart';
-import 'package:thepuppyplace_flutter/controllers/board/ground_board_list_controller.dart';
-import 'package:thepuppyplace_flutter/controllers/board/hotel_board_list_controller.dart';
-import 'package:thepuppyplace_flutter/controllers/board/shopping_board_list_controller.dart';
-import 'package:thepuppyplace_flutter/controllers/board/talk_board_list_controller.dart';
-import 'package:thepuppyplace_flutter/pages/search_page/search_page.dart';
+import 'package:thepuppyplace_flutter/pages/search_page/search_board_list_page.dart';
 import 'package:thepuppyplace_flutter/util/common.dart';
-import '../../controllers/board/restaurant_board_list_controller.dart';
 import '../../widgets/tab_bars/search_tab_bar.dart';
 import 'board_list_views/cafe_board_list_view.dart';
 import 'board_list_views/ground_board_list_view.dart';
@@ -70,6 +64,7 @@ class _BoardListPageState extends State<BoardListPage> {
                     controller: _queryController,
                     onChanged: (_query){},
                     onSearchTap: (query){
+                      Get.toNamed(SearchBoardListPage.routeName, arguments: query);
                     }
                 ),
                 bottom: TabBar(

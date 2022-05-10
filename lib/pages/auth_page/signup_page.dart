@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:thepuppyplace_flutter/widgets/checkboxes.dart';
 
 import '../../util/common.dart';
 import '../../widgets/buttons/custom_button.dart';
@@ -14,7 +15,9 @@ class SignupPage extends StatefulWidget {
 }
 
 class _SignupPageState extends State<SignupPage> {
-  List<bool> checkList = <bool>[false, false, false, false];
+
+  bool _allCheck = false;
+  List<bool> _termsCheckList = <bool>[false, false, false, false];
 
   @override
   Widget build(BuildContext context) {
@@ -23,36 +26,34 @@ class _SignupPageState extends State<SignupPage> {
       body: Column(
         children: [
           Expanded(
-            child: Container(
-              margin: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.05)),
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('회원가입', style: CustomTextStyle.w500(context, scale: 0.03)),
-                    Container(
-                        margin: EdgeInsets.symmetric(vertical: mediaHeight(context, 0.01)),
-                        child: Text('서비스 가입을 위해 약관동의가 필요해요.', style: CustomTextStyle.w500(context, scale: 0.018, color: CustomColors.hint))),
-                    CustomCheckButtonItem(
-                      child: Text('아래 내용에 모두 동의합니다.', style: CustomTextStyle.w600(context, scale: 0.02, color: checkList[1] ? CustomColors.main : Colors.black)),
-                      side: true,
-                      onTap: (bool value){
-                        setState(() {
-                          checkList[1] = value;
-                        });
-                      },
-                      value: checkList[1],
-                    )
-                  ],
-                ),
-              ),
-            ),
+            child: TermsCheckbox(
+                allCheck: _allCheck,
+                termsCheckList: _termsCheckList,
+                onAllCheck: (check){
+                  setState(() {
+                    _allCheck = !check;
+                    for(int i = 0; i < _termsCheckList.length; i++){
+                      _termsCheckList[i] = !check;
+                    }
+                  });
+                },
+                onTermsCheck: (index, check){
+                  setState(() {
+                    _termsCheckList[index] = !check;
+                    if(_termsCheckList.contains(false)){
+                      _allCheck = false;
+                    } else if(_termsCheckList.any((check) => true)){
+                      _allCheck = true;
+                    }
+                  });
+                }
+            )
           ),
           CustomButton(
             title: '다음',
             margin: EdgeInsets.all(mediaWidth(context, 0.033)),
             height: mediaHeight(context, 0.06),
-            onPressed: (){
+            onPressed: !_allCheck ? null : (){
               Get.to(() => const SignupInsertPage());
             },
           )

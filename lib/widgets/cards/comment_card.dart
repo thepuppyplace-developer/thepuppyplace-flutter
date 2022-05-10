@@ -45,9 +45,11 @@ class CommentCard extends GetWidget<UserController> {
                     showDialog(context: context, builder: (context) => CustomDialog(title: '댓글을 삭제하시겠습니까?', onTap: onCommentDelete));
                   }, color: CustomColors.main);
                 } else {
-                  return Container();
+                  return Container(height: mediaHeight(context, 0.06));
                 }
-              })
+              },
+                onEmpty: Container(height: mediaHeight(context, 0.06))
+              )
             ],
           ),
           Text(comment.comment, style: CustomTextStyle.w500(context)),

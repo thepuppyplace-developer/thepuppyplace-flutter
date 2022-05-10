@@ -191,7 +191,7 @@ class _HomePageState extends State<HomePage> {
                       childCount: boardList!.length
                     ),
                   ),
-                      onEmpty: const SliverEmpty('등록되어 있는 베스트글이 없습니다.'),
+                      onEmpty: const SliverEmpty('등록되어 있는 글이 없습니다.'),
                       onLoading: const SliverLoading(
                         animated: false,
                         message: '게시글을 불러오는 중입니다...',

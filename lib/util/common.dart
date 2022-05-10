@@ -15,6 +15,10 @@ import 'package:url_launcher/url_launcher.dart';
 double mediaHeight(BuildContext context, double scale) => MediaQuery.of(context).size.height * scale;
 double mediaWidth(BuildContext context, double scale) => MediaQuery.of(context).size.width * scale;
 
+EdgeInsets basePadding(BuildContext context) => EdgeInsets.all(mediaWidth(context, 0.033));
+EdgeInsets baseHorizontalPadding(BuildContext context) => EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.033));
+EdgeInsets baseVerticalPadding(BuildContext context) => EdgeInsets.symmetric(vertical: mediaWidth(context, 0.033));
+
 void unFocus(BuildContext context) => FocusScope.of(context).unfocus();
 
 Future<List<XFile>> pickMultiImage({int? limit}) async{
