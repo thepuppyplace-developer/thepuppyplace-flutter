@@ -41,7 +41,7 @@ class UserController extends GetxController with StateMixin<User>, Config, Local
   Future get _autoLogin async{
     List<User> userList = await USER_LIST();
     if(userList.isNotEmpty){
-      _getUser(userList.first.jwt_token);
+      _user.value = userList.first;
     } else {
       _user.value = null;
     }
@@ -128,7 +128,7 @@ class UserController extends GetxController with StateMixin<User>, Config, Local
   }
 
   Future logout(BuildContext context) async{
-    _user.value = await _repository.logout(context, _user.value!.id);
+    _user.value = await _repository.logout(context);
     return Get.toNamed('/loginPage');
   }
 

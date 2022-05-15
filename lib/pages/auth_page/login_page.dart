@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -154,7 +156,7 @@ class _LoginPageState extends State<LoginPage> {
                           CupertinoButton(child: Image.asset(PngList.google), onPressed: (){
                             showIndicator(UserController.to.googleLogin(context));
                           }),
-                          CupertinoButton(child: Image.asset(PngList.apple), onPressed: (){
+                          if(Platform.isIOS) CupertinoButton(child: Image.asset(PngList.apple), onPressed: (){
                             showIndicator(UserController.to.appleLogin(context));
                           })
                         ],

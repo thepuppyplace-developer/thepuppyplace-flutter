@@ -20,7 +20,8 @@ class LoginRequestPage extends StatelessWidget {
           children: [
             CircleAvatar(
               maxRadius: mediaHeight(context, 0.05),
-              backgroundImage: CachedNetworkImageProvider(CachedNetworkImageList.thepuppy_profile_0),
+              backgroundColor: CustomColors.hint,
+              foregroundImage: CachedNetworkImageProvider(CachedNetworkImageList.thepuppy_profile_0),
             ),
             Text('로그인 후 이용해주세요', style: CustomTextStyle.w600(context, scale: 0.02, height: 3)),
             Container(

@@ -47,7 +47,7 @@ class MyApp extends StatelessWidget {
         NoticeListPage.routeName: (context) => const NoticeListPage(),
       },
       getPages: [
-        GetPage(name: LoginPage.routeName, page: () => const LoginPage()),
+        GetPage(name: LoginPage.routeName, page: () => const LoginPage(), fullscreenDialog: true),
       ],
       home: const SplashPage(),
     );

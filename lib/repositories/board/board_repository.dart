@@ -45,12 +45,7 @@ class BoardRepository extends GetConnect with Config, LocalConfig{
 
       switch(res.statusCode){
         case 201: {
-          final Board? board = await getBoard(res.body['data']['id']);
-          if(board != null){
-            Get.offNamedUntil(BoardDetailsPage.routeName, (route) => route.isFirst, arguments: board);
-          } else {
-            Get.until((route) => route.isFirst);
-          }
+          Get.until((route) => route.isFirst);
           return showSnackBar(context, '게시글이 업로드되었습니다!');
         }
         case 204: {

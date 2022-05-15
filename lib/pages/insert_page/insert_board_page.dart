@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:thepuppyplace_flutter/controllers/board/board_list_controller.dart';
 import 'package:thepuppyplace_flutter/views/photo_view/photo_list_view.dart';
 import '../../controllers/user/user_controller.dart';
 import '../../models/User.dart';
@@ -315,6 +316,7 @@ class _InsertBoardPageState extends State<InsertBoardPage> {
             category: _categoryList[_categoryIndex],
             photoList: photoList
         ));
+        BoardListController.to.refreshBoardList();
       }
     }
   }
