@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thepuppyplace_flutter/pages/board_page/board_details_page.dart';
 import 'package:thepuppyplace_flutter/pages/board_page/board_list_page.dart';
+import 'package:thepuppyplace_flutter/pages/insert_page/insert_board_page.dart';
+import 'package:thepuppyplace_flutter/pages/notice_page/notice_list_page.dart';
 import 'package:thepuppyplace_flutter/pages/search_page/search_board_list_page.dart';
 import 'package:thepuppyplace_flutter/pages/search_page/search_page.dart';
 import 'controllers/database/database_controller.dart';
@@ -41,7 +43,12 @@ class MyApp extends StatelessWidget {
         SearchBoardListPage.routeName: (context) => const SearchBoardListPage(),
         SearchPage.routeName: (context) => const SearchPage(),
         BoardListPage.routeName: (context) => BoardListPage(currentIndex: 0),
+        InsertBoardPage.routeName: (context) => const InsertBoardPage(),
+        NoticeListPage.routeName: (context) => const NoticeListPage(),
       },
+      getPages: [
+        GetPage(name: LoginPage.routeName, page: () => const LoginPage()),
+      ],
       home: const SplashPage(),
     );
   }

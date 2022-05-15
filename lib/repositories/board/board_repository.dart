@@ -47,7 +47,7 @@ class BoardRepository extends GetConnect with Config, LocalConfig{
         case 201: {
           final Board? board = await getBoard(res.body['data']['id']);
           if(board != null){
-            Get.offNamedUntil(BoardDetailsPage.routeName, (route) => route.isFirst);
+            Get.offNamedUntil(BoardDetailsPage.routeName, (route) => route.isFirst, arguments: board);
           } else {
             Get.until((route) => route.isFirst);
           }
@@ -62,6 +62,35 @@ class BoardRepository extends GetConnect with Config, LocalConfig{
       }
     } else {
       return expiration_token_message(context);
+    }
+  }
+
+  Future updateBoard(BuildContext context, {
+    required int board_id,
+    required String title,
+    required String description,
+    required String category,
+}) async{
+    try{
+      if(await jwt != null){
+        final Response res = await patch('$API_URL/board/$board_id', {
+          'title': title.trim(),
+          'description': description.trim(),
+          'category': category.trim(),
+        }, headers: headers(await jwt));
+
+
+        switch(res.statusCode){
+          case 200:
+            await showSnackBar(context, '게시글이 업데이트 되었습니다.');
+            return Get.until((route) => route.isFirst);
+          default: return network_check_message(context);
+        }
+      } else {
+        return expiration_token_message(context);
+      }
+    } catch(error){
+      throw unknown_message(context);
     }
   }
 

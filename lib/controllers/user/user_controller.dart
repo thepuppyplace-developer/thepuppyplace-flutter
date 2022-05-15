@@ -1,7 +1,9 @@
-import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
+import 'package:thepuppyplace_flutter/pages/auth_page/signup_insert_page.dart';
 import 'package:thepuppyplace_flutter/util/common.dart';
 import '../../config/config.dart';
 import '../../config/local_db.dart';
@@ -55,17 +57,40 @@ class UserController extends GetxController with StateMixin<User>, Config, Local
   => _repository.signUp(context, email: email, password: password, nickname: nickname).whenComplete(()
   => login(context, email: email, password: password));
 
-  //로그인
-  Future login(BuildContext context, {required String email, required String password})
-  => _repository.login(context, email, password).then((token){
+  //소셜 회원가입
+  Future socialSignup(BuildContext context, {
+    required String email,
+    String? google_uid,
+    String? apple_uid,
+    String? nickname,
+  }) async{
+    int? statusCode = await _repository.socialSignup(
+        context,
+        email: email,
+        google_uid: google_uid,
+        apple_uid: apple_uid,
+        nickname: nickname
+    );
 
-    switch(token){
+    switch(statusCode){
+      case 201:
+        Get.until((route) => route.isFirst);
+        return login(context, email: email, google_uid: google_uid, apple_uid: apple_uid);
+      default:
+        return ;
+    }
+  }
+
+  //로그인
+  Future login(BuildContext context, {required String email, String? password, String? google_uid, String? apple_uid}) async{
+    final String? jwt = await _repository.login(context, email, password: password, google_uid: google_uid, apple_uid: apple_uid);
+    switch(jwt){
       case null:
         return network_check_message(context);
       case 'email-password-check':
         return showSnackBar(context, '이메일 혹은 비밀번호를 확인해주세요.');
       default:
-        _getUser(token).then((User? user) async{
+        _getUser(jwt).then((User? user) async{
           if(user != null){
             Get.until((route) => route.isFirst);
             return showSnackBar(context, '${user.nickname}님 환영합니다!');
@@ -74,7 +99,33 @@ class UserController extends GetxController with StateMixin<User>, Config, Local
           }
         });
     }
-  });
+  }
+
+  Future googleLogin(BuildContext context) async{
+    final GoogleSignInAccount? googleUser = await _repository.googleLogin(context);
+    if(googleUser != null){
+      if(await _repository.emailCheck(context, googleUser.email) == '이미 사용중인 이메일 주소입니다.'){
+        return login(context, email: googleUser.email, google_uid: googleUser.id);
+      } else {
+        return Get.to(() => SignupInsertPage(googleUser: googleUser));
+      }
+    } else {
+      return;
+    }
+  }
+
+  Future appleLogin(BuildContext context) async{
+    final AuthorizationCredentialAppleID? appleUser = await _repository.appleLogin(context);
+    if(appleUser != null){
+      if(await _repository.emailCheck(context, appleUser.email ?? '${appleUser.userIdentifier}@apple.com') == '이미 사용중인 이메일 주소입니다.'){
+        return login(context, email: appleUser.email ?? '${appleUser.userIdentifier}@apple.com', apple_uid: appleUser.identityToken);
+      } else {
+        return Get.to(() => SignupInsertPage(appleUser: appleUser));
+      }
+    } else {
+      return Get.back();
+    }
+  }
 
   Future logout(BuildContext context) async{
     _user.value = await _repository.logout(context, _user.value!.id);
@@ -106,11 +157,12 @@ class UserController extends GetxController with StateMixin<User>, Config, Local
   }
 
   Future updatePhotoURL(BuildContext context, XFile? photo) async{
-    if(photo != null){
-      await _repository.updatePhotoURL(context, photo);
-    } else {
-      showSnackBar(context, '프로필 사진 변경이 취소되었습니다.');
-    }
+    await _repository.updatePhotoURL(context, photo);
+    return _getUser(await jwt);
+  }
+
+  Future updateDefaultPhotoURL(BuildContext context) async{
+    await _repository.updateDefaultPhotoURL(context);
     return _getUser(await jwt);
   }
 

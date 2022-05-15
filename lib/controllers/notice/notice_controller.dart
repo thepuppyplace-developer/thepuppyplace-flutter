@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:thepuppyplace_flutter/controllers/notice/notice_list_controller.dart';
 
 import '../../models/Notice.dart';
+import '../../pages/notice_page/notice_list_page.dart';
 import '../../repositories/notice/notice_repository.dart';
 
 class NoticeController extends GetxController with StateMixin<Notice>{
@@ -36,7 +38,9 @@ class NoticeController extends GetxController with StateMixin<Notice>{
     int? statusCode = await _repository.deleteNotice(context, notice_id);
 
     if(statusCode == 200){
-      return Get.until((route) => route.isFirst);
+      final noticeListCtr = Get.put(NoticeListController(context));
+      noticeListCtr.getNoticeList;
+      return Get.until((route) => route.settings.name == NoticeListPage.routeName);
     }
   }
 }

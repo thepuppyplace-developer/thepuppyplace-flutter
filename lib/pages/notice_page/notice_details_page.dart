@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:thepuppyplace_flutter/pages/notice_page/notice_update_page.dart';
 
 import '../../config/config.dart';
 import '../../controllers/notice/notice_controller.dart';
@@ -40,6 +41,7 @@ class NoticeDetailsPage extends StatelessWidget {
                             child: Text('게시글 수정', style: CustomTextStyle.w500(context, scale: 0.02)),
                             onPressed: (){
                               Get.back();
+                              Get.to(() => NoticeUpdatePage(notice));
                             },
                           ),
                           CupertinoActionSheetAction(
@@ -100,7 +102,7 @@ class NoticeDetailsPage extends StatelessWidget {
               ),
               child: CustomScrollView(
                 slivers: [
-                  if(notice.image_url != null)SliverToBoxAdapter(
+                  if(notice.image_url != null) SliverToBoxAdapter(
                     child: AspectRatio(
                       aspectRatio: 3/2,
                       child: Container(

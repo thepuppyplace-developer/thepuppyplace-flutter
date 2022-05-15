@@ -3,12 +3,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thepuppyplace_flutter/pages/auth_page/send_password_page.dart';
+import 'package:thepuppyplace_flutter/util/png_list.dart';
 import '../../controllers/user/user_controller.dart';
 import '../../util/common.dart';
 import '../../widgets/buttons/custom_button.dart';
 import '../../widgets/buttons/custom_text_button.dart';
 import '../../widgets/text_fields/custom_text_field.dart';
-import 'signup_page.dart';
+import 'signup_terms_page.dart';
 
 class LoginPage extends StatefulWidget {
   static const String routeName = '/loginPage';
@@ -52,12 +53,11 @@ class _LoginPageState extends State<LoginPage> {
             )
           ],
         ),
-        body: Container(
-          margin: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.055)),
-          child: Form(
-            key: _formKey,
+        body: Form(
+          key: _formKey,
+          child: SingleChildScrollView(
+            padding: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.055)),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Column(
                   children: [
@@ -107,6 +107,7 @@ class _LoginPageState extends State<LoginPage> {
                 Column(
                   children: [
                     CustomButton(
+                      margin: EdgeInsets.symmetric(vertical: mediaHeight(context, 0.033)),
                       title: '로그인',
                       textColor: Colors.white,
                       onPressed: (){
@@ -121,13 +122,13 @@ class _LoginPageState extends State<LoginPage> {
                       },
                     ),
                     CustomButton(
-                      margin: EdgeInsets.symmetric(vertical: mediaHeight(context, 0.01)),
+                      margin: EdgeInsets.only(bottom: mediaHeight(context, 0.01)),
                       color: Colors.white,
                       sideColor: CustomColors.main,
                       title: '회원가입',
                       textColor: CustomColors.main,
                       onPressed: (){
-                        Get.to(() => const SignupPage());
+                        Get.to(() => const SignupTermsPage());
                       },
                     ),
                     Row(
@@ -142,10 +143,24 @@ class _LoginPageState extends State<LoginPage> {
                     )
                   ],
                 ),
-                Column(
-                  children: [
-                    Text('다른 SNS로 로그인', style: CustomTextStyle.w500(context, scale: 0.018)),
-                  ],
+                Container(
+                  margin: EdgeInsets.symmetric(vertical: mediaHeight(context, 0.2)),
+                  child: Column(
+                    children: [
+                      Text('다른 SNS로 로그인', style: CustomTextStyle.w600(context, scale: 0.016)),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          CupertinoButton(child: Image.asset(PngList.google), onPressed: (){
+                            showIndicator(UserController.to.googleLogin(context));
+                          }),
+                          CupertinoButton(child: Image.asset(PngList.apple), onPressed: (){
+                            showIndicator(UserController.to.appleLogin(context));
+                          })
+                        ],
+                      ),
+                    ],
+                  ),
                 )
               ],
             ),

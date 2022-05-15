@@ -14,6 +14,7 @@ import '../../widgets/cards/notice_card.dart';
 import 'notice_insert_page.dart';
 
 class NoticeListPage extends StatelessWidget {
+  static const String routeName = '/noticeListPage';
   const NoticeListPage({Key? key}) : super(key: key);
 
   @override

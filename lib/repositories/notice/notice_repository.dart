@@ -36,7 +36,6 @@ class NoticeRepository extends GetConnect with Config, LocalConfig{
           'notice_title': notice_title.trim(),
           'notice_main_text': notice_main_text.trim()
         }));
-        print(image);
         switch(res.statusCode){
           case 201:
             await showSnackBar(context, '공지사항이 게시되었습니다!');
@@ -51,6 +50,34 @@ class NoticeRepository extends GetConnect with Config, LocalConfig{
       }
     } catch(error){
       print(error);
+      throw unknown_message(context);
+    }
+  }
+
+  Future<int?> updateNotice(BuildContext context, {
+    required int notice_id,
+    required String title,
+    required String description,
+  }) async{
+    try{
+      if(await jwt != null){
+        final Response res = await patch('$API_URL/notice/$notice_id', FormData({
+          'notice_title': title.trim(),
+          'notice_main_text': description.trim()
+        }));
+        switch(res.statusCode){
+          case 201:
+            await showSnackBar(context, '공지사항이 업데이트 되었습니다!');
+            return res.statusCode;
+          default:
+            await network_check_message(context);
+            return null;
+        }
+      } else {
+        await expiration_token_message(context);
+        return null;
+      }
+    } catch(error){
       throw unknown_message(context);
     }
   }

@@ -14,11 +14,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "516076380973-31142gptntb4navtn171l6m6mivs7tub.apps.googleusercontent.com",
+          "client_id": "516076380973-56cchbk98nvgqj71877t0v53o08m9pcg.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.thepuppyplace.flutter",
-            "certificate_hash": "7d34a20f64cd67124ded48a2ce75c10ab067a01e"
+            "certificate_hash": "0f8c5f3f88db08822443faed2247422220ed0c16"
           }
         },
         {

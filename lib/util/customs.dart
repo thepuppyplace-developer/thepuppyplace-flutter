@@ -12,6 +12,7 @@ mixin CustomThemeData implements ThemeData{
       highlightColor: Colors.transparent,
       indicatorColor: CustomColors.main,
       appBarTheme: const AppBarTheme(
+          centerTitle: true,
           color: Colors.white,
           foregroundColor: Colors.black,
           elevation: 0,
@@ -24,11 +25,11 @@ mixin CustomThemeData implements ThemeData{
             TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
           }
       ),
-    dialogTheme: DialogTheme(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(15)
+      dialogTheme: DialogTheme(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15)
+          )
       )
-    )
   );
 }
 

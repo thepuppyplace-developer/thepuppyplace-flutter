@@ -32,6 +32,7 @@ class NoticeListController extends GetxController with StateMixin<List<Notice>>{
   }
 
   Future get getNoticeList async{
-    _noticeList.addAll(await _repository.getNoticeList(context));
+    change(null, status: RxStatus.loading());
+    _noticeList.value = await _repository.getNoticeList(context);
   }
 }

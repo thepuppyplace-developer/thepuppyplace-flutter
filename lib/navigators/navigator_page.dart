@@ -63,7 +63,7 @@ class _NavigatorPageState extends State<NavigatorPage> {
       onTap: (int index){
       switch(index){
         case 1: {
-          Get.to(() => const InsertBoardPage(), fullscreenDialog: true);
+          Get.toNamed(InsertBoardPage.routeName);
           break;
         }
         default: {

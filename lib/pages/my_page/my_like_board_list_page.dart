@@ -37,8 +37,8 @@ class MyLikeBoardListPage extends StatelessWidget {
                         childCount: boardList!.length
                       ),
                   ),
-                    onLoading: const SliverLoading(),
-                    onEmpty: const SliverEmpty('등록한 게시글이 없습니다.')
+                    onLoading: const SliverLoading(message: '좋아요한 게시물을 불러오고 있습니다.'),
+                    onEmpty: const SliverEmpty('좋아요한 게시물이 없습니다.')
                   )
                 ],
               ),

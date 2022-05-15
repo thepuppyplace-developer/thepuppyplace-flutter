@@ -65,7 +65,7 @@ class _BestBoardListViewState extends State<BestBoardListView> {
           ),
         ),
             onError: (error) => SliverEmpty(error ?? '알 수 없는 오류'),
-            onLoading: const SliverLoading(),
+            onLoading: const SliverLoading(animated: false),
             onEmpty: const SliverEmpty('베스트 게시글이 없습니다.', imageVisible: false)
         )
     );

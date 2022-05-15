@@ -107,7 +107,7 @@ class CommentCard extends GetWidget<UserController> {
                           Row(
                             children: [
                               Expanded(child: Text(nestedComment.comment, style: CustomTextStyle.w500(context))),
-                              Text(beforeDate(comment.createdAt), style: CustomTextStyle.w500(context, color: CustomColors.hint)),
+                              Text(beforeDate(nestedComment.createdAt), style: CustomTextStyle.w500(context, color: CustomColors.hint)),
                             ],
                           ),
                         ],

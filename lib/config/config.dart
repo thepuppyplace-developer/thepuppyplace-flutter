@@ -24,5 +24,5 @@ class Config{
   final String channelName = 'thepuppyplace';
   final String channelDescription = 'thepuppyplace_notification_channel';
 
-  static String ADMIN_EMAIL = 'hpodong@naver.com';
+  static String ADMIN_EMAIL = 'hwnagjangwoo@gmail.com';
 }

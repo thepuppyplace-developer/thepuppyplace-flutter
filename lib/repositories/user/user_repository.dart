@@ -1,14 +1,41 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:thepuppyplace_flutter/pages/auth_page/signup_insert_page.dart';
 import '../../config/config.dart';
 import '../../config/local_db.dart';
 import '../../models/User.dart';
 import '../../util/common.dart';
 
 class UserRepository extends GetConnect with Config, LocalConfig{
+
+  Future<int?> socialSignup(BuildContext context, {String? email, String? nickname, String? google_uid, String? apple_uid}) async{
+    try{
+      final Response res = await post('$API_URL/user/social/signup', {
+        'email': email,
+        'nickname': nickname,
+        'google_uid': google_uid,
+        'apple_uid': apple_uid
+      });
+      switch(res.statusCode){
+        case 201:
+          return res.statusCode;
+        case 401:
+          await showSnackBar(context, res.body['message']);
+          return res.statusCode;
+        default:
+          await network_check_message(context);
+          return null;
+      }
+    } catch(error){
+      await unknown_message(context);
+      throw Exception(error);
+    }
+  }
 
   Future<String?> signUp(BuildContext context, {required String email, required String password, required String nickname}) async{
     try{
@@ -45,12 +72,14 @@ class UserRepository extends GetConnect with Config, LocalConfig{
     }
   }
 
-  Future<String?> login(BuildContext context, String email, String password) async{
+  Future<String?> login(BuildContext context, String email, {String? password, String? google_uid, String? apple_uid}) async{
     try{
       final Response res = await post('$API_URL/user', {
         'email': email,
         'password': password,
-        'fcm_token': await fcm_token
+        'fcm_token': await fcm_token,
+        'google_uid': google_uid,
+        'apple_uid': apple_uid
       });
 
       switch(res.statusCode){
@@ -67,6 +96,31 @@ class UserRepository extends GetConnect with Config, LocalConfig{
       }
     } catch(error){
       throw unknown_message(context);
+    }
+  }
+
+  Future<GoogleSignInAccount?> googleLogin(BuildContext context) async{
+    try{
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+      return googleUser;
+    } catch(error){
+      await unknown_message(context);
+      throw Exception(error);
+    }
+  }
+
+  Future<AuthorizationCredentialAppleID?> appleLogin(BuildContext context) async{
+    try{
+      final AuthorizationCredentialAppleID? appleUser = await SignInWithApple.getAppleIDCredential(
+          scopes: [
+            AppleIDAuthorizationScopes.email,
+            AppleIDAuthorizationScopes.fullName
+          ]
+      );
+      return appleUser;
+    } catch(error){
+      await unknown_message(context);
+      throw Exception(error);
     }
   }
 
@@ -180,7 +234,7 @@ class UserRepository extends GetConnect with Config, LocalConfig{
         }
         case 401: {
           switch(res.body['message']){
-            case 'already-user-email': return '이미 사용중인 이메일주소입니다.';
+            case 'already-user-email': return '이미 사용중인 이메일 주소입니다.';
             default: return null;
           }
         }
@@ -267,10 +321,11 @@ class UserRepository extends GetConnect with Config, LocalConfig{
     try{
       if(await jwt != null){
         if(photo != null){
-          final Response res = await patch('$API_URL/user/my', FormData({
+          final Response res = await patch('$API_URL/user/profile/image', FormData({
             "image": MultipartFile(await photo.readAsBytes(), filename: photo.path)
           }),
               headers: headers(await jwt));
+          print(res.statusCode);
 
           switch(res.statusCode){
             case 200:
@@ -278,6 +333,24 @@ class UserRepository extends GetConnect with Config, LocalConfig{
             default:
               return network_check_message(context);
           }
+        }
+      } else {
+        return expiration_token_message(context);
+      }
+    } catch(error){
+      return unknown_message(context);
+    }
+  }
+
+  Future updateDefaultPhotoURL(BuildContext context) async{
+    try{
+      if(await jwt != null){
+        final Response res = await patch('$API_URL/user/my/profile/image/default', {}, headers: headers(await jwt));
+        switch(res.statusCode){
+          case 200:
+            return null;
+          default:
+            return network_check_message(context);
         }
       } else {
         return expiration_token_message(context);

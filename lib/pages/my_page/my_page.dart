@@ -25,8 +25,7 @@ class MyPage extends GetWidget<UserController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        centerTitle: false,
-        title: Text('마이페이지', style: CustomTextStyle.w500(context, scale: 0.025)),
+        title: Text('마이페이지', style: CustomTextStyle.w600(context)),
       ),
       body: controller.obx((user) => Scrollbar(
         child: SingleChildScrollView(
@@ -119,7 +118,7 @@ class MyPage extends GetWidget<UserController> {
                         Get.to(() => const SettingPage());
                       }, color: Colors.black, alignment: Alignment.centerLeft),
                       CustomTextButton('공지사항', (){
-                        Get.to(() => const NoticeListPage());
+                        Get.toNamed(NoticeListPage.routeName);
                       }, color: Colors.black, alignment: Alignment.centerLeft),
                       Row(
                         children: [

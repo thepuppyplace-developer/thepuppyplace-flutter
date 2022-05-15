@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:thepuppyplace_flutter/models/Term.dart';
 
 import '../util/common.dart';
 
@@ -7,12 +8,14 @@ enum TermsType{require, select}
 class TermsCheckbox extends StatelessWidget {
   final bool allCheck;
   final List<bool> termsCheckList;
+  final List<Term> termsList;
   final Function(bool) onAllCheck;
   final Function(int, bool) onTermsCheck;
 
   const TermsCheckbox({
     required this.allCheck,
     required this.termsCheckList,
+    required this.termsList,
     required this.onAllCheck,
     required this.onTermsCheck,
     Key? key}) : super(key: key);
@@ -40,13 +43,14 @@ class TermsCheckbox extends StatelessWidget {
                     child: Container(
                       margin: baseHorizontalPadding(context),
                       child: Text(
-                          '바야바즈 이용약관, 개인정보 수집 및 이용, 위치정보 이용약관, 프로모션 정보 수신(선택)에 모두 동의합니다.',
+                          '아래 내용에 모두 동의합니다.',
                           style: CustomTextStyle.w600(context, height: 1.5)),
                     )),
               ],
             ),
           ),
-          for(int index = 0; index < termsCheckList.length; index++) TermsItem(
+          if(termsList.isNotEmpty) for(int index = 0; index < termsList.length; index++) TermsItem(
+            termsList[index],
             check: termsCheckList[index],
             onTermsCheck: (check){
               onTermsCheck(index, check);
@@ -59,10 +63,11 @@ class TermsCheckbox extends StatelessWidget {
 }
 
 class TermsItem extends StatelessWidget {
+  final Term term;
   final bool check;
   final Function(bool) onTermsCheck;
 
-  const TermsItem({
+  const TermsItem(this.term, {
     required this.check,
     required this.onTermsCheck,
     Key? key}) : super(key: key);
@@ -87,9 +92,9 @@ class TermsItem extends StatelessWidget {
               Expanded(
                 child: Container(
                     margin: baseHorizontalPadding(context),
-                    child: Text('약관 동의', style: CustomTextStyle.w600(context))),
+                    child: Text(term.term_title, style: CustomTextStyle.w600(context))),
               ),
-              Text(_termsText(TermsType.require),
+              Text(_termsText(term.is_require ? TermsType.require : TermsType.select),
                   style: CustomTextStyle.w500(context, color: CustomColors.main, scale: 0.016))
             ],
           ),
@@ -107,10 +112,10 @@ class TermsItem extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('개인정보 취급 동의약관', style: CustomTextStyle.w600(context)),
+                    Text(term.term_title, style: CustomTextStyle.w600(context)),
                     Container(
                         margin: baseVerticalPadding(context),
-                        child: Text('개인정보 취급 동의약관입니다\n안녕', style: CustomTextStyle.w500(context, color: Colors.grey, scale: 0.018, height: 1.5))),
+                        child: Text(term.term_contents, style: CustomTextStyle.w500(context, color: Colors.grey, scale: 0.018, height: 1.5))),
                   ],
                 )
             ),
