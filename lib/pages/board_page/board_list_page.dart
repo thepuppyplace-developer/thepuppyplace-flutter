@@ -12,15 +12,20 @@ import 'board_list_views/talk_board_list_view.dart';
 
 class BoardListPage extends StatefulWidget {
   static const String routeName = '/boardListPage';
-  int currentIndex;
   final String? query;
-  BoardListPage({required this.currentIndex, this.query, Key? key}) : super(key: key);
+  const BoardListPage({this.query, Key? key}) : super(key: key);
 
   @override
   State<BoardListPage> createState() => _BoardListPageState();
 }
 
 class _BoardListPageState extends State<BoardListPage> {
+
+  int currentIndex = 0;
+
+  Object? get initIndex => ModalRoute.of(context)?.settings.arguments;
+
+
   final List<String> _categoryList = <String>[
     '카페', '음식점', '쇼핑몰', '호텔', '운동장', '수다방'
   ];
@@ -49,12 +54,13 @@ class _BoardListPageState extends State<BoardListPage> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      initialIndex: widget.currentIndex,
+      initialIndex: initIndex! ?? currentIndex,
       length: _pageList(widget.query).length,
       child: Scaffold(
         body: NestedScrollView(
           headerSliverBuilder: (context, index) => [
             SliverAppBar(
+                titleSpacing: 0,
                 snap: true,
                 floating: true,
                 pinned: true,
@@ -70,7 +76,7 @@ class _BoardListPageState extends State<BoardListPage> {
                 bottom: TabBar(
                     onTap: (int index){
                       setState(() {
-                        widget.currentIndex = index;
+                        currentIndex = index;
                       });
                     },
                     labelColor: Colors.black,

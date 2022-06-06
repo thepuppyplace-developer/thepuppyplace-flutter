@@ -1,16 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:thepuppyplace_flutter/config/local_db.dart';
 import 'package:thepuppyplace_flutter/models/NotificationLog.dart';
 
 import '../../config/config.dart';
+import '../../util/common.dart';
 
-class NotificationRepository extends GetConnect with Config, LocalConfig{
+class NotificationRepository extends GetConnect with Config{
   
   Future<List<NotificationLog>> getNotificationLogList(BuildContext context) async{
     try{
-      if(await jwt != null){
-        final Response res = await get('$API_URL/push/my', headers: headers(await jwt));
+      if(await JWT_TOKEN != null){
+        final Response res = await get('$API_URL/push/my', headers: await headers);
 
         switch(res.statusCode){
           case 200:

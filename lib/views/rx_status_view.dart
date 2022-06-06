@@ -24,7 +24,16 @@ class LoadingView extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          SizedAnimation(child: Image.asset(PngList.loading, height: mediaHeight(context, 0.15))),
+          Container(
+            height: mediaHeight(context, 0.1),
+            width: mediaHeight(context, 0.1),
+            decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                image: DecorationImage(
+                    image: AssetImage(PngList.app_logo)
+                )
+            ),
+          ),
           Container(
               margin: EdgeInsets.symmetric(vertical: mediaHeight(context, 0.04)),
               child: Text(message ?? '페이지 이동중입니다', style: CustomTextStyle.w500(context, color: CustomColors.hint))),
@@ -57,11 +66,43 @@ class EmptyView extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          if(imageVisible ?? true)Image.asset(PngList.empty, height: mediaHeight(context, 0.15)),
+          if(imageVisible ?? true) Container(
+            height: mediaHeight(context, 0.1),
+            width: mediaHeight(context, 0.1),
+            decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                image: DecorationImage(
+                    image: AssetImage(PngList.app_logo)
+                )
+            ),
+          ),
           Container(
               margin: EdgeInsets.symmetric(vertical: mediaHeight(context, 0.04)),
               child: Text(message ?? '등록된 게시글이 없습니다', style: CustomTextStyle.w500(context, color: CustomColors.hint))),
         ],
+      ),
+    );
+  }
+}
+
+class ErrorView extends StatelessWidget {
+  final String? error;
+  final TextStyle? messageStyle;
+  final double? height;
+
+  const ErrorView(
+      this.error, {
+        this.messageStyle,
+        this.height,
+        Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Container(
+        height: height,
+        alignment: Alignment.center,
+        child: Text(error ?? '에러', style: messageStyle ?? CustomTextStyle.w500(context, color: Colors.grey)),
       ),
     );
   }

@@ -30,14 +30,12 @@ class NoticeListPage extends StatelessWidget {
                   pinned: true,
                   elevation: 0.5,
                   title: Text('공지사항', style: CustomTextStyle.w600(context, scale: 0.02)),
-                  actions: UserController.user!.email != Config.ADMIN_EMAIL
+                  actions: UserController.user!.uid != Config.ADMIN_UID
                       ? null
                       : [
                         CustomIconButton(
                           icon: CustomIcons.insert,
-                          onTap: (){
-                            Get.to(() => const NoticeInsertPage());
-                          },
+                          onTap: () => Get.toNamed(NoticeInsertPage.routeName)
                         )
                   ],
                 )

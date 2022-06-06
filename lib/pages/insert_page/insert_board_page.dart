@@ -64,12 +64,12 @@ class _InsertBoardPageState extends State<InsertBoardPage> {
                             floating: true,
                             pinned: true,
                             title: Text('글쓰기', style: CustomTextStyle.w600(context, scale: 0.02)),
-                            actions: [
-                              CupertinoButton(
-                                child: Text('등록', style: CustomTextStyle.w500(context, scale: 0.018, color: CustomColors.main)),
-                                onPressed: insertBoard,
-                              )
-                            ],
+                            // actions: [
+                            //   CupertinoButton(
+                            //     child: Text('등록', style: CustomTextStyle.w500(context, scale: 0.018, color: CustomColors.main)),
+                            //     onPressed: insertBoard,
+                            //   )
+                            // ],
                             bottom: SelectCategoryTabBar(mediaHeight(context, 0.06),
                               categoryIndex: _categoryIndex,
                               categoryList: _categoryList,
@@ -184,7 +184,7 @@ class _InsertBoardPageState extends State<InsertBoardPage> {
                                       margin: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.033)),
                                       minLines: 20,
                                       maxLines: 50,
-                                      keyboardType: TextInputType.text,
+                                      keyboardType: TextInputType.multiline,
                                       hintText: '내용을 입력해주세요.',
                                       validator: (description){
                                         if(description!.isEmpty){
@@ -275,9 +275,9 @@ class _InsertBoardPageState extends State<InsertBoardPage> {
                       ),
                     ),
                     CustomButton(
-                      margin: EdgeInsets.all(mediaWidth(context, 0.033)),
-                      title: '등록하기',
-                      onPressed: insertBoard
+                        margin: EdgeInsets.all(mediaWidth(context, 0.033)),
+                        title: '등록하기',
+                        onPressed: insertBoard
                     )
                   ],
                 ),

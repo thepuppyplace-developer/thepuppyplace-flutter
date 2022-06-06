@@ -4,12 +4,11 @@ import 'package:get/get.dart';
 import 'package:thepuppyplace_flutter/controllers/terms_list_controller.dart';
 import 'package:thepuppyplace_flutter/pages/my_page/terms_details_page.dart';
 import 'package:thepuppyplace_flutter/views/sliver_rx_status_views.dart';
-
 import '../../models/Term.dart';
 import '../../util/common.dart';
-import '../../widgets/buttons/custom_text_button.dart';
 
 class TermsPage extends StatelessWidget {
+
   const TermsPage({Key? key}) : super(key: key);
 
   @override
@@ -37,7 +36,7 @@ class TermsPage extends StatelessWidget {
                         child: Row(
                           children: [
                             Expanded(
-                              child: Text(term.term_title, style: CustomTextStyle.w500(context)),
+                              child: Text(term.name, style: CustomTextStyle.w500(context)),
                             ),
                             Icon(Icons.arrow_forward_ios, size: mediaHeight(context, 0.025), color: CustomColors.hint)
                           ],

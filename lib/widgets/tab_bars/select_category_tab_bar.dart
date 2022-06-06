@@ -27,7 +27,7 @@ class SelectCategoryTabBar extends StatelessWidget with PreferredSizeWidget {
                         border: Border.all(color: categoryIndex == index ? CustomColors.main : CustomColors.hint)
                     ),
                     margin: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.005)),
-                    child: Text(categoryList[index], style: CustomTextStyle.w500(context, color: categoryIndex == index ? CustomColors.main : CustomColors.hint))),
+                    child: Text(categoryList[index], style: CustomTextStyle.w500(context, color: categoryIndex == index ? CustomColors.main : CustomColors.hint, scale: 0.015))),
                 onPressed: (){
                   onChanged(index);
                 },

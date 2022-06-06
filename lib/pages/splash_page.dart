@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thepuppyplace_flutter/util/common.dart';
 import '../../controllers/version/version_controller.dart';
-import '../controllers/database/database_controller.dart';
 import '../util/cached_network_image_list.dart';
-import '../util/png_list.dart';
 import '../navigators/navigator_page.dart';
 
 class SplashPage extends StatefulWidget {
@@ -16,11 +14,6 @@ class SplashPage extends StatefulWidget {
 }
 
 class _SplashPageState extends State<SplashPage> {
-  @override
-  void initState() {
-    super.initState();
-    Get.put(DatabaseController());
-  }
 
   @override
   Widget build(BuildContext context) {

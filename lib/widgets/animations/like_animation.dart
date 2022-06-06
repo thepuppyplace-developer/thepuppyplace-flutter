@@ -42,7 +42,7 @@ class _LikeAnimationState extends State<LikeAnimation> with SingleTickerProvider
     return ScaleTransition(
       alignment: Alignment.center,
       scale: _animation,
-      child: Icon(widget.icon, color: Colors.red, size: mediaHeight(context, 0.1)),
+      child: Icon(widget.icon, color: CustomColors.main, size: mediaHeight(context, 0.1)),
     );
   }
 }

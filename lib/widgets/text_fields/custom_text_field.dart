@@ -23,7 +23,9 @@ class CustomTextField extends StatelessWidget {
   final String? labelText;
   final String? counterText;
   final String? helperText;
+  final String? suffixText;
   final Widget? suffixIcon;
+  final Widget? suffix;
   final Widget? prefixIcon;
   final Alignment? alignment;
   final EdgeInsets? margin;
@@ -32,35 +34,40 @@ class CustomTextField extends StatelessWidget {
   final Color? sideColor;
   final Color? fillColor;
   final Color? helperColor;
+  final Color? labelColor;
   final List<TextInputFormatter>? inputFormatters;
   final Function()? onTap;
-  final Function(String value)? onFieldSubmitted;
+  final Function(String)? onFieldSubmitted;
   final Function(String)? onChanged;
   final String? Function(String?)? validator;
   final TextFieldType textFieldType;
+  final FocusNode? focusNode;
+  final AutovalidateMode? autoValidateMode;
 
-  const CustomTextField({Key? key,
+  CustomTextField({Key? key,
     required this.textFieldType,
     this.controller,
     this.keyboardType,
     this.textInputAction,
     this.textAlign,
     this.textStyle,
-    this.autofocus,
+    this.autofocus = false,
     this.obscureText,
     this.readOnly,
     this.enabled,
     this.maxLength,
     this.maxLines = 1,
-    this.minLines = 1,
+    this.minLines,
     this.height,
     this.width,
     this.borderRadius,
     this.hintText,
     this.labelText,
-    this.counterText,
+    this.counterText = '',
     this.helperText,
+    this.suffixText,
     this.suffixIcon,
+    this.suffix,
     this.prefixIcon,
     this.alignment,
     this.margin,
@@ -69,11 +76,16 @@ class CustomTextField extends StatelessWidget {
     this.sideColor,
     this.fillColor,
     this.helperColor,
+    this.labelColor,
     this.inputFormatters,
     this.onTap,
     this.onFieldSubmitted,
     this.onChanged,
-    this.validator}) : super(key: key);
+    this.validator,
+    this.focusNode,
+    this.autoValidateMode,
+  }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
 
@@ -105,6 +117,7 @@ class CustomTextField extends StatelessWidget {
       margin: margin,
       padding: padding,
       child: TextFormField(
+        focusNode: focusNode,
         validator: validator,
         enabled: enabled,
         textInputAction: textInputAction,
@@ -115,7 +128,7 @@ class CustomTextField extends StatelessWidget {
         readOnly: readOnly ?? false,
         inputFormatters: inputFormatters,
         textAlign: textAlign ?? TextAlign.start,
-        autofocus: autofocus ?? true,
+        autofocus: autofocus ?? false,
         cursorColor: CustomColors.main,
         obscureText: obscureText ?? false,
         controller: controller,
@@ -123,27 +136,33 @@ class CustomTextField extends StatelessWidget {
         maxLines: maxLines,
         minLines: minLines,
         keyboardType: keyboardType,
+        autovalidateMode: autoValidateMode,
         decoration: InputDecoration(
           isDense: true,
-          floatingLabelStyle: CustomTextStyle.w500(context, color: CustomColors.main),
-          focusColor: Colors.green,
           hintStyle: CustomTextStyle.w500(context, color: CustomColors.hint),
           labelStyle: CustomTextStyle.w500(context, color: CustomColors.hint),
-          errorStyle: CustomTextStyle.w500(context, color: Colors.red),
+          floatingLabelStyle: CustomTextStyle.w500(context, color: labelColor ?? CustomColors.hint),
+          errorStyle: CustomTextStyle.w500(context, scale: 0.015, color: Colors.red),
+          helperStyle: CustomTextStyle.w500(context, scale: 0.015, color: helperColor),
           filled: true,
           fillColor: fillColor ?? Colors.white,
           hintText: hintText,
           labelText: labelText,
-          counterText: counterText ?? '',
+          counterText: counterText,
           helperText: helperText,
-          helperStyle: CustomTextStyle.w500(context, color: helperColor),
           prefixIcon: prefixIcon,
           suffixIcon: suffixIcon,
+          suffixText: suffixText,
+          suffix: suffix,
+          suffixStyle: CustomTextStyle.w500(context, scale: 0.015, color: CustomColors.hint),
+          suffixIconConstraints: const BoxConstraints(minWidth: 0, minHeight: 0),
           contentPadding: _contentPadding(textFieldType),
           border: _border(textFieldType),
           enabledBorder: _border(textFieldType).copyWith(borderSide: BorderSide(color: sideColor ?? CustomColors.hint, width: 1)),
           disabledBorder: _border(textFieldType).copyWith(borderSide: const BorderSide(color: CustomColors.hint, width: 1)),
           focusedBorder: _border(textFieldType),
+          floatingLabelAlignment: FloatingLabelAlignment.start,
+          floatingLabelBehavior: FloatingLabelBehavior.auto,
         ),
       ),
     );

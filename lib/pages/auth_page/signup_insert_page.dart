@@ -1,59 +1,123 @@
 import 'package:email_validator/email_validator.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:thepuppyplace_flutter/controllers/user/user_controller.dart';
 import 'package:thepuppyplace_flutter/repositories/user/user_repository.dart';
 import 'package:thepuppyplace_flutter/util/common.dart';
 
+import '../../models/Term.dart';
+import '../../util/utf8_length_limiting_text_input_formatter.dart';
+import '../../util/validations.dart';
+import '../../widgets/animations/text_timer.dart';
 import '../../widgets/buttons/custom_button.dart';
+import '../../widgets/dialogs/custom_dialog.dart';
 import '../../widgets/text_fields/custom_text_field.dart';
 
 class SignupInsertPage extends StatefulWidget {
   final GoogleSignInAccount? googleUser;
   final AuthorizationCredentialAppleID? appleUser;
-  const SignupInsertPage({this.googleUser, this.appleUser, Key? key}) : super(key: key);
+  final List<Term> termsList;
+  const SignupInsertPage({this.googleUser, this.appleUser, required this.termsList, Key? key}) : super(key: key);
 
   @override
   _SignupInsertPageState createState() => _SignupInsertPageState();
 }
 
 class _SignupInsertPageState extends State<SignupInsertPage> {
-  final UserRepository _repository = UserRepository();
+  final UserRepository _userRepo = UserRepository();
+
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _emailKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _otpKey = GlobalKey<FormState>();
+
+  String? _emailValidator;
+  String? _nicknameValidator;
 
   String _email = '';
   String _password = '';
   String _passwordCheck = '';
   String _otp = '';
+  String? _otpNumber;
   String _nickname = '';
-  String? _authNumber;
 
-  String? _emailValidator;
-  String? _nicknameValidator;
+  String? _otpValidator;
 
-  final GlobalKey<FormState> _otpKey = GlobalKey<FormState>();
-  final GlobalKey<FormState> _emailKey = GlobalKey<FormState>();
-  final GlobalKey<FormState> _passwordKey = GlobalKey<FormState>();
-  final GlobalKey<FormState> _nicknameKey = GlobalKey<FormState>();
+  bool _verificationOTP = false;
 
-  bool _sendOTP = false;
-  bool _auth = false;
-
-  final TextEditingController _emailController = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-    if(widget.googleUser != null){
-      _emailController.text = widget.googleUser!.email;
-      return;
+  Future<void> _sendOTP(String email) async{
+    if(_emailKey.currentState!.validate()){
+      setState(() {
+        _emailKey.currentState?.save();
+        _otpValidator = null;
+        _verificationOTP = false;
+        _otpNumber = null;
+      });
+      _otpNumber = await _userRepo.sendOTP(email).whenComplete(() => setState((){}));
     }
-    if(widget.appleUser != null){
-      if(widget.appleUser!.email != null){
-        _emailController.text = widget.appleUser!.email ?? '${widget.appleUser!.userIdentifier}@apple.com';
+  }
+
+  void _changeEmail(){
+    Get.back();
+    setState(() {
+      _otpNumber = null;
+      _verificationOTP = false;
+    });
+  }
+
+  void _verification(String otp){
+    if(_otpKey.currentState!.validate()){
+      _otpKey.currentState?.save();
+      setState(() {
+        _otpValidator = null;
+        _verificationOTP = true;
+      });
+      showSnackBar(context, '이메일 인증에 성공하였습니다.');
+    }
+  }
+
+  Future<String?> _emailCheck(String email) async{
+    final int? statusCode = await _userRepo.emailCheck(email);
+    switch(statusCode){
+      case 200: return null;
+      case 401: return '사용할 수 없는 이메일 주소입니다.';
+      default: return '알 수 없는 오류가 발생했습니다.';
+    }
+  }
+
+  Future<String?> _nicknameCheck(String nickname) async{
+    final int? statusCode = await _userRepo.nicknameCheck(nickname);
+    switch(statusCode){
+      case 200: return null;
+      case 401: return '사용할 수 없는 닉네임입니다.';
+      default: return '알 수 없는 오류가 발생했습니다.';
+    }
+  }
+
+  Future _signup() async{
+    if(_formKey.currentState!.validate()){
+      _formKey.currentState!.save();
+      if(_allVerification){
+        final int? statusCode = await UserController.to.signup(widget.termsList, email: _email, password: _password, nickname: _nickname);
+        switch(statusCode){
+          case 201:
+            await showSnackBar(context, '환영합니다.');
+            return Get.until((route) => route.isFirst);
+          default:
+            await network_check_message(context);
+            return;
+        }
       }
     }
   }
+
+  bool get _allVerification => _verificationOTP
+      && Validations.nickname(_nickname, validator: _nicknameValidator) == null
+      && Validations.email(_email, validator: _emailValidator) == null
+      && Validations.password(_password) == null;
 
   @override
   Widget build(BuildContext context) {
@@ -63,249 +127,191 @@ class _SignupInsertPageState extends State<SignupInsertPage> {
       },
       child: Scaffold(
         appBar: AppBar(),
-        body: Column(
-          children: [
-            Expanded(
-              child: Container(
-                margin: EdgeInsets.all(mediaWidth(context, 0.033)),
-                child: SingleChildScrollView(
-                  child: Column(
+        body: SingleChildScrollView(
+          padding: basePadding(context),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                  margin: EdgeInsets.only(bottom: mediaHeight(context, 0.07)),
+                  child: Text('필수 정보 입력', style: CustomTextStyle.w500(context, scale: 0.025))),
+              Form(
+                key: _emailKey,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: CupertinoButton(
+                        padding: EdgeInsets.zero,
+                        child: CustomTextField(
+                          autofocus: true,
+                          autoValidateMode: !EmailValidator.validate(_email) ? null : AutovalidateMode.onUserInteraction,
+                          textFieldType: TextFieldType.underline,
+                          keyboardType: TextInputType.emailAddress,
+                          textInputAction: TextInputAction.send,
+                          hintText: '이메일',
+                          validator: (email) => Validations.email(email, validator: _emailValidator),
+                          onChanged: (email) async{
+                            _email = email;
+                            if(EmailValidator.validate(email)){
+                              _emailValidator = await _emailCheck(email);
+                            }
+                            setState(() {});
+                          },
+                          onFieldSubmitted: (email){
+                            showIndicator(_sendOTP(email));
+                          },
+                          enabled: _otpNumber == null,
+                          fillColor: _otpNumber == null ? null : CustomColors.emptySide,
+                        ),
+                        onPressed: _otpNumber == null ? null : (){
+                          showDialog(context: context, builder: (context) => CustomDialog(title: '이메일 주소를 변경하시겠습니까?', onTap: _changeEmail));
+                        },
+                      ),
+                    ),
+                    CustomButton(
+                        borderRadius: 5,
+                        height: mediaHeight(context, 0.055),
+                        margin: EdgeInsets.only(left: mediaWidth(context, 0.033)),
+                        sideColor: _otpNumber != null ? CustomColors.main : Colors.black,
+                        textColor: _otpNumber != null ? CustomColors.main : Colors.black,
+                        color: Colors.white,
+                        disabledColor: CustomColors.emptySide,
+                        width: mediaWidth(context, 0.3),
+                        title: _otpNumber != null ? _verificationOTP ? '변경' : '재전송' : '인증번호 전송',
+                        onPressed: (){
+                          if(_verificationOTP){
+                            showDialog(context: context, builder: (context) => CustomDialog(title: '이메일 주소를 변경하시겠습니까?', onTap: _changeEmail));
+                          } else {
+                            showIndicator(_sendOTP(_email));
+                          }
+                        }
+                    ),
+                  ],
+                ),
+              ),
+              if(_otpNumber != null && !_verificationOTP) Form(
+                key: _otpKey,
+                child: AnimatedContainer(
+                  duration: const Duration(seconds: 1),
+                  margin: EdgeInsets.only(top: mediaWidth(context, 0.033)),
+                  child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Builder(
-                          builder: (context) {
-                            if(widget.googleUser != null){
-                              return Text('Google 회원가입', style: CustomTextStyle.w500(context, scale: 0.03));
-                            } else if(widget.appleUser != null) {
-                              return Text('Apple 회원가입', style: CustomTextStyle.w500(context, scale: 0.03));
-                            } else {
-                              return Text('필수 정보 입력', style: CustomTextStyle.w500(context, scale: 0.03));
-                            }
-                          }
-                      ),
-                      if(widget.googleUser == null && widget.appleUser == null) Form(
-                        key: _emailKey,
-                        child: Container(
-                          margin: EdgeInsets.symmetric(vertical: mediaHeight(context, 0.05)),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Expanded(
-                                child: CustomTextField(
-                                  textFieldType: TextFieldType.underline,
-                                  controller: _emailController,
-                                  onChanged: (String email){
-                                    setState(() {
-                                      _email = email;
-                                    });
-                                  },
-                                  enabled: _authNumber == null,
-                                  fillColor: _authNumber == null ? null : CustomColors.emptySide,
-                                  keyboardType: TextInputType.emailAddress,
-                                  hintText: '이메일 주소 (아이디)',
-                                  helperText: !_auth ? null : '인증되었습니다.',
-                                  helperColor: CustomColors.main,
-                                  validator: (String? email){
-                                    if(email!.isEmpty){
-                                      return '이메일 주소를 입력해주세요.';
-                                    } else if(!EmailValidator.validate(email)){
-                                      return '이메일 주소 형식에 맞게 입력해주세요.';
-                                    } else if(_emailValidator != null){
-                                      return _emailValidator;
-                                    } else {
-                                      return null;
-                                    }
-                                  },
-                                ),
-                              ),
-                              CustomButton(
-                                margin: EdgeInsets.only(left: mediaWidth(context, 0.03)),
-                                title: _authNumber != null ? '인증번호 재전송' : '인증번호 전송',
-                                color: Colors.white,
-                                sideColor: _authNumber != null ? CustomColors.main : CustomColors.emptySide,
-                                textColor: _authNumber != null ? CustomColors.main : Colors.black,
-                                height: mediaHeight(context, 0.055),
-                                width: mediaWidth(context, 0.3),
-                                onPressed: () async{
-                                  _emailValidator = await _repository.emailCheck(context, _email);
-                                  if(_emailKey.currentState!.validate()){
-                                    _emailKey.currentState!.save();
-                                    _authNumber = await _repository.sendOTP(context, _email);
-                                    setState(() {
-                                      _sendOTP = _authNumber != null;
-                                    });
-                                  }
-                                },
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                      if(widget.googleUser == null && widget.appleUser == null) AnimatedCrossFade(
-                          crossFadeState: _authNumber == null || _auth
-                              ? CrossFadeState.showFirst
-                              : CrossFadeState.showSecond,
-                          duration: const Duration(milliseconds: 500),
-                          firstChild: Container(),
-                          secondChild: Form(
-                            key: _otpKey,
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Expanded(
-                                  child: CustomTextField(
-                                    textFieldType: TextFieldType.underline,
-                                    onChanged: (String otp){
-                                      setState(() {
-                                        _otp = otp;
-                                      });
-                                    },
-                                    validator: (String? otp){
-                                      if(otp!.length < 6){
-                                        return '인증번호를 6자 이상 입력해주세요.';
-                                      } else if(otp != _authNumber){
-                                        return '인증번호가 일치하지 않습니다.';
-                                      } else {
-                                        return null;
-                                      }
-                                    },
-                                    contentPadding: EdgeInsets.symmetric(vertical: mediaHeight(context, 0.015)),
-                                    keyboardType: TextInputType.number,
-                                    hintText: '인증번호',
-                                    maxLength: 6,
-                                    helperText: _sendOTP ? '인증번호가 전송되었습니다.' : null,
-                                    helperColor: CustomColors.main,
-                                    margin: EdgeInsets.only(bottom: mediaHeight(context, 0.05)),
-                                  ),
-                                ),
-                                CustomButton(
-                                  margin: EdgeInsets.only(left: mediaWidth(context, 0.03)),
-                                  title: '인증번호 확인',
-                                  color: Colors.white,
-                                  sideColor: CustomColors.main,
-                                  textColor: CustomColors.main,
-                                  height: mediaHeight(context, 0.055),
-                                  width: mediaWidth(context, 0.3),
-                                  onPressed: () async{
-                                    if(_otpKey.currentState!.validate()){
-                                      _otpKey.currentState!.save();
-                                      _emailValidator = await _repository.emailCheck(context, _email);
-                                      setState(() {
-                                        _auth = true;
-                                      });
-                                    }
-                                  },
-                                )
-                              ],
-                            ),
-                          )
-                      ),
-                      if(widget.googleUser == null && widget.appleUser == null) Form(
-                        key: _passwordKey,
-                        child: Column(
+                      Expanded(
+                        child: Stack(
+                          fit: StackFit.passthrough,
+                          alignment: Alignment.centerRight,
                           children: [
                             CustomTextField(
-                                textFieldType: TextFieldType.underline,
-                                onChanged: (String password){
-                                  setState(() {
-                                    _password = password;
-                                  });
-                                },
-                                obscureText: true,
-                                keyboardType: TextInputType.visiblePassword,
-                                hintText: '비밀번호(8~20자 이내)',
-                                maxLength: 20,
-                                maxLines: 1,
-                                margin: EdgeInsets.only(bottom: mediaHeight(context, 0.05))
-                            ),
-                            CustomTextField(
                               textFieldType: TextFieldType.underline,
-                              onChanged: (String password){
-                                setState(() {
-                                  _passwordCheck = password;
-                                });
-                              },
-                              validator: (String? password){
-                                if(password != _password){
-                                  return '비밀번호가 일치하지 않습니다.';
+                              keyboardType: TextInputType.number,
+                              textInputAction: TextInputAction.done,
+                              inputFormatters: [FilteringTextInputFormatter.digitsOnly, LengthLimitingTextInputFormatter(6)],
+                              onFieldSubmitted: _verification,
+                              hintText: '인증번호',
+                              validator: (otp){
+                                if(_otpValidator != null){
+                                  return _otpValidator;
+                                } else if(otp!.isEmpty){
+                                  return '인증번호를 입력해주세요.';
+                                } else if(otp.length < 6){
+                                  return '인증번호 6자를 입력해주세요.';
+                                } else if(otp != _otpNumber){
+                                  return '인증번호가 일치하지 않습니다.';
                                 } else {
                                   return null;
                                 }
                               },
-                              maxLines: 1,
-                              obscureText: true,
-                              keyboardType: TextInputType.visiblePassword,
-                              hintText: '비밀번호 확인',
-                              maxLength: 20,
+                              onChanged: (otp) => setState(() => _otp = otp),
+                              suffixIcon: TextTimer(
+                                margin: baseHorizontalPadding(context),
+                                minute: 3,
+                                onCancel: (message) => setState(() => _otpValidator = message),
+                              ),
                             ),
                           ],
                         ),
                       ),
-                      Form(
-                        key: _nicknameKey,
-                        child: CustomTextField(
-                          textFieldType: TextFieldType.underline,
-                          onChanged: (String nickname){
-                            setState(() {
-                              _nickname = nickname;
-                            });
-                          },
-                          validator: (String? nickname){
-                            if(nickname!.length < 6){
-                              return '닉네임을 6자 이상 입력해주세요.';
-                            } else if(_nicknameValidator != null){
-                              return _nicknameValidator;
-                            } else {
-                              return null;
-                            }
-                          },
-                          keyboardType: TextInputType.text,
-                          hintText: '닉네임',
-                          maxLength: 16,
-                          margin: EdgeInsets.only(top: mediaHeight(context, 0.05)),
-                        ),
-                      )
+                      CustomButton(
+                          borderRadius: 10,
+                          height: mediaHeight(context, 0.055),
+                          margin: EdgeInsets.only(left: mediaWidth(context, 0.033)),
+                          sideColor: CustomColors.main,
+                          textColor: CustomColors.main,
+                          color: Colors.white,
+                          width: mediaWidth(context, 0.2),
+                          title: '확인',
+                          onPressed: (){
+                            _verification(_otp);
+                          }
+                      ),
                     ],
                   ),
                 ),
               ),
-            ),
-            if(widget.googleUser != null || widget.appleUser != null) CustomButton(
-                margin: EdgeInsets.all(mediaWidth(context, 0.033)),
-                title: '가입',
-                onPressed: _nickname.length < 6 ? null : () async{
-                  _nicknameValidator = await _repository.nicknameCheck(context, _nickname);
-                  if(_nicknameKey.currentState!.validate()){
-                    _nicknameKey.currentState!.save();
-                    showIndicator(UserController.to.socialSignup(
-                      context,
-                      email: widget.googleUser != null
-                          ? widget.googleUser!.email
-                          : widget.appleUser!.email ?? '${widget.appleUser!.userIdentifier}@apple.com',
-                      google_uid: widget.googleUser == null ? null : widget.googleUser!.id,
-                      apple_uid: widget.appleUser == null ? null : widget.appleUser!.userIdentifier,
-                      nickname: _nickname
-                    ));
-                  }
-                }
-            ),
-            if(widget.googleUser == null && widget.appleUser == null) CustomButton(
-                title: '가입',
-                margin: EdgeInsets.all(mediaWidth(context, 0.033)),
-                onPressed: !_auth || _password.length < 8 || _passwordCheck.length < 8 || _nickname.length < 6 ? null : () async{
-                  _nicknameValidator = await _repository.nicknameCheck(context, _nickname);
-                  if(_passwordKey.currentState!.validate()){
-                    _passwordKey.currentState!.save();
-                    if(_nicknameKey.currentState!.validate()){
-                      _nicknameKey.currentState!.save();
-                      showIndicator(UserController.to.signup(context, email: _email, password: _password, passwordCheck: _passwordCheck, nickname: _nickname));
-                    }
-                  }
-                }
-            )
-          ],
+              Form(
+                key: _formKey,
+                child: Column(
+                  children: _textFieldList,
+                ),
+              )
+            ],
+          ),
+        ),
+        bottomNavigationBar: SafeArea(
+          child: CustomButton(
+              margin: basePadding(context),
+              title: '다음으로',
+              onPressed: !_allVerification ? null : () => showIndicator(_signup())
+          ),
         ),
       ),
     );
   }
+
+  List<CustomTextField> get _textFieldList => <CustomTextField>[
+    CustomTextField(
+      obscureText: true,
+      margin: baseVerticalPadding(context),
+      textFieldType: TextFieldType.underline,
+      keyboardType: TextInputType.visiblePassword,
+      hintText: '비밀번호(8자 이상)',
+      textInputAction: TextInputAction.next,
+      validator: Validations.password,
+      onChanged: (password) => setState(() => _password = password),
+    ),
+    CustomTextField(
+      obscureText: true,
+      textFieldType: TextFieldType.underline,
+      keyboardType: TextInputType.visiblePassword,
+      hintText: '비밀번호 확인',
+      textInputAction: TextInputAction.next,
+      validator: (passwordCheck) => Validations.passwordCheck(_password, passwordCheck),
+      onChanged: (passwordCheck) => setState(() => _passwordCheck = passwordCheck),
+    ),
+    CustomTextField(
+      autoValidateMode: bytesLength(_nickname) < 6 ? null : AutovalidateMode.onUserInteraction,
+      margin: baseVerticalPadding(context),
+      textFieldType: TextFieldType.underline,
+      keyboardType: TextInputType.text,
+      textInputAction: TextInputAction.done,
+      helperColor: CustomColors.hint,
+      hintText: '닉네임',
+      counterText: '${bytesLength(_nickname)}/16',
+      validator: (nickname) => Validations.nickname(nickname, validator: _nicknameValidator),
+      maxLength: 16,
+      inputFormatters: [
+        Utf8LengthLimitingTextInputFormatter(16),
+      ],
+      onChanged: (nickname) async{
+        _nickname = nickname;
+        if(bytesLength(nickname) >= 6){
+          _nicknameValidator = await _nicknameCheck(nickname);
+        }
+        setState(() {});
+      },
+      onFieldSubmitted: (nickname) => showIndicator(_signup()),
+    )
+  ];
 }

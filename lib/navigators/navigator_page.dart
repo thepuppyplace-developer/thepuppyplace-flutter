@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thepuppyplace_flutter/controllers/board/board_list_controller.dart';
+import 'package:thepuppyplace_flutter/navigators/home_navigator.dart';
 import 'package:thepuppyplace_flutter/pages/home_page/home_page.dart';
 import 'package:thepuppyplace_flutter/pages/my_page/my_page.dart';
 import '../controllers/user/user_controller.dart';
@@ -21,7 +22,7 @@ class _NavigatorPageState extends State<NavigatorPage> {
   int _currentIndex = 0;
 
   final List<Widget> _bodies = const <Widget>[
-    HomePage(),
+    HomeNavigator(),
     InsertBoardPage(),
     NotificationPage(),
     MyPage(),
@@ -55,8 +56,9 @@ class _NavigatorPageState extends State<NavigatorPage> {
 
   Widget bottomNavigationBar() => BottomNavigationBar(
     type: BottomNavigationBarType.fixed,
-    selectedLabelStyle: CustomTextStyle.w500(context, height: 2),
-    unselectedLabelStyle: CustomTextStyle.w500(context),
+    selectedLabelStyle: CustomTextStyle.w500(context, height: 2, scale: 0.015),
+    unselectedLabelStyle: CustomTextStyle.w500(context, scale: 0.015),
+    showUnselectedLabels: false,
     unselectedItemColor: Colors.black,
     selectedItemColor: CustomColors.main,
       currentIndex: _currentIndex,

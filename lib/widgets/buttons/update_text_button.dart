@@ -10,7 +10,7 @@ class UpdateTextButton extends StatelessWidget {
   const UpdateTextButton({
     required this.title,
     required this.content,
-    required this.onTap,
+    this.onTap,
     Key? key}) : super(key: key);
 
   @override

@@ -30,8 +30,16 @@ class SettingPage extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      Expanded(child: Text('알림 설정', style: CustomTextStyle.w500(context, scale: 0.02))),
+                      Expanded(child: Text('서비스 알림 설정', style: CustomTextStyle.w500(context, scale: 0.02))),
                       CupertinoSwitch(value: user!.is_alarm, onChanged: (value){
+                        controller.changeNotification(context);
+                      })
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Expanded(child: Text('내 글 알림 설정', style: CustomTextStyle.w500(context, scale: 0.02))),
+                      CupertinoSwitch(value: user.is_alarm, onChanged: (value){
                         controller.changeNotification(context);
                       })
                     ],

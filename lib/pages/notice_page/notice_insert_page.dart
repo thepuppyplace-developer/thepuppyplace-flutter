@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:thepuppyplace_flutter/controllers/notice/notice_list_controller.dart';
 import 'package:thepuppyplace_flutter/widgets/buttons/custom_icon_button.dart';
 import '../../repositories/notice/notice_repository.dart';
 import '../../util/common.dart';
@@ -12,6 +13,7 @@ import '../../widgets/buttons/pick_image_button.dart';
 import '../../widgets/text_fields/custom_text_field.dart';
 
 class NoticeInsertPage extends StatefulWidget {
+  static const String routeName = '/noticeInsertPage';
   const NoticeInsertPage({Key? key}) : super(key: key);
 
   @override
@@ -44,7 +46,7 @@ class _NoticeInsertPageState extends State<NoticeInsertPage> {
               title: Text('공지사항 글쓰기', style: CustomTextStyle.w600(context, scale: 0.02)),
               actions: [
                 CustomTextButton('등록', (){
-                  showIndicator(insertNotice);
+                  showIndicator(_insertNotice);
                 })
               ],
             )
@@ -138,7 +140,7 @@ class _NoticeInsertPageState extends State<NoticeInsertPage> {
           margin: EdgeInsets.all(mediaWidth(context, 0.033)),
           title: '등록',
           onPressed: () {
-            showIndicator(insertNotice);
+            showIndicator(_insertNotice);
           },
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -146,12 +148,14 @@ class _NoticeInsertPageState extends State<NoticeInsertPage> {
     );
   }
 
-  Future get insertNotice async{
+  Future get _insertNotice async{
     if(_formKey.currentState!.validate()){
       _formKey.currentState!.save();
       int? statusCode = await _repository.insertNotice(context, image: _image, notice_title: _notice_title, notice_main_text: _notice_main_text);
       if(statusCode == 201){
-        Get.until((route) => route.isFirst);
+        NoticeListController controller = Get.put(NoticeListController(context));
+        controller.getNoticeList;
+        Get.until((route) => route.settings.name == NoticeInsertPage.routeName);
       }
     }
   }

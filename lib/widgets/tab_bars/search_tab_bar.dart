@@ -33,8 +33,10 @@ class SearchTabBar extends StatelessWidget with PreferredSizeWidget{
     fillColor: CustomColors.empty,
     sideColor: CustomColors.emptySide,
     controller: null,
-    hintText: query ?? '지역, 매장명 검색',
-    suffixIcon: const Icon(Icons.search, color: Colors.grey),
+    hintText: query ?? '지역, 업체명 검색',
+    suffixIcon: Container(
+        margin: baseHorizontalPadding(context),
+        child: const Icon(Icons.search, color: Colors.grey)),
     borderRadius: mediaHeight(context, 1),
   );
 

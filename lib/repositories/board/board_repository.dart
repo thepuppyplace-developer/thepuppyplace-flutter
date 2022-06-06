@@ -3,19 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:thepuppyplace_flutter/models/BoardCategory.dart';
-import 'package:thepuppyplace_flutter/pages/board_page/board_details_page.dart';
 import 'package:thepuppyplace_flutter/util/common.dart';
 import '../../../config/config.dart';
-import '../../../config/local_db.dart';
 import '../../../models/Board.dart';
 import '../../controllers/board/board_list_controller.dart';
 import '../../models/BoardComment.dart';
 import '../../models/CommentLike.dart';
 import '../../models/LikeBoard.dart';
-import '../../models/NestedComment.dart';
 import '../../models/Search.dart';
 
-class BoardRepository extends GetConnect with Config, LocalConfig{
+class BoardRepository extends GetConnect with Config{
   static BoardRepository get from => BoardRepository();
 
   Future insertBoard(BuildContext context, {
@@ -25,7 +22,7 @@ class BoardRepository extends GetConnect with Config, LocalConfig{
     required String category,
     required List<XFile?> photoList
   }) async{
-    if(await jwt != null){
+    if(await JWT_TOKEN != null){
       final FormData formData = FormData({
         'title': title.trim(),
         'description': description.trim(),
@@ -41,7 +38,7 @@ class BoardRepository extends GetConnect with Config, LocalConfig{
         }
       }
 
-      final Response res = await post('$API_URL/board/insert', formData, headers: headers(await jwt));
+      final Response res = await post('$API_URL/board/insert', formData, headers: await headers);
 
       switch(res.statusCode){
         case 201: {
@@ -67,12 +64,12 @@ class BoardRepository extends GetConnect with Config, LocalConfig{
     required String category,
 }) async{
     try{
-      if(await jwt != null){
+      if(await JWT_TOKEN != null){
         final Response res = await patch('$API_URL/board/$board_id', {
           'title': title.trim(),
           'description': description.trim(),
           'category': category.trim(),
-        }, headers: headers(await jwt));
+        }, headers: await headers);
 
 
         switch(res.statusCode){
@@ -91,7 +88,7 @@ class BoardRepository extends GetConnect with Config, LocalConfig{
 
   Future<List<LikeBoard>> getLikeBoardList(BuildContext context, int? user_id) async{
     try{
-      if(await jwt != null){
+      if(await JWT_TOKEN != null){
         final Response res = await post('$API_URL/board/like', {
           'like_user_id': user_id
         });
@@ -193,8 +190,8 @@ class BoardRepository extends GetConnect with Config, LocalConfig{
   }
 
   Future deleteBoard(BuildContext context, {required int board_id}) async{
-    if(await jwt != null){
-      final Response res = await delete('$API_URL/board/${board_id}', headers: headers(await jwt));
+    if(await JWT_TOKEN != null){
+      final Response res = await delete('$API_URL/board/${board_id}', headers: await headers);
 
       switch(res.statusCode){
         case 200: {
@@ -215,8 +212,8 @@ class BoardRepository extends GetConnect with Config, LocalConfig{
   }
 
   Future likeBoard(BuildContext context, int board_id) async{
-    if(await jwt != null){
-      Response res = await post('$API_URL/like/board/$board_id', {}, headers: headers(await jwt));
+    if(await JWT_TOKEN != null){
+      Response res = await post('$API_URL/like/board/$board_id', {}, headers: await headers);
       switch(res.statusCode){
         case 200:
           return null;
@@ -231,11 +228,11 @@ class BoardRepository extends GetConnect with Config, LocalConfig{
   }
 
   Future insertComment(BuildContext context, {required int board_id, required String comment}) async{
-    if(await jwt != null){
+    if(await JWT_TOKEN != null){
       Response res = await post('$API_URL/comment', {
         'board_id': board_id,
         'comment': comment.trim()
-      }, headers: headers(await jwt));
+      }, headers: await headers);
       switch(res.statusCode){
         case 201:
           return showSnackBar(context, '댓글이 등록되었습니다.');
@@ -251,8 +248,8 @@ class BoardRepository extends GetConnect with Config, LocalConfig{
 
   Future<BoardComment?> deleteComment(BuildContext context, {required int comment_id}) async{
     try{
-      if(await jwt != null){
-        final Response res = await delete('$API_URL/comment/$comment_id', headers: headers(await jwt));
+      if(await JWT_TOKEN != null){
+        final Response res = await delete('$API_URL/comment/$comment_id', headers: await headers);
 
         switch(res.statusCode) {
           case 200:
@@ -276,8 +273,8 @@ class BoardRepository extends GetConnect with Config, LocalConfig{
 
   Future<CommentLike?> likeComment(BuildContext context, {required int comment_id}) async{
     try{
-      if(await jwt != null){
-        final Response res = await post('$API_URL/like/comment/$comment_id', {}, headers: headers(await jwt));
+      if(await JWT_TOKEN != null){
+        final Response res = await post('$API_URL/like/comment/$comment_id', {}, headers: await headers);
 
         switch(res.statusCode) {
           case 200:
@@ -297,11 +294,11 @@ class BoardRepository extends GetConnect with Config, LocalConfig{
   }
 
   Future<int?> insertNestedComment(BuildContext context, {required int comment_id, required String comment}) async{
-    if(await jwt != null){
+    if(await JWT_TOKEN != null){
       Response res = await post('$API_URL/comment/nested', {
         'comment': comment.trim(),
         'comment_id': comment_id,
-      }, headers: headers(await jwt));
+      }, headers: await headers);
       switch(res.statusCode){
         case 201:
           await showSnackBar(context, '댓글이 등록되었습니다.');
@@ -320,9 +317,9 @@ class BoardRepository extends GetConnect with Config, LocalConfig{
   }
 
   Future<int?> deleteNestedComment(BuildContext context, {required int nested_comment_id}) async{
-    if(await jwt != null){
-      final Response res = await delete('$API_URL/comment/nested/$nested_comment_id', headers: headers(await jwt));
-
+    if(await JWT_TOKEN != null){
+      final Response res = await delete('$API_URL/comment/nested/$nested_comment_id', headers: await headers);
+      print(res.statusCode);
       switch(res.statusCode) {
         case 200:
           await showSnackBar(context, '댓글이 삭제되었습니다.');

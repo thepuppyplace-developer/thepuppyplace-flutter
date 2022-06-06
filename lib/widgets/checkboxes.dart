@@ -1,20 +1,22 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:thepuppyplace_flutter/models/Term.dart';
-
-import '../util/common.dart';
+import 'package:get/get.dart';
+import 'package:thepuppyplace_flutter/pages/my_page/terms_details_page.dart';
+import 'package:thepuppyplace_flutter/widgets/buttons/custom_text_button.dart';
+import '../../models/Term.dart';
+import '../../util/common.dart';
+import '../pages/my_page/terms_page.dart';
 
 enum TermsType{require, select}
 
 class TermsCheckbox extends StatelessWidget {
   final bool allCheck;
-  final List<bool> termsCheckList;
   final List<Term> termsList;
   final Function(bool) onAllCheck;
   final Function(int, bool) onTermsCheck;
 
   const TermsCheckbox({
     required this.allCheck,
-    required this.termsCheckList,
     required this.termsList,
     required this.onAllCheck,
     required this.onTermsCheck,
@@ -22,42 +24,39 @@ class TermsCheckbox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      padding: basePadding(context),
-      child: Column(
-        children: [
-          Container(
-            margin: baseVerticalPadding(context),
+    return Column(
+      children: [
+        Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(5),
+            border: Border.all(color: allCheck ? CustomColors.main : Colors.black)
+          ),
+          margin: baseVerticalPadding(context),
+          child: CupertinoButton(
+            padding: basePadding(context),
             child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                GestureDetector(
-                  child: allCheck
-                      ? Icon(Icons.check_circle, size: mediaHeight(context, 0.03), color: CustomColors.main)
-                      : Icon(Icons.check_circle_outline, size: mediaHeight(context, 0.03), color: Colors.grey),
-                  onTap: (){
-                    onAllCheck(allCheck);
-                  },
-                ),
                 Expanded(
-                    child: Container(
-                      margin: baseHorizontalPadding(context),
-                      child: Text(
-                          '아래 내용에 모두 동의합니다.',
-                          style: CustomTextStyle.w600(context, height: 1.5)),
-                    )),
+                    child: Text(
+                        '아래 내용에 모두 동의합니다.',
+                        style: CustomTextStyle.w600(context, height: 1.5))),
+                Icon(Icons.check, size: mediaHeight(context, 0.03), color: allCheck ? CustomColors.main : CustomColors.emptySide)
               ],
             ),
-          ),
-          if(termsList.isNotEmpty) for(int index = 0; index < termsList.length; index++) TermsItem(
-            termsList[index],
-            check: termsCheckList[index],
-            onTermsCheck: (check){
-              onTermsCheck(index, check);
+            onPressed: (){
+              onAllCheck(allCheck);
             },
-          )
-        ],
-      ),
+          ),
+        ),
+        if(termsList.isNotEmpty) for(int index = 0; index < termsList.length; index++) TermsItem(
+          termsList[index],
+          check: termsList[index].check,
+          index: index,
+          onTermsCheck: (check){
+            onTermsCheck(index, check);
+          },
+        )
+      ],
     );
   }
 }
@@ -65,63 +64,44 @@ class TermsCheckbox extends StatelessWidget {
 class TermsItem extends StatelessWidget {
   final Term term;
   final bool check;
+  final int index;
   final Function(bool) onTermsCheck;
 
   const TermsItem(this.term, {
     required this.check,
+    required this.index,
     required this.onTermsCheck,
     Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: baseVerticalPadding(context),
-      child: Column(
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              GestureDetector(
-                child: check
-                    ? Icon(Icons.check_circle, size: mediaHeight(context, 0.03), color: CustomColors.main)
-                    : Icon(Icons.check_circle_outline, size: mediaHeight(context, 0.03), color: Colors.grey),
-                onTap: (){
-                  onTermsCheck(check);
-                },
-              ),
-              Expanded(
-                child: Container(
-                    margin: baseHorizontalPadding(context),
-                    child: Text(term.term_title, style: CustomTextStyle.w600(context))),
-              ),
-              Text(_termsText(term.is_require ? TermsType.require : TermsType.select),
-                  style: CustomTextStyle.w500(context, color: CustomColors.main, scale: 0.016))
-            ],
-          ),
-          Container(
-            height: mediaHeight(context, 0.15),
-            width: mediaWidth(context, 1),
-            margin: baseVerticalPadding(context),
-            decoration: BoxDecoration(
-                color: Colors.white,
-                border: Border.all(color: CustomColors.hint),
-                borderRadius: BorderRadius.circular(20)
-            ),
-            child: SingleChildScrollView(
-                padding: basePadding(context),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+    return Column(
+      children: [
+        Row(
+          children: [
+            Expanded(
+              child: CupertinoButton(
+                padding: EdgeInsets.zero,
+                child: Row(
                   children: [
-                    Text(term.term_title, style: CustomTextStyle.w600(context)),
-                    Container(
-                        margin: baseVerticalPadding(context),
-                        child: Text(term.term_contents, style: CustomTextStyle.w500(context, color: Colors.grey, scale: 0.018, height: 1.5))),
+                    Text(term.name,
+                        style: CustomTextStyle.w500(context)),
+                    Text(_termsText(term.is_required ? TermsType.require : TermsType.select),
+                        style: CustomTextStyle.w500(context)),
                   ],
-                )
+                ),
+                onPressed: () => Get.to(() => TermsDetailsPage(term)),
+              ),
             ),
-          )
-        ],
-      ),
+            CupertinoButton(
+                child: Icon(Icons.check, size: mediaHeight(context, 0.03), color: check ? CustomColors.main : CustomColors.emptySide),
+              onPressed: (){
+                onTermsCheck(check);
+              },
+            )
+          ],
+        ),
+      ],
     );
   }
 }

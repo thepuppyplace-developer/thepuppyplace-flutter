@@ -6,7 +6,6 @@ import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:thepuppyplace_flutter/repositories/board/board_repository.dart';
 import 'package:thepuppyplace_flutter/util/common.dart';
 import 'package:thepuppyplace_flutter/views/photo_view/photo_list_view.dart';
 import 'package:thepuppyplace_flutter/widgets/dialogs/custom_dialog.dart';
@@ -15,7 +14,6 @@ import '../../controllers/board/board_controller.dart';
 import '../../controllers/user/user_controller.dart';
 import '../../models/Board.dart';
 import '../../models/BoardComment.dart';
-import '../../models/CommentLike.dart';
 import '../../models/NestedComment.dart';
 import '../../views/rx_status_view.dart';
 import '../../widgets/buttons/tag_text.dart';
@@ -66,21 +64,22 @@ class _BoardDetailsPageState extends State<BoardDetailsPage> {
                       padding: EdgeInsets.zero,
                       child: Icon(Icons.ios_share, color: Colors.black, size: mediaHeight(context, 0.03),),
                       onPressed: () async{
-                        final box = context.findRenderObject() as RenderBox?;
-
-                        if (board.board_photos.isNotEmpty) {
-                          await Share.shareFiles(board.board_photos,
-                              text: board.title,
-                              subject: board.description,
-                              sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size);
-                        } else {
-                          await Share.share(board.title,
-                              subject: board.description,
-                              sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size);
-                        }
+                        showIndicator(shareKakaoBoard(context, board));
+                        // final box = context.findRenderObject() as RenderBox?;
+                        //
+                        // if (board.board_photos.isNotEmpty) {
+                        //   await Share.shareFiles(board.board_photos,
+                        //       text: board.title,
+                        //       subject: board.description,
+                        //       sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size);
+                        // } else {
+                        //   await Share.share(board.title,
+                        //       subject: board.description,
+                        //       sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size);
+                        // }
                       },
                     ),
-                    if(UserController.user != null && (UserController.user!.id == board.userId || Config.ADMIN_EMAIL == UserController.user!.email))CupertinoButton(
+                    if(UserController.user != null && (UserController.user!.id == board.userId || Config.ADMIN_UID == UserController.user!.uid))CupertinoButton(
                       padding: EdgeInsets.zero,
                       onPressed: null,
                       child: PopupMenuButton(
@@ -235,7 +234,7 @@ class _BoardDetailsPageState extends State<BoardDetailsPage> {
                                               );
                                             } else {
                                               return GestureDetector(
-                                                child: Icon(CupertinoIcons.heart_fill, color: Colors.red, size: mediaHeight(context, 0.025)),
+                                                child: Icon(CupertinoIcons.heart_fill, color: CustomColors.main, size: mediaHeight(context, 0.025)),
                                                 onTap: (){
                                                   controller.likeBoard(context);
                                                 },
@@ -280,7 +279,7 @@ class _BoardDetailsPageState extends State<BoardDetailsPage> {
                                   },
                                   onLike: (BoardComment boardComment) => controller.likeComment(context, boardComment.commentId),
                                   onCommentDelete: () => controller.deleteComment(context, comment.commentId),
-                                  onNestedCommentDelete: (NestedComment nestedComment) => controller.deleteNestedComment(context, nestedComment)
+                                  onNestedCommentDelete: (NestedComment nestedComment) => showIndicator(controller.deleteNestedComment(context, nestedComment))
                                 )
                               ]
                           ),

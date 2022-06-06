@@ -3,16 +3,18 @@ import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
-import 'package:thepuppyplace_flutter/pages/auth_page/signup_insert_page.dart';
-import 'package:thepuppyplace_flutter/util/common.dart';
+import 'package:thepuppyplace_flutter/pages/auth_page/signup_terms_page.dart';
+import 'package:thepuppyplace_flutter/repositories/terms/terms_repo.dart';
 import '../../config/config.dart';
-import '../../config/local_db.dart';
+import '../../models/Term.dart';
 import '../../models/User.dart';
+import '../../pages/auth_page/login_page.dart';
 import '../../repositories/user/user_repository.dart';
 
-class UserController extends GetxController with StateMixin<User>, Config, LocalConfig{
+class UserController extends GetxController with StateMixin<User>, Config{
   static UserController get to => Get.put(UserController());
-  final UserRepository _repository = UserRepository();
+  final UserRepository _repo = UserRepository();
+  final TermsRepo _termsRepo = TermsRepo();
   static final Rxn<User> _user = Rxn<User>();
   static User? get user => _user.value;
 
@@ -20,8 +22,8 @@ class UserController extends GetxController with StateMixin<User>, Config, Local
   void onReady() async{
     super.onReady();
     ever(_user, _userListener);
-    _autoLogin;
-    print(await jwt);
+    _user.value = await getUser;
+    print(await getUser);
   }
 
   void _userListener(User? user){
@@ -37,137 +39,126 @@ class UserController extends GetxController with StateMixin<User>, Config, Local
     }
   }
 
-  //자동 로그인
-  Future get _autoLogin async{
-    List<User> userList = await USER_LIST();
-    if(userList.isNotEmpty){
-      _user.value = userList.first;
-    } else {
-      _user.value = null;
-    }
-  }
-
   //회원가입
-  Future signup(BuildContext context, {
-    required String email,
-    required String password,
-    required String passwordCheck,
-    required String nickname
-  })
-  => _repository.signUp(context, email: email, password: password, nickname: nickname).whenComplete(()
-  => login(context, email: email, password: password));
+  Future<int?> signup(List<Term> termsList, {String? email, String? password, required String nickname, GoogleSignInAccount? googleUser, AuthorizationCredentialAppleID? appleUser}) async{
+    try{
+      final Response res = await _repo.signup(email: email, password: password, nickname: nickname, googleUser: googleUser, appleUser: appleUser);
 
-  //소셜 회원가입
-  Future socialSignup(BuildContext context, {
-    required String email,
-    String? google_uid,
-    String? apple_uid,
-    String? nickname,
-  }) async{
-    int? statusCode = await _repository.socialSignup(
-        context,
-        email: email,
-        google_uid: google_uid,
-        apple_uid: apple_uid,
-        nickname: nickname
-    );
-
-    switch(statusCode){
-      case 201:
-        Get.until((route) => route.isFirst);
-        return login(context, email: email, google_uid: google_uid, apple_uid: apple_uid);
-      default:
-        return ;
+      switch(res.statusCode){
+        case 201:
+          int? statusCode = await login(email: email, password: password, googleUser: googleUser, appleUser: appleUser);
+          switch(statusCode){
+            case 200: print('send-terms');
+            //회원가입이 완료되면 send 로그인 한 후 약관 체크한 항목들을 jwt 와 함께 서버에 전송
+            for(Term term in termsList){
+              _termsRepo.sendTerms(term);
+            }
+          }
+          break;
+        default:
+      }
+      return res.statusCode;
+    } catch(error){
+      throw Exception(error);
     }
   }
 
   //로그인
-  Future login(BuildContext context, {required String email, String? password, String? google_uid, String? apple_uid}) async{
-    final String? jwt = await _repository.login(context, email, password: password, google_uid: google_uid, apple_uid: apple_uid);
-    switch(jwt){
-      case null:
-        return network_check_message(context);
-      case 'email-password-check':
-        return showSnackBar(context, '이메일 혹은 비밀번호를 확인해주세요.');
-      default:
-        _getUser(jwt).then((User? user) async{
-          if(user != null){
-            Get.until((route) => route.isFirst);
-            return showSnackBar(context, '${user.nickname}님 환영합니다!');
-          } else {
-            return null;
-          }
-        });
+  Future<int?> login({String? email, String? password, GoogleSignInAccount? googleUser, AuthorizationCredentialAppleID? appleUser}) async{
+    //유저 로그인 부분
+    final Response res = await _repo.login(email: email, password: password, googleUser: googleUser, appleUser: appleUser);
+    switch(res.statusCode){
+      case 200:
+        final String? jwt = res.body['data']['jwt'];
+        if(jwt != null){
+          await INSERT_JWT_TOKEN(jwt);
+          _user.value = await getUser;
+        }
     }
+    return res.statusCode;
   }
 
-  Future googleLogin(BuildContext context) async{
-    final GoogleSignInAccount? googleUser = await _repository.googleLogin(context);
+  Future<int?> get googleLogin async{
+    final GoogleSignInAccount? googleUser = await _repo.getGoogleUser;
     if(googleUser != null){
-      if(await _repository.emailCheck(context, googleUser.email) == '이미 사용중인 이메일 주소입니다.'){
-        return login(context, email: googleUser.email, google_uid: googleUser.id);
-      } else {
-        return Get.to(() => SignupInsertPage(googleUser: googleUser));
+      int? statusCode = await login(googleUser: googleUser);
+      switch(statusCode){
+        case 204:
+        //statusCode 401은 회원이 존재하지 않는다는 의미로 회원가입 페이지로 넘김
+          await Get.to(() => SignupTermsPage(googleUser: googleUser));
       }
+      return statusCode;
     } else {
-      return;
-    }
-  }
-
-  Future appleLogin(BuildContext context) async{
-    final AuthorizationCredentialAppleID? appleUser = await _repository.appleLogin(context);
-    if(appleUser != null){
-      if(await _repository.emailCheck(context, appleUser.email ?? '${appleUser.userIdentifier}@apple.com') == '이미 사용중인 이메일 주소입니다.'){
-        return login(context, email: appleUser.email ?? '${appleUser.userIdentifier}@apple.com', apple_uid: appleUser.identityToken);
-      } else {
-        return Get.to(() => SignupInsertPage(appleUser: appleUser));
-      }
-    } else {
-      return Get.back();
-    }
-  }
-
-  Future logout(BuildContext context) async{
-    _user.value = await _repository.logout(context);
-    return Get.toNamed('/loginPage');
-  }
-
-  Future<User?> _getUser(String? token) async{
-    if(token != null){
-      _user.value = await _repository.getUser(token);
-      return _user.value;
-    } else {
-      _user.value = null;
       return null;
     }
   }
 
+  Future<int?> get appleLogin async{
+    try{
+      final AuthorizationCredentialAppleID? appleUser = await _repo.getAppleUser;
+      if(appleUser != null){
+        int? statusCode = await login(appleUser: appleUser);
+        switch(statusCode){
+          case 401:
+          //statusCode 401은 회원이 존재하지 않는다는 의미로 회원가입 페이지로 넘김
+            await Get.to(() => SignupTermsPage(appleUser: appleUser));
+        }
+        return statusCode;
+      } else {
+        return null;
+      }
+    } catch(error){
+      throw Exception(error);
+    }
+  }
+
+  Future logout(BuildContext context) async{
+    _user.value = await _repo.logout(context);
+    //로그아웃 시 서버에 전송
+    _user.value = await REMOVE_JWT_TOKEN;
+    //SharedPreferences 에 JWT_TOKEN 값을 삭제함
+    return Get.offNamedUntil(LoginPage.routeName, (route) => route.isFirst);
+    //JWT_TOKEN 을 삭제하면 로그인 페이지로 넘긴 후 앞에 Stack 을 모두 제거
+  }
+
+  Future<User?> get getUser async{
+    final Response res = await _repo.getUser();
+    switch(res.statusCode){
+      case 200:
+        final User user = User.fromJson(res.body['data']);
+        _user.value = user;
+        return user;
+    //statusCode 가 200일 경우에만 user 상세를 불러옴
+      default: return null;
+    }
+  }
+
   Future changeNotification(BuildContext context) async{
-    await _repository.changeNotification(context);
-    return _getUser(await jwt);
+    await _repo.changeNotification(context);
+    return getUser;
   }
 
   Future updateNickname(BuildContext context, String nickname) async{
-    int? statusCode = await _repository.updateNickname(context, nickname);
+    int? statusCode = await _repo.updateNickname(context, nickname);
 
     if(statusCode == 200){
       Get.back();
     }
-    return _getUser(await jwt);
+    return getUser;
   }
 
   Future updatePhotoURL(BuildContext context, XFile? photo) async{
-    await _repository.updatePhotoURL(context, photo);
-    return _getUser(await jwt);
+    await _repo.updatePhotoURL(context, photo);
+    return getUser;
   }
 
   Future updateDefaultPhotoURL(BuildContext context) async{
-    await _repository.updateDefaultPhotoURL(context);
-    return _getUser(await jwt);
+    await _repo.updateDefaultPhotoURL(context);
+    return getUser;
   }
 
   Future deleteUser(BuildContext context) async{
-    await _repository.deleteUser(context, _user.value!.id);
+    await _repo.deleteUser(context, _user.value!.id);
     return logout(context);
   }
 }

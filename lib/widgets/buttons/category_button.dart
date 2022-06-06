@@ -27,19 +27,18 @@ class CategoryButton extends StatelessWidget {
                   border: Border.all(color: CustomColors.emptySide),
                   borderRadius: BorderRadius.circular(12),
                 image: DecorationImage(
-                  opacity: 0.7,
-                  colorFilter: const ColorFilter.mode(Colors.black, BlendMode.colorDodge),
                   fit: BoxFit.cover,
                   image: CachedNetworkImageProvider(image)
                 )
               ),
-              child: Text(category, style: CustomTextStyle.w500(context, color: Colors.white)),
             ),
           ),
+          Text(category, style: CustomTextStyle.w500(context, scale: 0.016, height: 1.5))
         ],
       ),
       onPressed: (){
-        Get.to(() => BoardListPage(currentIndex: currentIndex));
+        Navigator.pushNamed(context, BoardListPage.routeName, arguments: currentIndex);
+        // Get.toNamed(BoardListPage.routeName, arguments: currentIndex);
       }
     );
   }

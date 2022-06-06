@@ -61,6 +61,7 @@ class CommentCard extends GetWidget<UserController> {
                     CustomTextButton('좋아요 ${comment.commentLikeList.isEmpty ? '' : comment.commentLikeList.length}', (){
                       onLike(comment);
                     }, color: CustomColors.hint),
+                    SizedBox(width: mediaWidth(context, 0.03)),
                     CustomTextButton('답글달기', (){
                       onComment(comment);
                     }, color: CustomColors.hint),
@@ -88,10 +89,10 @@ class CommentCard extends GetWidget<UserController> {
                           Row(
                             children: [
                               Expanded(
-                                  child: UserProfileCard(comment.user)
+                                  child: UserProfileCard(nestedComment.user)
                               ),
                               controller.obx((User? user){
-                                if(comment.userId == user!.id) {
+                                if(nestedComment.user.nickname == user!.nickname) {
                                   return CustomTextButton(
                                       '삭제', () {
                                     showDialog(context: context, builder: (context) => CustomDialog(title: '댓글을 삭제하시겠습니까?', onTap: (){
@@ -104,11 +105,14 @@ class CommentCard extends GetWidget<UserController> {
                               })
                             ],
                           ),
-                          Row(
-                            children: [
-                              Expanded(child: Text(nestedComment.comment, style: CustomTextStyle.w500(context))),
-                              Text(beforeDate(nestedComment.createdAt), style: CustomTextStyle.w500(context, color: CustomColors.hint)),
-                            ],
+                          Container(
+                            margin: baseVerticalPadding(context),
+                            child: Row(
+                              children: [
+                                Expanded(child: Text(nestedComment.comment, style: CustomTextStyle.w500(context))),
+                                Text(beforeDate(nestedComment.createdAt), style: CustomTextStyle.w500(context, color: CustomColors.hint)),
+                              ],
+                            ),
                           ),
                         ],
                       )

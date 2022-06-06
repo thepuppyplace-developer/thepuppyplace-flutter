@@ -1,6 +1,7 @@
 class User{
   final int id;
-  final String email;
+  final String uid;
+  final String? email;
   final String nickname;
   final String? name;
   final String? phone_number;
@@ -10,12 +11,11 @@ class User{
   final String? jwt_token;
   final bool is_alarm;
   final String? location;
-  final DateTime createdAt;
-  final DateTime updatedAt;
-  final DateTime? deletedAt;
+  final String auth_type;
 
   User({
     required this.id,
+    required this.uid,
     required this.email,
     required this.nickname,
     this.name,
@@ -26,13 +26,12 @@ class User{
     this.jwt_token,
     required this.is_alarm,
     this.location,
-    required this.createdAt,
-    required this.updatedAt,
-    this.deletedAt,
+    required this.auth_type,
   });
 
   factory User.fromJson(Map<String, dynamic> json) => User(
     id: json['id'],
+    uid: json['uid'],
     email: json['email'],
     nickname: json['nickname'],
     name: json['name'],
@@ -43,45 +42,6 @@ class User{
     jwt_token: json['jwt_token'],
     is_alarm: json['is_alarm'].runtimeType == int ? json['is_alarm'] == 1 ? true : false : json['is_alarm'],
     location: json['location'],
-    createdAt: DateTime.parse(json['createdAt']),
-    updatedAt: DateTime.parse(json['updatedAt']),
-    deletedAt: json['deletedAt'] == null ? null : DateTime.parse(json['deletedAt']),
+    auth_type: json['auth_type'],
   );
-
-  Map<String, dynamic> toJson() => {
-    'id': id,
-    'email': email,
-    'nickname': nickname,
-    'name': name,
-    'phone_number': phone_number,
-    'photo_url': photo_url,
-    'gender': gender,
-    'location': location,
-    'fcm_token': fcm_token,
-    'jwt_token': jwt_token,
-    'is_alarm': is_alarm ? 1 : 0,
-    'createdAt': createdAt.toIso8601String(),
-    'updatedAt': updatedAt.toIso8601String(),
-    'deletedAt': deletedAt == null ? null : deletedAt!.toIso8601String(),
-  };
-
-  static const String TABLE = 'User';
-  static String get CREATE_TABLE => '''
-  CREATE TABLE IF NOT EXISTS $TABLE(
-  id INTEGER PRIMARY KEY NOT NULL,
-  email STRING NOT NULL,
-  nickname STRING NOT NULL,
-  name STRING,
-  phone_number STRING,
-  photo_url STRING,
-  gender STRING,
-  fcm_token STRING,
-  jwt_token STRING,
-  is_alarm INTEGER NOT NULL,
-  location STRING,
-  createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
-  updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
-  deletedAt TIMESTAMP
-  )
-  ''';
 }

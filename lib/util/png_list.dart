@@ -10,6 +10,8 @@ class PngList{
   static final String empty = _basePath('empty');
   static final String google = _basePath('google');
   static final String apple = _basePath('apple');
+  static final String app_logo = _basePath('app_logo');
+  static final String default_profile = _basePath('default_profile');
 
   static final List<String> categoryList = <String>[
     CachedNetworkImageList.cafe,
@@ -19,6 +21,4 @@ class PngList{
     CachedNetworkImageList.ground,
     CachedNetworkImageList.talk,
   ];
-
-  static String defaultProfile = 'https://thepuppyplace.s3.ap-northeast-2.amazonaws.com/uploads/thepuppy_profile_${randomImage()}.jpeg';
 }

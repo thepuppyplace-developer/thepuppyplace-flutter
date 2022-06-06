@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:thepuppyplace_flutter/config/config.dart';
 
 import '../../models/Search.dart';
+import '../../util/common.dart';
 
 class SearchRepository extends GetConnect with Config{
   

@@ -66,7 +66,7 @@ class SearchBoardListView extends GetView<SearchBoardListController> {
                 ),
                 for(Board board in boardList.take(3)) SearchBoardCard(board),
                 if(boardList.length > 3) CustomTextButton('더보기', (){
-                  Get.to(() => BoardListPage(currentIndex: pageIndex(boardList.first.category), query: query));
+                  Get.to(() => BoardListPage(query: query), arguments: pageIndex(boardList.first.category));
                 })
               ]),
             ),

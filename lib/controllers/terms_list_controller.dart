@@ -9,13 +9,10 @@ class TermsListController extends GetxController with StateMixin<List<Term>>{
 
   static TermsListController to(BuildContext context) => Get.put(TermsListController(context));
 
-  TermsRepo get _repo => TermsRepo(context);
+  TermsRepo get _repo => TermsRepo();
 
   final _termsList = RxList<Term>();
   List<Term> get termsList => _termsList;
-
-  final _checkList = RxList<bool>();
-  List<bool> get checkList => _checkList;
 
   @override
   void onReady() {
@@ -39,6 +36,5 @@ class TermsListController extends GetxController with StateMixin<List<Term>>{
 
   Future get getTermsList async{
     _termsList.value = await _repo.getTermsList;
-    _checkList.value = List.generate(termsList.length, (index) => false);
   }
 }

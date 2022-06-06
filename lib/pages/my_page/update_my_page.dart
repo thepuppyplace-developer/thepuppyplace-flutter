@@ -5,11 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:thepuppyplace_flutter/pages/my_page/update_password_page.dart';
-import 'package:thepuppyplace_flutter/util/cached_network_image_list.dart';
+import 'package:thepuppyplace_flutter/util/png_list.dart';
 import '../../controllers/user/user_controller.dart';
 import '../../models/User.dart';
 import '../../util/common.dart';
-import '../../widgets/buttons/custom_button.dart';
 import '../../widgets/buttons/update_text_button.dart';
 import 'update_nickname_page.dart';
 
@@ -54,7 +53,7 @@ class _UpdateMyPageState extends State<UpdateMyPage> {
                                 CircleAvatar(
                                   maxRadius: mediaHeight(context, 0.07),
                                   backgroundColor: CustomColors.emptySide,
-                                  backgroundImage: CachedNetworkImageProvider(CachedNetworkImageList.thepuppy_profile_0),
+                                  backgroundImage: AssetImage(PngList.default_profile),
                                   foregroundImage: user!.photo_url == null ? null : CachedNetworkImageProvider(user.photo_url!),
                                 ),
                                 Container(
@@ -116,14 +115,17 @@ class _UpdateMyPageState extends State<UpdateMyPage> {
                           ),
                           UpdateTextButton(
                             title: '이메일 아이디',
-                            content: user.email,
-                            onTap: null,
+                            content: user.auth_type == 'google' ? '구글로 로그인 했습니다.' : user.auth_type == 'apple' ? '애플로 로그인했습니다.' : user.email ?? '',
                           ),
                           UpdateTextButton(
                             title: '비밀번호 변경',
                             content: '********',
                             onTap: (){
-                              Get.to(() => const UpdatePasswordPage());
+                              switch(user.auth_type){
+                                case 'local': return Get.to(() => const UpdatePasswordPage());
+                                case 'google': return showSnackBar(context, '구글로 로그인 했습니다.');
+                                case 'apple': return showSnackBar(context, '애플로 로그인 했습니다.');
+                              }
                             },
                           ),
                           UpdateTextButton(

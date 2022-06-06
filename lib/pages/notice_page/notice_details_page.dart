@@ -31,7 +31,7 @@ class NoticeDetailsPage extends StatelessWidget {
                 pinned: true,
                 elevation: 0.5,
                 title: Text('공지사항', style: CustomTextStyle.w600(context, scale: 0.02)),
-                  actions: UserController.user!.email != Config.ADMIN_EMAIL ? null : [CustomIconButton(
+                  actions: UserController.user!.uid != Config.ADMIN_UID ? null : [CustomIconButton(
                     icon: Icons.more_vert,
                     onTap: (){
                       showCupertinoModalPopup(context: context, builder: (context) => CupertinoActionSheet(

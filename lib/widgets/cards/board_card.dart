@@ -43,7 +43,6 @@ class BoardCard extends StatelessWidget {
               ),
             ),
             Text(board.title, style: CustomTextStyle.w600(context, scale: 0.018), overflow: TextOverflow.ellipsis),
-            Text(board.view_count.toString()),
             Container(
                 margin: EdgeInsets.symmetric(vertical: mediaHeight(context, 0.005)),
                 child: Text(board.description, style: CustomTextStyle.w400(context, scale: 0.015), maxLines: 2, overflow: TextOverflow.ellipsis)),
@@ -89,7 +88,7 @@ class BoardCard extends StatelessWidget {
                           if(board.likeList.where((like) => like.userId == user!.id).isEmpty){
                             return Icon(CupertinoIcons.heart, color: CustomColors.hint, size: mediaHeight(context, 0.02));
                           } else {
-                            return Icon(CupertinoIcons.heart_fill, color: Colors.red, size: mediaHeight(context, 0.02));
+                            return Icon(CupertinoIcons.heart_fill, color: CustomColors.main, size: mediaHeight(context, 0.02));
                           }
                         },
                           onEmpty: Icon(CupertinoIcons.heart, color: CustomColors.hint, size: mediaHeight(context, 0.02)),
@@ -107,13 +106,7 @@ class BoardCard extends StatelessWidget {
                     ],
                   ),
                 ),
-                Wrap(
-                  spacing: mediaWidth(context, 0.01),
-                  children: [
-                    Icon(CustomIcons.clock, color: CustomColors.hint, size: mediaHeight(context, 0.025)),
-                    Text(beforeDate(board.createdAt), style: CustomTextStyle.w500(context, color: CustomColors.hint))
-                  ],
-                )
+                Text(beforeDate(board.createdAt), style: CustomTextStyle.w500(context, color: CustomColors.hint, scale: 0.015))
               ],
             )
           ],

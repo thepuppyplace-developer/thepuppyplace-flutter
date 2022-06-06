@@ -40,7 +40,7 @@ class _SearchPageState extends State<SearchPage> {
                     title: InsertSearchTabBar(
                       mediaHeight(context, 0.07),
                       margin: EdgeInsets.zero,
-                      hintText: '찾으시는 검색어를 입력하세요.',
+                      hintText: '지역, 업체명 검색',
                       onChanged: (query){
                         setState(() {
                           _query = query;

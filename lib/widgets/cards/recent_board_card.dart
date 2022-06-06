@@ -97,7 +97,7 @@ class RecentBoardCard extends StatelessWidget {
                               if(board.likeList.where((like) => like.userId == user!.id).isEmpty){
                                 return Icon(CupertinoIcons.heart, color: CustomColors.hint, size: mediaHeight(context, 0.02));
                               } else {
-                                return Icon(CupertinoIcons.heart_fill, color: Colors.red, size: mediaHeight(context, 0.02));
+                                return Icon(CupertinoIcons.heart_fill, color: CustomColors.main, size: mediaHeight(context, 0.02));
                               }
                             },
                               onEmpty: Icon(CupertinoIcons.heart, color: CustomColors.hint, size: mediaHeight(context, 0.02)),

@@ -1,29 +1,28 @@
 class Term{
   final int id;
-  final String term_title;
-  final String term_contents;
-  final bool is_require;
-  final DateTime createdAt;
-  final DateTime updatedAt;
-  final DateTime? deletedAt;
+  final String name;
+  final String content;
+  final bool is_required;
+  bool check;
 
   Term({
     required this.id,
-    required this.term_title,
-    required this.term_contents,
-    required this.is_require,
-    required this.createdAt,
-    required this.updatedAt,
-    required this.deletedAt,
+    required this.name,
+    required this.content,
+    required this.is_required,
+    required this.check,
   });
 
   factory Term.fromJson(Map<String, dynamic> json) => Term(
-    id: json['id'],
-    term_title: json['term_title'],
-    term_contents: json['term_contents'],
-    is_require: json['is_require'],
-    createdAt: DateTime.parse(json['createdAt']),
-    updatedAt: DateTime.parse(json['updatedAt']),
-    deletedAt: json['deletedAt'] == null ? null : DateTime.parse(json['deletedAt']),
+      id: json[ID],
+      name: json[TITLE],
+      content: json[CONTENTS],
+      is_required: json[IS_REQUIRED],
+      check: false
   );
+
+  static const String ID = 'id';
+  static const String TITLE = 'term_title';
+  static const String CONTENTS = 'term_contents';
+  static const String IS_REQUIRED = 'is_require';
 }

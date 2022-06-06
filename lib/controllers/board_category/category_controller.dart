@@ -1,10 +1,8 @@
 import 'package:get/get.dart';
-
-import '../../config/local_db.dart';
 import '../../models/BoardCategory.dart';
 import '../../repositories/board/board_repository.dart';
 
-class CategoryController extends GetxController with StateMixin<List<BoardCategory>>, LocalConfig{
+class CategoryController extends GetxController with StateMixin<List<BoardCategory>>{
   final BoardRepository _repository = BoardRepository();
 
   final RxList<BoardCategory> _categoryList = RxList<BoardCategory>();
@@ -28,11 +26,11 @@ class CategoryController extends GetxController with StateMixin<List<BoardCatego
     }
   }
 
-  Future getCategories() async{
-    if((await CATEGORY_LIST()).isNotEmpty){
-      _categoryList.value = await CATEGORY_LIST();
-    } else {
-      _categoryList.value = await _repository.getBoardCategory();
-    }
-  }
+  // Future getCategories() async{
+  //   if((await CATEGORY_LIST()).isNotEmpty){
+  //     _categoryList.value = await CATEGORY_LIST();
+  //   } else {
+  //     _categoryList.value = await _repository.getBoardCategory();
+  //   }
+  // }
 }

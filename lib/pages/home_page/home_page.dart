@@ -1,12 +1,11 @@
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:thepuppyplace_flutter/pages/search_page/search_page.dart';
 import 'package:thepuppyplace_flutter/util/common.dart';
 import 'package:thepuppyplace_flutter/views/home_views/best_board_list_view.dart';
+import 'package:thepuppyplace_flutter/views/home_views/first_notice_view.dart';
 import 'package:thepuppyplace_flutter/widgets/buttons/category_button.dart';
 import 'package:thepuppyplace_flutter/widgets/loadings/sliver_contents.dart';
 import '../../controllers/board/best_board_list_controller.dart';
@@ -14,12 +13,12 @@ import '../../controllers/board/board_list_controller.dart';
 import '../../models/Board.dart';
 import '../../util/cached_network_image_list.dart';
 import '../../widgets/cards/banner_card.dart';
-import '../../widgets/cards/best_board_card.dart';
 import '../../widgets/cards/recent_board_card.dart';
 import '../../widgets/loadings/refresh_contents.dart';
 import '../../widgets/tab_bars/search_tab_bar.dart';
 
 class HomePage extends StatefulWidget {
+  static const String routeName = '/homePage';
   const HomePage({Key? key}) : super(key: key);
 
   @override
@@ -118,6 +117,7 @@ class _HomePageState extends State<HomePage> {
                 slivers: [
                   const SliverToBoxAdapter(
                       child: BannerCard()),
+                  const FirstNoticeView(),
                   SliverToBoxAdapter(
                     child: Container(
                       margin: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.033), vertical: mediaHeight(context, 0.02)),
@@ -129,7 +129,7 @@ class _HomePageState extends State<HomePage> {
                           Text('클릭해서 원하시는 컨텐츠를 둘러보세요',
                             style: CustomTextStyle.w400(
                                 context, color: Colors.grey,
-                                height: 2),)
+                                height: 2, scale: 0.015),)
                         ],
                       ),
                     ),
@@ -137,7 +137,7 @@ class _HomePageState extends State<HomePage> {
                   SliverPadding(
                     padding: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.033)),
                     sliver: SliverGrid.count(
-                      childAspectRatio: 3/2,
+                      childAspectRatio: 7/6,
                         crossAxisCount: 3,
                         crossAxisSpacing: mediaWidth(context, 0.03),
                         mainAxisSpacing: mediaWidth(context, 0.03),
@@ -161,7 +161,7 @@ class _HomePageState extends State<HomePage> {
                           Text('지금 가장 인기있는 게시물을 확인해보세요',
                               style: CustomTextStyle.w400(
                                   context, color: Colors.grey,
-                                  height: 2))
+                                  height: 2, scale: 0.015))
                         ],
                       ),
                     ),
@@ -178,7 +178,7 @@ class _HomePageState extends State<HomePage> {
                           Text('더퍼피플레이스의 최신글을 확인해보세요',
                             style: CustomTextStyle.w400(
                                 context, color: Colors.grey,
-                                height: 2),)
+                                height: 2, scale: 0.015),)
                         ],
                       ),
                     ),

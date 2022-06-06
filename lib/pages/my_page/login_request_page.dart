@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thepuppyplace_flutter/util/cached_network_image_list.dart';
+import 'package:thepuppyplace_flutter/util/png_list.dart';
 
 import '../../util/common.dart';
 import '../../util/custom_icons.dart';
@@ -19,9 +20,9 @@ class LoginRequestPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             CircleAvatar(
-              maxRadius: mediaHeight(context, 0.05),
+              maxRadius: mediaHeight(context, 0.03),
               backgroundColor: CustomColors.hint,
-              foregroundImage: CachedNetworkImageProvider(CachedNetworkImageList.thepuppy_profile_0),
+              backgroundImage: AssetImage(PngList.app_logo),
             ),
             Text('로그인 후 이용해주세요', style: CustomTextStyle.w600(context, scale: 0.02, height: 3)),
             Container(

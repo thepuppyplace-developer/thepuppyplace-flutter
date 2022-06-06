@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 import 'dart:typed_data';
@@ -7,9 +8,9 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
-import 'package:thepuppyplace_flutter/util/png_list.dart';
+import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
+import 'package:thepuppyplace_flutter/models/Board.dart';
 import '../models/BoardComment.dart';
-import '../widgets/animations/SizedAnimation.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 double mediaHeight(BuildContext context, double scale) => MediaQuery.of(context).size.height * scale;
@@ -42,6 +43,12 @@ Future showSnackBar(BuildContext context, String msg) async{
   return ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg, style: CustomTextStyle.w500(context, color: Colors.white))));
 }
 
+Future network_check_message(BuildContext context) => showSnackBar(context, '인터넷 연결을 확인해주세요.');
+
+Future expiration_token_message(BuildContext context) => showSnackBar(context, '토큰값이 만료되었습니다.');
+
+Future unknown_message(BuildContext context) => showSnackBar(context, '알 수 없는 오류가 발생했습니다.');
+
 Future showToast(String msg) async{
   await Fluttertoast.cancel();
   return Fluttertoast.showToast(msg: msg);
@@ -49,18 +56,10 @@ Future showToast(String msg) async{
 
 Future showIndicator(Future future) => Get.dialog(FutureBuilder(
   future: future.whenComplete(() => Get.back()),
-  builder: (context, snapshot) => Center(
-    child: Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        SizedAnimation(child: Image.asset(PngList.loading, height: mediaHeight(context, 0.15))),
-
-        Container(
-            margin: EdgeInsets.symmetric(vertical: mediaHeight(context, 0.04)),
-            child: const CupertinoActivityIndicator())
-      ],
-    ),
-  ),
+  builder: (context, snapshot) => Container(
+    alignment: Alignment.center,
+      margin: EdgeInsets.symmetric(vertical: mediaHeight(context, 0.04)),
+      child: const CupertinoActivityIndicator()),
 ));
 
 class CustomIndicator extends StatelessWidget {
@@ -103,15 +102,89 @@ mixin CustomColors implements Color{
 }
 
 mixin CustomTextStyle implements TextStyle{
-  static TextStyle w100(BuildContext context, {double? scale, double? height, Color? color, String? fontFamily}) => TextStyle(fontWeight: FontWeight.w100, fontSize: mediaHeight(context, scale ?? 0.016), color: color ?? Colors.black, height: height, fontFamily: fontFamily ?? 'Tmoney');
-  static TextStyle w200(BuildContext context, {double? scale, double? height, Color? color, String? fontFamily}) => TextStyle(fontWeight: FontWeight.w200, fontSize: mediaHeight(context, scale ?? 0.016), color: color ?? Colors.black, height: height, fontFamily: fontFamily ?? 'Tmoney');
-  static TextStyle w300(BuildContext context, {double? scale, double? height, Color? color, String? fontFamily}) => TextStyle(fontWeight: FontWeight.w300, fontSize: mediaHeight(context, scale ?? 0.016), color: color ?? Colors.black, height: height, fontFamily: fontFamily ?? 'Tmoney');
-  static TextStyle w400(BuildContext context, {double? scale, double? height, Color? color, String? fontFamily}) => TextStyle(fontWeight: FontWeight.w400, fontSize: mediaHeight(context, scale ?? 0.016), color: color ?? Colors.black, height: height, fontFamily: fontFamily ?? 'Tmoney');
-  static TextStyle w500(BuildContext context, {double? scale, double? height, Color? color, String? fontFamily}) => TextStyle(fontWeight: FontWeight.w500, fontSize: mediaHeight(context, scale ?? 0.016), color: color ?? Colors.black, height: height, fontFamily: fontFamily ?? 'Tmoney');
-  static TextStyle w600(BuildContext context, {double? scale, double? height, Color? color, String? fontFamily}) => TextStyle(fontWeight: FontWeight.w600, fontSize: mediaHeight(context, scale ?? 0.016), color: color ?? Colors.black, height: height, fontFamily: fontFamily ?? 'Tmoney');
-  static TextStyle w700(BuildContext context, {double? scale, double? height, Color? color, String? fontFamily}) => TextStyle(fontWeight: FontWeight.w700, fontSize: mediaHeight(context, scale ?? 0.016), color: color ?? Colors.black, height: height, fontFamily: fontFamily ?? 'Tmoney');
-  static TextStyle w800(BuildContext context, {double? scale, double? height, Color? color, String? fontFamily}) => TextStyle(fontWeight: FontWeight.w800, fontSize: mediaHeight(context, scale ?? 0.016), color: color ?? Colors.black, height: height, fontFamily: fontFamily ?? 'Tmoney');
-  static TextStyle w900(BuildContext context, {double? scale, double? height, Color? color, String? fontFamily}) => TextStyle(fontWeight: FontWeight.w900, fontSize: mediaHeight(context, scale ?? 0.016), color: color ?? Colors.black, height: height, fontFamily: fontFamily ?? 'Tmoney');
+  static const double _scale = 0.02;
+  static const Color _color = Colors.black;
+  static const String _family = 'Tmoney';
+  static const TextDecoration _decoration = TextDecoration.none;
+
+  static TextStyle appBarStyle(BuildContext context, {double? scale, Color? color}) => TextStyle(
+      fontWeight: FontWeight.w600,
+      fontSize: mediaHeight(context, scale ?? 0.022),
+      color: color ?? _color,
+      fontFamily: _family
+  );
+  static TextStyle w100(BuildContext context, {double? scale, double? height, Color? color, String? fontFamily, TextDecoration? decoration}) => TextStyle(
+      fontWeight: FontWeight.w100,
+      fontSize: mediaHeight(context, scale ?? _scale),
+      color: color ?? _color,
+      height: height,
+      fontFamily: fontFamily ?? _family,
+      decoration: decoration ?? _decoration
+  );
+  static TextStyle w200(BuildContext context, {double? scale, double? height, Color? color, String? fontFamily, TextDecoration? decoration}) => TextStyle(
+      fontWeight: FontWeight.w200,
+      fontSize: mediaHeight(context, scale ?? _scale),
+      color: color ?? _color,
+      height: height,
+      fontFamily: fontFamily ?? _family,
+      decoration: decoration ?? _decoration
+  );
+  static TextStyle w300(BuildContext context, {double? scale, double? height, Color? color, String? fontFamily, TextDecoration? decoration}) => TextStyle(
+      fontWeight: FontWeight.w300,
+      fontSize: mediaHeight(context, scale ?? _scale),
+      color: color ?? _color,
+      height: height,
+      fontFamily: fontFamily ?? _family,
+      decoration: decoration ?? _decoration
+  );
+  static TextStyle w400(BuildContext context, {double? scale, double? height, Color? color, String? fontFamily, TextDecoration? decoration}) => TextStyle(
+      fontWeight: FontWeight.w400,
+      fontSize: mediaHeight(context, scale ?? _scale),
+      color: color ?? _color,
+      height: height,
+      fontFamily: fontFamily ?? _family,
+      decoration: decoration ?? _decoration
+  );
+  static TextStyle w500(BuildContext context, {double? scale, double? height, Color? color, String? fontFamily, TextDecoration? decoration}) => TextStyle(
+      fontWeight: FontWeight.w500,
+      fontSize: mediaHeight(context, scale ?? _scale),
+      color: color ?? _color,
+      height: height,
+      fontFamily: fontFamily ?? _family,
+      decoration: decoration ?? _decoration
+  );
+  static TextStyle w600(BuildContext context, {double? scale, double? height, Color? color, String? fontFamily, TextDecoration? decoration}) => TextStyle(
+      fontWeight: FontWeight.w600,
+      fontSize: mediaHeight(context, scale ?? _scale),
+      color: color ?? _color,
+      height: height,
+      fontFamily: fontFamily ?? _family,
+      decoration: decoration ?? _decoration
+  );
+  static TextStyle w700(BuildContext context, {double? scale, double? height, Color? color, String? fontFamily, TextDecoration? decoration}) => TextStyle(
+      fontWeight: FontWeight.w700,
+      fontSize: mediaHeight(context, scale ?? _scale),
+      color: color ?? _color,
+      height: height,
+      fontFamily: fontFamily ?? _family,
+      decoration: decoration ?? _decoration
+  );
+  static TextStyle w800(BuildContext context, {double? scale, double? height, Color? color, String? fontFamily, TextDecoration? decoration}) => TextStyle(
+      fontWeight: FontWeight.w800,
+      fontSize: mediaHeight(context, scale ?? _scale),
+      color: color ?? _color,
+      height: height,
+      fontFamily: fontFamily ?? _family,
+      decoration: decoration ?? _decoration
+  );
+  static TextStyle w900(BuildContext context, {double? scale, double? height, Color? color, String? fontFamily, TextDecoration? decoration}) => TextStyle(
+      fontWeight: FontWeight.w900,
+      fontSize: mediaHeight(context, scale ?? _scale),
+      color: color ?? _color,
+      height: height,
+      fontFamily: fontFamily ?? _family,
+      decoration: decoration ?? _decoration
+  );
 }
 
 String beforeDate(DateTime date){
@@ -163,6 +236,39 @@ Future openURL({required String url, bool? inApp}) async{
 
 Future<XFile?> photoPick(BuildContext context, ImageSource imageSource) async{
   final imagePicker = ImagePicker();
-  final XFile? photo = await imagePicker.pickImage(source: imageSource, imageQuality: 10);
+  final XFile? photo = await imagePicker.pickImage(source: imageSource);
   return photo;
+}
+
+int bytesLength(String value){
+  return utf8.encode(value).length;
+}
+
+int hexStringToHexInt(String hex) {
+  hex = hex.replaceFirst('#', '');
+  hex = hex.length == 6 ? 'ff' + hex : hex;
+  int val = int.parse(hex, radix: 16);
+  return val;
+}
+
+Future shareKakaoBoard(BuildContext context, Board board) async{
+  try{
+    final bool result = await LinkClient.instance.isKakaoLinkAvailable();
+    if(result){
+      final FeedTemplate feed = FeedTemplate(
+        content: Content(
+            title: board.title,
+            imageUrl: Uri.parse(board.board_photos.first),
+            link: Link(
+              mobileWebUrl: Uri.parse('www.naver.com')
+            )
+        )
+      );
+      return LinkClient.instance.defaultTemplate(template: feed);
+    } else {
+      return showSnackBar(context, '카카오톡을 설치해주세요.');
+    }
+  } catch(error){
+    throw Exception(error);
+  }
 }

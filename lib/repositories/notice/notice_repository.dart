@@ -1,16 +1,11 @@
-import 'dart:convert';
-import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:thepuppyplace_flutter/util/common.dart';
-
 import '../../config/config.dart';
-import '../../config/local_db.dart';
 import '../../models/Notice.dart';
 
-class NoticeRepository extends GetConnect with Config, LocalConfig{
+class NoticeRepository extends GetConnect with Config{
 
   Future<List<Notice>> getNoticeList(BuildContext context) async{
     try{
@@ -30,7 +25,7 @@ class NoticeRepository extends GetConnect with Config, LocalConfig{
 
   Future<int?> insertNotice(BuildContext context, {required XFile? image, required String notice_title, required String notice_main_text}) async{
     try{
-      if(await jwt != null){
+      if(await JWT_TOKEN != null){
         final Response res = await post('$API_URL/notice', FormData({
           'image': image == null ? null : MultipartFile(await image.readAsBytes(), filename: image.path),
           'notice_title': notice_title.trim(),
@@ -60,7 +55,7 @@ class NoticeRepository extends GetConnect with Config, LocalConfig{
     required String description,
   }) async{
     try{
-      if(await jwt != null){
+      if(await JWT_TOKEN != null){
         final Response res = await patch('$API_URL/notice/$notice_id', FormData({
           'notice_title': title.trim(),
           'notice_main_text': description.trim()
@@ -84,7 +79,7 @@ class NoticeRepository extends GetConnect with Config, LocalConfig{
 
   Future<int?> deleteNotice(BuildContext context, int? notice_id) async{
     try{
-      if(await jwt != null){
+      if(await JWT_TOKEN != null){
         final Response res = await delete('$API_URL/notice/$notice_id');
 
         switch(res.statusCode){

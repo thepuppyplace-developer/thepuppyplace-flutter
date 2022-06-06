@@ -1,115 +1,60 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
-import 'package:sqflite/sqflite.dart';
-import 'package:thepuppyplace_flutter/pages/auth_page/signup_insert_page.dart';
 import '../../config/config.dart';
-import '../../config/local_db.dart';
 import '../../models/User.dart';
 import '../../util/common.dart';
 
-class UserRepository extends GetConnect with Config, LocalConfig{
+class UserRepository extends GetConnect with Config{
 
-  Future<int?> socialSignup(BuildContext context, {String? email, String? nickname, String? google_uid, String? apple_uid}) async{
+  Future<Response> signup({String? email, String? password, required String nickname, String? name, GoogleSignInAccount? googleUser, AuthorizationCredentialAppleID? appleUser}) async{
     try{
-      final Response res = await post('$API_URL/user/social/signup', {
-        'email': email,
-        'nickname': nickname,
-        'google_uid': google_uid,
-        'apple_uid': apple_uid
+      final Response res = await post('$API_URL/user/signup', {
+        "uid": USER_ID(email: email, googleUser: googleUser, appleUser: appleUser)?.trim(),
+        "password": password?.trim(),
+        "auth_type": USER_AUTH_TYPE(googleUser: googleUser, appleUser: appleUser)?.trim(),
+        "nickname": nickname.trim(),
       });
-      switch(res.statusCode){
-        case 201:
-          return res.statusCode;
-        case 401:
-          await showSnackBar(context, res.body['message']);
-          return res.statusCode;
-        default:
-          await network_check_message(context);
-          return null;
-      }
+      if(res.statusCode != null) print(res.body['message']);
+      return res;
     } catch(error){
-      await unknown_message(context);
       throw Exception(error);
     }
   }
 
-  Future<String?> signUp(BuildContext context, {required String email, required String password, required String nickname}) async{
-    try{
-      final Response res = await post('$API_URL/user/signup', {
-        'email': email.trim(),
-        'password': password.trim(),
-        'nickname': nickname.trim()
-      });
-
-      switch(res.statusCode){
-        case 201: {
-          return '$nickname님 환영합니다!';
-        }
-        case 401: {
-          switch(res.body['message']){
-            case 'already-use-email': {
-              return '이미 사용중인 이메일 주소입니다.';
-            }
-            case 'already-use-nickname': {
-              return '이미 사용중인 닉네임입니다.';
-            }
-            default: {
-              return '사용할 수 없는 이메일 주소입니다.';
-            }
-          }
-        }
-        default: {
-          await network_check_message(context);
-          return null;
-        }
-      }
-    } catch(error) {
-      throw unknown_message(context);
-    }
-  }
-
-  Future<String?> login(BuildContext context, String email, {String? password, String? google_uid, String? apple_uid}) async{
-    try{
+  Future<Response> login({
+    String? email,
+    String? password,
+    GoogleSignInAccount? googleUser,
+    AuthorizationCredentialAppleID? appleUser
+  }) async {
+    try {
       final Response res = await post('$API_URL/user', {
-        'email': email,
-        'password': password,
-        'fcm_token': await fcm_token,
-        'google_uid': google_uid,
-        'apple_uid': apple_uid
+        "uid": USER_ID(
+            email: email, googleUser: googleUser, appleUser: appleUser),
+        "password": password,
+        "auth_type": USER_AUTH_TYPE(
+            googleUser: googleUser, appleUser: appleUser),
+        "fcm_token": await FCM_TOKEN
       });
-
-      switch(res.statusCode){
-        case 200: {
-          String? jwt = res.body['data']['jwt'];
-          return jwt;
-        }
-        case 204: {
-          return 'email-password-check';
-        }
-        default: {
-          return null;
-        }
-      }
-    } catch(error){
-      throw unknown_message(context);
+      return res;
+    } catch (error) {
+      throw Exception(error);
     }
   }
 
-  Future<GoogleSignInAccount?> googleLogin(BuildContext context) async{
+  Future<GoogleSignInAccount?> get getGoogleUser async{
     try{
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
       return googleUser;
     } catch(error){
-      await unknown_message(context);
       throw Exception(error);
     }
   }
 
-  Future<AuthorizationCredentialAppleID?> appleLogin(BuildContext context) async{
+  Future<AuthorizationCredentialAppleID?> get getAppleUser async{
     try{
       final AuthorizationCredentialAppleID? appleUser = await SignInWithApple.getAppleIDCredential(
           scopes: [
@@ -119,25 +64,18 @@ class UserRepository extends GetConnect with Config, LocalConfig{
       );
       return appleUser;
     } catch(error){
-      await unknown_message(context);
       throw Exception(error);
     }
   }
 
   Future<User?> logout(BuildContext context) async{
     try{
-      if(await jwt != null){
-        final Database db = await database;
+      if(await JWT_TOKEN != null){
         final Response res = await patch('$API_URL/user/my', {
           'fcm_token': null,
-        }, headers: headers(await jwt));
-
-        print(res.statusCode);
-        await db.rawDelete('''
-            DELETE FROM ${User.TABLE}
-            ''');
+        }, headers: await headers);
         await showSnackBar(context, '로그아웃 되었습니다.');
-        return null;
+        return REMOVE_JWT_TOKEN;
       } else {
         await expiration_token_message(context);
         return null;
@@ -148,44 +86,23 @@ class UserRepository extends GetConnect with Config, LocalConfig{
     }
   }
 
-  Future<User?> getUser(String? token) async{
-    if(token != null){
-      final Response res = await get('$API_URL/user/my', headers: headers(token));
-
-      switch(res.statusCode){
-        case 200: {
-          final Database db = await database;
-          final User user = User.fromJson(res.body['data']);
-          final userList = await USER_LIST(where: 'id = ?', whereArgs: [user.id]);
-          if(userList.isNotEmpty){
-            await db.update(User.TABLE, user.toJson(), where: 'id = ?', whereArgs: [user.id]);
-          } else {
-            await db.insert(User.TABLE, user.toJson());
-          }
-          return user;
-        }
-        default: {
-          return null;
-        }
-      }
-    } else {
-      return null;
+  Future<Response> getUser() async{
+    try{
+      final Response res = await get('$API_URL/user/my', headers: await headers);
+      if(res.statusCode != null) print(res.body['message']);
+      return res;
+    } catch(error){
+      throw Exception(error);
     }
   }
 
   Future<User?> deleteUser(BuildContext context, int user_id) async{
     try{
-      if(await jwt != null){
-        final Response res = await delete('$API_URL/user/my', headers: headers(await jwt));
+      if(await JWT_TOKEN != null){
+        final Response res = await delete('$API_URL/user/my', headers: await headers);
 
         switch(res.statusCode){
           case 200:
-            final Database db = await database;
-            await db.rawDelete('''
-            DELETE FROM ${User.TABLE}
-            WHERE id = ?
-            ''', [user_id]);
-
             await showSnackBar(context, '회원이 탈퇴되었습니다.');
             break;
           default:
@@ -194,85 +111,59 @@ class UserRepository extends GetConnect with Config, LocalConfig{
       } else {
         await expiration_token_message(context);
       }
-      return null;
+      return REMOVE_JWT_TOKEN;
     } catch(error){
       throw unknown_message(context);
     }
   }
 
-  Future<String?> sendOTP(BuildContext context, String email) async{
+  Future<String?> sendOTP(String email) async{
     try{
       final Response res = await post('$API_URL/user/auth/mail/send', {
         'email': email.trim()
       });
+      if(res.statusCode != null) print(res.body['message']);
 
       switch(res.statusCode){
-        case 200: {
-          await showSnackBar(context, '인증번호가 전송되었습니다.');
+        case 200:
           return res.body['data']['authNumber'];
-        }
-        default: {
-          await network_check_message(context);
+        default:
           return null;
-        }
       }
-    } catch(error) {
-      throw unknown_message(context);
+    } catch(error){
+      throw Exception(error);
     }
   }
 
-  Future<String?> emailCheck(BuildContext context, String email) async{
+  Future<int?> emailCheck(String email) async{
     try{
-      final Response res = await post('$API_URL/user/emailcheck', {'email': email.trim()});
+      final Response res = await post('$API_URL/user/emailcheck', {
+        'email': email.trim()
+      });
+      if(res.statusCode != null) print(res.body['message']);
 
-      switch(res.statusCode){
-        case 200: {
-          return null;
-        }
-        case 401: {
-          switch(res.body['message']){
-            case 'already-user-email': return '이미 사용중인 이메일 주소입니다.';
-            default: return null;
-          }
-        }
-        default: {
-          await network_check_message(context);
-          return null;
-        }
-      }
-    } catch(error) {
-      throw unknown_message(context);
+      return res.statusCode;
+    } catch(error){
+      throw Exception(error);
     }
   }
 
-  Future<String?> nicknameCheck(BuildContext context, String nickname) async{
+  Future<int?> nicknameCheck(String nickname) async{
     try{
-      final Response res = await post('$API_URL/user/nicknamecheck', {'nickname': nickname.trim()});
-
-      switch(res.statusCode){
-        case 200: {
-          return null;
-        }
-        case 401: {
-          switch(res.body['message']){
-            case 'already-user-nickname': return '이미 사용중인 닉네임입니다.';
-            default: return null;
-          }
-        }
-        default: {
-          await network_check_message(context);
-          return null;
-        }
-      }
-    } catch(error) {
-      throw unknown_message(context);
+      final Response res = await post('$API_URL/user/nicknamecheck', {
+        'nickname': nickname.trim()
+      });
+      if(res.statusCode != null) print(res.body['message']);
+      return res.statusCode;
+    } catch(error){
+      throw Exception(error);
     }
   }
 
   Future changeNotification(BuildContext context) async{
     try{
-      if(await jwt != null){
-        final Response res = await patch('$API_URL/user/isalarm', {}, headers: headers(await jwt));
+      if(await JWT_TOKEN != null){
+        final Response res = await patch('$API_URL/user/isalarm', {}, headers: await headers);
 
         switch(res.statusCode){
           case 200:
@@ -293,8 +184,8 @@ class UserRepository extends GetConnect with Config, LocalConfig{
 
   Future<int?> updateNickname(BuildContext context, String nickname) async{
     try{
-      if(await jwt != null){
-        final Response res = await patch('$API_URL/user/my', { "nickname": nickname }, headers: headers(await jwt));
+      if(await JWT_TOKEN != null){
+        final Response res = await patch('$API_URL/user/my', { "nickname": nickname }, headers: await headers);
 
         switch(res.statusCode){
           case 200:
@@ -316,12 +207,12 @@ class UserRepository extends GetConnect with Config, LocalConfig{
 
   Future updatePhotoURL(BuildContext context, XFile? photo) async{
     try{
-      if(await jwt != null){
+      if(await JWT_TOKEN != null){
         if(photo != null){
           final Response res = await patch('$API_URL/user/profile/image', FormData({
             "image": MultipartFile(await photo.readAsBytes(), filename: photo.path)
           }),
-              headers: headers(await jwt));
+              headers: await headers);
           print(res.statusCode);
 
           switch(res.statusCode){
@@ -341,8 +232,8 @@ class UserRepository extends GetConnect with Config, LocalConfig{
 
   Future updateDefaultPhotoURL(BuildContext context) async{
     try{
-      if(await jwt != null){
-        final Response res = await patch('$API_URL/user/my/profile/image/default', {}, headers: headers(await jwt));
+      if(await JWT_TOKEN != null){
+        final Response res = await patch('$API_URL/user/my/profile/image/default', {}, headers: await headers);
         switch(res.statusCode){
           case 200:
             return null;
@@ -362,11 +253,11 @@ class UserRepository extends GetConnect with Config, LocalConfig{
     required String after_password
   }) async{
     try{
-      if(await jwt != null){
+      if(await JWT_TOKEN != null){
         final Response res = await patch('$API_URL/user/password', {
           'before_password': before_password.trim(),
           'after_password': after_password.trim()
-        }, headers: headers(await jwt));
+        }, headers: await headers);
 
         switch(res.statusCode){
           case 200:
@@ -388,10 +279,12 @@ class UserRepository extends GetConnect with Config, LocalConfig{
 
   Future<int?> sendPassword(BuildContext context, String email) async{
     try{
-      final Response res = await post('$API_URL//user/temppw/mail/send', {
+      final Response res = await post('$API_URL/user/temppw/mail/send', {
         'email': email.trim()
       });
 
+
+      print(res.statusCode);
       switch(res.statusCode){
         case 200:
           await showSnackBar(context, '임시 비밀번호가 발송되었습니다.');

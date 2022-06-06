@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:thepuppyplace_flutter/util/cached_network_image_list.dart';
 import 'package:thepuppyplace_flutter/util/common.dart';
 import 'package:thepuppyplace_flutter/util/custom_icons.dart';
+import 'package:thepuppyplace_flutter/util/png_list.dart';
 import '../../controllers/user/user_controller.dart';
 import '../../controllers/version/version_controller.dart';
 import '../../widgets/buttons/custom_icon_button.dart';
@@ -40,7 +41,7 @@ class MyPage extends GetWidget<UserController> {
                     children: [
                       CircleAvatar(
                         radius: mediaHeight(context, 0.03),
-                        backgroundImage: CachedNetworkImageProvider(CachedNetworkImageList.thepuppy_profile_0),
+                        backgroundImage: AssetImage(PngList.default_profile),
                         foregroundImage: user!.photo_url == null ? null : CachedNetworkImageProvider(user.photo_url!),
                       ),
                       Expanded(

@@ -22,7 +22,16 @@ class SliverLoading extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            if(animated ?? true)SizedAnimation(child: Image.asset(PngList.loading, height: mediaHeight(context, 0.15))),
+            if(animated ?? true) Container(
+              height: mediaHeight(context, 0.1),
+              width: mediaHeight(context, 0.1),
+              decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  image: DecorationImage(
+                      image: AssetImage(PngList.app_logo)
+                  )
+              ),
+            ),
             Container(
                 margin: EdgeInsets.symmetric(vertical: mediaHeight(context, 0.04)),
                 child: Text(message ?? '페이지 이동중입니다', style: CustomTextStyle.w500(context, color: CustomColors.hint))),
@@ -50,7 +59,16 @@ class SliverEmpty extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            if(imageVisible ?? true) Image.asset(PngList.empty, height: mediaHeight(context, 0.15)),
+            if(imageVisible ?? true) Container(
+              height: mediaHeight(context, 0.1),
+              width: mediaHeight(context, 0.1),
+              decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  image: DecorationImage(
+                      image: AssetImage(PngList.app_logo)
+                  )
+              ),
+            ),
             Container(
                 margin: EdgeInsets.symmetric(vertical: mediaHeight(context, 0.04)),
                 child: Text(message, style: CustomTextStyle.w500(context, color: CustomColors.hint))),

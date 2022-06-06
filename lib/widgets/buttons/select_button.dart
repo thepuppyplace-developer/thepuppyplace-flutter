@@ -29,7 +29,7 @@ class SelectButton extends StatelessWidget {
                 borderRadius: BorderRadius.circular(5),
                 border: Border.all(color: currentIndex == index ? CustomColors.main : CustomColors.hint)
             ),
-            child: Text(text, style: CustomTextStyle.w500(context, color: currentIndex == index ? CustomColors.main : CustomColors.hint))),
+            child: Text(text, style: CustomTextStyle.w500(context, color: currentIndex == index ? CustomColors.main : CustomColors.hint, scale: 0.012))),
         onPressed: (){
           onChanged(index);
         },
