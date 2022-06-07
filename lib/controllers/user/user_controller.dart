@@ -4,7 +4,9 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:thepuppyplace_flutter/pages/auth_page/signup_terms_page.dart';
+import 'package:thepuppyplace_flutter/pages/my_page/user_deleted_page.dart';
 import 'package:thepuppyplace_flutter/repositories/terms/terms_repo.dart';
+import 'package:thepuppyplace_flutter/util/common.dart';
 import '../../config/config.dart';
 import '../../models/Term.dart';
 import '../../models/User.dart';
@@ -158,7 +160,19 @@ class UserController extends GetxController with StateMixin<User>, Config{
   }
 
   Future deleteUser(BuildContext context) async{
-    await _repo.deleteUser(context, _user.value!.id);
-    return logout(context);
+    try{
+      final Response res = await _repo.deleteUser(context, _user.value!.id);
+      switch(res.statusCode){
+        case 200:
+          await showSnackBar(context, '회원이 탈퇴되었습니다.');
+          _user.value = await REMOVE_JWT_TOKEN;
+          return Get.offNamedUntil(UserDeletedPage.routeName, (route) => route.isFirst);
+        default:
+          return network_check_message(context);
+      }
+    } catch(error){
+      await unknown_message(context);
+      throw Exception(error);
+    }
   }
 }

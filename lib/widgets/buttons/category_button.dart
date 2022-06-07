@@ -37,7 +37,7 @@ class CategoryButton extends StatelessWidget {
         ],
       ),
       onPressed: (){
-        Navigator.pushNamed(context, BoardListPage.routeName, arguments: currentIndex);
+        Navigator.push(context, MaterialPageRoute(builder: (context) => BoardListPage(currentIndex: currentIndex), settings: const RouteSettings(name: BoardListPage.routeName)));
         // Get.toNamed(BoardListPage.routeName, arguments: currentIndex);
       }
     );

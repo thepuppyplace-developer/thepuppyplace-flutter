@@ -14,18 +14,12 @@ class _HomeNavigatorState extends State<HomeNavigator> {
   @override
   Widget build(BuildContext context) {
     return Navigator(
-      initialRoute: HomePage.routeName,
       onGenerateRoute: (route){
-        Widget page;
-        if(route.name == BoardListPage.routeName){
-          page = const BoardListPage();
-        } else {
-          page = const HomePage();
+        Widget page = const HomePage();
+        switch(route.name){
+          case HomePage.routeName: page = const HomePage(); break;
+          case BoardListPage.routeName: page = const BoardListPage(); break;
         }
-        // switch(route.name){
-        //   case HomePage.routeName: page = const HomePage(); break;
-        //   case BoardListPage.routeName: page = const BoardListPage(); break;
-        // }
         return MaterialPageRoute(builder: (context) => page);
       },
     );

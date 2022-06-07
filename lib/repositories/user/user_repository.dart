@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
+import 'package:thepuppyplace_flutter/pages/my_page/user_deleted_page.dart';
 import '../../config/config.dart';
 import '../../models/User.dart';
 import '../../util/common.dart';
@@ -96,24 +97,13 @@ class UserRepository extends GetConnect with Config{
     }
   }
 
-  Future<User?> deleteUser(BuildContext context, int user_id) async{
+  Future<Response> deleteUser(BuildContext context, int user_id) async{
     try{
-      if(await JWT_TOKEN != null){
-        final Response res = await delete('$API_URL/user/my', headers: await headers);
-
-        switch(res.statusCode){
-          case 200:
-            await showSnackBar(context, '회원이 탈퇴되었습니다.');
-            break;
-          default:
-            await network_check_message(context);
-        }
-      } else {
-        await expiration_token_message(context);
-      }
-      return REMOVE_JWT_TOKEN;
+      final Response res = await delete('$API_URL/user/my', headers: await headers);
+      if(res.statusCode != null) print(res.body['message']);
+      return res;
     } catch(error){
-      throw unknown_message(context);
+      throw Exception(error);
     }
   }
 

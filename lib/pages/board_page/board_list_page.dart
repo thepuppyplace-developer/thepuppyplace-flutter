@@ -13,7 +13,8 @@ import 'board_list_views/talk_board_list_view.dart';
 class BoardListPage extends StatefulWidget {
   static const String routeName = '/boardListPage';
   final String? query;
-  const BoardListPage({this.query, Key? key}) : super(key: key);
+  final int? currentIndex;
+  const BoardListPage({this.query, this.currentIndex, Key? key}) : super(key: key);
 
   @override
   State<BoardListPage> createState() => _BoardListPageState();
@@ -22,9 +23,6 @@ class BoardListPage extends StatefulWidget {
 class _BoardListPageState extends State<BoardListPage> {
 
   int currentIndex = 0;
-
-  Object? get initIndex => ModalRoute.of(context)?.settings.arguments;
-
 
   final List<String> _categoryList = <String>[
     '카페', '음식점', '쇼핑몰', '호텔', '운동장', '수다방'
@@ -54,7 +52,7 @@ class _BoardListPageState extends State<BoardListPage> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      initialIndex: initIndex! ?? currentIndex,
+      initialIndex: widget.currentIndex ?? currentIndex,
       length: _pageList(widget.query).length,
       child: Scaffold(
         body: NestedScrollView(

@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:thepuppyplace_flutter/pages/my_page/app_info_page.dart';
 import 'package:thepuppyplace_flutter/util/cached_network_image_list.dart';
 import 'package:thepuppyplace_flutter/util/common.dart';
 import 'package:thepuppyplace_flutter/util/custom_icons.dart';
@@ -121,15 +122,9 @@ class MyPage extends GetWidget<UserController> {
                       CustomTextButton('공지사항', (){
                         Get.toNamed(NoticeListPage.routeName);
                       }, color: Colors.black, alignment: Alignment.centerLeft),
-                      Row(
-                        children: [
-                          const Expanded(child: CustomTextButton('버전정보', null, color: Colors.black, alignment: Alignment.centerLeft)),
-                          GetBuilder<VersionController>(
-                            init: VersionController(),
-                            builder: (VersionController controller) => controller.obx((version) => Text(version!.version, style: CustomTextStyle.w500(context, color: CustomColors.hint))),
-                          )
-                        ],
-                      ),
+                      CustomTextButton('앱 정보', (){
+                        Get.toNamed(AppInfoPage.routeName);
+                      }, color: Colors.black, alignment: Alignment.centerLeft),
                       CustomTextButton('서비스 이용약관', (){
                         Get.to(() => const TermsPage());
                       }, color: Colors.black, alignment: Alignment.centerLeft),
@@ -148,10 +143,7 @@ class MyPage extends GetWidget<UserController> {
                             title: '회원을 탈퇴하시겠습니까?',
                             tabText: '회원탈퇴',
                             content: '회원탈퇴시 복원되지 않습니다.\n삭제하시겠습니까?',
-                            onTap: (){
-                              Get.back();
-                              controller.deleteUser(context);
-                            }
+                            onTap: () => showIndicator(controller.deleteUser(context))
                         ));
                       }, color: Colors.black, alignment: Alignment.centerLeft),
                     ],

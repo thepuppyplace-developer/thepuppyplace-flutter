@@ -58,11 +58,13 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<BoardListController>(
+      autoRemove: false,
       init: BoardListController(),
       builder: (BoardListController controller) {
         return NestedScrollView(
           headerSliverBuilder: (context, innerBoxIsScrolled) => [
             SliverAppBar(
+              automaticallyImplyLeading: false,
               snap: true,
               floating: true,
               pinned: true,
@@ -115,8 +117,11 @@ class _HomePageState extends State<HomePage> {
               ),
               child: CustomScrollView(
                 slivers: [
-                  const SliverToBoxAdapter(
-                      child: BannerCard()),
+                  SliverPadding(
+                    padding: baseVerticalPadding(context),
+                    sliver: const SliverToBoxAdapter(
+                        child: BannerCard()),
+                  ),
                   const FirstNoticeView(),
                   SliverToBoxAdapter(
                     child: Container(

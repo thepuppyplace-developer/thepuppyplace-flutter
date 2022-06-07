@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:thepuppyplace_flutter/controllers/user/user_controller.dart';
+import 'package:thepuppyplace_flutter/pages/my_page/update_my_page.dart';
 import 'package:thepuppyplace_flutter/repositories/user/user_repository.dart';
+import 'package:thepuppyplace_flutter/widgets/buttons/custom_text_button.dart';
+import 'package:thepuppyplace_flutter/widgets/dialogs/custom_dialog.dart';
 
 import '../../util/common.dart';
 import '../../widgets/buttons/custom_button.dart';
 import '../../widgets/text_fields/custom_text_field.dart';
 
 class UpdatePasswordPage extends StatefulWidget {
+  static const String routeName = '/updatePasswordPage';
   const UpdatePasswordPage({Key? key}) : super(key: key);
 
   @override
@@ -116,6 +121,16 @@ class _UpdatePasswordPageState extends State<UpdatePasswordPage> {
                             }
                           },
                         ),
+                        Container(
+                          alignment: Alignment.centerRight,
+                          child: CustomTextButton(
+                            '비밀번호가 기억나지 않으세요?', () => showDialog(context: context, builder: (context) => CustomDialog(
+                            title: '임시 비밀번호를 전송할까요?',
+                            content: '임시 비밀번호를 전송하면 로그아웃됩니다.',
+                            onTap: () => showIndicator(_sendPassword),
+                          )),
+                          ),
+                        )
                       ],
                     ),
                   ),
@@ -127,7 +142,7 @@ class _UpdatePasswordPageState extends State<UpdatePasswordPage> {
                       : () {
                     if(_passwordKey.currentState!.validate()){
                       _passwordKey.currentState!.save();
-                      showIndicator(updatePassword);
+                      showIndicator(_updatePassword);
                     }
                   },
                 )
@@ -139,7 +154,7 @@ class _UpdatePasswordPageState extends State<UpdatePasswordPage> {
     );
   }
 
-  Future get updatePassword async{
+  Future get _updatePassword async{
     int? statusCode = await _repo.updatePassword(
         context,
         before_password: _beforePassword,
@@ -149,6 +164,21 @@ class _UpdatePasswordPageState extends State<UpdatePasswordPage> {
       return Get.back();
     } else if(statusCode == 403 || statusCode == 204) {
       return showSnackBar(context, '비밀번호가 일치하지 않습니다.');
+    }
+  }
+
+  Future get _sendPassword async{
+    try{
+      final int? statusCode = await _repo.sendPassword(context, UserController.user!.email!.trim());
+      switch(statusCode){
+        case 200:
+          return UserController.to.logout(context);
+        default:
+          return network_check_message(context);
+      }
+    } catch(error){
+      await unknown_message(context);
+      throw Exception(error);
     }
   }
 }

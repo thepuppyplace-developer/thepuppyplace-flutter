@@ -13,6 +13,7 @@ import '../../widgets/buttons/update_text_button.dart';
 import 'update_nickname_page.dart';
 
 class UpdateMyPage extends StatefulWidget {
+  static const String routeName = '/updateMyPage';
   const UpdateMyPage({Key? key}) : super(key: key);
 
   @override

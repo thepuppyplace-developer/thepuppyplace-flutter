@@ -56,13 +56,13 @@ class SearchBoardCard extends StatelessWidget {
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       image: DecorationImage(
-                        opacity: board.board_photos.isEmpty ? 1 : 0.5,
-                          colorFilter: board.board_photos.isEmpty ? null : const ColorFilter.mode(Colors.black, BlendMode.colorDodge),
+                        opacity: board.board_photos.length <= 1 ? 1 : 0.5,
+                          colorFilter: board.board_photos.length <= 1 ? null : const ColorFilter.mode(Colors.black, BlendMode.colorDodge),
                           fit: BoxFit.cover,
                           image: CachedNetworkImageProvider(board.board_photos.first)
                       )
                   ),
-                  child: Text('+ ${board.board_photos.length - 1}', style: CustomTextStyle.w500(context, color: Colors.white, scale: 0.02)),
+                  child: board.board_photos.length <= 1 ? null : Text('+ ${board.board_photos.length - 1}', style: CustomTextStyle.w500(context, color: Colors.white, scale: 0.02)),
                 )
               ],
             )
