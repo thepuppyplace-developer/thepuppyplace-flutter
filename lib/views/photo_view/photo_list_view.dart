@@ -38,27 +38,24 @@ class _PhotoListViewState extends State<PhotoListView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+        backgroundColor: Colors.black,
         extendBodyBehindAppBar: true,
         appBar: AppBar(
           foregroundColor: CustomColors.main,
           backgroundColor: Colors.transparent,
-          titleTextStyle: CustomTextStyle.w600(context, color: CustomColors.main),
+          titleTextStyle: CustomTextStyle.w500(context, color: CustomColors.main),
           title: Text('${_currentIndex + 1}/${widget.photoList.length}'),
         ),
         body: PhotoViewGallery.builder(
           pageController: _pageController,
-          onPageChanged: (index){
-            setState(() {
-              _currentIndex = index;
-            });
-          },
+          onPageChanged: (index) => setState(() => _currentIndex = index),
           itemCount: widget.photoList.length,
           builder: (context, index){
             final String photo = widget.photoList[index];
             return PhotoViewGalleryPageOptions(
                 imageProvider: _imageProvider(photo),
-                errorBuilder: (context, object, trace) => CustomErrorView(error: '이미지가 삭제되었습니다.')
+                heroAttributes: PhotoViewHeroAttributes(tag: photo),
+                errorBuilder: (context, object, trace) => const ErrorView('이미지가 삭제되었습니다.')
             );
           },
           loadingBuilder: (context, event) => const LoadingView(message: '이미지를 불러오는 중입니다.'),
