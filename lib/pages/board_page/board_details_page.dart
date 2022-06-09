@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:share_plus/share_plus.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:thepuppyplace_flutter/util/common.dart';
 import 'package:thepuppyplace_flutter/views/photo_view/photo_list_view.dart';
@@ -64,7 +63,7 @@ class _BoardDetailsPageState extends State<BoardDetailsPage> {
                       padding: EdgeInsets.zero,
                       child: Icon(Icons.ios_share, color: Colors.black, size: mediaHeight(context, 0.03),),
                       onPressed: () async{
-                        showIndicator(shareKakaoBoard(context, board));
+                        showIndicator(shareBoardToKakao(context, board));
                         // final box = context.findRenderObject() as RenderBox?;
                         //
                         // if (board.board_photos.isNotEmpty) {
@@ -79,7 +78,7 @@ class _BoardDetailsPageState extends State<BoardDetailsPage> {
                         // }
                       },
                     ),
-                    if(UserController.user != null && (UserController.user!.id == board.userId || Config.ADMIN_UID == UserController.user!.uid))CupertinoButton(
+                    if(UserController.user != null && (UserController.user!.id == board.userId || Config.ADMIN_UID == UserController.user?.uid))CupertinoButton(
                       padding: EdgeInsets.zero,
                       onPressed: null,
                       child: PopupMenuButton(
@@ -130,162 +129,165 @@ class _BoardDetailsPageState extends State<BoardDetailsPage> {
                       noMoreText: '마지막 댓글입니다.',
                     ),
                   ),
-                  child: SingleChildScrollView(
-                    physics: const NeverScrollableScrollPhysics(),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          margin: EdgeInsets.all(mediaWidth(context, 0.033)),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                  child: UserProfileCard(board!.user)
-                              ),
-                              Text(beforeDate(board.createdAt), style: CustomTextStyle.w500(context, color: CustomColors.hint))
-                            ],
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.033)),
-                          child: Row(
-                            children: [
-                              TagText(board.category),
-                              TagText(board.location)
-                            ],
-                          ),
-                        ),
-                        if(board.board_photos.isNotEmpty) Stack(
-                          alignment: Alignment.bottomCenter,
-                          children: [
-                            CarouselSlider.builder(
-                              itemCount: board.board_photos.length,
-                              options: CarouselOptions(
-                                  height: mediaWidth(context, 1),
-                                  enableInfiniteScroll: false,
-                                  viewportFraction: 1,
-                                  onPageChanged: (int index, index2){
-                                    setState(() {
-                                      _photoIndex = index;
-                                    });
-                                  }
-                              ),
-                              itemBuilder: (context, index, index2){
-                                String photo = board.board_photos[index];
-                                return CupertinoButton(
-                                  padding: EdgeInsets.all(mediaWidth(context, 0.033)),
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(10),
-                                        image: DecorationImage(
-                                          fit: BoxFit.cover,
-                                          image: CachedNetworkImageProvider(photo),
-                                        )
-                                    ),
-                                  ),
-                                  onPressed: (){
-                                    Get.to(() => PhotoListView(index, board.board_photos, PhotoType.cached), fullscreenDialog: true);
-                                  },
-                                );
-                              },
-                            ),
-                            AnimatedSmoothIndicator(
-                              activeIndex: _photoIndex,
-                              count: board.board_photos.length,
-                              effect: WormEffect(
-                                activeDotColor: CustomColors.main,
-                                dotColor: CustomColors.hint,
-                                dotWidth: mediaWidth(context, 0.015),
-                                dotHeight: mediaWidth(context, 0.015),
-                              ),
-                            )
-                          ],
-                        ),
-                        Container(
+                  child: Scrollbar(
+                    child: SingleChildScrollView(
+                      physics: const NeverScrollableScrollPhysics(),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
                             margin: EdgeInsets.all(mediaWidth(context, 0.033)),
-                            child: Text(board.title, style: CustomTextStyle.w600(context, scale: 0.02))),
-                        Container(
-                          margin: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.033)).copyWith(bottom: mediaWidth(context, 0.033)),
-                          child: Text(board.description, style: CustomTextStyle.w400(context)),
-                        ),
-                        Container(
-                          decoration: const BoxDecoration(
-                              boxShadow: [
-                                BoxShadow(color: CustomColors.emptySide, blurStyle: BlurStyle.outer, blurRadius: 5)
-                              ]
+                            child: Row(
+                              children: [
+                                Expanded(
+                                    child: UserProfileCard(board!.user)
+                                ),
+                                Text(beforeDate(board.createdAt), style: CustomTextStyle.w500(context, color: CustomColors.hint))
+                              ],
+                            ),
                           ),
-                          padding: EdgeInsets.all(mediaWidth(context, 0.033)),
-                          child: Row(
+                          Container(
+                            margin: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.033)),
+                            child: Row(
+                              children: [
+                                TagText(board.category),
+                                TagText(board.location)
+                              ],
+                            ),
+                          ),
+                          if(board.board_photos.isNotEmpty) Stack(
+                            alignment: Alignment.bottomCenter,
                             children: [
-                              Expanded(
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      margin: EdgeInsets.only(right: mediaWidth(context, 0.02)),
-                                      child: GetBuilder<UserController>(
-                                          init: UserController(),
-                                          builder: (UserController userController) => userController.obx((user) {
-                                            if(board.likeList.where((like) => like.userId == user!.id).isEmpty){
-                                              return GestureDetector(
-                                                child: Icon(CupertinoIcons.heart, color: CustomColors.hint, size: mediaHeight(context, 0.025)),
-                                                onTap: (){
-                                                  showDialog(context: context, builder: (context) => LikeAnimation(CupertinoIcons.heart_fill, controller.likeBoard(context)));
-                                                },
-                                              );
-                                            } else {
-                                              return GestureDetector(
-                                                child: Icon(CupertinoIcons.heart_fill, color: CustomColors.main, size: mediaHeight(context, 0.025)),
-                                                onTap: (){
-                                                  controller.likeBoard(context);
-                                                },
-                                              );
-                                            }
-                                          },
-                                              onEmpty: GestureDetector(
-                                                child: Icon(CupertinoIcons.heart, color: CustomColors.hint, size: mediaHeight(context, 0.025)),
-                                                onTap: (){
-                                                  showSnackBar(context, '로그인을 해주세요.');
-                                                },
-                                              )
+                              CarouselSlider.builder(
+                                itemCount: board.board_photos.length,
+                                options: CarouselOptions(
+                                    height: mediaWidth(context, 1),
+                                    enableInfiniteScroll: false,
+                                    viewportFraction: 1,
+                                    onPageChanged: (int index, index2){
+                                      setState(() {
+                                        _photoIndex = index;
+                                      });
+                                    }
+                                ),
+                                itemBuilder: (context, index, index2){
+                                  String photo = board.board_photos[index];
+                                  return CupertinoButton(
+                                    padding: EdgeInsets.all(mediaWidth(context, 0.033)),
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(10),
+                                          image: DecorationImage(
+                                            fit: BoxFit.cover,
+                                            image: CachedNetworkImageProvider(photo),
                                           )
                                       ),
                                     ),
-                                    Text(board.likeList.length.toString(), style: CustomTextStyle.w400(context, scale: 0.02, color: Colors.grey)),
-                                    Container(
-                                      margin: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.02)),
-                                      child: GestureDetector(
-                                        child: Icon(CupertinoIcons.bubble_left, color: CustomColors.hint, size: mediaHeight(context, 0.025)),
-                                        onTap: (){},
-                                      ),
-                                    ),
-                                    Text('${commentCount(board.commentList)}', style: CustomTextStyle.w400(context, scale: 0.02, color: Colors.grey))
-                                  ],
-                                ),
+                                    onPressed: (){
+                                      Get.to(() => PhotoListView(index, board.board_photos, PhotoType.cached), fullscreenDialog: true);
+                                    },
+                                  );
+                                },
                               ),
+                              AnimatedSmoothIndicator(
+                                activeIndex: _photoIndex,
+                                count: board.board_photos.length,
+                                effect: WormEffect(
+                                  activeDotColor: CustomColors.main,
+                                  dotColor: CustomColors.hint,
+                                  dotWidth: mediaWidth(context, 0.015),
+                                  dotHeight: mediaWidth(context, 0.015),
+                                ),
+                              )
                             ],
                           ),
-                        ),
-                        //댓글 리스트
-                        if(board.commentList.isNotEmpty) Container(
-                          margin: EdgeInsets.all(mediaWidth(context, 0.033)),
-                          child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                for(BoardComment comment in board.commentList) CommentCard(comment,
-                                  onComment: (BoardComment boardComment){
-                                    setState(() {
-                                      _selectComment = boardComment;
-                                    });
-                                  },
-                                  onLike: (BoardComment boardComment) => controller.likeComment(context, boardComment.commentId),
-                                  onCommentDelete: () => controller.deleteComment(context, comment.commentId),
-                                  onNestedCommentDelete: (NestedComment nestedComment) => showIndicator(controller.deleteNestedComment(context, nestedComment))
-                                )
-                              ]
+                          Container(
+                              margin: EdgeInsets.all(mediaWidth(context, 0.033)),
+                              child: Text(board.title, style: CustomTextStyle.w600(context, scale: 0.02))),
+                          Container(
+                            margin: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.033)).copyWith(bottom: mediaWidth(context, 0.033)),
+                            child: Text(board.description, style: CustomTextStyle.w400(context)),
                           ),
-                        ),
-                        SizedBox(height: mediaHeight(context, 0.1))
-                      ],
+                          Container(
+                            decoration: const BoxDecoration(
+                                boxShadow: [
+                                  BoxShadow(color: CustomColors.emptySide, blurStyle: BlurStyle.outer, blurRadius: 5)
+                                ]
+                            ),
+                            padding: EdgeInsets.all(mediaWidth(context, 0.033)),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        margin: EdgeInsets.only(right: mediaWidth(context, 0.02)),
+                                        child: GetBuilder<UserController>(
+                                            init: UserController(),
+                                            builder: (UserController userController) => userController.obx((user) {
+                                              if(board.likeList.where((like) => like.userId == user!.id).isEmpty){
+                                                return GestureDetector(
+                                                  child: Icon(CupertinoIcons.heart, color: CustomColors.hint, size: mediaHeight(context, 0.025)),
+                                                  onTap: (){
+                                                    showDialog(context: context, builder: (context) => LikeAnimation(CupertinoIcons.heart_fill, controller.likeBoard(context)));
+                                                  },
+                                                );
+                                              } else {
+                                                return GestureDetector(
+                                                  child: Icon(CupertinoIcons.heart_fill, color: CustomColors.main, size: mediaHeight(context, 0.025)),
+                                                  onTap: (){
+                                                    controller.likeBoard(context);
+                                                  },
+                                                );
+                                              }
+                                            },
+                                                onEmpty: GestureDetector(
+                                                  child: Icon(CupertinoIcons.heart, color: CustomColors.hint, size: mediaHeight(context, 0.025)),
+                                                  onTap: (){
+                                                    showSnackBar(context, '로그인을 해주세요.');
+                                                  },
+                                                )
+                                            )
+                                        ),
+                                      ),
+                                      Text(board.likeList.length.toString(), style: CustomTextStyle.w400(context, scale: 0.02, color: Colors.grey)),
+                                      Container(
+                                        margin: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.02)),
+                                        child: GestureDetector(
+                                          child: Icon(CupertinoIcons.bubble_left, color: CustomColors.hint, size: mediaHeight(context, 0.025)),
+                                          onTap: (){},
+                                        ),
+                                      ),
+                                      Text('${commentCount(board.commentList)}', style: CustomTextStyle.w400(context, scale: 0.02, color: Colors.grey)),
+                                    ],
+                                  ),
+                                ),
+                                Text('조회수 ${board.view_count}', style: CustomTextStyle.w500(context, color: CustomColors.main, scale: 0.015))
+                              ],
+                            ),
+                          ),
+                          //댓글 리스트
+                          if(board.commentList.isNotEmpty) Container(
+                            margin: EdgeInsets.all(mediaWidth(context, 0.033)),
+                            child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  for(BoardComment comment in board.commentList) CommentCard(comment,
+                                    onComment: (BoardComment boardComment){
+                                      setState(() {
+                                        _selectComment = boardComment;
+                                      });
+                                    },
+                                    onLike: (BoardComment boardComment) => controller.likeComment(context, boardComment.commentId),
+                                    onCommentDelete: () => controller.deleteComment(context, comment.commentId),
+                                    onNestedCommentDelete: (NestedComment nestedComment) => showIndicator(controller.deleteNestedComment(context, nestedComment))
+                                  )
+                                ]
+                            ),
+                          ),
+                          SizedBox(height: mediaHeight(context, 0.1))
+                        ],
+                      ),
                     ),
                   )
               ),

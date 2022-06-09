@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:thepuppyplace_flutter/pages/auth_page/login_page.dart';
 import 'package:thepuppyplace_flutter/util/cached_network_image_list.dart';
 import 'package:thepuppyplace_flutter/util/png_list.dart';
 
@@ -36,7 +37,7 @@ class LoginRequestPage extends StatelessWidget {
               textColor: CustomColors.main,
               title: '로그인 / 회원가입',
               onPressed: (){
-                Get.toNamed('/loginPage');
+                Get.toNamed(LoginPage.routeName);
               },
             )
           ],

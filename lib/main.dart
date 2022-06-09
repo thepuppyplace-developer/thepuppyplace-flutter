@@ -3,7 +3,6 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
-import 'package:thepuppyplace_flutter/controllers/banner/banner_list_controller.dart';
 import 'package:thepuppyplace_flutter/pages/board_page/board_details_page.dart';
 import 'package:thepuppyplace_flutter/pages/board_page/board_list_page.dart';
 import 'package:thepuppyplace_flutter/pages/insert_page/insert_board_page.dart';
@@ -33,7 +32,7 @@ Future main() async{
   await Firebase.initializeApp();
   Get.put(NotificationController());
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-  KakaoSdk.init(nativeAppKey: 'com.thepuppyplace.flutter');
+  KakaoSdk.init(nativeAppKey: 'com.globalqkorea.thepuppyplace');
   runApp(const MyApp());
 }
 

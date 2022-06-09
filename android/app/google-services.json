@@ -7,6 +7,50 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:516076380973:android:b7ebd969977dbd4f96e9a4",
+        "android_client_info": {
+          "package_name": "com.globalqkorea.thepuppyplace"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "516076380973-12iu6hrdaigo78lemfcfodrs5abf95p3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.globalqkorea.thepuppyplace",
+            "certificate_hash": "0f8c5f3f88db08822443faed2247422220ed0c16"
+          }
+        },
+        {
+          "client_id": "516076380973-vs93ulq83fabpcrs9mgiv75q76pddbmh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCPhArLj3jl8UVcfFnkAEmpSmUWtrMTLO0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "516076380973-vs93ulq83fabpcrs9mgiv75q76pddbmh.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "516076380973-1di1388pb6dnua87m1gnnh982c09fmbd.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.globalqkorea.thepuppyplace"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:516076380973:android:7ee0dda9672ab07296e9a4",
         "android_client_info": {
           "package_name": "com.thepuppyplace.flutter"
@@ -39,10 +83,10 @@
               "client_type": 3
             },
             {
-              "client_id": "516076380973-2njmgp22up92ec696qb7v97t9jve0f5l.apps.googleusercontent.com",
+              "client_id": "516076380973-1di1388pb6dnua87m1gnnh982c09fmbd.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.thepuppyplace.flutter"
+                "bundle_id": "com.globalqkorea.thepuppyplace"
               }
             }
           ]

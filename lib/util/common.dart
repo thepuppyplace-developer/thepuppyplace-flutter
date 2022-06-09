@@ -251,7 +251,7 @@ int hexStringToHexInt(String hex) {
   return val;
 }
 
-Future shareKakaoBoard(BuildContext context, Board board) async{
+Future shareBoardToKakao(BuildContext context, Board board) async{
   try{
     final bool result = await LinkClient.instance.isKakaoLinkAvailable();
     if(result){
@@ -266,9 +266,27 @@ Future shareKakaoBoard(BuildContext context, Board board) async{
       );
       return LinkClient.instance.defaultTemplate(template: feed);
     } else {
-      return showSnackBar(context, '카카오톡을 설치해주세요.');
+      return shareBoardToKakaoFromBrowser(context, board);
     }
   } catch(error){
+    throw Exception(error);
+  }
+}
+
+Future shareBoardToKakaoFromBrowser(BuildContext context, Board board) async{
+  try {
+    final FeedTemplate feed = FeedTemplate(
+        content: Content(
+            title: board.title,
+            imageUrl: Uri.parse(board.board_photos.first),
+            link: Link(
+                mobileWebUrl: Uri.parse('www.naver.com')
+            )
+        )
+    );
+    Uri shareUrl = await WebSharerClient.instance.defaultTemplateUri(template: feed);
+    await launchBrowserTab(shareUrl);
+  } catch (error) {
     throw Exception(error);
   }
 }

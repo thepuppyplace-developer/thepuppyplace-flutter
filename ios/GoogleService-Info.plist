@@ -3,9 +3,11 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>516076380973-2njmgp22up92ec696qb7v97t9jve0f5l.apps.googleusercontent.com</string>
+	<string>516076380973-1di1388pb6dnua87m1gnnh982c09fmbd.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.516076380973-2njmgp22up92ec696qb7v97t9jve0f5l</string>
+	<string>com.googleusercontent.apps.516076380973-1di1388pb6dnua87m1gnnh982c09fmbd</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>516076380973-56cchbk98nvgqj71877t0v53o08m9pcg.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
 	<string>AIzaSyDbRiUAxQ_yVAczP_Q5j7gIAZETyuoYCbQ</string>
 	<key>GCM_SENDER_ID</key>
@@ -13,7 +15,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.thepuppyplace.flutter</string>
+	<string>com.globalqkorea.thepuppyplace</string>
 	<key>PROJECT_ID</key>
 	<string>thepuppyplace-a0bef</string>
 	<key>STORAGE_BUCKET</key>
@@ -29,6 +31,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:516076380973:ios:b737fdf915f300e696e9a4</string>
+	<string>1:516076380973:ios:3c2f7f6e1b1d66ca96e9a4</string>
 </dict>
 </plist>

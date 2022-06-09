@@ -26,10 +26,11 @@ class NotificationController extends GetxController with Config{
 
   @override
   void onInit() async {
+    super.onInit();
     _notificationSettings = await _fcm.requestPermission(
-      alert: true,
-      sound: true,
-      badge: true
+        alert: true,
+        sound: true,
+        badge: true
     );
 
     if(_notificationSettings.authorizationStatus == AuthorizationStatus.authorized || _notificationSettings.authorizationStatus == AuthorizationStatus.provisional){
@@ -62,7 +63,6 @@ class NotificationController extends GetxController with Config{
       _localNotifications.initialize(
           _settings,
           onSelectNotification: (String? payload){
-            print(payload);
             if(payload != null){
               final data = jsonDecode(payload);
               String action = data['action'];

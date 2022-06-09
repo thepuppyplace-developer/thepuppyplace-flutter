@@ -149,11 +149,11 @@ class _LoginPageState extends State<LoginPage> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          CupertinoButton(child: Image.asset(PngList.google),
+                          CupertinoButton(child: Image.asset(PngList.google, height: mediaWidth(context, 0.1), width: mediaWidth(context, 0.1)),
                               onPressed: () => showIndicator(_googleLogin(context))
                           ),
                           if(Platform.isIOS) CupertinoButton(child: Image.asset(
-                              PngList.apple), onPressed: () => showIndicator(_appleLogin(context)))
+                              PngList.apple, height: mediaWidth(context, 0.1), width: mediaWidth(context, 0.1)), onPressed: () => showIndicator(_appleLogin(context)))
                         ],
                       ),
                     ],

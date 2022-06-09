@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 51;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -14,6 +14,12 @@
 		97C146FC1CF9000F007C117D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FA1CF9000F007C117D /* Main.storyboard */; };
 		97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FD1CF9000F007C117D /* Assets.xcassets */; };
 		97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */; };
+		A285E60B285247E5008CF85E /* KakaoSDK in Frameworks */ = {isa = PBXBuildFile; productRef = A285E60A285247E5008CF85E /* KakaoSDK */; };
+		A285E60D285247E5008CF85E /* KakaoSDKAuth in Frameworks */ = {isa = PBXBuildFile; productRef = A285E60C285247E5008CF85E /* KakaoSDKAuth */; };
+		A285E60F285247E5008CF85E /* KakaoSDKCommon in Frameworks */ = {isa = PBXBuildFile; productRef = A285E60E285247E5008CF85E /* KakaoSDKCommon */; };
+		A285E611285247E5008CF85E /* KakaoSDKCommonCore in Frameworks */ = {isa = PBXBuildFile; productRef = A285E610285247E5008CF85E /* KakaoSDKCommonCore */; };
+		A285E613285247E5008CF85E /* KakaoSDKLink in Frameworks */ = {isa = PBXBuildFile; productRef = A285E612285247E5008CF85E /* KakaoSDKLink */; };
+		A285E615285247E5008CF85E /* KakaoSDKNavi in Frameworks */ = {isa = PBXBuildFile; productRef = A285E614285247E5008CF85E /* KakaoSDKNavi */; };
 		A2EFF85E27BC10B4009D134D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A2EFF85D27BC10B4009D134D /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
@@ -70,7 +76,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A285E60F285247E5008CF85E /* KakaoSDKCommon in Frameworks */,
+				A285E613285247E5008CF85E /* KakaoSDKLink in Frameworks */,
 				96C2EE47AD07F5323FFB417D /* Pods_Runner.framework in Frameworks */,
+				A285E60B285247E5008CF85E /* KakaoSDK in Frameworks */,
+				A285E615285247E5008CF85E /* KakaoSDKNavi in Frameworks */,
+				A285E611285247E5008CF85E /* KakaoSDKCommonCore in Frameworks */,
+				A285E60D285247E5008CF85E /* KakaoSDKAuth in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -176,6 +188,14 @@
 			dependencies = (
 			);
 			name = Runner;
+			packageProductDependencies = (
+				A285E60A285247E5008CF85E /* KakaoSDK */,
+				A285E60C285247E5008CF85E /* KakaoSDKAuth */,
+				A285E60E285247E5008CF85E /* KakaoSDKCommon */,
+				A285E610285247E5008CF85E /* KakaoSDKCommonCore */,
+				A285E612285247E5008CF85E /* KakaoSDKLink */,
+				A285E614285247E5008CF85E /* KakaoSDKNavi */,
+			);
 			productName = Runner;
 			productReference = 97C146EE1CF9000F007C117D /* Runner.app */;
 			productType = "com.apple.product-type.application";
@@ -205,6 +225,9 @@
 				Base,
 			);
 			mainGroup = 97C146E51CF9000F007C117D;
+			packageReferences = (
+				A285E609285247E5008CF85E /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */,
+			);
 			productRefGroup = 97C146EF1CF9000F007C117D /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -416,7 +439,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.thepuppyplace.flutter;
+				PRODUCT_BUNDLE_IDENTIFIER = com.globalqkorea.thepuppyplace;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
@@ -548,7 +571,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.thepuppyplace.flutter;
+				PRODUCT_BUNDLE_IDENTIFIER = com.globalqkorea.thepuppyplace;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -573,7 +596,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.thepuppyplace.flutter;
+				PRODUCT_BUNDLE_IDENTIFIER = com.globalqkorea.thepuppyplace;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
@@ -605,6 +628,50 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		A285E609285247E5008CF85E /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kakao/kakao-ios-sdk";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		A285E60A285247E5008CF85E /* KakaoSDK */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A285E609285247E5008CF85E /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
+			productName = KakaoSDK;
+		};
+		A285E60C285247E5008CF85E /* KakaoSDKAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A285E609285247E5008CF85E /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
+			productName = KakaoSDKAuth;
+		};
+		A285E60E285247E5008CF85E /* KakaoSDKCommon */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A285E609285247E5008CF85E /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
+			productName = KakaoSDKCommon;
+		};
+		A285E610285247E5008CF85E /* KakaoSDKCommonCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A285E609285247E5008CF85E /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
+			productName = KakaoSDKCommonCore;
+		};
+		A285E612285247E5008CF85E /* KakaoSDKLink */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A285E609285247E5008CF85E /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
+			productName = KakaoSDKLink;
+		};
+		A285E614285247E5008CF85E /* KakaoSDKNavi */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A285E609285247E5008CF85E /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
+			productName = KakaoSDKNavi;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 97C146E61CF9000F007C117D /* Project object */;
 }
