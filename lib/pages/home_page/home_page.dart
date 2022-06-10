@@ -2,11 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:thepuppyplace_flutter/config/kakao_talk_config.dart';
 import 'package:thepuppyplace_flutter/pages/search_page/search_page.dart';
 import 'package:thepuppyplace_flutter/util/common.dart';
 import 'package:thepuppyplace_flutter/views/home_views/best_board_list_view.dart';
 import 'package:thepuppyplace_flutter/views/home_views/first_notice_view.dart';
 import 'package:thepuppyplace_flutter/widgets/buttons/category_button.dart';
+import 'package:thepuppyplace_flutter/widgets/buttons/custom_button.dart';
 import 'package:thepuppyplace_flutter/widgets/loadings/sliver_contents.dart';
 import '../../controllers/board/best_board_list_controller.dart';
 import '../../controllers/board/board_list_controller.dart';
@@ -123,6 +125,12 @@ class _HomePageState extends State<HomePage> {
                         child: BannerCard()),
                   ),
                   const FirstNoticeView(),
+                  SliverToBoxAdapter(
+                    child: CustomButton(
+                      title: '카카오 로그인',
+                      onPressed: () => KakaoTalkConfig.kakaoLogin(),
+                    ),
+                  ),
                   SliverToBoxAdapter(
                     child: Container(
                       margin: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.033), vertical: mediaHeight(context, 0.02)),

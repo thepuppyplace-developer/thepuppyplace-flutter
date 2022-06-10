@@ -33,7 +33,7 @@ Future main() async{
   await Firebase.initializeApp();
   Get.put(NotificationController());
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-  KakaoSdk.init(nativeAppKey: KakaoTalkConfig.nativeKey);
+  KakaoSdk.init(nativeAppKey: KakaoTalkConfig.NATIVE_KEY, javaScriptAppKey: KakaoTalkConfig.JAVA_SCRIPT_KEY);
   runApp(const MyApp());
 }
 

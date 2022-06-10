@@ -63,21 +63,7 @@ class _BoardDetailsPageState extends State<BoardDetailsPage> {
                     CupertinoButton(
                       padding: EdgeInsets.zero,
                       child: Icon(Icons.ios_share, color: Colors.black, size: mediaHeight(context, 0.03),),
-                      onPressed: () {
-                        showIndicator(KakaoTalkConfig.kakaoShareToWebBrowser(board));
-                        // final box = context.findRenderObject() as RenderBox?;
-                        //
-                        // if (board.board_photos.isNotEmpty) {
-                        //   await Share.shareFiles(board.board_photos,
-                        //       text: board.title,
-                        //       subject: board.description,
-                        //       sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size);
-                        // } else {
-                        //   await Share.share(board.title,
-                        //       subject: board.description,
-                        //       sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size);
-                        // }
-                      },
+                      onPressed: () => showIndicator(KakaoTalkConfig.kakaoShareToMobile(board)),
                     ),
                     if(UserController.user != null && (UserController.user!.id == board.userId || Config.ADMIN_UID == UserController.user?.uid))CupertinoButton(
                       padding: EdgeInsets.zero,
