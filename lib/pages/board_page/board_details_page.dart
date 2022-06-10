@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:thepuppyplace_flutter/config/kakao_talk_config.dart';
 import 'package:thepuppyplace_flutter/util/common.dart';
 import 'package:thepuppyplace_flutter/views/photo_view/photo_list_view.dart';
 import 'package:thepuppyplace_flutter/widgets/dialogs/custom_dialog.dart';
@@ -62,8 +63,8 @@ class _BoardDetailsPageState extends State<BoardDetailsPage> {
                     CupertinoButton(
                       padding: EdgeInsets.zero,
                       child: Icon(Icons.ios_share, color: Colors.black, size: mediaHeight(context, 0.03),),
-                      onPressed: () async{
-                        showIndicator(shareBoardToKakao(context, board));
+                      onPressed: () {
+                        showIndicator(KakaoTalkConfig.kakaoShareToWebBrowser(board));
                         // final box = context.findRenderObject() as RenderBox?;
                         //
                         // if (board.board_photos.isNotEmpty) {

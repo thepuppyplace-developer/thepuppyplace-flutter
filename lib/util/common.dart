@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
+import 'package:thepuppyplace_flutter/config/kakao_talk_config.dart';
 import 'package:thepuppyplace_flutter/models/Board.dart';
 import '../models/BoardComment.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -249,44 +250,4 @@ int hexStringToHexInt(String hex) {
   hex = hex.length == 6 ? 'ff' + hex : hex;
   int val = int.parse(hex, radix: 16);
   return val;
-}
-
-Future shareBoardToKakao(BuildContext context, Board board) async{
-  try{
-    final bool result = await LinkClient.instance.isKakaoLinkAvailable();
-    if(result){
-      final FeedTemplate feed = FeedTemplate(
-        content: Content(
-            title: board.title,
-            imageUrl: Uri.parse(board.board_photos.first),
-            link: Link(
-              mobileWebUrl: Uri.parse('www.naver.com')
-            )
-        )
-      );
-      return LinkClient.instance.defaultTemplate(template: feed);
-    } else {
-      return shareBoardToKakaoFromBrowser(context, board);
-    }
-  } catch(error){
-    throw Exception(error);
-  }
-}
-
-Future shareBoardToKakaoFromBrowser(BuildContext context, Board board) async{
-  try {
-    final FeedTemplate feed = FeedTemplate(
-        content: Content(
-            title: board.title,
-            imageUrl: Uri.parse(board.board_photos.first),
-            link: Link(
-                mobileWebUrl: Uri.parse('www.naver.com')
-            )
-        )
-    );
-    Uri shareUrl = await WebSharerClient.instance.defaultTemplateUri(template: feed);
-    await launchBrowserTab(shareUrl);
-  } catch (error) {
-    throw Exception(error);
-  }
 }

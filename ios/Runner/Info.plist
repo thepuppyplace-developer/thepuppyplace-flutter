@@ -6,6 +6,10 @@
 	<array>
 		<string>kakaokompassauth</string>
 		<string>kakaolink</string>
+		<string>aef15b848194c128efdf92ccd03b5fcf</string>
+        <string>storykompassauth</string>
+        <string>kakaolink</string>
+        <string>storylink</string>
 	</array>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
@@ -33,7 +37,7 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>com.googleusercontent.apps.516076380973-1di1388pb6dnua87m1gnnh982c09fmbd</string>
-				<string>kakao${aef15b848194c128efdf92ccd03b5fcf}://kakaolink</string>
+				<string>aef15b848194c128efdf92ccd03b5fcf</string>
 			</array>
 		</dict>
 	</array>

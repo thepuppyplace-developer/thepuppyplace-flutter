@@ -34,10 +34,12 @@
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+                <data android:scheme="aef15b848194c128efdf92ccd03b5fcf" android:host="oauth"/>
                 <!-- "kakao${YOUR_NATIVE_APP_KEY}://kakaolink" 형식의 앱 실행 스킴을 설정하는데 사용 -->
                 <data android:host="kakaolink"
-                    android:scheme="kakao${aef15b848194c128efdf92ccd03b5fcf}" />
+                    android:scheme="aef15b848194c128efdf92ccd03b5fcf" />
             </intent-filter>
         </activity>
         <!-- Don't delete the meta-data below.
