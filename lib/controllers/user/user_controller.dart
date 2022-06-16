@@ -3,22 +3,24 @@ import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
+import 'package:thepuppyplace_flutter/controllers/notification/notification_log_list_controller.dart';
+import 'package:thepuppyplace_flutter/navigators/navigator_page.dart';
 import 'package:thepuppyplace_flutter/pages/auth_page/signup_terms_page.dart';
 import 'package:thepuppyplace_flutter/pages/my_page/user_deleted_page.dart';
 import 'package:thepuppyplace_flutter/repositories/terms/terms_repo.dart';
 import 'package:thepuppyplace_flutter/util/common.dart';
 import '../../config/config.dart';
 import '../../models/Term.dart';
-import '../../models/User.dart';
+import '../../models/Member.dart';
 import '../../pages/auth_page/login_page.dart';
 import '../../repositories/user/user_repository.dart';
 
-class UserController extends GetxController with StateMixin<User>, Config{
+class UserController extends GetxController with StateMixin<Member>, Config{
   static UserController get to => Get.put(UserController());
   final UserRepository _repo = UserRepository();
   final TermsRepo _termsRepo = TermsRepo();
-  static final Rxn<User> _user = Rxn<User>();
-  static User? get user => _user.value;
+  static final Rxn<Member> _user = Rxn<Member>();
+  static Member? get user => _user.value;
 
   @override
   void onReady() async{
@@ -28,7 +30,7 @@ class UserController extends GetxController with StateMixin<User>, Config{
     print(await getUser);
   }
 
-  void _userListener(User? user){
+  void _userListener(Member? user){
     try{
       change(null, status: RxStatus.loading());
       if(user != null){
@@ -50,10 +52,10 @@ class UserController extends GetxController with StateMixin<User>, Config{
         case 201:
           int? statusCode = await login(email: email, password: password, googleUser: googleUser, appleUser: appleUser);
           switch(statusCode){
-            case 200: print('send-terms');
+            case 200:
             //회원가입이 완료되면 send 로그인 한 후 약관 체크한 항목들을 jwt 와 함께 서버에 전송
             for(Term term in termsList){
-              _termsRepo.sendTerms(term);
+              await _termsRepo.sendTerms(term);
             }
           }
           break;
@@ -75,6 +77,7 @@ class UserController extends GetxController with StateMixin<User>, Config{
         if(jwt != null){
           await INSERT_JWT_TOKEN(jwt);
           _user.value = await getUser;
+          NotificationLogListController.to.refreshLogList;
         }
     }
     return res.statusCode;
@@ -101,7 +104,7 @@ class UserController extends GetxController with StateMixin<User>, Config{
       if(appleUser != null){
         int? statusCode = await login(appleUser: appleUser);
         switch(statusCode){
-          case 401:
+          case 204:
           //statusCode 401은 회원이 존재하지 않는다는 의미로 회원가입 페이지로 넘김
             await Get.to(() => SignupTermsPage(appleUser: appleUser));
         }
@@ -119,15 +122,16 @@ class UserController extends GetxController with StateMixin<User>, Config{
     //로그아웃 시 서버에 전송
     _user.value = await REMOVE_JWT_TOKEN;
     //SharedPreferences 에 JWT_TOKEN 값을 삭제함
+
     return Get.offNamedUntil(LoginPage.routeName, (route) => route.isFirst);
     //JWT_TOKEN 을 삭제하면 로그인 페이지로 넘긴 후 앞에 Stack 을 모두 제거
   }
 
-  Future<User?> get getUser async{
+  Future<Member?> get getUser async{
     final Response res = await _repo.getUser();
     switch(res.statusCode){
       case 200:
-        final User user = User.fromJson(res.body['data']);
+        final Member user = Member.fromJson(res.body['data']);
         _user.value = user;
         return user;
     //statusCode 가 200일 경우에만 user 상세를 불러옴

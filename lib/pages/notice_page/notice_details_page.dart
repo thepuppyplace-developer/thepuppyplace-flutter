@@ -2,7 +2,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:thepuppyplace_flutter/controllers/notice/notice_list_controller.dart';
 import 'package:thepuppyplace_flutter/pages/notice_page/notice_update_page.dart';
+import 'package:thepuppyplace_flutter/views/photo_view/photo_list_view.dart';
 
 import '../../config/config.dart';
 import '../../controllers/notice/notice_controller.dart';
@@ -12,7 +14,7 @@ import '../../util/common.dart';
 import '../../widgets/buttons/custom_icon_button.dart';
 import '../../widgets/dialogs/custom_dialog.dart';
 
-class NoticeDetailsPage extends StatelessWidget {
+class NoticeDetailsPage extends GetView<NoticeListController> {
   final Notice notice;
 
   const NoticeDetailsPage(this.notice, {Key? key}) : super(key: key);
@@ -51,9 +53,7 @@ class NoticeDetailsPage extends StatelessWidget {
                               showCupertinoDialog(context: context, builder: (context) => CustomDialog(
                                 title: '공지사항을 삭제하시겠습니까?',
                                 content: '삭제한 공지사항은 복구되지 않습니다.\n삭제하시겠습니까?',
-                                onTap: (){
-                                  controller.deleteNotice;
-                                },
+                                onTap: () => showIndicator(_deleteNotice(context))
                               ));
                             },
                           )
@@ -103,18 +103,22 @@ class NoticeDetailsPage extends StatelessWidget {
               child: CustomScrollView(
                 slivers: [
                   if(notice.image_url != null) SliverToBoxAdapter(
-                    child: AspectRatio(
-                      aspectRatio: 3/2,
-                      child: Container(
-                        margin: EdgeInsets.only(bottom: mediaHeight(context, 0.02)),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          image: DecorationImage(
-                            fit: BoxFit.cover,
-                            image: CachedNetworkImageProvider(notice.image_url!)
-                          )
+                    child: CupertinoButton(
+                      padding: EdgeInsets.zero,
+                      child: AspectRatio(
+                        aspectRatio: 1/1,
+                        child: Container(
+                          margin: EdgeInsets.only(bottom: mediaHeight(context, 0.02)),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            image: DecorationImage(
+                              fit: BoxFit.cover,
+                              image: CachedNetworkImageProvider(notice.image_url!)
+                            )
+                          ),
                         ),
                       ),
+                      onPressed: () => Get.to(() => PhotoListView([notice.image_url!], PhotoListType.cached, currentIndex: 0), fullscreenDialog: true),
                     ),
                   ),
                   SliverToBoxAdapter(
@@ -127,5 +131,21 @@ class NoticeDetailsPage extends StatelessWidget {
         );
       }
     );
+  }
+
+  Future _deleteNotice(BuildContext context) async{
+    try{
+      final Response res = await controller.deleteNotice(notice.id);
+      switch(res.statusCode){
+        case 200:
+          Get.until((route) => route.settings.name == '/noticeDetailsPage');
+          return showSnackBar(context, '공지사항이 삭제되었습니다.');
+        default:
+          return network_check_message(context);
+      }
+    } catch(error){
+      await unknown_message(context);
+      throw Exception(error);
+    }
   }
 }

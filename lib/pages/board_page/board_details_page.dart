@@ -171,7 +171,7 @@ class _BoardDetailsPageState extends State<BoardDetailsPage> {
                                       ),
                                     ),
                                     onPressed: (){
-                                      Get.to(() => PhotoListView(index, board.board_photos, PhotoType.cached), fullscreenDialog: true);
+                                      Get.to(() => PhotoListView(board.board_photos, PhotoListType.cached, currentIndex: index,), fullscreenDialog: true);
                                     },
                                   );
                                 },

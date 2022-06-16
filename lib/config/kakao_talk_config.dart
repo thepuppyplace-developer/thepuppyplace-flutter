@@ -19,7 +19,6 @@ class KakaoTalkConfig{
                   iosExecutionParams: {}
               ),
             ),
-            buttonTitle: 'The Puppy Place 실행'
         );
         uri = await WebSharerClient.instance.defaultTemplateUri(template: template);
       } else {
@@ -29,7 +28,6 @@ class KakaoTalkConfig{
                 androidExecutionParams: {},
                 iosExecutionParams: {}
             ),
-            buttonTitle: 'The Puppy Place 실행'
         );
         uri = await WebSharerClient.instance.defaultTemplateUri(template: template);
       }
@@ -68,7 +66,7 @@ class KakaoTalkConfig{
               ),
               buttonTitle: 'The Puppy Place 실행'
           );
-          uri = await WebSharerClient.instance.defaultTemplateUri(template: template);
+          uri = await LinkClient.instance.defaultTemplate(template: template);
         }
         return LinkClient.instance.launchKakaoTalk(uri);
       } else {
@@ -79,13 +77,19 @@ class KakaoTalkConfig{
     }
   }
 
-  static Future kakaoLogin() async{
+  static Future<User> kakaoLogin() async{
     try{
-      final OAuthToken token = await UserApi.instance.loginWithKakaoAccount(prompts: [Prompt.login]);
-      final User user = await UserApi.instance.me();
-      print(user.kakaoAccount?.email);
+      final OAuthToken token;
+      final User user;
+      if(await LinkClient.instance.isKakaoLinkAvailable()){
+        token = await UserApi.instance.loginWithKakaoTalk();
+      } else {
+        token = await UserApi.instance.loginWithKakaoAccount();
+      }
+      user = await UserApi.instance.me();
+      return user;
     } catch(error){
-      Exception(error);
+      throw Exception(error);
     }
   }
 }

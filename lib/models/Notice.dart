@@ -1,5 +1,5 @@
 class Notice{
-  final int? id;
+  final int id;
   final String notice_title;
   final String notice_main_text;
   final String? image_url;

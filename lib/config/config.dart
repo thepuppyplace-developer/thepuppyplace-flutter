@@ -3,7 +3,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
-import '../models/User.dart';
+import '../models/Member.dart';
 
 class Config{
   final String API_URL = 'http://3.36.65.93:3000';
@@ -76,7 +76,7 @@ class Config{
     }
   }
 
-  Future<User?> get REMOVE_JWT_TOKEN async{
+  Future<Member?> get REMOVE_JWT_TOKEN async{
     //로그아웃, 회원 탈퇴 시 SharedPreferences 패키지에서 JWT_TOKEN 키값을 삭제하여 자동로그인을 삭제
     final SharedPreferences spf = await SharedPreferences.getInstance();
     if(await JWT_TOKEN != null){

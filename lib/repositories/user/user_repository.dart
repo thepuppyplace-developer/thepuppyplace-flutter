@@ -5,7 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:thepuppyplace_flutter/pages/my_page/user_deleted_page.dart';
 import '../../config/config.dart';
-import '../../models/User.dart';
+import '../../models/Member.dart';
 import '../../util/common.dart';
 
 class UserRepository extends GetConnect with Config{
@@ -69,7 +69,7 @@ class UserRepository extends GetConnect with Config{
     }
   }
 
-  Future<User?> logout(BuildContext context) async{
+  Future<Member?> logout(BuildContext context) async{
     try{
       if(await JWT_TOKEN != null){
         final Response res = await patch('$API_URL/user/my', {

@@ -1,4 +1,4 @@
-class User{
+class Member{
   final int id;
   final String uid;
   final String? email;
@@ -13,7 +13,7 @@ class User{
   final String? location;
   final String auth_type;
 
-  User({
+  Member({
     required this.id,
     required this.uid,
     required this.email,
@@ -29,7 +29,7 @@ class User{
     required this.auth_type,
   });
 
-  factory User.fromJson(Map<String, dynamic> json) => User(
+  factory Member.fromJson(Map<String, dynamic> json) => Member(
     id: json['id'],
     uid: json['uid'],
     email: json['email'],

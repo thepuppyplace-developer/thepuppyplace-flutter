@@ -23,10 +23,9 @@ class TermsRepo extends GetConnect with Config{
   Future<Response> sendTerms(Term term) async{
     //약관 동의 체크한 항목을 서버에 전송
     try{
-      final Response res = await post('$API_URL/term', {
-        "term_title": term.name,
-        "term_contents" : term.content,
-        "is_require": term.is_required,
+      final Response res = await post('$API_URL/term/user/agree', {
+        "term_id": term.id,
+        "is_agree": term.check
       }, headers: await headers);
       if(res.statusCode != null) print(res.body['message']);
       return res;

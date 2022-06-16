@@ -20,5 +20,4 @@ doc/api/
 *.js.deps
 *.js.map
 
-.config.dart
-.local_db.dart
+config.dart

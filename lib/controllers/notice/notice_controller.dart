@@ -32,15 +32,4 @@ class NoticeController extends GetxController with StateMixin<Notice>{
       change(null, status: RxStatus.error(error.toString()));
     }
   }
-
-  Future get deleteNotice async{
-    Get.back();
-    int? statusCode = await _repository.deleteNotice(context, notice_id);
-
-    if(statusCode == 200){
-      final noticeListCtr = Get.put(NoticeListController(context));
-      noticeListCtr.getNoticeList;
-      return Get.until((route) => route.settings.name == NoticeListPage.routeName);
-    }
-  }
 }

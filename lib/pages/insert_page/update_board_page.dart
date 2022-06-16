@@ -8,7 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:thepuppyplace_flutter/models/Board.dart';
 import '../../controllers/user/user_controller.dart';
-import '../../models/User.dart';
+import '../../models/Member.dart';
 import '../../repositories/board/board_repository.dart';
 import '../../util/common.dart';
 import '../../util/location_list.dart';
@@ -61,7 +61,7 @@ class _UpdateBoardPageState extends State<UpdateBoardPage> {
       child: GetBuilder<UserController>(
           builder: (UserController controller) {
             return Scaffold(
-              body: controller.obx((User? user) => Form(
+              body: controller.obx((Member? user) => Form(
                 key: _formKey,
                 child: Column(
                   children: [
@@ -183,7 +183,7 @@ class _UpdateBoardPageState extends State<UpdateBoardPage> {
                                             ),
                                           ),
                                           onPressed: (){
-                                            Get.to(() => PhotoListView(index, widget.board.board_photos, PhotoType.cached), fullscreenDialog: true);
+                                            Get.to(() => PhotoListView(widget.board.board_photos, PhotoListType.cached, currentIndex: index), fullscreenDialog: true);
                                           },
                                         );
                                       },

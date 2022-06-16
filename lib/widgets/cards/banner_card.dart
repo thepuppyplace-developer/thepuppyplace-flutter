@@ -28,6 +28,9 @@ class _BannerCardState extends State<BannerCard> {
           CarouselSlider.builder(
             itemCount: bannerList!.length,
             options: CarouselOptions(
+              autoPlay: true,
+                autoPlayAnimationDuration: const Duration(milliseconds: 500),
+                autoPlayInterval: const Duration(seconds: 5),
                 enableInfiniteScroll: false,
                 viewportFraction: 1,
                 aspectRatio: 8/3,

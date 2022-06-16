@@ -12,7 +12,7 @@ class FirstNoticeView extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetBuilder<NoticeListController>(
       autoRemove: false,
-      init: NoticeListController(context),
+      init: NoticeListController(),
       builder: (NoticeListController controller) => SliverToBoxAdapter(
         child: controller.obx((noticeList) => Container(
           decoration: BoxDecoration(
@@ -23,16 +23,20 @@ class FirstNoticeView extends StatelessWidget {
           child: CupertinoButton(
             padding: baseHorizontalPadding(context),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Row(
-                  children: [
-                    Icon(CupertinoIcons.speaker, color: Colors.black, size: mediaHeight(context, 0.025),),
-                    Text('공지사항 ', style: CustomTextStyle.w500(context, color: CustomColors.hint)),
-                  ],
-                ),
+                Icon(CupertinoIcons.speaker, color: Colors.black, size: mediaHeight(context, 0.025)),
                 Expanded(
-                  child: Text(noticeList!.first.notice_title, style: CustomTextStyle.w500(context), overflow: TextOverflow.ellipsis,)
-                ),
+                  child: RichText(
+                    text: TextSpan(
+                      children: [
+                        TextSpan(text: '공지사항 ', style: CustomTextStyle.w500(context, color: CustomColors.hint)),
+                        TextSpan(text: noticeList!.first.notice_title, style: CustomTextStyle.w500(context))
+                      ]
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                )
               ],
             ),
             onPressed: () => Get.toNamed(NoticeListPage.routeName),

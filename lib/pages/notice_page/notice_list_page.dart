@@ -19,7 +19,7 @@ class NoticeListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => GetBuilder<NoticeListController>(
-      init: NoticeListController(context),
+      init: NoticeListController(),
       builder: (NoticeListController controller) {
         return Scaffold(
           body: NestedScrollView(

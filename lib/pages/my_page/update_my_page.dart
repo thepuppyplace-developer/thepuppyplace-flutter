@@ -7,7 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:thepuppyplace_flutter/pages/my_page/update_password_page.dart';
 import 'package:thepuppyplace_flutter/util/png_list.dart';
 import '../../controllers/user/user_controller.dart';
-import '../../models/User.dart';
+import '../../models/Member.dart';
 import '../../util/common.dart';
 import '../../widgets/buttons/update_text_button.dart';
 import 'update_nickname_page.dart';
@@ -39,7 +39,7 @@ class _UpdateMyPageState extends State<UpdateMyPage> {
           body: GetBuilder<UserController>(
             init: UserController(),
             builder: (UserController controller) {
-              return controller.obx((User? user) => Column(
+              return controller.obx((Member? user) => Column(
                 children: [
                   SingleChildScrollView(
                     child: Container(
@@ -77,7 +77,7 @@ class _UpdateMyPageState extends State<UpdateMyPage> {
                                     child: Text('카메라로 촬영하기', style: CustomTextStyle.w500(context, scale: 0.02)),
                                     onPressed: () async{
                                       Get.back();
-                                      _photo = await photoPick(context, ImageSource.camera);
+                                      _photo = await photoPick(ImageSource.camera);
                                       if(_photo != null){
                                         controller.updatePhotoURL(context, _photo);
                                       } else {
@@ -89,7 +89,7 @@ class _UpdateMyPageState extends State<UpdateMyPage> {
                                     child: Text('앨범에서 사진 선택', style: CustomTextStyle.w500(context, scale: 0.02)),
                                     onPressed: () async{
                                       Get.back();
-                                      _photo = await photoPick(context, ImageSource.gallery);
+                                      _photo = await photoPick(ImageSource.gallery);
                                       if(_photo != null){
                                         controller.updatePhotoURL(context, _photo);
                                       } else {

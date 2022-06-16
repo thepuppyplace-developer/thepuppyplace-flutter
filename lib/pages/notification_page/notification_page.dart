@@ -29,11 +29,12 @@ class NotificationPage extends GetWidget<UserController> {
           )
         ],
         body: controller.obx((user) => GetBuilder<NotificationLogListController>(
-            init: NotificationLogListController(context),
+            autoRemove: false,
+            init: NotificationLogListController(),
             builder: (NotificationLogListController notificationCtr) {
               return Scrollbar(
                 child: SmartRefresher(
-                  enablePullUp: notificationCtr.logList.isEmpty ? false : true,
+                  enablePullUp: notificationCtr.logList.isNotEmpty,
                   controller: notificationCtr.refreshController,
                   onRefresh: () async{
                     notificationCtr.refreshLogList.whenComplete((){

@@ -5,6 +5,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:thepuppyplace_flutter/config/kakao_talk_config.dart';
 import 'package:thepuppyplace_flutter/pages/search_page/search_page.dart';
 import 'package:thepuppyplace_flutter/util/common.dart';
+import 'package:thepuppyplace_flutter/util/png_list.dart';
 import 'package:thepuppyplace_flutter/views/home_views/best_board_list_view.dart';
 import 'package:thepuppyplace_flutter/views/home_views/first_notice_view.dart';
 import 'package:thepuppyplace_flutter/widgets/buttons/category_button.dart';
@@ -21,6 +22,7 @@ import '../../widgets/tab_bars/search_tab_bar.dart';
 
 class HomePage extends StatefulWidget {
   static const String routeName = '/homePage';
+
   const HomePage({Key? key}) : super(key: key);
 
   @override
@@ -72,19 +74,34 @@ class _HomePageState extends State<HomePage> {
               pinned: true,
               centerTitle: false,
               elevation: 0.1,
-              title: RichText(
-                text: TextSpan(
-                    style: CustomTextStyle.w500(context, scale: 0.025),
-                    children: [
-                      const TextSpan(
-                          text: 'the '
-                      ),
-                      TextSpan(
-                          text: 'puppy place',
-                          style: CustomTextStyle.w900(context, scale: 0.025)
+              title: Row(
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(right: mediaWidth(context, 0.02)),
+                    height: mediaWidth(context, 0.08),
+                    width: mediaWidth(context, 0.08),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      image: DecorationImage(
+                        image: AssetImage(PngList.app_logo)
                       )
-                    ]
-                ),
+                    ),
+                  ),
+                  RichText(
+                    text: TextSpan(
+                        style: CustomTextStyle.w500(context, scale: 0.025),
+                        children: [
+                          const TextSpan(
+                              text: 'the '
+                          ),
+                          TextSpan(
+                              text: 'puppy place',
+                              style: CustomTextStyle.w900(context, scale: 0.025)
+                          )
+                        ]
+                    ),
+                  ),
+                ],
               ),
               bottom: SearchTabBar(
                   mediaHeight(context, 0.07),
@@ -125,12 +142,12 @@ class _HomePageState extends State<HomePage> {
                         child: BannerCard()),
                   ),
                   const FirstNoticeView(),
-                  SliverToBoxAdapter(
-                    child: CustomButton(
-                      title: '카카오 로그인',
-                      onPressed: () => KakaoTalkConfig.kakaoLogin(),
-                    ),
-                  ),
+                  // SliverToBoxAdapter(
+                  //   child: CustomButton(
+                  //     title: '카카오 로그인',
+                  //     onPressed: () => KakaoTalkConfig.kakaoLogin(),
+                  //   ),
+                  // ),
                   SliverToBoxAdapter(
                     child: Container(
                       margin: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.033), vertical: mediaHeight(context, 0.02)),

@@ -235,7 +235,7 @@ Future openURL({required String url, bool? inApp}) async{
   );
 }
 
-Future<XFile?> photoPick(BuildContext context, ImageSource imageSource) async{
+Future<XFile?> photoPick(ImageSource imageSource) async{
   final imagePicker = ImagePicker();
   final XFile? photo = await imagePicker.pickImage(source: imageSource);
   return photo;

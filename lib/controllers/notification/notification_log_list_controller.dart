@@ -5,8 +5,7 @@ import 'package:thepuppyplace_flutter/models/NotificationLog.dart';
 import 'package:thepuppyplace_flutter/repositories/notification/notification_repository.dart';
 
 class NotificationLogListController extends GetxController with StateMixin<List<NotificationLog>>{
-  final BuildContext context;
-  NotificationLogListController(this.context);
+  static NotificationLogListController get to => Get.put(NotificationLogListController());
 
   final _repo = NotificationRepository();
 
@@ -36,10 +35,28 @@ class NotificationLogListController extends GetxController with StateMixin<List<
   }
 
   Future get getLogList async{
-    _logList.value = await _repo.getNotificationLogList(context);
+    try{
+      final Response res = await _repo.getNotificationLogList;
+      switch(res.statusCode){
+        case 200:
+          _logList.addAll(List.from(res.body['data']).map((log) => NotificationLog.fromJson(log)).toList());
+      }
+    } catch(error){
+      throw Exception(error);
+    }
   }
 
   Future get refreshLogList async{
-    _logList.value = await _repo.getNotificationLogList(context);
+    change(null, status: RxStatus.loading());
+    try{
+      final Response res = await _repo.getNotificationLogList;
+      switch(res.statusCode){
+        case 200:
+          _logList.clear();
+          _logList.addAll(List.from(res.body['data']).map((log) => NotificationLog.fromJson(log)).toList());
+      }
+    } catch(error){
+      throw Exception(error);
+    }
   }
 }

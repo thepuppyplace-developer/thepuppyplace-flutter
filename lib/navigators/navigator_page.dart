@@ -21,7 +21,7 @@ class NavigatorPage extends StatefulWidget {
 class _NavigatorPageState extends State<NavigatorPage> {
   int _currentIndex = 0;
 
-  final List<Widget> _bodies = const <Widget>[
+  List<Widget> get _bodies => const <Widget>[
     HomeNavigator(),
     InsertBoardPage(),
     NotificationPage(),
@@ -36,44 +36,38 @@ class _NavigatorPageState extends State<NavigatorPage> {
   ];
 
   @override
-  void initState() {
-    super.initState();
-    Get.put(BoardListController());
-  }
-
-  @override
   Widget build(BuildContext context) {
     return GetBuilder<UserController>(
-      init: UserController(),
-      builder: (UserController controller) {
-        return Scaffold(
-          body: _bodies[_currentIndex],
-          bottomNavigationBar: bottomNavigationBar(),
-        );
-      }
+        init: UserController(),
+        builder: (UserController controller) {
+          return Scaffold(
+            body: _bodies[_currentIndex],
+            bottomNavigationBar: bottomNavigationBar(),
+          );
+        }
     );
   }
 
   Widget bottomNavigationBar() => BottomNavigationBar(
-    type: BottomNavigationBarType.fixed,
-    selectedLabelStyle: CustomTextStyle.w500(context, height: 2, scale: 0.015),
-    unselectedLabelStyle: CustomTextStyle.w500(context, scale: 0.015),
-    showUnselectedLabels: false,
-    unselectedItemColor: Colors.black,
-    selectedItemColor: CustomColors.main,
+      type: BottomNavigationBarType.fixed,
+      selectedLabelStyle: CustomTextStyle.w500(context, height: 2, scale: 0.015),
+      unselectedLabelStyle: CustomTextStyle.w500(context, scale: 0.015),
+      showUnselectedLabels: false,
+      unselectedItemColor: Colors.black,
+      selectedItemColor: CustomColors.main,
       currentIndex: _currentIndex,
       onTap: (int index){
-      switch(index){
-        case 1: {
-          Get.toNamed(InsertBoardPage.routeName);
-          break;
+        switch(index){
+          case 1: {
+            Get.toNamed(InsertBoardPage.routeName);
+            break;
+          }
+          default: {
+            setState(() {
+              _currentIndex = index;
+            });
+          }
         }
-        default: {
-          setState(() {
-            _currentIndex = index;
-          });
-        }
-      }
       },
       items: _items
   );

@@ -6,7 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:thepuppyplace_flutter/controllers/board/board_list_controller.dart';
 import 'package:thepuppyplace_flutter/views/photo_view/photo_list_view.dart';
 import '../../controllers/user/user_controller.dart';
-import '../../models/User.dart';
+import '../../models/Member.dart';
 import '../../repositories/board/board_repository.dart';
 import '../../util/common.dart';
 import '../../util/location_list.dart';
@@ -51,7 +51,7 @@ class _InsertBoardPageState extends State<InsertBoardPage> {
       child: GetBuilder<UserController>(
           builder: (UserController controller) {
             return Scaffold(
-              body: controller.obx((User? user) => Form(
+              body: controller.obx((Member? user) => Form(
                 key: _formKey,
                 child: Column(
                   children: [
@@ -251,7 +251,7 @@ class _InsertBoardPageState extends State<InsertBoardPage> {
                                             ),
                                           ),
                                           onPressed: (){
-                                            Get.to(() => PhotoListView(index, photoList.map((photo) => photo!.path).toList(), PhotoType.file), fullscreenDialog: true);
+                                            Get.to(() => PhotoListView(photoList.map((photo) => photo!.path).toList(), PhotoListType.file, currentIndex: index), fullscreenDialog: true);
                                           },
                                         ),
                                         GestureDetector(

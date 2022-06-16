@@ -1,4 +1,4 @@
-import 'User.dart';
+import 'Member.dart';
 import 'UserNicknameAndPhotoURL.dart';
 
 class Like{

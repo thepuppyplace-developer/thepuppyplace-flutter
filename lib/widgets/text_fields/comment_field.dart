@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../controllers/user/user_controller.dart';
-import '../../models/User.dart';
+import '../../models/Member.dart';
 import '../../util/common.dart';
 import '../buttons/custom_text_button.dart';
 import 'custom_text_field.dart';
@@ -22,7 +22,7 @@ class CommentField extends StatelessWidget {
     return GetBuilder<UserController>(
         init: UserController(),
         builder: (UserController controller) {
-          return controller.obx((User? user) =>
+          return controller.obx((Member? user) =>
               Column(
                 children: [
                   Container(

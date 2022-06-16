@@ -27,7 +27,7 @@ class PickImageButton extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Icon(Icons.image_outlined, color: Colors.grey, size: mediaHeight(context, 0.03)),
-            Text(text ?? '사진 올리기', style: CustomTextStyle.w500(context, color: Colors.grey),)
+            Text(text ?? '사진 추가', style: CustomTextStyle.w500(context, color: Colors.grey, scale: 0.015),)
           ],
         ),
         onPressed: onTap

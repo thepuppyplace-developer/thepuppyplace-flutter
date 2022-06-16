@@ -6,7 +6,7 @@ import 'package:thepuppyplace_flutter/widgets/dialogs/custom_dialog.dart';
 import '../../controllers/user/user_controller.dart';
 import '../../models/BoardComment.dart';
 import '../../models/NestedComment.dart';
-import '../../models/User.dart';
+import '../../models/Member.dart';
 import '../../util/common.dart';
 import '../buttons/custom_text_button.dart';
 import 'user_profile_card.dart';
@@ -39,7 +39,7 @@ class CommentCard extends GetWidget<UserController> {
               Expanded(
                   child: UserProfileCard(comment.user)
               ),
-              controller.obx((User? user){
+              controller.obx((Member? user){
                 if(user!.id == comment.userId){
                   return CustomTextButton('삭제', (){
                     showDialog(context: context, builder: (context) => CustomDialog(title: '댓글을 삭제하시겠습니까?', onTap: onCommentDelete));
@@ -91,7 +91,7 @@ class CommentCard extends GetWidget<UserController> {
                               Expanded(
                                   child: UserProfileCard(nestedComment.user)
                               ),
-                              controller.obx((User? user){
+                              controller.obx((Member? user){
                                 if(nestedComment.user.nickname == user!.nickname) {
                                   return CustomTextButton(
                                       '삭제', () {

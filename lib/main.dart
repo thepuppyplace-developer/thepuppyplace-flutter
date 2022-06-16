@@ -47,13 +47,10 @@ class MyApp extends StatelessWidget {
       theme: CustomThemeData.light,
       routes: <String, WidgetBuilder>{
         BoardDetailsPage.routeName: (context) => const BoardDetailsPage(),
-        LoginPage.routeName: (context) => const LoginPage(),
         SearchBoardListPage.routeName: (context) => const SearchBoardListPage(),
         SearchPage.routeName: (context) => const SearchPage(),
-        BoardListPage.routeName: (context) => const BoardListPage(),
-        InsertBoardPage.routeName: (context) => const InsertBoardPage(),
+        BoardListPage.routeName: (context) => BoardListPage(),
         NoticeListPage.routeName: (context) => const NoticeListPage(),
-        HomePage.routeName: (context) => const HomePage(),
         SendPasswordPage.routeName: (context) => const SendPasswordPage(),
         NoticeInsertPage.routeName: (context) => const NoticeInsertPage(),
         AppInfoPage.routeName: (context) => const AppInfoPage(),
@@ -63,7 +60,7 @@ class MyApp extends StatelessWidget {
       },
       getPages: [
         GetPage(name: LoginPage.routeName, page: () => const LoginPage(), fullscreenDialog: true),
-        GetPage(name: BoardListPage.routeName, page: () => const BoardListPage()),
+        GetPage(name: InsertBoardPage.routeName, page: () => const InsertBoardPage(), fullscreenDialog: true),
       ],
       home: const SplashPage(),
     );
