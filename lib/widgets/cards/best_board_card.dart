@@ -34,13 +34,16 @@ class BestBoardCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   UserProfileCard(board.user),
-                  Row(
-                    children: [
-                      TagText(board.category),
-                      TagText(board.location),
-                    ],
+                  Container(
+                    margin: baseVerticalPadding(context) / 2,
+                    child: Row(
+                      children: [
+                        TagText(board.category),
+                        TagText(board.location),
+                      ],
+                    ),
                   ),
-                  Text(board.title, style: CustomTextStyle.w600(context))
+                  Text(board.title, style: CustomTextStyle.w600(context), overflow: TextOverflow.ellipsis)
                 ],
               ),
             ),

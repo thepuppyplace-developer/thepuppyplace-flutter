@@ -103,7 +103,7 @@ mixin CustomColors implements Color{
 }
 
 mixin CustomTextStyle implements TextStyle{
-  static const double _scale = 0.02;
+  static const double _scale = 0.018;
   static const Color _color = Colors.black;
   static const String _family = 'Tmoney';
   static const TextDecoration _decoration = TextDecoration.none;

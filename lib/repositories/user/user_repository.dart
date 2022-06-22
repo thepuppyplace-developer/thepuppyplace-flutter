@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
-import 'package:thepuppyplace_flutter/pages/my_page/user_deleted_page.dart';
 import '../../config/config.dart';
 import '../../models/Member.dart';
 import '../../util/common.dart';
@@ -18,7 +17,7 @@ class UserRepository extends GetConnect with Config{
         "auth_type": USER_AUTH_TYPE(googleUser: googleUser, appleUser: appleUser)?.trim(),
         "nickname": nickname.trim(),
       });
-      if(res.statusCode != null) print(res.body['message']);
+      if(res.statusCode != null && res.statusCode != 204) print(res.body['message']);
       return res;
     } catch(error){
       throw Exception(error);
@@ -90,7 +89,7 @@ class UserRepository extends GetConnect with Config{
   Future<Response> getUser() async{
     try{
       final Response res = await get('$API_URL/user/my', headers: await headers);
-      if(res.statusCode != null) print(res.body['message']);
+      if(res.statusCode != null && res.statusCode != 204) print(res.body['message']);
       return res;
     } catch(error){
       throw Exception(error);

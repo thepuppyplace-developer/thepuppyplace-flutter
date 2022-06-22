@@ -31,16 +31,16 @@ class _BestBoardListViewState extends State<BestBoardListView> {
               CarouselSlider.builder(
                 itemCount: boardList.length ~/ 3,
                 options: CarouselOptions(
-                  onPageChanged: (index, _){
-                    setState(() {
-                      controller.pageIndex.value = index;
-                    });
-                  },
+                    onPageChanged: (index, _){
+                      setState(() {
+                        controller.pageIndex.value = index;
+                      });
+                    },
                     height: mediaHeight(context, 0.5),
                     disableCenter: true,
                     enableInfiniteScroll: false,
                     viewportFraction: 0.8,
-                  padEnds: false
+                    padEnds: false
                 ),
                 itemBuilder: (context, index, index2){
                   return Column(

@@ -81,18 +81,33 @@ class NotificationController extends GetxController with Config{
           }
       );
 
-      FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-        RemoteNotification? notification = message.notification;
-        if (notification != null) {
-          _localNotifications.show(
-              notification.hashCode,
-              notification.title,
-              notification.body,
-              _notificationDetails,
-              payload: jsonEncode(message.data)
-          );
+      FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message){
+        String action = message.data['action'];
+        String actionType = message.data['action_type'];
+        int board_id = int.parse(message.data['board_id']);
+        switch (actionType) {
+          case 'web':
+            {
+              openURL(url: action, inApp: false);
+              break;
+            }
+          default:
+            Get.toNamed(action, preventDuplicates: false, arguments: board_id);
         }
       });
+
+      // FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      //   RemoteNotification? notification = message.notification;
+      //   if (notification != null) {
+      //     _localNotifications.show(
+      //         notification.hashCode,
+      //         notification.title,
+      //         notification.body,
+      //         _notificationDetails,
+      //         payload: jsonEncode(message.data)
+      //     );
+      //   }
+      // });
 
       _fcm.setForegroundNotificationPresentationOptions(
           alert: true,

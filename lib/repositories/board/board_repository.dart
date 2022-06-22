@@ -233,6 +233,7 @@ class BoardRepository extends GetConnect with Config{
         'board_id': board_id,
         'comment': comment.trim()
       }, headers: await headers);
+      print(res.body);
       switch(res.statusCode){
         case 201:
           return showSnackBar(context, '댓글이 등록되었습니다.');
