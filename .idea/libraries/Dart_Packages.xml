@@ -719,7 +719,7 @@
         <entry key="photo_view">
           <value>
             <list>
-              <option value="$USER_HOME$/Development/flutter/.pub-cache/hosted/pub.dartlang.org/photo_view-0.13.0/lib" />
+              <option value="$USER_HOME$/Development/flutter/.pub-cache/git/photo_view-7e8c335ad718c71e22402a920c939d949106d508//lib" />
             </list>
           </value>
         </entry>
@@ -1090,6 +1090,7 @@
       </option>
     </properties>
     <CLASSES>
+      <root url="file://$USER_HOME$/Development/flutter/.pub-cache/git/photo_view-7e8c335ad718c71e22402a920c939d949106d508//lib" />
       <root url="file://$USER_HOME$/Development/flutter/.pub-cache/hosted/pub.dartlang.org/animated_bottom_navigation_bar-0.3.3/lib" />
       <root url="file://$USER_HOME$/Development/flutter/.pub-cache/hosted/pub.dartlang.org/animations-2.0.3/lib" />
       <root url="file://$USER_HOME$/Development/flutter/.pub-cache/hosted/pub.dartlang.org/archive-3.3.0/lib" />
@@ -1188,7 +1189,6 @@
       <root url="file://$USER_HOME$/Development/flutter/.pub-cache/hosted/pub.dartlang.org/pedantic-1.11.1/lib" />
       <root url="file://$USER_HOME$/Development/flutter/.pub-cache/hosted/pub.dartlang.org/percent_indicator-4.2.2/lib" />
       <root url="file://$USER_HOME$/Development/flutter/.pub-cache/hosted/pub.dartlang.org/petitparser-5.0.0/lib" />
-      <root url="file://$USER_HOME$/Development/flutter/.pub-cache/hosted/pub.dartlang.org/photo_view-0.13.0/lib" />
       <root url="file://$USER_HOME$/Development/flutter/.pub-cache/hosted/pub.dartlang.org/pin_code_fields-7.4.0/lib" />
       <root url="file://$USER_HOME$/Development/flutter/.pub-cache/hosted/pub.dartlang.org/platform-3.1.0/lib" />
       <root url="file://$USER_HOME$/Development/flutter/.pub-cache/hosted/pub.dartlang.org/plugin_platform_interface-2.1.2/lib" />
