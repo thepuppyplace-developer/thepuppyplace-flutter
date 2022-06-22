@@ -25,7 +25,7 @@ class NotificationLogCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Expanded(child: Text(notification.log_body, style: CustomTextStyle.w600(context), overflow: TextOverflow.ellipsis, maxLines: 3)),
                 Container(
