@@ -274,10 +274,12 @@ class _InsertBoardPageState extends State<InsertBoardPage> {
                         ),
                       ),
                     ),
-                    CustomButton(
-                        margin: EdgeInsets.all(mediaWidth(context, 0.033)),
-                        title: '등록하기',
-                        onPressed: insertBoard
+                    SafeArea(
+                      child: CustomButton(
+                          margin: EdgeInsets.all(mediaWidth(context, 0.033)),
+                          title: '등록하기',
+                          onPressed: insertBoard
+                      ),
                     )
                   ],
                 ),

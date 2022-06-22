@@ -193,7 +193,7 @@ class _BoardDetailsPageState extends State<BoardDetailsPage> {
                               child: Text(board.title, style: CustomTextStyle.w600(context, scale: 0.02))),
                           Container(
                             margin: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.033)).copyWith(bottom: mediaWidth(context, 0.033)),
-                            child: Text(board.description, style: CustomTextStyle.w400(context)),
+                            child: Text(board.description, style: CustomTextStyle.w400(context, scale: 0.015)),
                           ),
                           Container(
                             decoration: const BoxDecoration(
@@ -279,71 +279,73 @@ class _BoardDetailsPageState extends State<BoardDetailsPage> {
                   )
               ),
             ),
-            bottomSheet: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                if(_selectComment != null) Opacity(
-                  opacity: 0.5,
-                  child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.033), vertical: mediaHeight(context, 0.01)),
-                      decoration: const BoxDecoration(
-                        color: CustomColors.emptySide,
-                      ),
-                      alignment: Alignment.centerLeft,
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: RichText(
-                              text: TextSpan(
-                                children: [
-                                  TextSpan(
-                                      text:_selectComment!.user.nickname,
-                                      style: CustomTextStyle.w600(context)
-                                  ),
-                                  TextSpan(
-                                      text: '님에게 댓글 달기',
-                                      style: CustomTextStyle.w500(context)
-                                  )
-                                ],
+            bottomSheet: SafeArea(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if(_selectComment != null) Opacity(
+                    opacity: 0.5,
+                    child: Container(
+                        padding: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.033), vertical: mediaHeight(context, 0.01)),
+                        decoration: const BoxDecoration(
+                          color: CustomColors.emptySide,
+                        ),
+                        alignment: Alignment.centerLeft,
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: RichText(
+                                text: TextSpan(
+                                  children: [
+                                    TextSpan(
+                                        text:_selectComment!.user.nickname,
+                                        style: CustomTextStyle.w600(context)
+                                    ),
+                                    TextSpan(
+                                        text: '님에게 댓글 달기',
+                                        style: CustomTextStyle.w500(context)
+                                    )
+                                  ],
+                                ),
                               ),
                             ),
-                          ),
-                          GestureDetector(
-                            child: Text('취소', style: CustomTextStyle.w500(context)),
-                            onTap: (){
-                              setState(() {
-                                _selectComment = null;
-                              });
-                            },
-                          )
-                        ],
-                      )
+                            GestureDetector(
+                              child: Text('취소', style: CustomTextStyle.w500(context)),
+                              onTap: (){
+                                setState(() {
+                                  _selectComment = null;
+                                });
+                              },
+                            )
+                          ],
+                        )
+                    ),
                   ),
-                ),
-                CommentField(
-                  commentController: _commentController,
-                  onPressed: (comment) async{
-                    if(_selectComment != null){
-                      await controller.insertNestedComment(
-                          context,
-                          comment_id: _selectComment!.commentId,
-                          comment: comment
-                      );
+                  CommentField(
+                    commentController: _commentController,
+                    onPressed: (comment) async{
+                      if(_selectComment != null){
+                        await controller.insertNestedComment(
+                            context,
+                            comment_id: _selectComment!.commentId,
+                            comment: comment
+                        );
+                        setState(() {
+                        });
+                      } else {
+                        await controller.insertComment(
+                            context,
+                            comment: comment
+                        );
+                      }
                       setState(() {
+                        _selectComment = null;
+                        _commentController.clear();
                       });
-                    } else {
-                      await controller.insertComment(
-                          context,
-                          comment: comment
-                      );
-                    }
-                    setState(() {
-                      _selectComment = null;
-                      _commentController.clear();
-                    });
-                  },
-                )
-              ],
+                    },
+                  )
+                ],
+              ),
             ),
           ),
         ),

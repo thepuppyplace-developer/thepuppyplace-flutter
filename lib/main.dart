@@ -12,20 +12,34 @@ import 'package:thepuppyplace_flutter/pages/notice_page/notice_list_page.dart';
 import 'package:thepuppyplace_flutter/pages/search_page/search_board_list_page.dart';
 import 'package:thepuppyplace_flutter/pages/search_page/search_page.dart';
 import 'controllers/notification/notification_controller.dart';
+import 'controllers/user/user_controller.dart';
 import 'pages/auth_page/login_page.dart';
 import 'pages/auth_page/send_password_page.dart';
-import 'pages/home_page/home_page.dart';
 import 'pages/my_page/app_info_page.dart';
 import 'pages/my_page/update_my_page.dart';
 import 'pages/my_page/update_password_page.dart';
 import 'pages/notice_page/notice_insert_page.dart';
+import 'util/common.dart';
 import 'util/customs.dart';
 import 'pages/splash_page.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
-  print('Handling a background message ${message.messageId}');
-  print('Notification Message: ${message.data}');
+  FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+    Get.put(UserController());
+    String action = message.data['action'];
+    String actionType = message.data['action_type'];
+    int board_id = int.parse(message.data['board_id']);
+    switch (actionType) {
+      case 'web':
+        {
+          openURL(url: action, inApp: false);
+          break;
+        }
+      default:
+        Get.toNamed(action, preventDuplicates: false, arguments: board_id);
+    }
+  });
 }
 
 Future main() async{

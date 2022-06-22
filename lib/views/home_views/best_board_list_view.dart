@@ -40,6 +40,7 @@ class _BestBoardListViewState extends State<BestBoardListView> {
                     disableCenter: true,
                     enableInfiniteScroll: false,
                     viewportFraction: 0.8,
+                  padEnds: false
                 ),
                 itemBuilder: (context, index, index2){
                   return Column(
