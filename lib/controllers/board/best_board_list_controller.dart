@@ -37,7 +37,7 @@ class BestBoardListController extends GetxController with StateMixin<List<Board>
   Future getBoardList() async{
     boardList.addAll(await _repository.getBoardList(
         limit: limit.value,
-        order: 'view'
+        order: 'like'
     ));
   }
 
@@ -45,7 +45,7 @@ class BestBoardListController extends GetxController with StateMixin<List<Board>
     boardList.clear();
     boardList.value = await _repository.getBoardList(
       limit: limit.value,
-      order: 'view',
+      order: 'like',
     );
   }
 }

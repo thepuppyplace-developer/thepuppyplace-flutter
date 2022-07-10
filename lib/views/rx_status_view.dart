@@ -25,11 +25,13 @@ class LoadingView extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Container(
+            clipBehavior: Clip.antiAlias,
             height: mediaHeight(context, 0.1),
             width: mediaHeight(context, 0.1),
             decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 image: DecorationImage(
+                  fit: BoxFit.cover,
                     image: AssetImage(PngList.app_logo)
                 )
             ),

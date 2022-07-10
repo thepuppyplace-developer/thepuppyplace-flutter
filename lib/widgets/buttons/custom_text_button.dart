@@ -6,6 +6,7 @@ import '../../util/common.dart';
 class CustomTextButton extends StatelessWidget {
   final String text;
   final Function()? onPressed;
+  final double? scale;
   final EdgeInsets? padding;
   final Color? color;
   final Alignment? alignment;
@@ -13,6 +14,7 @@ class CustomTextButton extends StatelessWidget {
   const CustomTextButton(
       this.text,
       this.onPressed, {
+        this.scale,
         this.padding,
         this.color,
         this.alignment,
@@ -23,7 +25,7 @@ class CustomTextButton extends StatelessWidget {
     return CupertinoButton(
       padding: padding ?? EdgeInsets.zero,
       alignment: alignment ?? Alignment.center,
-      child: Text(text, style: CustomTextStyle.w500(context, color: color ?? CustomColors.main)),
+      child: Text(text, style: CustomTextStyle.w500(context, color: color ?? CustomColors.main, scale: scale)),
       onPressed: onPressed,
     );
   }

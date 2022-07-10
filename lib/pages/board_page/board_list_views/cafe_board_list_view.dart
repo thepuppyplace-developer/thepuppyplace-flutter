@@ -5,7 +5,6 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:thepuppyplace_flutter/util/common.dart';
 import '../../../controllers/board/cafe_board_list_controller.dart';
 import '../../../models/Board.dart';
-import '../../../util/customs.dart';
 import '../../../views/rx_status_view.dart';
 import '../../../widgets/buttons/order_button.dart';
 import '../../../widgets/cards/board_card.dart';

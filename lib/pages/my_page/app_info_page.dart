@@ -25,7 +25,7 @@ class AppInfoPage extends StatelessWidget {
                 const Expanded(child: CustomTextButton('현재버전', null, color: Colors.black, alignment: Alignment.centerLeft)),
                 GetBuilder<VersionController>(
                   init: VersionController(),
-                  builder: (VersionController controller) => controller.obx((version) => Text(version!.version, style: CustomTextStyle.w500(context, color: CustomColors.hint))),
+                  builder: (VersionController controller) => controller.obx((version) => Text(version!.currentVersion, style: CustomTextStyle.w500(context, color: CustomColors.hint))),
                 )
               ],
             ),
@@ -34,7 +34,7 @@ class AppInfoPage extends StatelessWidget {
                 const Expanded(child: CustomTextButton('최신버전', null, color: Colors.black, alignment: Alignment.centerLeft)),
                 GetBuilder<VersionController>(
                   init: VersionController(),
-                  builder: (VersionController controller) => controller.obx((version) => Text(version!.version, style: CustomTextStyle.w500(context, color: CustomColors.hint))),
+                  builder: (VersionController controller) => controller.obx((version) => Text(version!.recentVersion, style: CustomTextStyle.w500(context, color: CustomColors.hint))),
                 )
               ],
             ),

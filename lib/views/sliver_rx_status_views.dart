@@ -22,7 +22,14 @@ class SliverLoading extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            if(animated ?? true)SizedAnimation(child: Image.asset(PngList.app_logo, height: mediaHeight(context, 0.15))),
+            if(animated ?? true) Container(
+              clipBehavior: Clip.antiAlias,
+              decoration: const BoxDecoration(
+                shape: BoxShape.circle
+              ),
+              child: SizedAnimation(
+                  child: Image.asset(PngList.app_logo, height: mediaHeight(context, 0.15))),
+            ),
             Container(
                 margin: EdgeInsets.symmetric(vertical: mediaHeight(context, 0.04)),
                 child: Text(message ?? '페이지 이동중입니다', style: CustomTextStyle.w500(context, color: CustomColors.hint))),

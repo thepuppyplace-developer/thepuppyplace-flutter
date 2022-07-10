@@ -35,8 +35,13 @@ class OrderButton extends StatelessWidget {
             textStyle: CustomTextStyle.w500(context),
           ),
           PopupMenuItem(
-            value: 'view',
+            value: 'like',
             child: const Text('인기순'),
+            textStyle: CustomTextStyle.w500(context),
+          ),
+          PopupMenuItem(
+            value: 'view',
+            child: const Text('조회순'),
             textStyle: CustomTextStyle.w500(context),
           ),
         ],
@@ -44,5 +49,3 @@ class OrderButton extends StatelessWidget {
     );
   }
 }
-
-enum OrderType{date, view}

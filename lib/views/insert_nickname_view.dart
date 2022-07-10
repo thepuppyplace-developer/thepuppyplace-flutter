@@ -98,7 +98,7 @@ class _InsertNicknameViewState extends State<InsertNicknameView> {
             return Get.until((route) => route.isFirst);
           case 400:
             return showSnackBar(context, '가입에 실패하였습니다.');
-          default:
+          case null:
             return network_check_message(context);
         }
       }

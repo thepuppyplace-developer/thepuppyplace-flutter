@@ -1,19 +1,17 @@
 class Version{
-  String version;
-  bool force;
+  final String currentVersion;
+  final String recentVersion;
+  final bool isRequired;
 
   Version({
-    required this.version,
-    required this.force
+    required this.currentVersion,
+    required this.recentVersion,
+    required this.isRequired,
   });
 
   factory Version.fromJson(Map<String, dynamic> json) => Version(
-    version: json['version'],
-    force: json['force'],
+    currentVersion: json['current_version'],
+    recentVersion: json['recent_version'],
+    isRequired: json['is_required'],
   );
-
-  Map<String, dynamic> toJson() => {
-    'version': version,
-    'force': force,
-  };
 }

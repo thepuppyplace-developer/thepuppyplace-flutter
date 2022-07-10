@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
@@ -11,7 +10,6 @@ import '../../controllers/user/user_controller.dart';
 import '../../models/Member.dart';
 import '../../repositories/board/board_repository.dart';
 import '../../util/common.dart';
-import '../../util/location_list.dart';
 import '../../views/photo_view/photo_list_view.dart';
 import '../../widgets/buttons/custom_button.dart';
 import '../../widgets/tab_bars/select_category_tab_bar.dart';
@@ -48,6 +46,8 @@ class _UpdateBoardPageState extends State<UpdateBoardPage> {
   @override
   void initState() {
     super.initState();
+    _title = widget.board.title;
+    _description = widget.board.description;
     _titleController = TextEditingController(text: widget.board.title);
     _descriptionController = TextEditingController(text: widget.board.description);
   }
@@ -79,7 +79,7 @@ class _UpdateBoardPageState extends State<UpdateBoardPage> {
                                 title: Text('게시글 수정', style: CustomTextStyle.w600(context, scale: 0.02)),
                                 actions: [
                                   CupertinoButton(
-                                    child: Text('등록', style: CustomTextStyle.w500(context, scale: 0.018, color: CustomColors.main)),
+                                    child: Text('수정', style: CustomTextStyle.w500(context, scale: 0.018, color: CustomColors.main)),
                                     onPressed: updateBoard,
                                   )
                                 ],
@@ -235,7 +235,7 @@ class _UpdateBoardPageState extends State<UpdateBoardPage> {
                                         margin: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.033)),
                                         minLines: 20,
                                         maxLines: 50,
-                                        keyboardType: TextInputType.text,
+                                        keyboardType: TextInputType.multiline,
                                         hintText: '내용을 입력해주세요.',
                                       )
                                     ],
@@ -247,10 +247,12 @@ class _UpdateBoardPageState extends State<UpdateBoardPage> {
                         ],
                       ),
                     ),
-                    CustomButton(
-                      margin: EdgeInsets.all(mediaWidth(context, 0.033)),
-                      title: '수정하기',
-                      onPressed: updateBoard
+                    SafeArea(
+                      child: CustomButton(
+                        margin: EdgeInsets.all(mediaWidth(context, 0.033)),
+                        title: '수정하기',
+                        onPressed: updateBoard
+                      ),
                     )
                   ],
                 ),

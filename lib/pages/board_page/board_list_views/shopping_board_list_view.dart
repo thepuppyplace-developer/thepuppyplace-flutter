@@ -54,6 +54,7 @@ class _ShoppingBoardListViewState extends State<ShoppingBoardListView> {
                       OrderButton(
                         order: orderText(controller.order.value),
                         onSelected: (String order){
+                          controller.page.value = 0;
                           controller.order.value = order;
                           controller.refreshBoardList();
                         },

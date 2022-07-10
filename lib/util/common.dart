@@ -103,7 +103,7 @@ mixin CustomColors implements Color{
 }
 
 mixin CustomTextStyle implements TextStyle{
-  static const double _scale = 0.018;
+  static const double _scale = 0.016;
   static const Color _color = Colors.black;
   static const String _family = 'Tmoney';
   static const TextDecoration _decoration = TextDecoration.none;
@@ -216,7 +216,8 @@ int commentCount(List<BoardComment>? commentList){
 String orderText(String order){
   switch(order){
     case 'date': return '최신순';
-    case 'view': return '인기순';
+    case 'like': return '인기순';
+    case 'view': return '조회순';
     default: return '최신순';
   }
 }
@@ -226,14 +227,12 @@ int randomImage(){
   return random;
 }
 
-Future openURL({required String url, bool? inApp}) async{
-  launch(
-      url,
-      forceSafariVC: inApp,
-      forceWebView: inApp ?? false,
-      enableJavaScript: true
-  );
-}
+void openURL({required String url, bool? inApp}) => launch(
+    url,
+    forceSafariVC: inApp,
+    forceWebView: inApp ?? false,
+    enableJavaScript: true
+);
 
 Future<XFile?> photoPick(ImageSource imageSource) async{
   final imagePicker = ImagePicker();

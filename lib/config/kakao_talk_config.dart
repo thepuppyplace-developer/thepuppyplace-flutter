@@ -15,8 +15,8 @@ class KakaoTalkConfig{
               description: board.description,
               imageUrl: Uri.parse(board.board_photos.first),
               link: Link(
-                  androidExecutionParams: {},
-                  iosExecutionParams: {}
+                  androidExecutionParams: {"key": "1"},
+                  iosExecutionParams: {"key": "1"}
               ),
             ),
         );

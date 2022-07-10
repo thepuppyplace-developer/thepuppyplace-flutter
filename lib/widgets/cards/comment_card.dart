@@ -43,7 +43,7 @@ class CommentCard extends GetWidget<UserController> {
                 if(user!.id == comment.userId){
                   return CustomTextButton('삭제', (){
                     showDialog(context: context, builder: (context) => CustomDialog(title: '댓글을 삭제하시겠습니까?', onTap: onCommentDelete));
-                  }, color: CustomColors.main);
+                  }, color: CustomColors.main, scale: 0.013);
                 } else {
                   return Container(height: mediaHeight(context, 0.06));
                 }
@@ -52,23 +52,41 @@ class CommentCard extends GetWidget<UserController> {
               )
             ],
           ),
-          Text(comment.comment, style: CustomTextStyle.w500(context)),
+          Text(comment.comment, style: CustomTextStyle.w500(context, scale: 0.015)),
           Row(
             children: [
               Expanded(
                 child: Row(
                   children: [
-                    CustomTextButton('좋아요 ${comment.commentLikeList.isEmpty ? '' : comment.commentLikeList.length}', (){
-                      onLike(comment);
-                    }, color: CustomColors.hint),
+                    controller.obx((user){
+                      if(comment.commentLikeList.where((like) => like.user_id == user?.id).isEmpty) {
+                        return CustomTextButton('좋아요 ${comment.commentLikeList.isEmpty ? '' : comment.commentLikeList.length}', (){
+                          onLike(comment);
+                        }, color: CustomColors.hint, scale: 0.013);
+                      } else {
+                        return CustomTextButton('좋아요 취소 ${comment.commentLikeList.isEmpty ? '' : comment.commentLikeList.length}', (){
+                          onLike(comment);
+                        }, color: CustomColors.main, scale: 0.013);
+                      }
+                    },
+                      onEmpty: CustomTextButton('좋아요 ${comment.commentLikeList.isEmpty ? '' : comment.commentLikeList.length}', (){
+                        onLike(comment);
+                      }, color: CustomColors.hint, scale: 0.013),
+                      onError: (error) => CustomTextButton('좋아요 ${comment.commentLikeList.isEmpty ? '' : comment.commentLikeList.length}', (){
+                        onLike(comment);
+                      }, color: CustomColors.hint, scale: 0.013),
+                      onLoading: CustomTextButton('좋아요 ${comment.commentLikeList.isEmpty ? '' : comment.commentLikeList.length}', (){
+                        onLike(comment);
+                      }, color: CustomColors.hint, scale: 0.013)
+                    ),
                     SizedBox(width: mediaWidth(context, 0.03)),
                     CustomTextButton('답글달기', (){
                       onComment(comment);
-                    }, color: CustomColors.hint),
+                    }, color: CustomColors.hint, scale: 0.013),
                   ],
                 ),
               ),
-              Text(beforeDate(comment.createdAt), style: CustomTextStyle.w500(context, color: CustomColors.hint))
+              Text(beforeDate(comment.createdAt), style: CustomTextStyle.w500(context, color: CustomColors.hint, scale: 0.013))
             ],
           ),
           if(comment.nestedCommentList.isNotEmpty) Column(
@@ -98,21 +116,18 @@ class CommentCard extends GetWidget<UserController> {
                                     showDialog(context: context, builder: (context) => CustomDialog(title: '댓글을 삭제하시겠습니까?', onTap: (){
                                       onNestedCommentDelete(nestedComment);
                                     }));
-                                  }, color: CustomColors.main);
+                                  }, color: CustomColors.main, scale: 0.013,);
                                 } else {
                                   return Container();
                                 }
                               })
                             ],
                           ),
-                          Container(
-                            margin: baseVerticalPadding(context),
-                            child: Row(
-                              children: [
-                                Expanded(child: Text(nestedComment.comment, style: CustomTextStyle.w500(context))),
-                                Text(beforeDate(nestedComment.createdAt), style: CustomTextStyle.w500(context, color: CustomColors.hint)),
-                              ],
-                            ),
+                          Row(
+                            children: [
+                              Expanded(child: Text(nestedComment.comment, style: CustomTextStyle.w500(context, scale: 0.015))),
+                              Text(beforeDate(nestedComment.createdAt), style: CustomTextStyle.w500(context, color: CustomColors.hint, scale: 0.013)),
+                            ],
                           ),
                         ],
                       )
