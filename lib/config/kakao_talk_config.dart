@@ -48,11 +48,8 @@ class KakaoTalkConfig{
                   description: board.description,
                   imageUrl: Uri.parse(board.board_photos.first),
                   link: Link(
-                      androidExecutionParams: {
-                      },
-                      iosExecutionParams: {
-
-                      }
+                      androidExecutionParams: {"key": "1"},
+                      iosExecutionParams: {"key": "1"}
                   )
               )
           );
@@ -61,8 +58,8 @@ class KakaoTalkConfig{
           final TextTemplate template = TextTemplate(
               text: board.title,
               link: Link(
-                  androidExecutionParams: {},
-                  iosExecutionParams: {}
+                  androidExecutionParams: {"key": "1"},
+                  iosExecutionParams: {"key": "1"}
               ),
               buttonTitle: 'The Puppy Place 실행'
           );
