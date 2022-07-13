@@ -20,4 +20,4 @@ doc/api/
 *.js.deps
 *.js.map
 
-config.dart
+# git rm -r --cached .
