@@ -25,25 +25,11 @@ import 'pages/splash_page.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
-  Get.put(UserController());
-  String action = message.data['action'];
-  String actionType = message.data['action_type'];
-  int board_id = int.parse(message.data['board_id']);
-  switch (actionType) {
-    case 'web':
-      {
-        openURL(url: action, inApp: false);
-        break;
-      }
-    default:
-      Get.toNamed(action, preventDuplicates: false, arguments: board_id);
-  }
 }
 
 Future main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  Get.put(NotificationController());
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   KakaoSdk.init(nativeAppKey: KakaoTalkConfig.NATIVE_KEY, javaScriptAppKey: KakaoTalkConfig.JAVA_SCRIPT_KEY);
   runApp(const MyApp());

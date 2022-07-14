@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thepuppyplace_flutter/controllers/board/board_list_controller.dart';
+import 'package:thepuppyplace_flutter/controllers/notification/notification_controller.dart';
 import 'package:thepuppyplace_flutter/navigators/home_navigator.dart';
 import 'package:thepuppyplace_flutter/pages/home_page/home_page.dart';
 import 'package:thepuppyplace_flutter/pages/my_page/my_page.dart';
@@ -40,9 +41,14 @@ class _NavigatorPageState extends State<NavigatorPage> {
     return GetBuilder<UserController>(
         init: UserController(),
         builder: (UserController controller) {
-          return Scaffold(
-            body: _bodies[_currentIndex],
-            bottomNavigationBar: bottomNavigationBar(),
+          return GetBuilder<NotificationController>(
+            init: NotificationController(),
+            builder: (context) {
+              return Scaffold(
+                body: _bodies[_currentIndex],
+                bottomNavigationBar: bottomNavigationBar(),
+              );
+            }
           );
         }
     );
