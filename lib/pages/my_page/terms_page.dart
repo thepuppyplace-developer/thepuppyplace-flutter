@@ -14,6 +14,7 @@ class TermsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<TermsListController>(
+      autoRemove: false,
       init: TermsListController(context),
       builder: (TermsListController controller) {
         return Scaffold(

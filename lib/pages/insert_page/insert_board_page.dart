@@ -227,8 +227,10 @@ class _InsertBoardPageState extends State<InsertBoardPage> {
                                         ),
                                       ),
                                       onPressed: () async{
-                                        photoList.add(await imagePicker(ImageSource.gallery));
-                                        setState(() {});
+                                        XFile? image = await imagePicker(ImageSource.gallery);
+                                        if(image != null){
+                                          setState(() => photoList.add(image));
+                                        }
                                       },
                                     ),
                                     if(photoList.isNotEmpty) for(int index = 0; index < photoList.length; index++) Stack(

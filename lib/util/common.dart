@@ -1,16 +1,12 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
-import 'dart:typed_data';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
-import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
-import 'package:thepuppyplace_flutter/config/kakao_talk_config.dart';
-import 'package:thepuppyplace_flutter/models/Board.dart';
 import '../models/BoardComment.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -249,4 +245,9 @@ int hexStringToHexInt(String hex) {
   hex = hex.length == 6 ? 'ff' + hex : hex;
   int val = int.parse(hex, radix: 16);
   return val;
+}
+
+Response returnResponse(Response res){
+  if(res.statusCode != 204 || res.statusCode == null) print(res.body['message']);
+  return res;
 }

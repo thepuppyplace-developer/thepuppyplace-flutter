@@ -145,7 +145,7 @@ class _NoticeUpdatePageState extends State<NoticeUpdatePage> {
           case 200:
             Get.until((route) => route.settings.name == NoticeListPage.routeName);
             return showSnackBar(context, '공지사항이 업데이트되었습니다.');
-          default:
+          case null:
             return network_check_message(context);
         }
       }

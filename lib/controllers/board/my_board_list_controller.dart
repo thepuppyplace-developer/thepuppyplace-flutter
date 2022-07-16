@@ -32,6 +32,11 @@ class MyBoardListController extends GetxController with StateMixin<List<Board>>{
   }
 
   Future get getBoardList async{
-    _boardList.value = await _repository.getBoardList(page: page.value, userId: UserController.user!.id);
+    try{
+      _boardList.value = await _repository.getBoardList(page: page.value, query: '${UserController.user?.id}', queryType: 'u');
+    } catch(error){
+      change(null, status: RxStatus.error('인터넷 연결을 확인해주새요.'));
+      throw Exception(error);
+    }
   }
 }

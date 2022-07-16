@@ -53,7 +53,7 @@ class _PhotoListViewState extends State<PhotoListView> {
           automaticallyImplyLeading: false,
           foregroundColor: CustomColors.main,
           backgroundColor: Colors.transparent,
-          titleTextStyle: CustomTextStyle.w500(context, color: CustomColors.main),
+          titleTextStyle: CustomTextStyle.appBarStyle(context),
           title: Text('${_currentIndex + 1}/${widget.photoList.length}'),
           actions: [
             CustomIconButton(

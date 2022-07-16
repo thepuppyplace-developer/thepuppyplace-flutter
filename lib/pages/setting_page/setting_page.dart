@@ -28,21 +28,27 @@ class SettingPage extends StatelessWidget {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  Row(
-                    children: [
-                      Expanded(child: Text('서비스 알림 설정', style: CustomTextStyle.w500(context, scale: 0.02))),
-                      CupertinoSwitch(value: user!.is_alarm, onChanged: (value){
-                        controller.changeNotification(context);
-                      })
-                    ],
+                  Container(
+                    margin: baseVerticalPadding(context) / 2,
+                    child: Row(
+                      children: [
+                        Expanded(child: Text('서비스 알림 설정', style: CustomTextStyle.w500(context, scale: 0.02))),
+                        CupertinoSwitch(value: user!.is_service_alarm, onChanged: (value){
+                          controller.changeNotification(context, is_service_alarm: value);
+                        })
+                      ],
+                    ),
                   ),
-                  Row(
-                    children: [
-                      Expanded(child: Text('내 글 알림 설정', style: CustomTextStyle.w500(context, scale: 0.02))),
-                      CupertinoSwitch(value: user.is_alarm, onChanged: (value){
-                        controller.changeNotification(context);
-                      })
-                    ],
+                  Container(
+                    margin: baseVerticalPadding(context) / 2,
+                    child: Row(
+                      children: [
+                        Expanded(child: Text('내 글 알림 설정', style: CustomTextStyle.w500(context, scale: 0.02))),
+                        CupertinoSwitch(value: user.is_alarm, onChanged: (value){
+                          controller.changeNotification(context, is_alarm: value);
+                        })
+                      ],
+                    ),
                   )
                 ],
               ),

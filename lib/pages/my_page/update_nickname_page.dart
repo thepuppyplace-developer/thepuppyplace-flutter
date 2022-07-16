@@ -101,9 +101,11 @@ class _UpdateNicknamePageState extends State<UpdateNicknamePage> {
                     ],
                   ),
                 ),
-                CustomButton(
-                  title: '변경하기',
-                  onPressed: Validations.nickname(_nickname, validator: _nicknameValidator) != null ? null : () => showIndicator(_updateNickname(controller)),
+                SafeArea(
+                  child: CustomButton(
+                    title: '변경하기',
+                    onPressed: Validations.nickname(_nickname, validator: _nicknameValidator) != null ? null : () => showIndicator(_updateNickname(controller)),
+                  ),
                 )
               ],
             ),

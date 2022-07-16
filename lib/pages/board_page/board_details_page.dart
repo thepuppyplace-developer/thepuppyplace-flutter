@@ -72,6 +72,9 @@ class _BoardDetailsPageState extends State<BoardDetailsPage> {
                       padding: EdgeInsets.zero,
                       onPressed: null,
                       child: PopupMenuButton(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10)
+                        ),
                         child: Icon(Icons.more_vert, color: Colors.black, size: mediaHeight(context, 0.03)),
                         itemBuilder: (BuildContext context) => [
                           PopupMenuItem(

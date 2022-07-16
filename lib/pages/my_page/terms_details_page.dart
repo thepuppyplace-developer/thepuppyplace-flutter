@@ -11,7 +11,7 @@ class TermsDetailsPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         elevation: 0.5,
-        titleTextStyle: CustomTextStyle.w600(context),
+        titleTextStyle: CustomTextStyle.appBarStyle(context),
         title: Text(term.name, overflow: TextOverflow.ellipsis),
       ),
       body: SingleChildScrollView(

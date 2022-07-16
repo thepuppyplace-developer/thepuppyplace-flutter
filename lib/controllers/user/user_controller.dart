@@ -28,6 +28,7 @@ class UserController extends GetxController with StateMixin<Member>, Config{
     ever(_user, _userListener);
     _user.value = await getUser;
     print(await getUser);
+    print(await JWT_TOKEN);
   }
 
   void _userListener(Member? user){
@@ -139,9 +140,16 @@ class UserController extends GetxController with StateMixin<Member>, Config{
     }
   }
 
-  Future changeNotification(BuildContext context) async{
-    await _repo.changeNotification(context);
-    return getUser;
+  Future<Response> changeNotification(BuildContext context, {bool? is_alarm, bool? is_service_alarm}) async{
+    final Response? res = await _repo.changeNotification(context, is_alarm: is_alarm, is_service_alarm: is_service_alarm);
+    switch(res?.statusCode){
+      case 200:
+        if(is_alarm != null) _user.value?.is_alarm = is_alarm;
+        if(is_service_alarm != null) _user.value?.is_service_alarm = is_service_alarm;
+        update();
+        break;
+    }
+    return res!;
   }
 
   Future updateNickname(BuildContext context, String nickname) async{

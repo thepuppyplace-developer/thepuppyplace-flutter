@@ -17,7 +17,7 @@ class Config{
   final String channelName = 'thepuppyplace';
   final String channelDescription = 'thepuppyplace_notification_channel';
 
-  static String ADMIN_UID = '112843576180177686385';
+  static String ADMIN_UID = 'erinkim1210@naver.com';
 
   String? USER_ID({String? email, GoogleSignInAccount? googleUser, AuthorizationCredentialAppleID? appleUser}){
     //구글, 애플, 로컬 로그인 시 user_id 식별 함수
@@ -92,6 +92,7 @@ class Config{
   }
 
   Future<Map<String, String>?> get headers async{
+    //바야바즈 jwt 토큰값 헤더
     final String? jwt = await JWT_TOKEN;
     if(jwt != null){
       return {'thepuppyplace': jwt};

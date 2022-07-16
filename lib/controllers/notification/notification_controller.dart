@@ -1,6 +1,7 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
+import 'package:thepuppyplace_flutter/controllers/notification/notification_log_list_controller.dart';
 import '../../config/config.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
@@ -75,10 +76,10 @@ class NotificationController extends GetxController with Config{
   void _onNotification(RemoteMessage message){
     ///알림 클릭시 동작
     try{
-      print(message.data);
       String action = message.data['action'];
       int actionId = int.parse(message.data['action_id']);
       String actionType = message.data['board_id'];
+      NotificationLogListController.to.refreshLogList;
       switch (actionType) {
         case 'web':
           openURL(url: action, inApp: false);

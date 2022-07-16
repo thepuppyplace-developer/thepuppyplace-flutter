@@ -20,19 +20,15 @@ class NotificationLogCard extends StatelessWidget {
         ]
       ),
       child: CupertinoButton(
+        alignment: Alignment.centerLeft,
         padding: EdgeInsets.all(mediaWidth(context, 0.033)),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Expanded(child: Text(notification.log_body, style: CustomTextStyle.w600(context), overflow: TextOverflow.ellipsis, maxLines: 3)),
-                Container(
-                    alignment: Alignment.centerRight,
-                    child: Text(beforeDate(notification.createdAt), style: CustomTextStyle.w500(context, color: CustomColors.hint)))
-              ],
-            ),
+            Text(notification.log_body, style: CustomTextStyle.w600(context), overflow: TextOverflow.ellipsis, maxLines: 3),
+            Container(
+                margin: EdgeInsets.only(top: mediaWidth(context, 0.015)),
+                child: Text(beforeDate(notification.createdAt), style: CustomTextStyle.w500(context, scale: 0.012, color: CustomColors.hint)))
           ],
         ),
         onPressed: (){

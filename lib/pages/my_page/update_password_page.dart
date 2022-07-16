@@ -135,16 +135,18 @@ class _UpdatePasswordPageState extends State<UpdatePasswordPage> {
                     ),
                   ),
                 ),
-                CustomButton(
-                  title: '변경하기',
-                  onPressed: _beforePassword.length < 8 || _password.length < 8 || _passwordCheck.length < 8
-                      ? null
-                      : () {
-                    if(_passwordKey.currentState!.validate()){
-                      _passwordKey.currentState!.save();
-                      showIndicator(_updatePassword);
-                    }
-                  },
+                SafeArea(
+                  child: CustomButton(
+                    title: '변경하기',
+                    onPressed: _beforePassword.length < 8 || _password.length < 8 || _passwordCheck.length < 8
+                        ? null
+                        : () {
+                      if(_passwordKey.currentState!.validate()){
+                        _passwordKey.currentState!.save();
+                        showIndicator(_updatePassword);
+                      }
+                    },
+                  ),
                 )
               ],
             ),

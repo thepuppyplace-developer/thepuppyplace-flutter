@@ -2,15 +2,16 @@ class Member{
   final int id;
   final String uid;
   final String? email;
-  final String nickname;
+  String nickname;
   final String? name;
-  final String? phone_number;
-  final String? photo_url;
-  final String? gender;
+  String? phone_number;
+  String? photo_url;
+  String? gender;
   final String? fcm_token;
   final String? jwt_token;
-  final bool is_alarm;
-  final String? location;
+  bool is_alarm;
+  bool is_service_alarm;
+  String? location;
   final String auth_type;
 
   Member({
@@ -25,6 +26,7 @@ class Member{
     this.fcm_token,
     this.jwt_token,
     required this.is_alarm,
+    required this.is_service_alarm,
     this.location,
     required this.auth_type,
   });
@@ -41,6 +43,7 @@ class Member{
     fcm_token: json['fcm_token'],
     jwt_token: json['jwt_token'],
     is_alarm: json['is_alarm'].runtimeType == int ? json['is_alarm'] == 1 ? true : false : json['is_alarm'],
+    is_service_alarm: json['is_service_alarm'].runtimeType == int ? json['is_service_alarm'] == 1 ? true : false : json['is_service_alarm'],
     location: json['location'],
     auth_type: json['auth_type'],
   );

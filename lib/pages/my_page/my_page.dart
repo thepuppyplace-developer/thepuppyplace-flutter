@@ -14,6 +14,7 @@ import '../../widgets/buttons/custom_text_button.dart';
 import '../../widgets/dialogs/custom_dialog.dart';
 import '../notice_page/notice_list_page.dart';
 import '../setting_page/setting_page.dart';
+import 'consult.page.dart';
 import 'login_request_page.dart';
 import 'my_board_list.dart';
 import 'my_like_board_list_page.dart';
@@ -27,7 +28,8 @@ class MyPage extends GetWidget<UserController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('마이페이지', style: CustomTextStyle.w600(context)),
+        titleTextStyle: CustomTextStyle.appBarStyle(context),
+        title: Text('마이페이지'),
       ),
       body: controller.obx((user) => Scrollbar(
         child: SingleChildScrollView(
@@ -115,12 +117,17 @@ class MyPage extends GetWidget<UserController> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('설정', style: CustomTextStyle.w500(context, color: CustomColors.hint),),
+                      Container(
+                          margin: EdgeInsets.only(bottom: mediaHeight(context, 0.02)),
+                          child: Text('설정', style: CustomTextStyle.w500(context, color: CustomColors.hint),)),
                       CustomTextButton('환경설정', (){
-                        Get.to(() => const SettingPage());
+                        Get.to(() => const SettingPage(),);
                       }, color: Colors.black, alignment: Alignment.centerLeft),
                       CustomTextButton('공지사항', (){
                         Get.toNamed(NoticeListPage.routeName);
+                      }, color: Colors.black, alignment: Alignment.centerLeft),
+                      CustomTextButton('문의하기', (){
+                        Get.toNamed(ConsultPage.routeName);
                       }, color: Colors.black, alignment: Alignment.centerLeft),
                       CustomTextButton('앱 정보', (){
                         Get.toNamed(AppInfoPage.routeName);

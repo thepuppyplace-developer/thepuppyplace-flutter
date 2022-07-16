@@ -7,15 +7,17 @@ import 'package:thepuppyplace_flutter/config/kakao_talk_config.dart';
 import 'package:thepuppyplace_flutter/pages/board_page/board_details_page.dart';
 import 'package:thepuppyplace_flutter/pages/board_page/board_list_page.dart';
 import 'package:thepuppyplace_flutter/pages/insert_page/insert_board_page.dart';
+import 'package:thepuppyplace_flutter/pages/my_page/update_consult.page.dart';
 import 'package:thepuppyplace_flutter/pages/my_page/user_deleted_page.dart';
 import 'package:thepuppyplace_flutter/pages/notice_page/notice_list_page.dart';
 import 'package:thepuppyplace_flutter/pages/search_page/search_board_list_page.dart';
 import 'package:thepuppyplace_flutter/pages/search_page/search_page.dart';
-import 'controllers/notification/notification_controller.dart';
-import 'controllers/user/user_controller.dart';
 import 'pages/auth_page/login_page.dart';
 import 'pages/auth_page/send_password_page.dart';
 import 'pages/my_page/app_info_page.dart';
+import 'pages/my_page/consult.page.dart';
+import 'pages/my_page/consult_details.page.dart';
+import 'pages/my_page/insert_consult.page.dart';
 import 'pages/my_page/update_my_page.dart';
 import 'pages/my_page/update_password_page.dart';
 import 'pages/notice_page/notice_insert_page.dart';
@@ -55,6 +57,10 @@ class MyApp extends StatelessWidget {
         UserDeletedPage.routeName: (context) => const UserDeletedPage(),
         UpdatePasswordPage.routeName: (context) => const UpdatePasswordPage(),
         UpdateMyPage.routeName: (context) => const UpdateMyPage(),
+        ConsultPage.routeName: (context) => const ConsultPage(),
+        InsertConsultPage.routeName: (context) => const InsertConsultPage(),
+        ConsultDetailsPage.routeName: (context) => ConsultDetailsPage(),
+        UpdateConsultPage.routeName: (context) => UpdateConsultPage(),
       },
       getPages: [
         GetPage(name: LoginPage.routeName, page: () => const LoginPage(), fullscreenDialog: true),

@@ -12,6 +12,9 @@ class NotificationLogListController extends GetxController with StateMixin<List<
   final refreshController = RefreshController();
 
   final _logList = RxList<NotificationLog>();
+
+  final RxInt _page = RxInt(0);
+
   List<NotificationLog> get logList => _logList;
 
   @override
@@ -35,8 +38,9 @@ class NotificationLogListController extends GetxController with StateMixin<List<
   }
 
   Future get getLogList async{
+    _page.value++;
     try{
-      final Response res = await _repo.getNotificationLogList;
+      final Response res = await _repo.getNotificationLogList(_page.value);
       switch(res.statusCode){
         case 200:
           _logList.addAll(List.from(res.body['data']).map((log) => NotificationLog.fromJson(log)).toList());
@@ -47,9 +51,10 @@ class NotificationLogListController extends GetxController with StateMixin<List<
   }
 
   Future get refreshLogList async{
+    _page.value = 0;
     change(null, status: RxStatus.loading());
     try{
-      final Response res = await _repo.getNotificationLogList;
+      final Response res = await _repo.getNotificationLogList(_page.value);
       switch(res.statusCode){
         case 200:
           _logList.clear();
