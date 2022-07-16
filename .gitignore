@@ -20,4 +20,6 @@ doc/api/
 *.js.deps
 *.js.map
 
+/config
+
 # git rm -r --cached .
