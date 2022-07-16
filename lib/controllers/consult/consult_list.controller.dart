@@ -79,7 +79,7 @@ class ConsultListController extends GetxController with StateMixin<List<Consult>
       final Response res = await _repo.insertConsult(title: title, description: description, photoList: photoList);
       switch(res.statusCode){
         case 201:
-          _consultList.add(Consult.fromJson(res.body['data']));
+          _consultList.insert(0, Consult.fromJson(res.body['data']));
           update();
       }
       return res;
