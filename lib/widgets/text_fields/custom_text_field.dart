@@ -121,7 +121,7 @@ class CustomTextField extends StatelessWidget {
         validator: validator,
         enabled: enabled,
         textInputAction: textInputAction,
-        style: CustomTextStyle.w500(context),
+        style: textStyle ?? CustomTextStyle.w500(context),
         onTap: onTap,
         onFieldSubmitted: onFieldSubmitted,
         onChanged: onChanged,

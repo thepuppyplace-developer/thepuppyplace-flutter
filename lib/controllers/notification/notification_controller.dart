@@ -77,8 +77,8 @@ class NotificationController extends GetxController with Config{
     ///알림 클릭시 동작
     try{
       String action = message.data['action'];
-      int actionId = int.parse(message.data['action_id']);
-      String actionType = message.data['board_id'];
+      String actionType = message.data['action_type'];
+      int board_id = int.parse(message.data['board_id']);
       NotificationLogListController.to.refreshLogList;
       switch (actionType) {
         case 'web':
@@ -86,7 +86,7 @@ class NotificationController extends GetxController with Config{
           break;
         default:
           switch(action){
-            default: Get.toNamed(action, arguments: actionId);
+            default: Get.toNamed(action, arguments: RxInt(board_id));
           }
       }
     } catch(error){

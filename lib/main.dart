@@ -21,7 +21,6 @@ import 'pages/my_page/insert_consult.page.dart';
 import 'pages/my_page/update_my_page.dart';
 import 'pages/my_page/update_password_page.dart';
 import 'pages/notice_page/notice_insert_page.dart';
-import 'util/common.dart';
 import 'util/customs.dart';
 import 'pages/splash_page.dart';
 

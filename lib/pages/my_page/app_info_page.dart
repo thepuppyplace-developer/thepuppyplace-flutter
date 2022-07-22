@@ -16,30 +16,40 @@ class AppInfoPage extends StatelessWidget {
         titleTextStyle: CustomTextStyle.appBarStyle(context),
         title: const Text('앱 정보')
       ),
-      body: SingleChildScrollView(
-        padding: basePadding(context),
-        child: Column(
-          children: [
-            Row(
-              children: [
-                const Expanded(child: CustomTextButton('현재버전', null, color: Colors.black, alignment: Alignment.centerLeft)),
-                GetBuilder<VersionController>(
-                  init: VersionController(),
-                  builder: (VersionController controller) => controller.obx((version) => Text(version!.currentVersion, style: CustomTextStyle.w500(context, color: CustomColors.hint))),
-                )
-              ],
-            ),
-            Row(
-              children: [
-                const Expanded(child: CustomTextButton('최신버전', null, color: Colors.black, alignment: Alignment.centerLeft)),
-                GetBuilder<VersionController>(
-                  init: VersionController(),
-                  builder: (VersionController controller) => controller.obx((version) => Text(version!.recentVersion, style: CustomTextStyle.w500(context, color: CustomColors.hint))),
-                )
-              ],
-            ),
-          ],
-        ),
+      body: GetBuilder<VersionController>(
+        init: VersionController(),
+        builder: (VersionController controller) => controller.obx((version) => SingleChildScrollView(
+          padding: basePadding(context),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  const Expanded(child: CustomTextButton('현재버전', null, color: Colors.black, alignment: Alignment.centerLeft)),
+                  Text(version!.currentVersion, style: CustomTextStyle.w500(context, color: CustomColors.hint))
+                ],
+              ),
+              Row(
+                children: [
+                  const Expanded(child: CustomTextButton('최신버전', null, color: Colors.black, alignment: Alignment.centerLeft)),
+                  Text(version.recentVersion, style: CustomTextStyle.w500(context, color: CustomColors.hint))
+                ],
+              ),
+              Row(
+                children: [
+                  const Expanded(child: CustomTextButton('개발자', null, color: Colors.black, alignment: Alignment.centerLeft)),
+                  Text('황장우', style: CustomTextStyle.w500(context, color: CustomColors.hint))
+                ],
+              ),
+              Row(
+                children: [
+                  const Expanded(child: CustomTextButton('기획자', null, color: Colors.black, alignment: Alignment.centerLeft)),
+                  Text('황장우', style: CustomTextStyle.w500(context, color: CustomColors.hint))
+                ],
+              ),
+            ],
+          ),
+        ))
       ),
     );
   }

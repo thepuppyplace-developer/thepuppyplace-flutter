@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:thepuppyplace_flutter/controllers/banner/banner_list_controller.dart';
+import 'package:thepuppyplace_flutter/widgets/images/custom_cached_network.image.dart';
 import '../../models/BannerModel.dart';
 import '../../util/common.dart';
 
@@ -28,12 +29,13 @@ class _BannerCardState extends State<BannerCard> {
           CarouselSlider.builder(
             itemCount: bannerList!.length,
             options: CarouselOptions(
+              clipBehavior: Clip.antiAlias,
               autoPlay: true,
                 autoPlayAnimationDuration: const Duration(milliseconds: 500),
                 autoPlayInterval: const Duration(seconds: 5),
                 enableInfiniteScroll: false,
                 viewportFraction: 1,
-                aspectRatio: 8/3,
+                height: mediaHeight(context, 0.15),
                 onPageChanged: (int index, index2){
                   setState(() {
                     _currentIndex = index;
@@ -42,28 +44,28 @@ class _BannerCardState extends State<BannerCard> {
             ),
             itemBuilder: (context, index, index2){
               final BannerModel banner = bannerList[index];
-              return CupertinoButton(
-                borderRadius: BorderRadius.circular(10),
-                padding: EdgeInsets.zero,
-                child: Container(
-                  clipBehavior: Clip.antiAlias,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      image: DecorationImage(
-                          fit: BoxFit.cover,
-                          image: CachedNetworkImageProvider(banner.imageURL)
-                      )
-                  ),
+              return Container(
+                width: double.infinity,
+                clipBehavior: Clip.antiAlias,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
                 ),
-                onPressed: (){
-                  switch(banner.linkType){
-                    case 'web':
-                      openURL(url: banner.linkURL);
-                      break;
-                    default:
-                      Get.toNamed(banner.linkURL);
-                  }
-                },
+                margin: baseHorizontalPadding(context),
+                child: GestureDetector(
+                    onTap: (){
+                      switch(banner.linkType){
+                        case 'web':
+                          openURL(url: banner.linkURL);
+                          break;
+                        default:
+                          Get.toNamed(banner.linkURL);
+                      }
+                    },
+                    child: CustomCachedNetworkImage(
+                        banner.imageURL,
+                      fit: BoxFit.cover,
+                      height: mediaHeight(context, 0.15),
+                    )),
               );
             },
           ),

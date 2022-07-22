@@ -181,6 +181,7 @@ class _InsertBoardPageState extends State<InsertBoardPage> {
                                           _description = description;
                                         });
                                       },
+                                      textStyle: CustomTextStyle.w500(context, height: 1.5),
                                       margin: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.033)),
                                       minLines: 20,
                                       maxLines: 50,
@@ -188,7 +189,7 @@ class _InsertBoardPageState extends State<InsertBoardPage> {
                                       hintText: '내용을 입력해주세요.',
                                       validator: (description){
                                         if(description!.isEmpty){
-                                          return '제목을 입력해주세요.';
+                                          return '내용을 입력해주세요.';
                                         } else if(description.length < 10){
                                           return '내용을 10자 이상 입력해주세요.';
                                         } else {
@@ -277,6 +278,7 @@ class _InsertBoardPageState extends State<InsertBoardPage> {
                       ),
                     ),
                     SafeArea(
+                      top: false,
                       child: CustomButton(
                           margin: EdgeInsets.all(mediaWidth(context, 0.033)),
                           title: '등록하기',

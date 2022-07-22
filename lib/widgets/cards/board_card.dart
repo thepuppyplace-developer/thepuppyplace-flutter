@@ -113,7 +113,7 @@ class BoardCard extends StatelessWidget {
         ),
       ),
       onPressed: (){
-        Get.toNamed(BoardDetailsPage.routeName, arguments: board.id);
+        Get.toNamed(BoardDetailsPage.routeName, arguments: RxInt(board.id));
       },
     );
   }

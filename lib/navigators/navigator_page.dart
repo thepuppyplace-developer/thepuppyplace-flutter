@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:thepuppyplace_flutter/controllers/board/board_list_controller.dart';
 import 'package:thepuppyplace_flutter/controllers/notification/notification_controller.dart';
@@ -36,21 +38,50 @@ class _NavigatorPageState extends State<NavigatorPage> {
     BottomNavigationBarItem(icon: Icon(CustomIcons.my_page), label: '마이페이지'),
   ];
 
+  DateTime backbuttonpressedTime = DateTime.now();
+
+  Future<bool> onWillPop() async {
+    DateTime currentTime = DateTime.now();
+
+    //Statement 1 Or statement2
+    bool backButton = currentTime.difference(backbuttonpressedTime) > Duration(seconds: 3);
+
+    if (backButton) {
+      backbuttonpressedTime = currentTime;
+      Fluttertoast.showToast(
+          msg: "앱을 종료하려면 한번 더 눌러주세요.",
+          backgroundColor: Colors.black,
+          textColor: Colors.white);
+      return false;
+    }
+    SystemNavigator.pop();
+    return true;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    Get.put(NotificationController());
+  }
+
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<UserController>(
-        init: UserController(),
-        builder: (UserController controller) {
-          return GetBuilder<NotificationController>(
-            init: NotificationController(),
-            builder: (context) {
-              return Scaffold(
-                body: _bodies[_currentIndex],
-                bottomNavigationBar: bottomNavigationBar(),
-              );
-            }
-          );
-        }
+    return WillPopScope(
+      onWillPop: onWillPop,
+      child: GetBuilder<UserController>(
+          init: UserController(),
+          builder: (UserController controller) {
+            return GetBuilder<NotificationController>(
+              init: NotificationController(),
+              builder: (context) {
+                return Scaffold(
+                  body: _bodies[_currentIndex],
+                  bottomNavigationBar: bottomNavigationBar(),
+                );
+              }
+            );
+          }
+      ),
     );
   }
 

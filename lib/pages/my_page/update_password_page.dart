@@ -59,7 +59,7 @@ class _UpdatePasswordPageState extends State<UpdatePasswordPage> {
                           keyboardType: TextInputType.visiblePassword,
                           alignment: Alignment.center,
                           margin: EdgeInsets.only(top: mediaHeight(context, 0.1)),
-                          hintText: '비밀번호를 입력해주세요.',
+                          hintText: '현재 비밀번호를 입력해주세요.',
                           onChanged: (String password){
                             setState(() {
                               _beforePassword = password;
@@ -141,10 +141,13 @@ class _UpdatePasswordPageState extends State<UpdatePasswordPage> {
                     onPressed: _beforePassword.length < 8 || _password.length < 8 || _passwordCheck.length < 8
                         ? null
                         : () {
-                      if(_passwordKey.currentState!.validate()){
-                        _passwordKey.currentState!.save();
-                        showIndicator(_updatePassword);
-                      }
+                      showDialog(context: context, builder: (context) => CustomDialog(title: '입력하신 비밀번호로 변경하시겠습니까?', onTap: (){
+                        if(_passwordKey.currentState!.validate()){
+                          _passwordKey.currentState!.save();
+                          Get.back();
+                          showIndicator(_updatePassword);
+                        }
+                      }));
                     },
                   ),
                 )

@@ -39,7 +39,7 @@ class _BestBoardListViewState extends State<BestBoardListView> {
                     height: mediaHeight(context, 0.5),
                     disableCenter: true,
                     enableInfiniteScroll: false,
-                    viewportFraction: 0.8,
+                    viewportFraction: 1.0,
                     padEnds: false
                 ),
                 itemBuilder: (context, index, index2){

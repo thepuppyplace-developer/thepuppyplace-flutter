@@ -37,7 +37,7 @@ class BoardDetailsPage extends StatefulWidget {
 
 class _BoardDetailsPageState extends State<BoardDetailsPage> {
   final RefreshController _refreshController = RefreshController();
-  final int board_id = Get.arguments;
+  final RxInt board_id = Get.arguments;
   int _photoIndex = 0;
   BoardComment? _selectComment;
   final TextEditingController _commentController = TextEditingController();
@@ -45,7 +45,7 @@ class _BoardDetailsPageState extends State<BoardDetailsPage> {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<BoardController>(
-        init: BoardController(board_id),
+        init: BoardController(board_id.value),
         builder: (BoardController controller) => controller.obx((Board? board) => GestureDetector(
           onTap: (){
             unFocus(context);

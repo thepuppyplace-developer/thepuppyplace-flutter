@@ -92,10 +92,10 @@ class _HomePageState extends State<HomePage> {
                         style: CustomTextStyle.w500(context, scale: 0.025),
                         children: [
                           const TextSpan(
-                              text: 'the '
+                              text: 'The '
                           ),
                           TextSpan(
-                              text: 'puppy place',
+                              text: 'Puppy Place',
                               style: CustomTextStyle.w900(context, scale: 0.025)
                           )
                         ]
@@ -205,7 +205,7 @@ class _HomePageState extends State<HomePage> {
                         children: [
                           Text('최신글', style: CustomTextStyle.w600(
                               context, scale: 0.02)),
-                          Text('더퍼피플레이스의 최신글을 확인해보세요',
+                          Text('The Puppy Place의 최신글을 확인해보세요',
                             style: CustomTextStyle.w400(
                                 context, color: Colors.grey,
                                 height: 2, scale: 0.015),)
