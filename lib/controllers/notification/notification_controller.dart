@@ -82,7 +82,7 @@ class NotificationController extends GetxController with Config{
       NotificationLogListController.to.refreshLogList;
       switch (actionType) {
         case 'web':
-          openURL(url: action, inApp: false);
+          openURL(url: action, inApp: true);
           break;
         default:
           switch(action){

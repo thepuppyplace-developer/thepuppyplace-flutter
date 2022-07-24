@@ -24,6 +24,7 @@ class _BannerCardState extends State<BannerCard> {
     autoRemove: false,
       init: BannerListController(),
       builder: (BannerListController controller) => controller.obx((bannerList) => Stack(
+        clipBehavior: Clip.antiAlias,
         alignment: Alignment.bottomCenter,
         children: [
           CarouselSlider.builder(
@@ -36,6 +37,7 @@ class _BannerCardState extends State<BannerCard> {
                 enableInfiniteScroll: false,
                 viewportFraction: 1,
                 height: mediaHeight(context, 0.15),
+                aspectRatio: 5/2,
                 onPageChanged: (int index, index2){
                   setState(() {
                     _currentIndex = index;
@@ -44,33 +46,32 @@ class _BannerCardState extends State<BannerCard> {
             ),
             itemBuilder: (context, index, index2){
               final BannerModel banner = bannerList[index];
-              return Container(
-                width: double.infinity,
-                clipBehavior: Clip.antiAlias,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
+              return GestureDetector(
+                onTap: (){
+                  switch(banner.linkType){
+                    case 'web':
+                      openURL(url: banner.linkURL);
+                      break;
+                    default:
+                      Get.toNamed(banner.linkURL);
+                  }
+                },
+                child: Container(
+                  clipBehavior: Clip.antiAlias,
+                  margin: basePadding(context),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      image: DecorationImage(
+                          fit: BoxFit.cover,
+                          image: CachedNetworkImageProvider(banner.imageURL)
+                      )
+                  ),
                 ),
-                margin: baseHorizontalPadding(context),
-                child: GestureDetector(
-                    onTap: (){
-                      switch(banner.linkType){
-                        case 'web':
-                          openURL(url: banner.linkURL);
-                          break;
-                        default:
-                          Get.toNamed(banner.linkURL);
-                      }
-                    },
-                    child: CustomCachedNetworkImage(
-                        banner.imageURL,
-                      fit: BoxFit.cover,
-                      height: mediaHeight(context, 0.15),
-                    )),
               );
             },
           ),
           Container(
-            margin: EdgeInsets.symmetric(vertical: mediaHeight(context, 0.015)),
+            margin: EdgeInsets.symmetric(vertical: mediaHeight(context, 0.03)),
             child: AnimatedSmoothIndicator(
               activeIndex: _currentIndex,
               count: bannerList.length,
