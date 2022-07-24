@@ -79,7 +79,7 @@ class _InsertSearchTabBarState extends State<InsertSearchTabBar> {
     fillColor: CustomColors.empty,
     sideColor: CustomColors.emptySide,
     keyboardType: TextInputType.text,
-    hintText: '지역, 매장명 검색',
+    hintText: '지역, 업체명 검색',
     suffixIcon: CustomIconButton(
       icon: Icons.search,
       onTap: (){
