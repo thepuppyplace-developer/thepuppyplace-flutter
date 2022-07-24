@@ -231,6 +231,7 @@ class _UpdateBoardPageState extends State<UpdateBoardPage> {
                                             _description = description;
                                           });
                                         },
+                                        textStyle: CustomTextStyle.w500(context, height: 1.5),
                                         controller: _descriptionController,
                                         margin: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.033)),
                                         minLines: 20,

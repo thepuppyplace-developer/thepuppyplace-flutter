@@ -20,6 +20,10 @@ doc/api/
 *.js.deps
 *.js.map
 
+<<<<<<< HEAD
 config/
+=======
+/config
+>>>>>>> 17158f0 (gitignore)
 
 # git rm -r --cached .
