@@ -23,17 +23,17 @@ class _BannerCardState extends State<BannerCard> {
     autoRemove: false,
       init: BannerListController(),
       builder: (BannerListController controller) => controller.obx((bannerList) => Stack(
+        clipBehavior: Clip.antiAlias,
         alignment: Alignment.bottomCenter,
         children: [
           CarouselSlider.builder(
             itemCount: bannerList!.length,
             options: CarouselOptions(
-              autoPlay: true,
+                autoPlay: true,
                 autoPlayAnimationDuration: const Duration(milliseconds: 500),
                 autoPlayInterval: const Duration(seconds: 5),
-                enableInfiniteScroll: false,
-                viewportFraction: 1,
-                aspectRatio: 8/3,
+                viewportFraction: 1.0,
+                aspectRatio: 5/2,
                 onPageChanged: (int index, index2){
                   setState(() {
                     _currentIndex = index;
@@ -42,20 +42,8 @@ class _BannerCardState extends State<BannerCard> {
             ),
             itemBuilder: (context, index, index2){
               final BannerModel banner = bannerList[index];
-              return CupertinoButton(
-                borderRadius: BorderRadius.circular(10),
-                padding: EdgeInsets.zero,
-                child: Container(
-                  clipBehavior: Clip.antiAlias,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      image: DecorationImage(
-                          fit: BoxFit.cover,
-                          image: CachedNetworkImageProvider(banner.imageURL)
-                      )
-                  ),
-                ),
-                onPressed: (){
+              return GestureDetector(
+                onTap: (){
                   switch(banner.linkType){
                     case 'web':
                       openURL(url: banner.linkURL);
@@ -64,11 +52,22 @@ class _BannerCardState extends State<BannerCard> {
                       Get.toNamed(banner.linkURL);
                   }
                 },
+                child: Container(
+                  clipBehavior: Clip.antiAlias,
+                  margin: basePadding(context),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    image: DecorationImage(
+                      fit: BoxFit.cover,
+                      image: CachedNetworkImageProvider(banner.imageURL)
+                    )
+                  ),
+                ),
               );
             },
           ),
           Container(
-            margin: EdgeInsets.symmetric(vertical: mediaHeight(context, 0.015)),
+            margin: EdgeInsets.symmetric(vertical: mediaHeight(context, 0.03)),
             child: AnimatedSmoothIndicator(
               activeIndex: _currentIndex,
               count: bannerList.length,

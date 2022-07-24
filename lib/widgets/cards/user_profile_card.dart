@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:thepuppyplace_flutter/util/png_list.dart';
 import '../../models/UserNicknameAndPhotoURL.dart';
 import '../../util/cached_network_image_list.dart';
 import '../../util/common.dart';
@@ -15,7 +16,7 @@ class UserProfileCard extends StatelessWidget {
       children: [
         CircleAvatar(
           radius: mediaHeight(context, 0.018),
-          backgroundImage: CachedNetworkImageProvider(CachedNetworkImageList.thepuppy_profile_0),
+          backgroundImage: AssetImage(PngList.logo),
           foregroundImage: user.photo_url == null ? null : CachedNetworkImageProvider(user.photo_url!),
         ),
         Container(

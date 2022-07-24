@@ -136,11 +136,8 @@ class _HomePageState extends State<HomePage> {
               ),
               child: CustomScrollView(
                 slivers: [
-                  SliverPadding(
-                    padding: baseVerticalPadding(context),
-                    sliver: const SliverToBoxAdapter(
-                        child: BannerCard()),
-                  ),
+                  const SliverToBoxAdapter(
+                      child: BannerCard()),
                   const FirstNoticeView(),
                   // SliverToBoxAdapter(
                   //   child: CustomButton(
