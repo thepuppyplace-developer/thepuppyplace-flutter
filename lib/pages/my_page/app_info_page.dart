@@ -38,13 +38,13 @@ class AppInfoPage extends StatelessWidget {
               Row(
                 children: [
                   const Expanded(child: CustomTextButton('개발자', null, color: Colors.black, alignment: Alignment.centerLeft)),
-                  Text('황장우', style: CustomTextStyle.w500(context, color: CustomColors.hint))
+                  Text('hpodong', style: CustomTextStyle.w500(context, color: CustomColors.hint))
                 ],
               ),
               Row(
                 children: [
                   const Expanded(child: CustomTextButton('기획자', null, color: Colors.black, alignment: Alignment.centerLeft)),
-                  Text('황장우', style: CustomTextStyle.w500(context, color: CustomColors.hint))
+                  Text('hpodong', style: CustomTextStyle.w500(context, color: CustomColors.hint))
                 ],
               ),
             ],

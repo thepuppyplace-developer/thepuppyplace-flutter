@@ -34,9 +34,7 @@ class _BannerCardState extends State<BannerCard> {
               autoPlay: true,
                 autoPlayAnimationDuration: const Duration(milliseconds: 500),
                 autoPlayInterval: const Duration(seconds: 5),
-                enableInfiniteScroll: false,
                 viewportFraction: 1,
-                height: mediaHeight(context, 0.15),
                 aspectRatio: 5/2,
                 onPageChanged: (int index, index2){
                   setState(() {
