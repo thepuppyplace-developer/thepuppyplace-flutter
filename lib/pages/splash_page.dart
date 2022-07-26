@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thepuppyplace_flutter/util/common.dart';
+import 'package:thepuppyplace_flutter/util/png_list.dart';
 import '../../controllers/version/version_controller.dart';
 import '../util/cached_network_image_list.dart';
 import '../navigators/navigator_page.dart';
@@ -25,31 +26,11 @@ class _SplashPageState extends State<SplashPage> {
           onError: (error) => CustomErrorView(error: error),
           onLoading: Scaffold(
               body: Container(
-                padding: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.033), vertical: mediaHeight(context, 0.1)),
-                alignment: Alignment.center,
                 decoration: BoxDecoration(
                   image: DecorationImage(
                     fit: BoxFit.cover,
-                    image: CachedNetworkImageProvider(CachedNetworkImageList.splash)
+                    image: AssetImage(PngList.splash)
                   )
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    RichText(
-                      text: TextSpan(
-                        children: [
-                          TextSpan(text: 'The ', style: CustomTextStyle.w500(context, scale: 0.08, color: Colors.white, fontFamily: 'Dongle')),
-                          TextSpan(text: 'Puppy Place', style: CustomTextStyle.w600(context, scale: 0.08, color: Colors.white, fontFamily: 'Dongle')),
-                        ]
-                      ),
-                    ),
-                    Text('강아지들과 함께 갈 수 있는\n대한민국 모든 곳!',
-                      style: CustomTextStyle.w500(context, color: Colors.white, scale: 0.025, height: 2),
-                      textAlign: TextAlign.center,
-                    )
-                  ],
                 ),
               ),
           )

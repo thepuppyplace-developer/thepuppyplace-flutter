@@ -59,12 +59,6 @@ class _NavigatorPageState extends State<NavigatorPage> {
   }
 
   @override
-  void initState() {
-    super.initState();
-    Get.put(NotificationController());
-  }
-
-  @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: onWillPop,

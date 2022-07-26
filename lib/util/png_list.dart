@@ -12,6 +12,7 @@ class PngList{
   static final String apple = _basePath('apple');
   static final String app_logo = _basePath('app_logo');
   static final String default_profile = _basePath('default_profile');
+  static final String splash = _basePath('splash');
 
   static final List<String> categoryList = <String>[
     CachedNetworkImageList.cafe,
