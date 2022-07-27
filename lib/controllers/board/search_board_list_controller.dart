@@ -1,10 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import '../../models/Board.dart';
-import '../../models/Search.dart';
 import '../../repositories/board/board_repository.dart';
 
-class SearchBoardListController extends GetxController with StateMixin<Map<String, List<Board>>>{
+class SearchBoardListController extends GetxController with StateMixin<List<Board>>{
   final BuildContext context;
   final String query;
 
@@ -12,7 +11,14 @@ class SearchBoardListController extends GetxController with StateMixin<Map<Strin
 
   final BoardRepository _repository = BoardRepository();
 
-  final RxMap<String, List<Board>> _searchBoardList = RxMap<String, List<Board>>();
+  final RxList<Board> _searchBoardList = RxList<Board>();
+
+  List<Board> get cafeList => _searchBoardList.where((board) => board.category == '카페').toList();
+  List<Board> get foodList => _searchBoardList.where((board) => board.category == '음식점').toList();
+  List<Board> get shoppingList => _searchBoardList.where((board) => board.category == '쇼핑몰').toList();
+  List<Board> get hotelList => _searchBoardList.where((board) => board.category == '호텔').toList();
+  List<Board> get groundList => _searchBoardList.where((board) => board.category == '운동장').toList();
+  List<Board> get talkList => _searchBoardList.where((board) => board.category == '수다방').toList();
 
   RxInt conditionIndex = RxInt(0);
 
@@ -27,14 +33,6 @@ class SearchBoardListController extends GetxController with StateMixin<Map<Strin
       case 3: return RxnString('td');
       default: return RxnString();
     }
-  }
-
-  int searchListLength(){
-    int length = 0;
-    for(String category in _searchBoardList.keys){
-      length += _searchBoardList[category]!.length;
-    }
-    return length;
   }
 
   @override
@@ -59,10 +57,12 @@ class SearchBoardListController extends GetxController with StateMixin<Map<Strin
     getSearchBoardList;
   }
 
-  void _searchBoardListListener(Map<String, List<Board>> searchList){
+  int get searchListLength => _searchBoardList.length;
+
+  void _searchBoardListListener(List<Board> searchList){
     try{
       change(null, status: RxStatus.loading());
-      if(searchListLength() != 0){
+      if(searchList.isNotEmpty){
         change(searchList, status: RxStatus.success());
       } else {
         change(null, status: RxStatus.empty());
@@ -74,6 +74,17 @@ class SearchBoardListController extends GetxController with StateMixin<Map<Strin
 
   Future get getSearchBoardList async{
     change(null, status: RxStatus.loading());
-    _searchBoardList.value = await _repository.getSearchBoardList(query: queryString.value, queryType: queryType().value, order: orderBy.value);
+    final Response res  = await _repository.getSearchBoardList(query: queryString.value, queryType: queryType().value, order: orderBy.value);
+    switch(res.statusCode){
+      case 200:
+        final List<Board> boardList = List.from(res.body['data']).map((board) => Board.fromJson(board)).toList();
+        _searchBoardList.value = boardList;
+        break;
+      case 204:
+        _searchBoardList.clear();
+        break;
+      case null:
+        change(null, status: RxStatus.error('인터넷 연결을 확인해주세요.'));
+    }
   }
 }

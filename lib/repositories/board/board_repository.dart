@@ -131,28 +131,13 @@ class BoardRepository extends GetConnect with Config{
     }
   }
 
-  Future<Map<String, List<Board>>> getSearchBoardList({required String? query, required String? queryType, required String? order}) async{
-    final List<String> categoryList = <String>['카페', '음식점', '쇼핑몰', '호텔', '운동장', '수다방'];
-    Map<String, List<Board>> queryList = <String, List<Board>>{};
-
-    for(String category in categoryList){
-      final Response res = await post('$API_URL/board', {
-        'category': category,
-        'query': query,
-        'order': order,
-        'queryType': queryType
-      });
-
-      switch(res.statusCode){
-        case 200:
-          List<Board> boardList = List.from(res.body['data']).map((board) => Board.fromJson(board)).toList();
-          queryList.addAll({category: boardList});
-          break;
-        default:
-          queryList.addAll({category: <Board>[]});
-      }
-    }
-    return queryList;
+  Future<Response> getSearchBoardList({required String? query, required String? queryType, required String? order}) async{
+    final Response res = await post('$API_URL/board', {
+      'query': query,
+      'order': order,
+      'queryType': queryType
+    });
+    return res;
   }
 
   Future<List<Board>> getBoardList({int? page, int? limit,  String? category , String? order, int? userId, String? query, String? queryType}) async{

@@ -42,35 +42,151 @@ class SearchBoardListView extends GetView<SearchBoardListController> {
                           style: CustomTextStyle.w600(context, color: Colors.black)
                       ),
                       TextSpan(
-                          text: '(으)로 검색한 ${controller.searchListLength()}건의 검색결과'),
+                          text: '(으)로 검색한 ${controller.searchListLength}건의 검색결과'),
                     ]
                 ),
+                overflow: TextOverflow.ellipsis,
               )
           ),
         ),
-        for(List<Board> boardList in searchBoardList!.values)
-          if(boardList.isNotEmpty) SliverPadding(
-            padding: EdgeInsets.all(mediaWidth(context, 0.033)),
-            sliver: SliverList(
-              delegate: SliverChildListDelegate([
-                Container(
-                  margin: EdgeInsets.symmetric(vertical: mediaWidth(context, 0.033)),
-                  child: RichText(
-                    text: TextSpan(
-                        children: [
-                          TextSpan(text: boardList.first.category, style: CustomTextStyle.w600(context, scale: 0.02)),
-                          TextSpan(text: ' ${boardList.length}건', style: CustomTextStyle.w500(context, scale: 0.02, color: CustomColors.main)),
-                        ]
-                    ),
+        if(controller.cafeList.isNotEmpty) SliverPadding(
+          padding: EdgeInsets.all(mediaWidth(context, 0.033)),
+          sliver: SliverList(
+            delegate: SliverChildListDelegate([
+              Container(
+                margin: EdgeInsets.symmetric(vertical: mediaWidth(context, 0.033)),
+                child: RichText(
+                  text: TextSpan(
+                      children: [
+                        TextSpan(text: controller.cafeList.first.category, style: CustomTextStyle.w600(context, scale: 0.02)),
+                        TextSpan(text: ' ${controller.cafeList.length}건', style: CustomTextStyle.w500(context, scale: 0.02, color: CustomColors.main)),
+                      ]
                   ),
+                  overflow: TextOverflow.ellipsis,
                 ),
-                for(Board board in boardList.take(3)) SearchBoardCard(board),
-                if(boardList.length > 3) CustomTextButton('더보기', (){
-                  Get.to(() => BoardListPage(query: query), arguments: pageIndex(boardList.first.category));
-                })
-              ]),
-            ),
-          )
+              ),
+              for(Board board in controller.cafeList.take(3)) SearchBoardCard(board),
+              if(controller.cafeList.length > 3) CustomTextButton('더보기', (){
+                Get.to(() => BoardListPage(query: query, currentIndex: pageIndex(controller.cafeList.first.category)));
+              })
+            ]),
+          ),
+        ),
+        if(controller.foodList.isNotEmpty) SliverPadding(
+          padding: EdgeInsets.all(mediaWidth(context, 0.033)),
+          sliver: SliverList(
+            delegate: SliverChildListDelegate([
+              Container(
+                margin: EdgeInsets.symmetric(vertical: mediaWidth(context, 0.033)),
+                child: RichText(
+                  text: TextSpan(
+                      children: [
+                        TextSpan(text: controller.foodList.first.category, style: CustomTextStyle.w600(context, scale: 0.02)),
+                        TextSpan(text: ' ${controller.foodList.length}건', style: CustomTextStyle.w500(context, scale: 0.02, color: CustomColors.main)),
+                      ]
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              for(Board board in controller.foodList.take(3)) SearchBoardCard(board),
+              if(controller.foodList.length > 3) CustomTextButton('더보기', (){
+                Get.to(() => BoardListPage(query: query, currentIndex: pageIndex(controller.foodList.first.category)));
+              })
+            ]),
+          ),
+        ),
+        if(controller.shoppingList.isNotEmpty) SliverPadding(
+          padding: EdgeInsets.all(mediaWidth(context, 0.033)),
+          sliver: SliverList(
+            delegate: SliverChildListDelegate([
+              Container(
+                margin: EdgeInsets.symmetric(vertical: mediaWidth(context, 0.033)),
+                child: RichText(
+                  text: TextSpan(
+                      children: [
+                        TextSpan(text: controller.shoppingList.first.category, style: CustomTextStyle.w600(context, scale: 0.02)),
+                        TextSpan(text: ' ${controller.shoppingList.length}건', style: CustomTextStyle.w500(context, scale: 0.02, color: CustomColors.main)),
+                      ]
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              for(Board board in controller.shoppingList.take(3)) SearchBoardCard(board),
+              if(controller.shoppingList.length > 3) CustomTextButton('더보기', (){
+                Get.to(() => BoardListPage(query: query, currentIndex: pageIndex(controller.shoppingList.first.category)));
+              })
+            ]),
+          ),
+        ),
+        if(controller.hotelList.isNotEmpty) SliverPadding(
+          padding: EdgeInsets.all(mediaWidth(context, 0.033)),
+          sliver: SliverList(
+            delegate: SliverChildListDelegate([
+              Container(
+                margin: EdgeInsets.symmetric(vertical: mediaWidth(context, 0.033)),
+                child: RichText(
+                  text: TextSpan(
+                      children: [
+                        TextSpan(text: controller.hotelList.first.category, style: CustomTextStyle.w600(context, scale: 0.02)),
+                        TextSpan(text: ' ${controller.hotelList.length}건', style: CustomTextStyle.w500(context, scale: 0.02, color: CustomColors.main)),
+                      ]
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              for(Board board in controller.hotelList.take(3)) SearchBoardCard(board),
+              if(controller.hotelList.length > 3) CustomTextButton('더보기', (){
+                Get.to(() => BoardListPage(query: query, currentIndex: pageIndex(controller.hotelList.first.category)));
+              })
+            ]),
+          ),
+        ),
+        if(controller.groundList.isNotEmpty) SliverPadding(
+          padding: EdgeInsets.all(mediaWidth(context, 0.033)),
+          sliver: SliverList(
+            delegate: SliverChildListDelegate([
+              Container(
+                margin: EdgeInsets.symmetric(vertical: mediaWidth(context, 0.033)),
+                child: RichText(
+                  text: TextSpan(
+                      children: [
+                        TextSpan(text: controller.groundList.first.category, style: CustomTextStyle.w600(context, scale: 0.02)),
+                        TextSpan(text: ' ${controller.groundList.length}건', style: CustomTextStyle.w500(context, scale: 0.02, color: CustomColors.main)),
+                      ]
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              for(Board board in controller.groundList.take(3)) SearchBoardCard(board),
+              if(controller.groundList.length > 3) CustomTextButton('더보기', (){
+                Get.to(() => BoardListPage(query: query, currentIndex: pageIndex(controller.groundList.first.category)));
+              })
+            ]),
+          ),
+        ),
+        if(controller.talkList.isNotEmpty) SliverPadding(
+          padding: EdgeInsets.all(mediaWidth(context, 0.033)),
+          sliver: SliverList(
+            delegate: SliverChildListDelegate([
+              Container(
+                margin: EdgeInsets.symmetric(vertical: mediaWidth(context, 0.033)),
+                child: RichText(
+                  text: TextSpan(
+                      children: [
+                        TextSpan(text: controller.talkList.first.category, style: CustomTextStyle.w600(context, scale: 0.02)),
+                        TextSpan(text: ' ${controller.talkList.length}건', style: CustomTextStyle.w500(context, scale: 0.02, color: CustomColors.main)),
+                      ]
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              for(Board board in controller.talkList.take(3)) SearchBoardCard(board),
+              if(controller.talkList.length > 3) CustomTextButton('더보기', (){
+                Get.to(() => BoardListPage(query: query, currentIndex: pageIndex(controller.talkList.first.category)));
+              })
+            ]),
+          ),
+        )
       ],
     ),
         onEmpty: EmptyView(message: "'${controller.queryString.value}'에 대한 검색결과가 없습니다."),
