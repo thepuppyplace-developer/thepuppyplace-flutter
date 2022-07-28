@@ -201,6 +201,29 @@ class UserRepository extends GetConnect with Config{
     }
   }
 
+  Future<int?> deletePhotoURL(BuildContext context) async{
+    try{
+      if(await JWT_TOKEN != null){
+        final Response res = await patch('$API_URL/user/my', { "photo_url": null }, headers: await headers);
+
+        switch(res.statusCode){
+          case 200:
+            await showSnackBar(context, '프로필 사진이 삭제되었습니다.');
+            return res.statusCode;
+          default:
+            await network_check_message(context);
+            return res.statusCode;
+        }
+      } else {
+        await expiration_token_message(context);
+        return null;
+      }
+    } catch(error){
+      await unknown_message(context);
+      return null;
+    }
+  }
+
   Future updatePhotoURL(BuildContext context, XFile? photo) async{
     try{
       if(await JWT_TOKEN != null){
@@ -217,24 +240,6 @@ class UserRepository extends GetConnect with Config{
             default:
               return network_check_message(context);
           }
-        }
-      } else {
-        return expiration_token_message(context);
-      }
-    } catch(error){
-      return unknown_message(context);
-    }
-  }
-
-  Future updateDefaultPhotoURL(BuildContext context) async{
-    try{
-      if(await JWT_TOKEN != null){
-        final Response res = await patch('$API_URL/user/my/profile/image/default', {}, headers: await headers);
-        switch(res.statusCode){
-          case 200:
-            return null;
-          default:
-            return network_check_message(context);
         }
       } else {
         return expiration_token_message(context);

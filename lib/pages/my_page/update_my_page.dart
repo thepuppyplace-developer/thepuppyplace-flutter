@@ -98,10 +98,10 @@ class _UpdateMyPageState extends State<UpdateMyPage> {
                                     },
                                   ),
                                   CupertinoActionSheetAction(
-                                    child: Text('기본 이미지로 변경', style: CustomTextStyle.w500(context, scale: 0.02)),
+                                    child: Text('프로필 사진 삭제', style: CustomTextStyle.w500(context, scale: 0.02)),
                                     onPressed: (){
                                       Get.back();
-                                      controller.updateDefaultPhotoURL(context);
+                                      controller.deletePhotoURL(context);
                                     },
                                   )
                                 ],

@@ -166,8 +166,8 @@ class UserController extends GetxController with StateMixin<Member>, Config{
     return getUser;
   }
 
-  Future updateDefaultPhotoURL(BuildContext context) async{
-    await _repo.updateDefaultPhotoURL(context);
+  Future deletePhotoURL(BuildContext context) async{
+    await _repo.deletePhotoURL(context);
     return getUser;
   }
 
