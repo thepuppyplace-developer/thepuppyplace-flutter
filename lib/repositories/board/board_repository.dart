@@ -92,9 +92,6 @@ class BoardRepository extends GetConnect with Config{
         final Response res = await post('$API_URL/board/like', {
           'like_user_id': user_id
         });
-        print(res.statusCode);
-
-
         switch(res.statusCode){
           case 200: {
             return List.from(res.body['data']).map((board) => LikeBoard.fromJson(board)).toList();

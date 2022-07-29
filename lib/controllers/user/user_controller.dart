@@ -27,7 +27,6 @@ class UserController extends GetxController with StateMixin<Member>, Config{
     super.onReady();
     ever(_user, _userListener);
     _user.value = await getUser;
-    print(await getUser);
     print(await JWT_TOKEN);
   }
 
