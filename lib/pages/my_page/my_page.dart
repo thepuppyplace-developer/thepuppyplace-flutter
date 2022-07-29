@@ -44,7 +44,7 @@ class MyPage extends GetWidget<UserController> {
                   child: Row(
                     children: [
                       CustomCachedNetworkImage(
-                        user!.photo_url ?? '',
+                        user!.photo_url,
                         padding: basePadding(context),
                         fit: BoxFit.cover,
                         height: mediaHeight(context, 0.06),

@@ -42,6 +42,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      builder: (context, child) => MediaQuery(
+        child: child!,
+        data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+      ),
       debugShowCheckedModeBanner: false,
       theme: CustomThemeData.light,
       routes: <String, WidgetBuilder>{

@@ -16,7 +16,7 @@ class UserProfileCard extends StatelessWidget {
     return Row(
       children: [
         CustomCachedNetworkImage(
-          user.photo_url ?? '',
+          user.photo_url,
           padding: basePadding(context) / 2,
           shape: BoxShape.circle,
           height: mediaHeight(context, 0.036),

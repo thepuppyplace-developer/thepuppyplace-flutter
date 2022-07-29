@@ -109,7 +109,7 @@ class NoticeDetailsPage extends GetView<NoticeListController> {
                       child: AspectRatio(
                         aspectRatio: 1/1,
                         child: CustomCachedNetworkImage(
-                          notice.image_url!,
+                          notice.image_url,
                           borderRadius: BorderRadius.circular(20),
                           margin: EdgeInsets.only(bottom: mediaHeight(context, 0.02)),
                         ),

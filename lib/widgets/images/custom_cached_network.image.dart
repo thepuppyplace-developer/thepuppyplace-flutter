@@ -6,7 +6,7 @@ import 'package:thepuppyplace_flutter/util/png_list.dart';
 import '../../util/common.dart';
 
 class CustomCachedNetworkImage extends StatelessWidget {
-  final String imageURL;
+  final String? imageURL;
   final double? height;
   final double? width;
   final EdgeInsets? padding;
@@ -54,22 +54,21 @@ class CustomCachedNetworkImage extends StatelessWidget {
         borderRadius: shape != null ? null : borderRadius,
         shape: shape ?? BoxShape.rectangle
     ),
-    child: CachedNetworkImage(
+    child: imageURL == null ? _errorWidget : CachedNetworkImage(
       fit: fit,
-      errorWidget: _errorWidget,
+      errorWidget: (context, url, error) => _errorWidget,
       progressIndicatorBuilder: _progressIndicatorBuilder,
-      imageUrl: imageURL,
+      imageUrl: imageURL!,
     ),
   );
 
-  Widget _errorWidget(BuildContext context, String url, dynamic error) => Container(
+  Widget get _errorWidget => Container(
     margin: padding,
     decoration: BoxDecoration(
       shape: shape ?? BoxShape.rectangle,
         borderRadius: borderRadius,
         color: backgroundColor,
         image: DecorationImage(
-          fit: fit,
             image: AssetImage(errorImage ?? PngList.default_profile)
         )
     ),

@@ -109,7 +109,7 @@ class _NoticeUpdatePageState extends State<NoticeUpdatePage> {
                     if(widget.notice.image_url != null) AspectRatio(
                         aspectRatio: 1/1,
                       child: CustomCachedNetworkImage(
-                        widget.notice.image_url!,
+                        widget.notice.image_url,
                         borderRadius: BorderRadius.circular(15),
                       ),
                     ),
