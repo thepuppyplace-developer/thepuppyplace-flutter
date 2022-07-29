@@ -6,6 +6,7 @@ import 'package:thepuppyplace_flutter/pages/board_page/board_details_page.dart';
 import 'package:thepuppyplace_flutter/util/common.dart';
 import 'package:thepuppyplace_flutter/util/custom_icons.dart';
 import 'package:thepuppyplace_flutter/widgets/cards/user_profile_card.dart';
+import 'package:thepuppyplace_flutter/widgets/images/custom_cached_network.image.dart';
 import '../../controllers/user/user_controller.dart';
 import '../../models/Board.dart';
 import '../buttons/tag_text.dart';
@@ -63,18 +64,11 @@ class RecentBoardCard extends StatelessWidget {
                             separatorBuilder: (context, index) => SizedBox(width: mediaWidth(context, 0.02),),
                             scrollDirection: Axis.horizontal,
                             itemCount: board.board_photos.length,
-                            itemBuilder: (context, index) => Container(
+                            itemBuilder: (context, index) => CustomCachedNetworkImage(
+                              board.board_photos[index],
                               height: mediaHeight(context, 0.1),
                               width: mediaHeight(context, 0.1),
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(5),
-                                  image: DecorationImage(
-                                      image: CachedNetworkImageProvider(
-                                          board.board_photos[index]
-                                      ),
-                                      fit: BoxFit.cover
-                                  )
-                              ),
+                              borderRadius: BorderRadius.circular(5),
                             ),
                           ),
                         );

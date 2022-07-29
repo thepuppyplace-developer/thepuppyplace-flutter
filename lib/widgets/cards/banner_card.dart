@@ -54,16 +54,12 @@ class _BannerCardState extends State<BannerCard> {
                       Get.toNamed(banner.linkURL);
                   }
                 },
-                child: Container(
-                  clipBehavior: Clip.antiAlias,
+                child: CustomCachedNetworkImage(
+                  banner.imageURL,
+                  width: double.infinity,
+                  height: double.infinity,
+                  borderRadius: BorderRadius.circular(10),
                   margin: basePadding(context),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      image: DecorationImage(
-                          fit: BoxFit.cover,
-                          image: CachedNetworkImageProvider(banner.imageURL)
-                      )
-                  ),
                 ),
               );
             },

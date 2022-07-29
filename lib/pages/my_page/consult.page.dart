@@ -8,6 +8,7 @@ import 'package:thepuppyplace_flutter/pages/my_page/consult_details.page.dart';
 import 'package:thepuppyplace_flutter/pages/my_page/insert_consult.page.dart';
 import 'package:thepuppyplace_flutter/util/common.dart';
 import 'package:thepuppyplace_flutter/views/rx_status_view.dart';
+import 'package:thepuppyplace_flutter/widgets/images/custom_cached_network.image.dart';
 
 import '../../models/Consult.dart';
 
@@ -102,17 +103,11 @@ class ConsultPage extends GetView<ConsultListController> {
               ],
             ),
           ),
-          if(consult.photoList.isNotEmpty) Container(
+          if(consult.photoList.isNotEmpty) CustomCachedNetworkImage(
+            consult.photoList.first,
             height: mediaHeight(context, 0.1),
             width: mediaHeight(context, 0.1),
-            decoration: BoxDecoration(
-              color: CustomColors.emptySide,
-              borderRadius: BorderRadius.circular(10),
-              image: DecorationImage(
-                fit: BoxFit.cover,
-                image: CachedNetworkImageProvider(consult.photoList.first)
-              )
-            ),
+            borderRadius: BorderRadius.circular(10),
           )
         ],
       ),

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thepuppyplace_flutter/controllers/notice/notice_list_controller.dart';
 import 'package:thepuppyplace_flutter/models/Notice.dart';
+import 'package:thepuppyplace_flutter/widgets/images/custom_cached_network.image.dart';
 import '../../repositories/notice/notice_repository.dart';
 import '../../util/common.dart';
 import '../../widgets/buttons/custom_button.dart';
@@ -105,15 +106,12 @@ class _NoticeUpdatePageState extends State<NoticeUpdatePage> {
                         }
                       },
                     ),
-                    if(widget.notice.image_url != null) Container(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          image: DecorationImage(
-                              fit: BoxFit.cover,
-                              image: CachedNetworkImageProvider(widget.notice.image_url!)
-                          )
+                    if(widget.notice.image_url != null) AspectRatio(
+                        aspectRatio: 1/1,
+                      child: CustomCachedNetworkImage(
+                        widget.notice.image_url!,
+                        borderRadius: BorderRadius.circular(15),
                       ),
-                      child: const AspectRatio(aspectRatio: 1/1),
                     ),
                     SizedBox(height: mediaHeight(context, 0.1))
                   ],

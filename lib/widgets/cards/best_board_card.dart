@@ -6,13 +6,22 @@ import 'package:thepuppyplace_flutter/pages/board_page/board_details_page.dart';
 import 'package:thepuppyplace_flutter/util/common.dart';
 import 'package:thepuppyplace_flutter/widgets/buttons/tag_text.dart';
 import 'package:thepuppyplace_flutter/widgets/cards/user_profile_card.dart';
+import 'package:thepuppyplace_flutter/widgets/images/custom_cached_network.image.dart';
 
 import '../../models/Board.dart';
 
-class BestBoardCard extends StatelessWidget {
+class BestBoardCard extends StatefulWidget {
   final Board board;
 
   const BestBoardCard(this.board, {Key? key}) : super(key: key);
+
+  @override
+  State<BestBoardCard> createState() => _BestBoardCardState();
+}
+
+class _BestBoardCardState extends State<BestBoardCard> with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   Widget build(BuildContext context) {
@@ -33,31 +42,37 @@ class BestBoardCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  UserProfileCard(board.user),
+                  UserProfileCard(widget.board.user),
                   Container(
                     margin: baseVerticalPadding(context) / 2,
                     child: Row(
                       children: [
-                        TagText(board.category),
-                        TagText(board.location),
+                        TagText(widget.board.category),
+                        TagText(widget.board.location),
                       ],
                     ),
                   ),
-                  Text(board.title, style: CustomTextStyle.w600(context), overflow: TextOverflow.ellipsis)
+                  Text(widget.board.title, style: CustomTextStyle.w600(context), overflow: TextOverflow.ellipsis)
                 ],
               ),
             ),
-            if(board.board_photos.isNotEmpty) Container(
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: CachedNetworkImageProvider(board.board_photos.first)
-                )
-              ),
+            if(widget.board.board_photos.isNotEmpty) Stack(
+              alignment: Alignment.center,
+              children: [
+                CustomCachedNetworkImage(
+                  widget.board.board_photos.first,
+                  opacity: widget.board.board_photos.length > 1 ? 0.5 : 0.0,
+                  height: mediaHeight(context, 0.06),
+                  width: mediaHeight(context, 0.06),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                if(widget.board.board_photos.length > 1) Text('+${widget.board.board_photos.length - 1}', style: CustomTextStyle.w500(context, color: Colors.white),)
+              ],
             )
           ],
         ),
         onPressed: (){
-          Get.toNamed(BoardDetailsPage.routeName, arguments: RxInt(board.id));
+          Get.toNamed(BoardDetailsPage.routeName, arguments: RxInt(widget.board.id));
         },
       ),
     );

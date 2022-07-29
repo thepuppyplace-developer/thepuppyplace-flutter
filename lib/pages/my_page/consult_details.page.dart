@@ -8,6 +8,7 @@ import 'package:thepuppyplace_flutter/pages/my_page/update_consult.page.dart';
 import 'package:thepuppyplace_flutter/util/common.dart';
 import 'package:thepuppyplace_flutter/views/photo_view/photo_list_view.dart';
 import 'package:thepuppyplace_flutter/views/rx_status_view.dart';
+import 'package:thepuppyplace_flutter/widgets/images/custom_cached_network.image.dart';
 import '../../config/config.dart';
 import '../../controllers/user/user_controller.dart';
 import '../../widgets/buttons/custom_text_button.dart';
@@ -88,14 +89,8 @@ class _ConsultDetailsPageState extends State<ConsultDetailsPage> {
                           onTap: () => Get.to(PhotoListView(consult.photoList, PhotoListType.cached, currentIndex: index), fullscreenDialog: true),
                           child: AspectRatio(
                             aspectRatio: 1/1,
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  color: CustomColors.emptySide,
-                                  image: DecorationImage(
-                                    fit: BoxFit.cover,
-                                      image: CachedNetworkImageProvider(consult.photoList[index])
-                                  )
-                              ),
+                            child: CustomCachedNetworkImage(
+                              consult.photoList[index],
                             ),
                           ),
                         ),

@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:thepuppyplace_flutter/models/Board.dart';
+import 'package:thepuppyplace_flutter/widgets/images/custom_cached_network.image.dart';
 import '../../controllers/user/user_controller.dart';
 import '../../models/Member.dart';
 import '../../repositories/board/board_repository.dart';
@@ -173,14 +174,11 @@ class _UpdateBoardPageState extends State<UpdateBoardPage> {
                                         String photo = widget.board.board_photos[index];
                                         return CupertinoButton(
                                           padding: EdgeInsets.all(mediaWidth(context, 0.033)),
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                                borderRadius: BorderRadius.circular(10),
-                                                image: DecorationImage(
-                                                  fit: BoxFit.cover,
-                                                  image: CachedNetworkImageProvider(photo),
-                                                )
-                                            ),
+                                          child: CustomCachedNetworkImage(
+                                            photo,
+                                            borderRadius: BorderRadius.circular(10),
+                                            width: double.infinity,
+                                            height: double.infinity,
                                           ),
                                           onPressed: (){
                                             Get.to(() => PhotoListView(widget.board.board_photos, PhotoListType.cached, currentIndex: index), fullscreenDialog: true);

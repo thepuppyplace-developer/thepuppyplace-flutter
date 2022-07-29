@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:thepuppyplace_flutter/controllers/notice/notice_list_controller.dart';
 import 'package:thepuppyplace_flutter/pages/notice_page/notice_update_page.dart';
 import 'package:thepuppyplace_flutter/views/photo_view/photo_list_view.dart';
+import 'package:thepuppyplace_flutter/widgets/images/custom_cached_network.image.dart';
 
 import '../../config/config.dart';
 import '../../controllers/notice/notice_controller.dart';
@@ -107,15 +108,10 @@ class NoticeDetailsPage extends GetView<NoticeListController> {
                       padding: EdgeInsets.zero,
                       child: AspectRatio(
                         aspectRatio: 1/1,
-                        child: Container(
+                        child: CustomCachedNetworkImage(
+                          notice.image_url!,
+                          borderRadius: BorderRadius.circular(20),
                           margin: EdgeInsets.only(bottom: mediaHeight(context, 0.02)),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            image: DecorationImage(
-                              fit: BoxFit.cover,
-                              image: CachedNetworkImageProvider(notice.image_url!)
-                            )
-                          ),
                         ),
                       ),
                       onPressed: () => Get.to(() => PhotoListView([notice.image_url!], PhotoListType.cached, currentIndex: 0), fullscreenDialog: true),

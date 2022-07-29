@@ -7,6 +7,7 @@ import 'package:thepuppyplace_flutter/util/common.dart';
 import '../../models/Board.dart';
 import '../../pages/board_page/board_details_page.dart';
 import '../buttons/tag_text.dart';
+import '../images/custom_cached_network.image.dart';
 import 'user_profile_card.dart';
 
 class SearchBoardCard extends StatelessWidget {
@@ -49,20 +50,18 @@ class SearchBoardCard extends StatelessWidget {
                     ],
                   ),
                 ),
-                if(board.board_photos.isNotEmpty) Container(
+                if(board.board_photos.isNotEmpty) Stack(
                   alignment: Alignment.center,
-                  height: mediaHeight(context, 0.1),
-                  width: mediaHeight(context, 0.1),
-                  decoration: BoxDecoration(
+                  children: [
+                    CustomCachedNetworkImage(
+                      board.board_photos.first,
+                      opacity: board.board_photos.length > 1 ? 0.5 : 0.0,
+                      height: mediaHeight(context, 0.1),
+                      width: mediaHeight(context, 0.1),
                       borderRadius: BorderRadius.circular(10),
-                      image: DecorationImage(
-                        opacity: board.board_photos.length <= 1 ? 1 : 0.5,
-                          colorFilter: board.board_photos.length <= 1 ? null : const ColorFilter.mode(Colors.black, BlendMode.colorDodge),
-                          fit: BoxFit.cover,
-                          image: CachedNetworkImageProvider(board.board_photos.first)
-                      )
-                  ),
-                  child: board.board_photos.length <= 1 ? null : Text('+ ${board.board_photos.length - 1}', style: CustomTextStyle.w500(context, color: Colors.white, scale: 0.02)),
+                    ),
+                    if(board.board_photos.length > 1) Text('+${board.board_photos.length - 1}', style: CustomTextStyle.w500(context, color: Colors.white),)
+                  ],
                 )
               ],
             )

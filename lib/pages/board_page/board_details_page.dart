@@ -10,6 +10,7 @@ import 'package:thepuppyplace_flutter/config/kakao_talk_config.dart';
 import 'package:thepuppyplace_flutter/util/common.dart';
 import 'package:thepuppyplace_flutter/views/photo_view/photo_list_view.dart';
 import 'package:thepuppyplace_flutter/widgets/dialogs/custom_dialog.dart';
+import 'package:thepuppyplace_flutter/widgets/images/custom_cached_network.image.dart';
 import 'package:thepuppyplace_flutter/widgets/texts/query_text.dart';
 import 'package:thepuppyplace_flutter/widgets/texts/url_text.dart';
 import '../../config/config.dart';
@@ -35,7 +36,10 @@ class BoardDetailsPage extends StatefulWidget {
   State<BoardDetailsPage> createState() => _BoardDetailsPageState();
 }
 
-class _BoardDetailsPageState extends State<BoardDetailsPage> {
+class _BoardDetailsPageState extends State<BoardDetailsPage> with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+
   final RefreshController _refreshController = RefreshController();
   final RxInt board_id = Get.arguments;
   int _photoIndex = 0;
@@ -157,7 +161,7 @@ class _BoardDetailsPageState extends State<BoardDetailsPage> {
                                     CarouselSlider.builder(
                                       itemCount: board.board_photos.length,
                                       options: CarouselOptions(
-                                          height: mediaWidth(context, 1),
+                                        aspectRatio: 1/1,
                                           enableInfiniteScroll: false,
                                           viewportFraction: 1,
                                           onPageChanged: (int index, index2){
@@ -170,14 +174,12 @@ class _BoardDetailsPageState extends State<BoardDetailsPage> {
                                         String photo = board.board_photos[index];
                                         return CupertinoButton(
                                           padding: EdgeInsets.all(mediaWidth(context, 0.033)),
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                                borderRadius: BorderRadius.circular(10),
-                                                image: DecorationImage(
-                                                  fit: BoxFit.cover,
-                                                  image: CachedNetworkImageProvider(photo),
-                                                )
-                                            ),
+                                          child: CustomCachedNetworkImage(
+                                            photo,
+                                            borderRadius: BorderRadius.circular(10),
+                                            width: double.infinity,
+                                            height: double.infinity,
+                                            fit: BoxFit.cover,
                                           ),
                                           onPressed: (){
                                             Get.to(() => PhotoListView(board.board_photos, PhotoListType.cached, currentIndex: index,), fullscreenDialog: true);

@@ -7,6 +7,7 @@ import 'package:thepuppyplace_flutter/models/Consult.dart';
 import 'package:thepuppyplace_flutter/pages/my_page/consult_details.page.dart';
 import 'package:thepuppyplace_flutter/util/common.dart';
 import 'package:thepuppyplace_flutter/widgets/buttons/custom_text_button.dart';
+import 'package:thepuppyplace_flutter/widgets/images/custom_cached_network.image.dart';
 import 'package:thepuppyplace_flutter/widgets/text_fields/custom_text_field.dart';
 
 import '../../views/photo_view/photo_list_view.dart';
@@ -82,18 +83,11 @@ class _UpdateConsultPageState extends State<UpdateConsultPage> {
                     children: [
                       CupertinoButton(
                         padding: EdgeInsets.only(right: mediaWidth(context, 0.033)),
-                        child: Container(
-                          alignment: Alignment.center,
+                        child: CustomCachedNetworkImage(
+                          consult.photoList[index],
+                          borderRadius: BorderRadius.circular(5),
                           height: mediaHeight(context, 0.1),
                           width: mediaHeight(context, 0.1),
-                          decoration: BoxDecoration(
-                              color: CustomColors.empty,
-                              borderRadius: BorderRadius.circular(5),
-                              border: Border.all(color: CustomColors.hint),
-                              image: DecorationImage(
-                                image: CachedNetworkImageProvider(consult.photoList[index])
-                              )
-                          ),
                         ),
                         onPressed: (){
                           Get.to(() => PhotoListView(consult.photoList, PhotoListType.cached, currentIndex: index), fullscreenDialog: true);

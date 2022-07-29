@@ -7,6 +7,7 @@ import 'package:thepuppyplace_flutter/util/cached_network_image_list.dart';
 import 'package:thepuppyplace_flutter/util/common.dart';
 import 'package:thepuppyplace_flutter/util/custom_icons.dart';
 import 'package:thepuppyplace_flutter/util/png_list.dart';
+import 'package:thepuppyplace_flutter/widgets/images/custom_cached_network.image.dart';
 import '../../controllers/user/user_controller.dart';
 import '../../controllers/version/version_controller.dart';
 import '../../widgets/buttons/custom_icon_button.dart';
@@ -29,7 +30,7 @@ class MyPage extends GetWidget<UserController> {
     return Scaffold(
       appBar: AppBar(
         titleTextStyle: CustomTextStyle.appBarStyle(context),
-        title: Text('마이페이지'),
+        title: const Text('마이페이지'),
       ),
       body: controller.obx((user) => Scrollbar(
         child: SingleChildScrollView(
@@ -42,10 +43,13 @@ class MyPage extends GetWidget<UserController> {
                   padding: EdgeInsets.zero,
                   child: Row(
                     children: [
-                      CircleAvatar(
-                        radius: mediaHeight(context, 0.03),
-                        backgroundImage: AssetImage(PngList.default_profile),
-                        foregroundImage: user!.photo_url == null ? null : CachedNetworkImageProvider(user.photo_url!),
+                      CustomCachedNetworkImage(
+                        user!.photo_url ?? '',
+                        padding: basePadding(context),
+                        fit: BoxFit.cover,
+                        height: mediaHeight(context, 0.06),
+                        width: mediaHeight(context, 0.06),
+                        shape: BoxShape.circle,
                       ),
                       Expanded(
                         child: Container(

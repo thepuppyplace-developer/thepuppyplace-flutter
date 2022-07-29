@@ -55,18 +55,11 @@ class _UpdateMyPageState extends State<UpdateMyPage> {
                                 CustomCachedNetworkImage(
                                   user!.photo_url ?? '',
                                   padding: basePadding(context),
-                                  errorImage: PngList.default_profile,
                                   height: mediaHeight(context, 0.14),
                                   width: mediaHeight(context, 0.14),
                                   fit: BoxFit.cover,
                                   shape: BoxShape.circle,
                                 ),
-                                // CircleAvatar(
-                                //   maxRadius: mediaHeight(context, 0.07),
-                                //   backgroundColor: CustomColors.emptySide,
-                                //   backgroundImage: AssetImage(PngList.default_profile),
-                                //   foregroundImage: user!.photo_url == null ? null : CachedNetworkImageProvider(user.photo_url!),
-                                // ),
                                 Container(
                                   width: mediaHeight(context, 0.05),
                                   height: mediaHeight(context, 0.05),
