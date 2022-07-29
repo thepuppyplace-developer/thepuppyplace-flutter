@@ -65,7 +65,6 @@ class CustomCachedNetworkImage extends StatelessWidget {
   Widget get _errorWidget => Container(
     margin: padding,
     decoration: BoxDecoration(
-      shape: shape ?? BoxShape.rectangle,
         borderRadius: borderRadius,
         color: backgroundColor,
         image: DecorationImage(
