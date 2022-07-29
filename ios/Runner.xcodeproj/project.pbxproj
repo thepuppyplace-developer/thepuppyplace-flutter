@@ -13,8 +13,12 @@
 		96C2EE47AD07F5323FFB417D /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CAB07980D566AA23EE68324 /* Pods_Runner.framework */; };
 		97C146FC1CF9000F007C117D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FA1CF9000F007C117D /* Main.storyboard */; };
 		97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */; };
+		A2D77CE528929483005FE3BF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A2D77CE428929483005FE3BF /* Assets.xcassets */; };
 		A2EFF85E27BC10B4009D134D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A2EFF85D27BC10B4009D134D /* GoogleService-Info.plist */; };
+<<<<<<< HEAD
 		B5E5F3CF289395410018BB14 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B5E5F3CE289395410018BB14 /* Assets.xcassets */; };
+=======
+>>>>>>> 79307fd6279d93f75a5c4fad628136cd068f1d33
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -60,9 +64,13 @@
 		A29C42D8281C56D900A7118A /* RunnerProfile.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RunnerProfile.entitlements; sourceTree = "<group>"; };
 		A2C1A21F281C5C5000AD4DC1 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		A2C1A221281C5C5000AD4DC1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A2D77CE428929483005FE3BF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A2EFF85D27BC10B4009D134D /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
 		B1E5BC83B56CC7EF6FAABC5E /* Pods-Runner.profile.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.profile.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.profile.xcconfig"; sourceTree = "<group>"; };
+<<<<<<< HEAD
 		B5E5F3CE289395410018BB14 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = ../../../../../Downloads/AppIcons/Assets.xcassets; sourceTree = "<group>"; };
+=======
+>>>>>>> 79307fd6279d93f75a5c4fad628136cd068f1d33
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -119,6 +127,10 @@
 		97C146F01CF9000F007C117D /* Runner */ = {
 			isa = PBXGroup;
 			children = (
+<<<<<<< HEAD
+=======
+				A2D77CE428929483005FE3BF /* Assets.xcassets */,
+>>>>>>> 79307fd6279d93f75a5c4fad628136cd068f1d33
 				A2989AC128242C1A00869347 /* Runner.entitlements */,
 				A29C42D8281C56D900A7118A /* RunnerProfile.entitlements */,
 				B5E5F3CE289395410018BB14 /* Assets.xcassets */,
@@ -226,7 +238,11 @@
 				3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */,
 				A2EFF85E27BC10B4009D134D /* GoogleService-Info.plist in Resources */,
 				97C146FC1CF9000F007C117D /* Main.storyboard in Resources */,
+<<<<<<< HEAD
 				B5E5F3CF289395410018BB14 /* Assets.xcassets in Resources */,
+=======
+				A2D77CE528929483005FE3BF /* Assets.xcassets in Resources */,
+>>>>>>> 79307fd6279d93f75a5c4fad628136cd068f1d33
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -403,6 +419,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.globalqkorea.thepuppyplace;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -537,6 +554,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.globalqkorea.thepuppyplace;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
@@ -564,6 +582,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.globalqkorea.thepuppyplace;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
