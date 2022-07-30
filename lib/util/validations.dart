@@ -3,6 +3,8 @@ import 'package:email_validator/email_validator.dart';
 import 'common.dart';
 
 class Validations{
+  static final RegExp _regExp = RegExp(r'^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?~^<>,.&+=])[A-Za-z\d$@$!%*#?~^<>,.&+=]{8,20}$');
+  //비밀번호 정규식
 
   static String? email(String? email, {String? validator}){
     if(email!.isEmpty){
@@ -19,8 +21,8 @@ class Validations{
   static String? password(String? password, {String? validator}){
     if(password!.isEmpty){
       return '비밀번호를 입력해주세요.';
-    } else if(password.length < 8){
-      return '비밀번호를 8자 이상 입력해주세요.';
+    } else if(!_regExp.hasMatch(password)){
+      return '특수문자, 대소문자, 숫자 포함 8자 이상 20자 이내';
     } else if(validator != null){
       return validator;
     } else {
@@ -31,10 +33,10 @@ class Validations{
   static String? passwordCheck(String? password, String? passwordCheck){
     if(password!.isEmpty){
       return '비밀번호를 입력해주세요.';
-    } else if(password.length < 8){
-      return '비밀번호를 8자 이상 입력해주세요.';
     } else if(password != passwordCheck){
       return '비밀번호가 일치하지 않습니다.';
+    } else if(!_regExp.hasMatch(password)){
+      return '특수문자, 대소문자, 숫자 포함 8자 이상 20자 이내';
     } else {
       return null;
     }
