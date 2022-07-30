@@ -68,6 +68,18 @@ class BoardController extends GetxController with StateMixin<Board>, Config{
     }
   }
 
+  Future insertNestNestComment(BuildContext context, {
+    required String comment,
+    required int nested_comment_id
+  }) async{
+    if(comment.trim().isNotEmpty){
+      await _repository.insertNestNestComment(context, nested_comment_id: nested_comment_id, comment: comment);
+      return getBoard;
+    } else {
+      return showSnackBar(context, '댓글을 입력해주세요.');
+    }
+  }
+
   Future deleteComment(BuildContext context, int comment_id) async{
     Get.back();
     await _repository.deleteComment(context, comment_id: comment_id);
@@ -86,6 +98,14 @@ class BoardController extends GetxController with StateMixin<Board>, Config{
   Future deleteNestedComment(BuildContext context, NestedComment comment) async{
     Get.back();
     final int? statusCode = await _repository.deleteNestedComment(context, nested_comment_id: comment.id);
+    if(statusCode == 200){
+      return getBoard;
+    }
+  }
+
+  Future deleteNestNestComment(BuildContext context, NestNestComment comment) async{
+    Get.back();
+    final int? statusCode = await _repository.deleteNestNestComment(context, nest_nest_comment_id: comment.id);
     if(statusCode == 200){
       return getBoard;
     }

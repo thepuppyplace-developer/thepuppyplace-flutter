@@ -229,6 +229,26 @@ class BoardRepository extends GetConnect with Config{
     }
   }
 
+  Future insertNestNestComment(BuildContext context, {required int nested_comment_id, required String comment}) async{
+    if(await JWT_TOKEN != null){
+      Response res = await post('$API_URL/comment/nest/nested', {
+        "comment" : comment,
+        "nested_comment_id" : nested_comment_id
+      }, headers: await headers);
+      print(res.body);
+      switch(res.statusCode){
+        case 201:
+          return showSnackBar(context, '댓글이 등록되었습니다.');
+        case 204:
+          return unknown_message(context);
+        default:
+          return network_check_message(context);
+      }
+    } else {
+      return expiration_token_message(context);
+    }
+  }
+
   Future<BoardComment?> deleteComment(BuildContext context, {required int comment_id}) async{
     try{
       if(await JWT_TOKEN != null){
@@ -302,6 +322,27 @@ class BoardRepository extends GetConnect with Config{
   Future<int?> deleteNestedComment(BuildContext context, {required int nested_comment_id}) async{
     if(await JWT_TOKEN != null){
       final Response res = await delete('$API_URL/comment/nested/$nested_comment_id', headers: await headers);
+      print(res.statusCode);
+      switch(res.statusCode) {
+        case 200:
+          await showSnackBar(context, '댓글이 삭제되었습니다.');
+          return res.statusCode;
+        case 204:
+          await unknown_message(context);
+          return null;
+        default:
+          await network_check_message(context);
+          return null;
+      }
+    } else {
+      await expiration_token_message(context);
+      return null;
+    }
+  }
+
+  Future<int?> deleteNestNestComment(BuildContext context, {required int nest_nest_comment_id}) async{
+    if(await JWT_TOKEN != null){
+      final Response res = await delete('$API_URL/comment/nest/nested/$nest_nest_comment_id', headers: await headers);
       print(res.statusCode);
       switch(res.statusCode) {
         case 200:

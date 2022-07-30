@@ -205,6 +205,9 @@ int commentCount(List<BoardComment>? commentList){
   int commentCount = commentList!.length;
   for(int i = 0; i < commentList.length; i++){
     commentCount += commentList[i].nestedCommentList.length;
+    for(int index = 0; index < commentList[i].nestedCommentList.length; index ++){
+      commentCount += commentList[i].nestedCommentList[index].commentList.length;
+    }
   }
   return commentCount;
 }

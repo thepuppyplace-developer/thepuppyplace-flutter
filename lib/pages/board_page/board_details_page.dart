@@ -44,6 +44,7 @@ class _BoardDetailsPageState extends State<BoardDetailsPage> with AutomaticKeepA
   final RxInt board_id = Get.arguments;
   int _photoIndex = 0;
   BoardComment? _selectComment;
+  NestedComment? _selectNestedComment;
   final TextEditingController _commentController = TextEditingController();
 
   @override
@@ -282,12 +283,20 @@ class _BoardDetailsPageState extends State<BoardDetailsPage> with AutomaticKeepA
                                         for(BoardComment comment in board.commentList) CommentCard(comment,
                                           onComment: (BoardComment boardComment){
                                             setState(() {
+                                              _selectNestedComment = null;
                                               _selectComment = boardComment;
+                                            });
+                                          },
+                                          onNestedComment: (nestedComment){
+                                            setState(() {
+                                              _selectComment = null;
+                                              _selectNestedComment = nestedComment;
                                             });
                                           },
                                           onLike: (BoardComment boardComment) => controller.likeComment(context, boardComment.commentId),
                                           onCommentDelete: () => controller.deleteComment(context, comment.commentId),
-                                          onNestedCommentDelete: (NestedComment nestedComment) => showIndicator(controller.deleteNestedComment(context, nestedComment))
+                                          onNestedCommentDelete: (NestedComment nestedComment) => showIndicator(controller.deleteNestedComment(context, nestedComment)),
+                                          onNestNestCommentDelete: (NestNestComment nestNestComment) => showIndicator(controller.deleteNestNestComment(context, nestNestComment)),
                                         )
                                       ]
                                   ),
@@ -342,6 +351,44 @@ class _BoardDetailsPageState extends State<BoardDetailsPage> with AutomaticKeepA
                               )
                           ),
                         ),
+                        if(_selectNestedComment != null) Opacity(
+                          opacity: 0.5,
+                          child: Container(
+                              padding: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.033), vertical: mediaHeight(context, 0.01)),
+                              decoration: const BoxDecoration(
+                                color: CustomColors.emptySide,
+                              ),
+                              alignment: Alignment.centerLeft,
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: RichText(
+                                      text: TextSpan(
+                                        children: [
+                                          TextSpan(
+                                              text: _selectNestedComment!.user.nickname,
+                                              style: CustomTextStyle.w600(context)
+                                          ),
+                                          TextSpan(
+                                              text: '님에게 댓글 달기',
+                                              style: CustomTextStyle.w500(context)
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  GestureDetector(
+                                    child: Text('취소', style: CustomTextStyle.w500(context)),
+                                    onTap: (){
+                                      setState(() {
+                                        _selectNestedComment = null;
+                                      });
+                                    },
+                                  )
+                                ],
+                              )
+                          ),
+                        ),
                         CommentField(
                           commentController: _commentController,
                           onPressed: (comment) async{
@@ -351,8 +398,20 @@ class _BoardDetailsPageState extends State<BoardDetailsPage> with AutomaticKeepA
                                   comment_id: _selectComment!.commentId,
                                   comment: comment
                               );
-                              setState(() {
-                              });
+                              setState(() {});
+                            } else {
+                              await controller.insertComment(
+                                  context,
+                                  comment: comment
+                              );
+                            }
+                            if(_selectNestedComment != null){
+                              await controller.insertNestNestComment(
+                                  context,
+                                  nested_comment_id: _selectNestedComment!.id,
+                                  comment: comment
+                              );
+                              setState(() {});
                             } else {
                               await controller.insertComment(
                                   context,
@@ -361,6 +420,7 @@ class _BoardDetailsPageState extends State<BoardDetailsPage> with AutomaticKeepA
                             }
                             setState(() {
                               _selectComment = null;
+                              _selectNestedComment = null;
                               _commentController.clear();
                             });
                           },
