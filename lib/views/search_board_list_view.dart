@@ -38,7 +38,7 @@ class SearchBoardListView extends GetView<SearchBoardListController> {
                     style: CustomTextStyle.w500(context, color: Colors.grey),
                     children: [
                       TextSpan(
-                          text: "'${controller.queryString.value}'",
+                          text: "'${controller.query.value}'",
                           style: CustomTextStyle.w600(context, color: Colors.black)
                       ),
                       TextSpan(
@@ -189,7 +189,7 @@ class SearchBoardListView extends GetView<SearchBoardListController> {
         )
       ],
     ),
-        onEmpty: EmptyView(message: "'${controller.queryString.value}'에 대한 검색결과가 없습니다."),
+        onEmpty: EmptyView(message: "'${controller.query.value}'에 대한 검색결과가 없습니다."),
         onLoading: const LoadingView(),
         onError: (error) => CustomErrorView(error: error)
     );

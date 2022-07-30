@@ -5,9 +5,11 @@ import '../../repositories/board/board_repository.dart';
 
 class SearchBoardListController extends GetxController with StateMixin<List<Board>>{
   final BuildContext context;
-  final String query;
+  final RxString query;
 
-  SearchBoardListController(this.context, this.query);
+  SearchBoardListController(
+      this.context,
+      this.query);
 
   final BoardRepository _repository = BoardRepository();
 
@@ -24,8 +26,6 @@ class SearchBoardListController extends GetxController with StateMixin<List<Boar
 
   final RxString orderBy = RxString('date');
 
-  final RxString queryString = RxString('');
-
   RxnString queryType(){
     switch(conditionIndex.value){
       case 1: return RxnString('t');
@@ -40,9 +40,9 @@ class SearchBoardListController extends GetxController with StateMixin<List<Boar
     super.onReady();
     ever(conditionIndex, _conditionListener);
     ever(orderBy, _orderByListener);
-    ever(queryString, _queryListener);
+    ever(query, _queryListener);
     ever(_searchBoardList, _searchBoardListListener);
-    queryString.value = query;
+    query.value = query.value;
   }
 
   void _queryListener(String query){
@@ -74,7 +74,7 @@ class SearchBoardListController extends GetxController with StateMixin<List<Boar
 
   Future get getSearchBoardList async{
     change(null, status: RxStatus.loading());
-    final Response res  = await _repository.getSearchBoardList(query: queryString.value, queryType: queryType().value, order: orderBy.value);
+    final Response res  = await _repository.getSearchBoardList(query: query.value, queryType: queryType().value, order: orderBy.value);
     switch(res.statusCode){
       case 200:
         final List<Board> boardList = List.from(res.body['data']).map((board) => Board.fromJson(board)).toList();

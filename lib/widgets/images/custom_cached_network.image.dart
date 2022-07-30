@@ -20,6 +20,7 @@ class CustomCachedNetworkImage extends StatelessWidget {
   final Color? opacityColor;
   final Color? backgroundColor;
   final Clip? clip;
+  final bool? loadingSameEmpty;
 
   const CustomCachedNetworkImage(
       this.imageURL, {
@@ -36,6 +37,7 @@ class CustomCachedNetworkImage extends StatelessWidget {
         this.opacityColor = Colors.black,
         this.backgroundColor = CustomColors.emptySide,
         this.clip,
+        this.loadingSameEmpty = false,
         Key? key}) : super(key: key);
 
   @override
@@ -73,23 +75,28 @@ class CustomCachedNetworkImage extends StatelessWidget {
     ),
   );
 
-  Widget _progressIndicatorBuilder(BuildContext context, String url, DownloadProgress downloadProgress) => SizedBox(
-    width: double.infinity,
-    height: double.infinity,
-    child: LayoutBuilder(
-      builder: (context, constraints){
-        final double radius = constraints.maxHeight / 15;
-        return CircularPercentIndicator(
-          animation: true,
-          animateFromLastPercent: true,
-          radius: radius,
-          percent: downloadProgress.downloaded / (downloadProgress.totalSize ?? 0.0),
-          lineWidth: radius / 5,
-          backgroundColor: CustomColors.emptySide,
-          progressColor: CustomColors.main,
-        );
-      },
-    ),
-    // child: CupertinoActivityIndicator.partiallyRevealed(progress: downloadProgress.progress ?? 1.0)
-  );
+  Widget _progressIndicatorBuilder(BuildContext context, String url, DownloadProgress downloadProgress){
+    if(loadingSameEmpty ?? true){
+      return _errorWidget;
+    } else {
+      return SizedBox(
+        width: double.infinity,
+        height: double.infinity,
+        child: LayoutBuilder(
+          builder: (context, constraints){
+            final double radius = constraints.maxHeight / 15;
+            return CircularPercentIndicator(
+              animation: true,
+              animateFromLastPercent: true,
+              radius: radius,
+              percent: downloadProgress.downloaded / (downloadProgress.totalSize ?? 0.0),
+              lineWidth: radius / 5,
+              backgroundColor: CustomColors.emptySide,
+              progressColor: CustomColors.main,
+            );
+          },
+        ),
+      );
+    }
+  }
 }

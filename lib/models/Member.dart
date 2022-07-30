@@ -11,6 +11,8 @@ class Member{
   final String? jwt_token;
   bool is_alarm;
   bool is_service_alarm;
+  bool is_comment_alarm;
+  bool is_like_alarm;
   String? location;
   final String auth_type;
 
@@ -27,6 +29,8 @@ class Member{
     this.jwt_token,
     required this.is_alarm,
     required this.is_service_alarm,
+    required this.is_comment_alarm,
+    required this.is_like_alarm,
     this.location,
     required this.auth_type,
   });
@@ -44,6 +48,8 @@ class Member{
     jwt_token: json['jwt_token'],
     is_alarm: json['is_alarm'].runtimeType == int ? json['is_alarm'] == 1 ? true : false : json['is_alarm'],
     is_service_alarm: json['is_service_alarm'].runtimeType == int ? json['is_service_alarm'] == 1 ? true : false : json['is_service_alarm'],
+    is_comment_alarm: json['is_comment_alarm'].runtimeType == int ? json['is_comment_alarm'] == 1 ? true : false : json['is_comment_alarm'],
+    is_like_alarm: json['is_like_alarm'].runtimeType == int ? json['is_like_alarm'] == 1 ? true : false : json['is_like_alarm'],
     location: json['location'],
     auth_type: json['auth_type'],
   );

@@ -63,14 +63,14 @@ class _BoardListPageState extends State<BoardListPage> {
                 floating: true,
                 pinned: true,
                 elevation: 0.1,
-                title: InsertSearchTabBar(
-                    mediaHeight(context, 0.07),
-                    controller: _queryController,
-                    onChanged: (_query){},
-                    onSearchTap: (query){
-                      Get.toNamed(SearchBoardListPage.routeName, arguments: query);
-                    }
-                ),
+                // title: InsertSearchTabBar(
+                //     mediaHeight(context, 0.07),
+                //     controller: _queryController,
+                //     onChanged: (_query){},
+                //     onSearchTap: (query){
+                //       Get.offNamedUntil(SearchBoardListPage.routeName, (route) => route.settings.name == SearchBoardListPage.routeName, arguments: query);
+                //     }
+                // ),
                 bottom: TabBar(
                     onTap: (int index){
                       setState(() {

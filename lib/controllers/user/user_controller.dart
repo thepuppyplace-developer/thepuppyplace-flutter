@@ -54,9 +54,9 @@ class UserController extends GetxController with StateMixin<Member>, Config{
           switch(statusCode){
             case 200:
             //회원가입이 완료되면 send 로그인 한 후 약관 체크한 항목들을 jwt 와 함께 서버에 전송
-            for(Term term in termsList){
-              await _termsRepo.sendTerms(term);
-            }
+              for(Term term in termsList){
+                await _termsRepo.sendTerms(term);
+              }
           }
           break;
         default:
@@ -139,16 +139,29 @@ class UserController extends GetxController with StateMixin<Member>, Config{
     }
   }
 
-  Future<Response> changeNotification(BuildContext context, {bool? is_alarm, bool? is_service_alarm}) async{
-    final Response? res = await _repo.changeNotification(context, is_alarm: is_alarm, is_service_alarm: is_service_alarm);
-    switch(res?.statusCode){
+  Future<Response> changeNotification(BuildContext context, {
+    bool? is_alarm,
+    bool? is_service_alarm,
+    bool? is_comment_alarm,
+    bool? is_like_alarm,
+  }) async{
+    final Response res = await _repo.changeNotification(
+        context,
+        is_alarm: is_alarm,
+        is_service_alarm: is_service_alarm,
+        is_comment_alarm: is_comment_alarm,
+        is_like_alarm: is_like_alarm
+    );
+    switch(res.statusCode){
       case 200:
         if(is_alarm != null) _user.value?.is_alarm = is_alarm;
         if(is_service_alarm != null) _user.value?.is_service_alarm = is_service_alarm;
+        if(is_comment_alarm != null) _user.value?.is_comment_alarm = is_comment_alarm;
+        if(is_like_alarm != null) _user.value?.is_like_alarm = is_like_alarm;
         update();
         break;
     }
-    return res!;
+    return res;
   }
 
   Future updateNickname(BuildContext context, String nickname) async{

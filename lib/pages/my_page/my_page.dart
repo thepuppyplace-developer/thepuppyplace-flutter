@@ -50,6 +50,7 @@ class MyPage extends GetWidget<UserController> {
                         height: mediaHeight(context, 0.06),
                         width: mediaHeight(context, 0.06),
                         shape: BoxShape.circle,
+                        loadingSameEmpty: true,
                       ),
                       Expanded(
                         child: Container(

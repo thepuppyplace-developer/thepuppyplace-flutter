@@ -28,7 +28,7 @@ class _SearchBoardListPageState extends State<SearchBoardListPage> {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<SearchBoardListController>(
-        init: SearchBoardListController(context, _query),
+        init: SearchBoardListController(context, RxString(_query)),
         builder: (SearchBoardListController controller) {
           return GestureDetector(
             onTap: (){
@@ -42,12 +42,12 @@ class _SearchBoardListPageState extends State<SearchBoardListPage> {
                       floating: true,
                       pinned: true,
                       title: InsertSearchTabBar(
-                          mediaHeight(context, 0.07),
-                          margin: EdgeInsets.zero,
-                          onChanged: (query){},
-                          onSearchTap: (query){
-                            controller.queryString.value = query;
-                          },
+                        mediaHeight(context, 0.07),
+                        margin: EdgeInsets.zero,
+                        onChanged: (query){},
+                        onSearchTap: (query){
+                          controller.query.value = query;
+                        },
                         controller: _queryController,
                       ),
                       bottom: SearchConditionBar(

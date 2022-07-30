@@ -32,8 +32,25 @@ class SettingPage extends StatelessWidget {
                     margin: baseVerticalPadding(context) / 2,
                     child: Row(
                       children: [
+                        Expanded(child: Text('전체 알림', style: CustomTextStyle.w500(context, scale: 0.02))),
+                        CupertinoSwitch(value: user!.is_alarm, onChanged: (value){
+                          controller.changeNotification(
+                              context,
+                              is_alarm: value,
+                              is_service_alarm: value,
+                              is_like_alarm: value,
+                              is_comment_alarm: value
+                          );
+                        })
+                      ],
+                    ),
+                  ),
+                  Container(
+                    margin: baseVerticalPadding(context) / 2,
+                    child: Row(
+                      children: [
                         Expanded(child: Text('서비스 알림 설정', style: CustomTextStyle.w500(context, scale: 0.02))),
-                        CupertinoSwitch(value: user!.is_service_alarm, onChanged: (value){
+                        CupertinoSwitch(value: user.is_service_alarm, onChanged: (value){
                           controller.changeNotification(context, is_service_alarm: value);
                         })
                       ],
@@ -44,8 +61,8 @@ class SettingPage extends StatelessWidget {
                     child: Row(
                       children: [
                         Expanded(child: Text('좋아요 알림 설정', style: CustomTextStyle.w500(context, scale: 0.02))),
-                        CupertinoSwitch(value: user.is_alarm, onChanged: (value){
-                          controller.changeNotification(context, is_alarm: value);
+                        CupertinoSwitch(value: user.is_like_alarm, onChanged: (value){
+                          controller.changeNotification(context, is_like_alarm: value);
                         })
                       ],
                     ),
@@ -55,8 +72,8 @@ class SettingPage extends StatelessWidget {
                     child: Row(
                       children: [
                         Expanded(child: Text('댓글 알림 설정', style: CustomTextStyle.w500(context, scale: 0.02))),
-                        CupertinoSwitch(value: user.is_alarm, onChanged: (value){
-                          controller.changeNotification(context, is_alarm: value);
+                        CupertinoSwitch(value: user.is_comment_alarm, onChanged: (value){
+                          controller.changeNotification(context, is_comment_alarm: value);
                         })
                       ],
                     ),

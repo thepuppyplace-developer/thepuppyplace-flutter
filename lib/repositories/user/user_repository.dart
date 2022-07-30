@@ -149,30 +149,32 @@ class UserRepository extends GetConnect with Config{
     }
   }
 
-  Future<Response?> changeNotification(BuildContext context, {bool? is_alarm, bool? is_service_alarm}) async{
+  Future<Response> changeNotification(BuildContext context, {
+    bool? is_alarm,
+    bool? is_service_alarm,
+    bool? is_comment_alarm,
+    bool? is_like_alarm,
+  }) async{
     try{
-      if(await JWT_TOKEN != null){
-        final Response res = await patch('$API_URL/user/isalarm', {
-          if(is_alarm != null) "is_alarm": is_alarm,
-          if(is_service_alarm != null) "is_service_alarm": is_service_alarm
-        }, headers: await headers);
+      final Response res = await patch('$API_URL/user/isalarm', {
+        if(is_alarm != null) "is_alarm": is_alarm,
+        if(is_service_alarm != null) "is_service_alarm": is_service_alarm,
+        if(is_comment_alarm != null) "is_comment_alarm": is_comment_alarm,
+        if(is_like_alarm != null) "is_like_alarm": is_like_alarm,
+      }, headers: await headers);
 
-        switch(res.statusCode){
-          case 200:
-            if(is_alarm != null){
-              await showSnackBar(context, '알람 설정이 변경되었습니다.');
-            } else {
-              await showSnackBar(context, '서비스 알람 설정이 변경되었습니다.');
-            }
-            break;
-          default:
-            await network_check_message(context);
-        }
-        return res;
-      } else {
-        await expiration_token_message(context);
+      switch(res.statusCode){
+        case 200:
+          if(is_alarm != null){
+            await showSnackBar(context, '알람 설정이 변경되었습니다.');
+          } else {
+            await showSnackBar(context, '서비스 알람 설정이 변경되었습니다.');
+          }
+          break;
+        default:
+          await network_check_message(context);
       }
-      return null;
+      return res;
     } catch(error){
       throw unknown_message(context);
     }

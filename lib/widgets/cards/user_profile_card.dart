@@ -21,6 +21,7 @@ class UserProfileCard extends StatelessWidget {
           shape: BoxShape.circle,
           height: mediaHeight(context, 0.036),
           width: mediaHeight(context, 0.036),
+          loadingSameEmpty: true,
         ),
         Container(
             margin: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.015)),
