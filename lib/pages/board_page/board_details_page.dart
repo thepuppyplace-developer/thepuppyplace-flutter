@@ -399,11 +399,6 @@ class _BoardDetailsPageState extends State<BoardDetailsPage> with AutomaticKeepA
                                   comment: comment
                               );
                               setState(() {});
-                            } else {
-                              await controller.insertComment(
-                                  context,
-                                  comment: comment
-                              );
                             }
                             if(_selectNestedComment != null){
                               await controller.insertNestNestComment(
@@ -412,7 +407,8 @@ class _BoardDetailsPageState extends State<BoardDetailsPage> with AutomaticKeepA
                                   comment: comment
                               );
                               setState(() {});
-                            } else {
+                            }
+                            if(_selectComment == null && _selectNestedComment == null){
                               await controller.insertComment(
                                   context,
                                   comment: comment
