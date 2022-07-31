@@ -167,8 +167,12 @@ class UserRepository extends GetConnect with Config{
         case 200:
           if(is_alarm != null){
             await showSnackBar(context, '알람 설정이 변경되었습니다.');
-          } else {
+          } else if(is_service_alarm != null){
             await showSnackBar(context, '서비스 알람 설정이 변경되었습니다.');
+          } else if(is_comment_alarm != null){
+            await showSnackBar(context, '댓글 알람 설정이 변경되었습니다.');
+          } else if(is_like_alarm != null){
+            await showSnackBar(context, '좋아요 알람 설정이 변경되었습니다.');
           }
           break;
         default:
