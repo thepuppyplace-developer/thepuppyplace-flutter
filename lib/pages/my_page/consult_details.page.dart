@@ -165,6 +165,7 @@ class _ConsultDetailsPageState extends State<ConsultDetailsPage> {
             _answer = '';
             _answerCtr.clear();
           });
+          ConsultListController.instance.addAnswer(_consultId.value, _answer);
           return showSnackBar(context, '상담이 등록되었습니다.');
         case null:
           return network_check_message(context);

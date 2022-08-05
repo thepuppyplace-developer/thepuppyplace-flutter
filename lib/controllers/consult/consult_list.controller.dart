@@ -34,6 +34,15 @@ class ConsultListController extends GetxController with StateMixin<List<Consult>
     }
   }
 
+  void addAnswer(int consultId, String answer){
+    try{
+      _consultList[_consultList.indexWhere((consult) => consult.consultId == consultId)].answer = answer;
+      update();
+    } catch(error){
+      throw Exception(error);
+    }
+  }
+
   Future get refreshConsultList async{
     _page.value = 0;
     try{
@@ -52,6 +61,7 @@ class ConsultListController extends GetxController with StateMixin<List<Consult>
           _consultList.clear();
       }
     } catch(error){
+      change(null, status: RxStatus.error(error.toString()));
       throw Exception(error);
     }
   }
