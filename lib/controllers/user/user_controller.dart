@@ -3,6 +3,10 @@ import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
+import 'package:thepuppyplace_flutter/controllers/board/my_board_list_controller.dart';
+import 'package:thepuppyplace_flutter/controllers/board/my_like_board_list_controller.dart';
+import 'package:thepuppyplace_flutter/controllers/consult/consult_details_controller.dart';
+import 'package:thepuppyplace_flutter/controllers/consult/consult_list.controller.dart';
 import 'package:thepuppyplace_flutter/controllers/notification/notification_log_list_controller.dart';
 import 'package:thepuppyplace_flutter/navigators/navigator_page.dart';
 import 'package:thepuppyplace_flutter/pages/auth_page/signup_terms_page.dart';
@@ -122,6 +126,11 @@ class UserController extends GetxController with StateMixin<Member>, Config{
     //로그아웃 시 서버에 전송
     _user.value = await REMOVE_JWT_TOKEN;
     //SharedPreferences 에 JWT_TOKEN 값을 삭제함
+    Get.delete<ConsultListController>();
+    Get.delete<ConsultDetailsController>();
+    Get.delete<MyBoardListController>();
+    Get.delete<MyLikeBoardListController>();
+    Get.delete<NotificationLogListController>();
 
     return Get.offNamedUntil(LoginPage.routeName, (route) => route.isFirst);
     //JWT_TOKEN 을 삭제하면 로그인 페이지로 넘긴 후 앞에 Stack 을 모두 제거

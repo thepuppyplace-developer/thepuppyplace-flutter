@@ -48,18 +48,6 @@ class AppInfoPage extends StatelessWidget {
               ),
               Row(
                 children: [
-                  const Expanded(child: CustomTextButton('개발', null, color: Colors.black, alignment: Alignment.centerLeft)),
-                  Text('황장우, 이지환', style: CustomTextStyle.w500(context, color: CustomColors.hint))
-                ],
-              ),
-              Row(
-                children: [
-                  const Expanded(child: CustomTextButton('디자인', null, color: Colors.black, alignment: Alignment.centerLeft)),
-                  Text('황영서', style: CustomTextStyle.w500(context, color: CustomColors.hint))
-                ],
-              ),
-              Row(
-                children: [
                   const Expanded(child: CustomTextButton('기획', null, color: Colors.black, alignment: Alignment.centerLeft)),
                   Text('김성은, 이하진, 이서진', style: CustomTextStyle.w500(context, color: CustomColors.hint))
                 ],
@@ -68,6 +56,18 @@ class AppInfoPage extends StatelessWidget {
                 children: [
                   const Expanded(child: CustomTextButton('홍보', null, color: Colors.black, alignment: Alignment.centerLeft)),
                   Text('유혜경, 김우식', style: CustomTextStyle.w500(context, color: CustomColors.hint))
+                ],
+              ),
+              Row(
+                children: [
+                  const Expanded(child: CustomTextButton('개발', null, color: Colors.black, alignment: Alignment.centerLeft)),
+                  Text('황장우, 이지환', style: CustomTextStyle.w500(context, color: CustomColors.hint))
+                ],
+              ),
+              Row(
+                children: [
+                  const Expanded(child: CustomTextButton('디자인', null, color: Colors.black, alignment: Alignment.centerLeft)),
+                  Text('황영서', style: CustomTextStyle.w500(context, color: CustomColors.hint))
                 ],
               ),
               Row(
