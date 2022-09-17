@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:get/get.dart';
 import 'package:thepuppyplace_flutter/controllers/consult/consult_details_controller.dart';
 import 'package:thepuppyplace_flutter/controllers/consult/consult_list.controller.dart';
@@ -84,7 +85,13 @@ class _ConsultDetailsPageState extends State<ConsultDetailsPage> {
                             child: Text(consult!.title, style: CustomTextStyle.w600(context, scale: 0.02))),
                         Container(
                             margin: baseHorizontalPadding(context).copyWith(bottom: mediaWidth(context, 0.033)),
-                            child: Text(consult.description, style: CustomTextStyle.w500(context))),
+                            child: Linkify(
+                                text: consult.description,
+                                style: CustomTextStyle.w500(context),
+                              linkStyle: CustomTextStyle.w500(context, color: CustomColors.main, decoration: TextDecoration.underline),
+                              onOpen: (url) => openURL(url: url.url),
+                            )
+                        ),
                         if(consult.photoList.isNotEmpty) for(int index = 0; index < consult.photoList.length; index++) GestureDetector(
                           onTap: () => Get.to(PhotoListView(consult.photoList, PhotoListType.cached, currentIndex: index), fullscreenDialog: true),
                           child: AspectRatio(
@@ -105,7 +112,7 @@ class _ConsultDetailsPageState extends State<ConsultDetailsPage> {
                     ),
                   ),
                 ),
-                if(Config.ADMIN_UID == UserController.user?.uid)
+                if(isAdmin)
                   SafeArea(
                     child: Container(
                       padding: basePadding(context).subtract(EdgeInsets.only(bottom: mediaWidth(context, 0.033))),

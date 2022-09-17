@@ -69,10 +69,10 @@ class _NoticeUpdatePageState extends State<NoticeUpdatePage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     CustomTextField(
+                      textStyle: CustomTextStyle.w500(context, height: 1.5),
                       controller: _titleCtr,
                       textFieldType: TextFieldType.underline,
-                      hintText: '제목을 입력해주세요.(최대 20자)',
-                      maxLength: 20,
+                      hintText: '제목을 입력해주세요.',
                       onChanged: (title){
                         setState(() {
                           _notice_title = title;
@@ -135,7 +135,7 @@ class _NoticeUpdatePageState extends State<NoticeUpdatePage> {
     try{
       if(_formKey.currentState!.validate()){
         _formKey.currentState!.save();
-        final Response res = await NoticeListController.to.updateNotice(
+        final Response res = await NoticeListController.instance.updateNotice(
             notice_id: widget.notice.id,
             title: _notice_title,
             description: _notice_main_text);

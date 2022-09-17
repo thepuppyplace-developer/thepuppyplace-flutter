@@ -15,6 +15,7 @@ class Member{
   bool is_like_alarm;
   String? location;
   final String auth_type;
+  final bool isAdmin;
 
   Member({
     required this.id,
@@ -33,6 +34,7 @@ class Member{
     required this.is_like_alarm,
     this.location,
     required this.auth_type,
+    required this.isAdmin,
   });
 
   factory Member.fromJson(Map<String, dynamic> json) => Member(
@@ -52,5 +54,6 @@ class Member{
     is_like_alarm: json['is_like_alarm'].runtimeType == int ? json['is_like_alarm'] == 1 ? true : false : json['is_like_alarm'],
     location: json['location'],
     auth_type: json['auth_type'],
+    isAdmin: json['is_admin'],
   );
 }

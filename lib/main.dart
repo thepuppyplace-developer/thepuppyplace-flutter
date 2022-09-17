@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 import 'package:thepuppyplace_flutter/config/kakao_talk_config.dart';
@@ -42,6 +43,15 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      localizationsDelegates: const [
+        GlobalCupertinoLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate
+      ],
+      supportedLocales: const [
+        Locale('ko',  "KR"),
+      ],
+      locale: const Locale('ko',  "KR"),
       builder: (context, child) => MediaQuery(
         child: child!,
         data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
@@ -52,7 +62,7 @@ class MyApp extends StatelessWidget {
         BoardDetailsPage.routeName: (context) => const BoardDetailsPage(),
         SearchBoardListPage.routeName: (context) => const SearchBoardListPage(),
         SearchPage.routeName: (context) => const SearchPage(),
-        BoardListPage.routeName: (context) => BoardListPage(),
+        BoardListPage.routeName: (context) => const BoardListPage(),
         NoticeListPage.routeName: (context) => const NoticeListPage(),
         SendPasswordPage.routeName: (context) => const SendPasswordPage(),
         NoticeInsertPage.routeName: (context) => const NoticeInsertPage(),
@@ -63,7 +73,7 @@ class MyApp extends StatelessWidget {
         ConsultPage.routeName: (context) => const ConsultPage(),
         InsertConsultPage.routeName: (context) => const InsertConsultPage(),
         ConsultDetailsPage.routeName: (context) => ConsultDetailsPage(),
-        UpdateConsultPage.routeName: (context) => UpdateConsultPage(),
+        UpdateConsultPage.routeName: (context) => const UpdateConsultPage(),
       },
       getPages: [
         GetPage(name: LoginPage.routeName, page: () => const LoginPage(), fullscreenDialog: true),

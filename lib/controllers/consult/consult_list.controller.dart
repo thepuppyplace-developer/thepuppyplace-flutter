@@ -3,6 +3,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:thepuppyplace_flutter/config/config.dart';
 import 'package:thepuppyplace_flutter/controllers/user/user_controller.dart';
 import 'package:thepuppyplace_flutter/repositories/consult.repo.dart';
+import 'package:thepuppyplace_flutter/util/common.dart';
 
 import '../../models/Consult.dart';
 
@@ -46,7 +47,7 @@ class ConsultListController extends GetxController with StateMixin<List<Consult>
   Future get refreshConsultList async{
     _page.value = 0;
     try{
-      final Response res = Config.ADMIN_UID == UserController.user?.uid
+      final Response res = isAdmin
           ? await _repo.getAdminConsultList(_page.value)
           : await _repo.getMyConsultList(_page.value);
       switch(res.statusCode){

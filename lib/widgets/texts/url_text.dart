@@ -4,17 +4,19 @@ import '../../util/common.dart';
 class UrlText extends StatelessWidget {
 
   final String text;
+  final TextStyle? style;
 
   const UrlText({
     Key? key,
     required this.text,
+    this.style,
   }) : super(key: key);
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) => RichText(
     text: TextSpan(
-      style: CustomTextStyle.w500(context),
+      style: style ?? CustomTextStyle.w500(context),
       children: _getSpans(text, 'w', CustomTextStyle.w600(context))
     ),
   );

@@ -23,7 +23,7 @@ class _BestBoardListViewState extends State<BestBoardListView> {
     return GetBuilder<BestBoardListController>(
         init: BestBoardListController(),
         builder: (BestBoardListController controller) => controller.obx((boardList) => SliverToBoxAdapter(
-          child: boardList!.length < 12
+          child: boardList!.length < 3
               ? const EmptyView(message: '베스트글이 아직 없습니다.', imageVisible: false)
               : Column(
             crossAxisAlignment: CrossAxisAlignment.start,

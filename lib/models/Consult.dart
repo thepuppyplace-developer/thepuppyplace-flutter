@@ -2,7 +2,7 @@ import 'dart:convert';
 
 class Consult{
   final int consultId;
-  final int userId;
+  final int? userId;
   final String title;
   final String description;
   final List<String> photoList;

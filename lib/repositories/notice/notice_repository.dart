@@ -1,9 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:thepuppyplace_flutter/util/common.dart';
 import '../../config/config.dart';
-import '../../models/Notice.dart';
 
 class NoticeRepository extends GetConnect with Config{
 
@@ -53,6 +51,24 @@ class NoticeRepository extends GetConnect with Config{
       final Response res = await delete('$API_URL/notice/$notice_id');
       if(res.statusCode != null) print(res.body['message']);
       return res;
+    } catch(error){
+      throw Exception(error);
+    }
+  }
+
+  Future<Response> sortTopNotice(int noticeId) async{
+    try{
+      final Response res = await patch('$API_URL/notice/sort/top/$noticeId', {});
+      return returnResponse(res);
+    } catch(error){
+      throw Exception(error);
+    }
+  }
+
+  Future<Response> sortBottomNotice(int noticeId) async{
+    try{
+      final Response res = await patch('$API_URL/notice/sort/bottom/$noticeId', {});
+      return returnResponse(res);
     } catch(error){
       throw Exception(error);
     }

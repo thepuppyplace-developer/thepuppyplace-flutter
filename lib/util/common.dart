@@ -7,6 +7,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:thepuppyplace_flutter/config/config.dart';
+import 'package:thepuppyplace_flutter/controllers/user/user_controller.dart';
 import '../models/BoardComment.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -31,7 +33,7 @@ Future<List<XFile>> pickMultiImage({int? limit}) async{
 
 Future<XFile?> imagePicker(ImageSource imageSource) async{
   final ImagePicker picker = ImagePicker();
-  final XFile? image = await picker.pickImage(source: imageSource, imageQuality: 10);
+  final XFile? image = await picker.pickImage(source: imageSource);
   return image;
 }
 
@@ -254,3 +256,9 @@ Response returnResponse(Response res){
   if(res.statusCode != 204 || res.statusCode == null) print(res.body['message']);
   return res;
 }
+
+bool compareMemberId(int memberId) => UserController.user?.id == memberId || UserController.user?.isAdmin == true;
+
+bool get isAdmin => UserController.user?.isAdmin == true;
+
+int? get loginMemberId => UserController.user?.id;

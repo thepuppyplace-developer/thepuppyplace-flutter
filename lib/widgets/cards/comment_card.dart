@@ -11,7 +11,7 @@ import '../../util/common.dart';
 import '../buttons/custom_text_button.dart';
 import 'user_profile_card.dart';
 
-class CommentCard extends GetWidget<UserController> {
+class CommentCard extends StatelessWidget {
   final BoardComment comment;
   final Function(BoardComment) onComment;
   final Function(NestedComment) onNestedComment;
@@ -48,17 +48,9 @@ class CommentCard extends GetWidget<UserController> {
               Expanded(
                   child: UserProfileCard(comment.user)
               ),
-              controller.obx((Member? user){
-                if(user!.id == comment.userId){
-                  return CustomTextButton('삭제', (){
-                    showDialog(context: context, builder: (context) => CustomDialog(title: '댓글을 삭제하시겠습니까?', onTap: onCommentDelete));
-                  }, color: CustomColors.main, scale: 0.013);
-                } else {
-                  return Container(height: mediaHeight(context, 0.06));
-                }
-              },
-                onEmpty: Container(height: mediaHeight(context, 0.06))
-              )
+              if(compareMemberId(comment.userId)) CustomTextButton('삭제', (){
+                showDialog(context: context, builder: (context) => CustomDialog(title: '댓글을 삭제하시겠습니까?', onTap: onCommentDelete));
+              }, color: CustomColors.main, scale: 0.013)
             ],
           ),
           Text(comment.comment, style: CustomTextStyle.w500(context, scale: 0.015)),
@@ -67,27 +59,13 @@ class CommentCard extends GetWidget<UserController> {
               Expanded(
                 child: Row(
                   children: [
-                    controller.obx((user){
-                      if(comment.commentLikeList.where((like) => like.user_id == user?.id).isEmpty) {
-                        return CustomTextButton('좋아요 ${comment.commentLikeList.isEmpty ? '' : comment.commentLikeList.length}', (){
-                          onLike(comment);
-                        }, color: CustomColors.hint, scale: 0.013);
-                      } else {
-                        return CustomTextButton('좋아요 취소 ${comment.commentLikeList.isEmpty ? '' : comment.commentLikeList.length}', (){
-                          onLike(comment);
-                        }, color: CustomColors.main, scale: 0.013);
-                      }
-                    },
-                      onEmpty: CustomTextButton('좋아요 ${comment.commentLikeList.isEmpty ? '' : comment.commentLikeList.length}', (){
-                        onLike(comment);
-                      }, color: CustomColors.hint, scale: 0.013),
-                      onError: (error) => CustomTextButton('좋아요 ${comment.commentLikeList.isEmpty ? '' : comment.commentLikeList.length}', (){
-                        onLike(comment);
-                      }, color: CustomColors.hint, scale: 0.013),
-                      onLoading: CustomTextButton('좋아요 ${comment.commentLikeList.isEmpty ? '' : comment.commentLikeList.length}', (){
-                        onLike(comment);
-                      }, color: CustomColors.hint, scale: 0.013)
-                    ),
+                    if(comment.commentLikeList.where((like) => like.user_id == loginMemberId).isEmpty) CustomTextButton('좋아요 ${comment.commentLikeList.isEmpty ? '' : comment.commentLikeList.length}', (){
+                      onLike(comment);
+                    }, color: CustomColors.hint, scale: 0.013)
+                    else CustomTextButton('좋아요 취소 ${comment.commentLikeList.isEmpty ? '' : comment.commentLikeList.length}', (){
+                      onLike(comment);
+                    }, color: CustomColors.main, scale: 0.013),
+
                     SizedBox(width: mediaWidth(context, 0.03)),
                     CustomTextButton('답글달기', (){
                       onComment(comment);
@@ -126,18 +104,12 @@ class CommentCard extends GetWidget<UserController> {
               Expanded(
                   child: UserProfileCard(nestedComment.user)
               ),
-              controller.obx((Member? user){
-                if(nestedComment.user.nickname == user!.nickname) {
-                  return CustomTextButton(
-                    '삭제', () {
-                    showDialog(context: context, builder: (context) => CustomDialog(title: '댓글을 삭제하시겠습니까?', onTap: (){
-                      onNestedCommentDelete(nestedComment);
-                    }));
-                  }, color: CustomColors.main, scale: 0.013,);
-                } else {
-                  return Container();
-                }
-              })
+              if(compareMemberId(nestedComment.user_id)) CustomTextButton(
+                '삭제', () {
+                showDialog(context: context, builder: (context) => CustomDialog(title: '댓글을 삭제하시겠습니까?', onTap: (){
+                  onNestedCommentDelete(nestedComment);
+                }));
+              }, color: CustomColors.main, scale: 0.013,)
             ],
           ),
           Container(
@@ -179,18 +151,12 @@ class CommentCard extends GetWidget<UserController> {
               Expanded(
                   child: UserProfileCard(nestNestComment.user)
               ),
-              controller.obx((Member? user){
-                if(nestNestComment.user.nickname == user!.nickname) {
-                  return CustomTextButton(
-                    '삭제', () {
-                    showDialog(context: context, builder: (context) => CustomDialog(title: '댓글을 삭제하시겠습니까?', onTap: (){
-                      onNestNestCommentDelete(nestNestComment);
-                    }));
-                  }, color: CustomColors.main, scale: 0.013,);
-                } else {
-                  return Container();
-                }
-              })
+              if(compareMemberId(nestNestComment.user_id)) CustomTextButton(
+                '삭제', () {
+                showDialog(context: context, builder: (context) => CustomDialog(title: '댓글을 삭제하시겠습니까?', onTap: (){
+                  onNestNestCommentDelete(nestNestComment);
+                }));
+              }, color: CustomColors.main, scale: 0.013,)
             ],
           ),
           Row(

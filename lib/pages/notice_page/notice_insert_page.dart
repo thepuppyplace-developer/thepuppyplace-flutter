@@ -61,8 +61,7 @@ class _NoticeInsertPageState extends State<NoticeInsertPage> {
                 children: [
                   CustomTextField(
                     textFieldType: TextFieldType.underline,
-                    hintText: '제목을 입력해주세요.(최대 20자)',
-                    maxLength: 20,
+                    hintText: '제목을 입력해주세요.',
                     onChanged: (title){
                       setState(() {
                         _notice_title = title;
@@ -77,6 +76,7 @@ class _NoticeInsertPageState extends State<NoticeInsertPage> {
                     },
                   ),
                   CustomTextField(
+                    textStyle: CustomTextStyle.w500(context, height: 1.5),
                     contentPadding: EdgeInsets.symmetric(vertical: mediaHeight(context, 0.015)),
                     textFieldType: TextFieldType.underline,
                     hintText: '내용을 입력해주세요.',
@@ -148,7 +148,7 @@ class _NoticeInsertPageState extends State<NoticeInsertPage> {
     try{
       if(_formKey.currentState!.validate()){
         _formKey.currentState!.save();
-        final Response res = await NoticeListController.to.insertNotice(image: _image, notice_title: _notice_title, notice_main_text: _notice_main_text);
+        final Response res = await NoticeListController.instance.insertNotice(image: _image, notice_title: _notice_title, notice_main_text: _notice_main_text);
         switch(res.statusCode){
           case 201:
             Get.until((route) => route.settings.name == NoticeInsertPage.routeName);

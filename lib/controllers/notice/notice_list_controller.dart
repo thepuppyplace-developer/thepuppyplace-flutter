@@ -1,12 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-
 import '../../models/Notice.dart';
 import '../../repositories/notice/notice_repository.dart';
 
 class NoticeListController extends GetxController with StateMixin<List<Notice>>{
-  static NoticeListController get to => Get.put(NoticeListController());
+  static NoticeListController get instance => Get.put(NoticeListController());
 
   final NoticeRepository _repository = NoticeRepository();
   final RxList<Notice> _noticeList = RxList<Notice>();
@@ -107,4 +105,20 @@ class NoticeListController extends GetxController with StateMixin<List<Notice>>{
       throw Exception(error);
     }
   }
+
+  Future<Response> sortTopNotice(int noticeId) => _repository.sortTopNotice(noticeId).then((res){
+    switch(res.statusCode){
+      case 200:
+        refreshNoticeList;
+    }
+    return res;
+  });
+
+  Future<Response> sortBottomNotice(int noticeId) => _repository.sortBottomNotice(noticeId).then((res){
+    switch(res.statusCode){
+      case 200:
+        refreshNoticeList;
+    }
+    return res;
+  });
 }

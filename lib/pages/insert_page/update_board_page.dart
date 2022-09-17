@@ -94,66 +94,6 @@ class _UpdateBoardPageState extends State<UpdateBoardPage> {
                                   },
                                 ),
                               ),
-                              // SliverToBoxAdapter(
-                              //   child: Container(
-                              //       margin: EdgeInsets.symmetric(vertical: mediaHeight(context, 0.02), horizontal: mediaWidth(context, 0.033)),
-                              //       child: Text('지역태그', style: CustomTextStyle.w600(context, scale: 0.018))),
-                              // ),
-                              // SliverPadding(
-                              //   padding: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.033)),
-                              //   sliver: SliverGrid(
-                              //     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                              //         crossAxisCount: 4,
-                              //         mainAxisExtent: mediaHeight(context, 0.06),
-                              //         crossAxisSpacing: mediaWidth(context, 0.01)
-                              //     ),
-                              //     delegate: SliverChildBuilderDelegate((context, index){
-                              //       String text = LocationList.location[index];
-                              //       return SelectButton(
-                              //         text: text,
-                              //         currentIndex: _locationIndex,
-                              //         index: index,
-                              //         onChanged: (int index){
-                              //           setState(() {
-                              //             _locationIndex = index;
-                              //           });
-                              //         },
-                              //       );
-                              //     },
-                              //         childCount: LocationList.location.length
-                              //     ),
-                              //   ),
-                              // ),
-                              // if(_locationIndex != null) SliverToBoxAdapter(
-                              //   child: Container(
-                              //       margin: EdgeInsets.symmetric(vertical: mediaHeight(context, 0.02), horizontal: mediaWidth(context, 0.033)),
-                              //       child: Text('세부지역선택', style: CustomTextStyle.w600(context, scale: 0.018))),
-                              // ),
-                              // SliverPadding(
-                              //   padding: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.033)),
-                              //   sliver: SliverGrid(
-                              //     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                              //         crossAxisCount: 4,
-                              //         mainAxisExtent: mediaHeight(context, 0.06),
-                              //         crossAxisSpacing: mediaWidth(context, 0.01)
-                              //     ),
-                              //     delegate: SliverChildBuilderDelegate((context, index){
-                              //       String text = LocationList.details(_locationIndex)[index];
-                              //       return SelectButton(
-                              //         text: text,
-                              //         currentIndex: _locationDetailIndex,
-                              //         index: index,
-                              //         onChanged: (int index){
-                              //           setState(() {
-                              //             _locationDetailIndex = index;
-                              //           });
-                              //         },
-                              //       );
-                              //     },
-                              //         childCount: LocationList.details(_locationIndex).length
-                              //     ),
-                              //   ),
-                              // ),
                               if(widget.board.board_photos.isNotEmpty) SliverToBoxAdapter(
                                 child: Stack(
                                   alignment: Alignment.bottomCenter,

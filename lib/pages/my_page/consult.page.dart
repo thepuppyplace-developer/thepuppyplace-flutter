@@ -32,11 +32,11 @@ class ConsultPage extends GetView<ConsultListController> {
                 children: [
                   if(noAnswerList.isNotEmpty) Container(
                       margin: EdgeInsets.only(bottom: mediaWidth(context, 0.033)),
-                      child: Text('${Config.ADMIN_UID == UserController.user?.uid ? '' : '내 '}문의 대기', style: CustomTextStyle.w500(context, scale: 0.025))),
+                      child: Text('${isAdmin ? '' : '내 '}문의 대기', style: CustomTextStyle.w500(context, scale: 0.025))),
                   for(Consult consult in noAnswerList) _item(context, consult),
                   if(answerList.isNotEmpty) Container(
                       margin: EdgeInsets.only(bottom: mediaWidth(context, 0.033)),
-                      child: Text('${Config.ADMIN_UID == UserController.user?.uid ? '' : '내 '}문의 완료', style: CustomTextStyle.w500(context, scale: 0.025))),
+                      child: Text('${isAdmin ? '' : '내 '}문의 완료', style: CustomTextStyle.w500(context, scale: 0.025))),
                   for(Consult consult in answerList) _item(context, consult)
                 ],
               ),

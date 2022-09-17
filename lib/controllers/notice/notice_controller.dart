@@ -1,9 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:thepuppyplace_flutter/controllers/notice/notice_list_controller.dart';
-
 import '../../models/Notice.dart';
-import '../../pages/notice_page/notice_list_page.dart';
 import '../../repositories/notice/notice_repository.dart';
 
 class NoticeController extends GetxController with StateMixin<Notice>{

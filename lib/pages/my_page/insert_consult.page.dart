@@ -47,6 +47,7 @@ class _InsertConsultPageState extends State<InsertConsultPage> {
               onChanged: (title) => setState(() => _title = title),
             ),
             CustomTextField(
+              textStyle: CustomTextStyle.w500(context, height: 1.5),
               margin: baseHorizontalPadding(context),
               autofocus: true,
               textFieldType: TextFieldType.underline,

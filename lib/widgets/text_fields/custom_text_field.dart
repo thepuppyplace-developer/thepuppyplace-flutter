@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../../util/common.dart';
@@ -44,7 +47,7 @@ class CustomTextField extends StatelessWidget {
   final FocusNode? focusNode;
   final AutovalidateMode? autoValidateMode;
 
-  CustomTextField({Key? key,
+  const CustomTextField({Key? key,
     required this.textFieldType,
     this.controller,
     this.keyboardType,
@@ -117,6 +120,12 @@ class CustomTextField extends StatelessWidget {
       margin: margin,
       padding: padding,
       child: TextFormField(
+        toolbarOptions: const ToolbarOptions(
+          copy: true,
+          paste: true,
+          cut: true,
+          selectAll: true
+        ),
         focusNode: focusNode,
         validator: validator,
         enabled: enabled,
@@ -129,6 +138,7 @@ class CustomTextField extends StatelessWidget {
         inputFormatters: inputFormatters,
         textAlign: textAlign ?? TextAlign.start,
         autofocus: autofocus ?? false,
+        enableInteractiveSelection: true,
         cursorColor: CustomColors.main,
         obscureText: obscureText ?? false,
         controller: controller,
@@ -137,6 +147,7 @@ class CustomTextField extends StatelessWidget {
         minLines: minLines,
         keyboardType: keyboardType,
         autovalidateMode: autoValidateMode,
+        selectionControls: Platform.isIOS ? CupertinoTextSelectionControls() : MaterialTextSelectionControls(),
         decoration: InputDecoration(
           isDense: true,
           hintStyle: CustomTextStyle.w500(context, color: CustomColors.hint),

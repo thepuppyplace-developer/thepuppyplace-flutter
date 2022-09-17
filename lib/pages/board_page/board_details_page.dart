@@ -73,7 +73,7 @@ class _BoardDetailsPageState extends State<BoardDetailsPage> with AutomaticKeepA
                       child: Icon(Icons.ios_share, color: Colors.black, size: mediaHeight(context, 0.03),),
                       onPressed: () => showIndicator(KakaoTalkConfig.kakaoShareToMobile(board)),
                     ),
-                    if(UserController.user != null && (UserController.user!.id == board.userId || Config.ADMIN_UID == UserController.user?.uid))CupertinoButton(
+                    if(compareMemberId(board.userId))CupertinoButton(
                       padding: EdgeInsets.zero,
                       onPressed: null,
                       child: PopupMenuButton(
