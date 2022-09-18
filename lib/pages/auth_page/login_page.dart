@@ -108,6 +108,8 @@ class _LoginPageState extends State<LoginPage> {
                           }
                         },
                         keyboardType: TextInputType.visiblePassword,
+                        textInputAction: TextInputAction.done,
+                        onFieldSubmitted: (password) => _login,
                         obscureText: true,
                         hintText: '비밀번호',
                         maxLines: 1,
