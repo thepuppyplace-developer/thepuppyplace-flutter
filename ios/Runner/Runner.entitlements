@@ -8,5 +8,10 @@
 	<array>
 		<string>Default</string>
 	</array>
+	<key>com.apple.developer.associated-domains</key>
+	<array>
+		<string>applinks:thepuppyplace.page.link</string>
+		<string>activitycontinuation:thepuppyplace.page.link</string>
+	</array>
 </dict>
 </plist>

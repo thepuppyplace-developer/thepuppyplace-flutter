@@ -1,4 +1,6 @@
-class Search{
+import 'package:equatable/equatable.dart';
+
+class Search extends Equatable{
   final int id;
   final String search_text;
   final int search_count;
@@ -6,7 +8,7 @@ class Search{
   final DateTime updatedAt;
   final DateTime? deletedAt;
 
-  Search({
+  const Search({
     required this.id,
     required this.search_text,
     required this.search_count,
@@ -40,4 +42,9 @@ class Search{
   search_text STRING NOT NULL,
   )
   ''';
+
+  @override
+  List<Object?> get props => [
+    id
+  ];
 }

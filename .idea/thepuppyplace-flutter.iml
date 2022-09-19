@@ -130,7 +130,7 @@
       <excludeFolder url="file://$MODULE_DIR$/ios/.symlinks/plugins/kakao_flutter_sdk_common/.pub" />
       <excludeFolder url="file://$MODULE_DIR$/ios/.symlinks/plugins/kakao_flutter_sdk_common/build" />
     </content>
-    <orderEntry type="jdk" jdkName="Android API 32 Platform" jdkType="Android SDK" />
+    <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="Dart SDK" level="project" />
     <orderEntry type="library" exported="" name="Flutter Plugins" level="project" />

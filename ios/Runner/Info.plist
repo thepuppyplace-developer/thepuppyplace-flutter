@@ -2,6 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>FirebaseDynamicLinksCustomDomains</key>
+	<array>
+		<string>https://thepuppyplace.page.link</string>
+	</array>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>
@@ -29,6 +33,7 @@
 			<array>
 				<string>com.googleusercontent.apps.516076380973-1di1388pb6dnua87m1gnnh982c09fmbd</string>
 				<string>aef15b848194c128efdf92ccd03b5fcf</string>
+				<string>thepuppyplace.page.link</string>
 			</array>
 		</dict>
 	</array>

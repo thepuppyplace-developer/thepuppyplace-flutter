@@ -7,7 +7,7 @@ class CustomIconButton extends StatelessWidget {
   final Color? color;
   final IconData icon;
   final String? text;
-  final Function() onTap;
+  final Function()? onTap;
   final EdgeInsets? margin;
 
   const CustomIconButton({
@@ -22,7 +22,7 @@ class CustomIconButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final IconData _baseIcon = icon;
-    final Function() _baseFunction = onTap;
+    final Function()? _baseFunction = onTap;
     final Color _baseColor = color ?? Colors.black;
 
     switch(type){

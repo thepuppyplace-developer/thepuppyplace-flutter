@@ -20,7 +20,9 @@ class RecommendSearchListView extends GetView<RecommendSearchListController> {
               padding: EdgeInsets.symmetric(horizontal: mediaWidth(context, 0.033)),
               child: PopularSearchCard(search, (query){
                 Get.toNamed(SearchBoardListPage.routeName, arguments: query);
-              }));
+              }, onDelete: null
+
+              ));
         },
           childCount: recommendSearchList!.length
         ),

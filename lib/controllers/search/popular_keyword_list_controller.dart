@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:thepuppyplace_flutter/repositories/search/search_repository.dart';
 import '../../models/Search.dart';
 import '../../repositories/board/board_repository.dart';
 
@@ -34,4 +35,15 @@ class PopularSearchListController extends GetxController with StateMixin<List<Se
   Future getSearchList() async{
     _searchList.value = await _repository.getPopularSearchList(context);
   }
+
+  Future<Response> onSearchDelete(Search search) => SearchRepository.instance.deleteSearch(search.id).then((res) {
+    switch(res.statusCode){
+      case 200:
+        if(_searchList.contains(search)) _searchList.remove(search);
+        getSearchList();
+        update();
+        break;
+    }
+    return res;
+  });
 }

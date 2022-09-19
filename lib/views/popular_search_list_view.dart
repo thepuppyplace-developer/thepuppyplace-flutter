@@ -11,6 +11,18 @@ import '../pages/search_page/search_board_list_page.dart';
 class PopularSearchListView extends StatelessWidget {
   const PopularSearchListView({Key? key}) : super(key: key);
 
+  Future _deleteSearch(BuildContext context, PopularSearchListController controller, Search search) => controller.onSearchDelete(search).then((res) {
+    switch(res.statusCode){
+      case 200:
+        return showToast('인기 검색어 ${search.search_text}가 삭제되었습니다.');
+      case null:
+        return network_check_message(context);
+    }
+  }).catchError((error) {
+    unknown_message(context);
+    throw Exception(error);
+  });
+
   @override
   Widget build(BuildContext context) {
     return GetBuilder<PopularSearchListController>(
@@ -33,7 +45,9 @@ class PopularSearchListView extends StatelessWidget {
                     Text('${(index + 1)}. ', style: CustomTextStyle.w500(context)),
                     PopularSearchCard(search, (query){
                       Get.toNamed(SearchBoardListPage.routeName, arguments: query);
-                    }),
+                    },
+                      onDelete : (search) => showIndicator(_deleteSearch(context, controller, search)),
+                    ),
                   ],
                 );
               },

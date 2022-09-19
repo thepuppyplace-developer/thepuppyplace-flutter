@@ -6,7 +6,9 @@ import '../../models/Search.dart';
 import '../../util/common.dart';
 
 class SearchRepository extends GetConnect with Config{
-  
+
+  static SearchRepository get instance => SearchRepository();
+
   Future<List<Search>> getRecommendSearchList(BuildContext context, String query) async{
     try{
       final Response res = await post('$API_URL/search', {
@@ -24,4 +26,6 @@ class SearchRepository extends GetConnect with Config{
       throw unknown_message(context);
     }
   }
+
+  Future<Response> deleteSearch(int searchId) => delete('$API_URL/search/$searchId').then((res) => returnResponse(res));
 }
