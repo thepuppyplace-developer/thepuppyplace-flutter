@@ -3,10 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-import 'package:thepuppyplace_flutter/controllers/board/board_list_controller.dart';
+import 'package:thepuppyplace_flutter/config/dynamic.config.dart';
 import 'package:thepuppyplace_flutter/controllers/notification/notification_controller.dart';
 import 'package:thepuppyplace_flutter/navigators/home_navigator.dart';
-import 'package:thepuppyplace_flutter/pages/home_page/home_page.dart';
 import 'package:thepuppyplace_flutter/pages/my_page/my_page.dart';
 import '../controllers/user/user_controller.dart';
 import '../pages/notification_page/notification_page.dart';
@@ -21,7 +20,7 @@ class NavigatorPage extends StatefulWidget {
   _NavigatorPageState createState() => _NavigatorPageState();
 }
 
-class _NavigatorPageState extends State<NavigatorPage> {
+class _NavigatorPageState extends State<NavigatorPage> with WidgetsBindingObserver {
   int _currentIndex = 0;
 
   List<Widget> get _bodies => const <Widget>[
@@ -44,7 +43,7 @@ class _NavigatorPageState extends State<NavigatorPage> {
     DateTime currentTime = DateTime.now();
 
     //Statement 1 Or statement2
-    bool backButton = currentTime.difference(backbuttonpressedTime) > Duration(seconds: 3);
+    bool backButton = currentTime.difference(backbuttonpressedTime) > const Duration(seconds: 3);
 
     if (backButton) {
       backbuttonpressedTime = currentTime;
@@ -56,6 +55,29 @@ class _NavigatorPageState extends State<NavigatorPage> {
     }
     SystemNavigator.pop();
     return true;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    DynamicConfig.instance.dynamicLinkListener;
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    WidgetsBinding.instance.removeObserver(this);
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    if(state == AppLifecycleState.paused){
+      print('App is Background');
+    } else if(state == AppLifecycleState.resumed){
+      print('App is Foreground');
+    }
   }
 
   @override
