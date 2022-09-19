@@ -15,7 +15,7 @@ class NotificationController extends GetxController with Config {
       '@mipmap/ic_launcher');
 
   //Android notification 세팅
-  final IOSInitializationSettings _iosSettings = const IOSInitializationSettings(
+  final DarwinInitializationSettings _iosSettings = const DarwinInitializationSettings(
     requestSoundPermission: true,
     requestBadgePermission: true,
     requestAlertPermission: true,
@@ -32,8 +32,8 @@ class NotificationController extends GetxController with Config {
         color: CustomColors.main,
       );
 
-  IOSNotificationDetails get _iosDetails =>
-      const IOSNotificationDetails( //IOS notification 상세 세팅
+  DarwinNotificationDetails get _iosDetails =>
+      const DarwinNotificationDetails( //IOS notification 상세 세팅
         //IOS notification 상세 세팅
         presentAlert: true,
         presentBadge: true,
@@ -110,12 +110,16 @@ class NotificationController extends GetxController with Config {
     try {
       if (Platform.isAndroid) {
         _localNotifications.show(
-          message.hashCode, message.notification?.title,
-          message.notification?.body, _notificationDetails);
+            message.hashCode, message.notification?.title,
+            message.notification?.body, _notificationDetails);
       }
       _localNotifications.initialize(
           _settings,
-          onSelectNotification: (String? payload) {
+          onDidReceiveNotificationResponse: (NotificationResponse? res) {
+            NotificationLogListController.to.refreshLogList;
+            _onNotification(message);
+          },
+          onDidReceiveBackgroundNotificationResponse: (NotificationResponse res){
             NotificationLogListController.to.refreshLogList;
             _onNotification(message);
           }
