@@ -4,10 +4,10 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:thepuppyplace_flutter/controllers/terms_list_controller.dart';
 import 'package:thepuppyplace_flutter/pages/auth_page/insert_nickname_page.dart';
+import 'package:thepuppyplace_flutter/views/status/rx_status_view.dart';
 import 'package:thepuppyplace_flutter/widgets/checkboxes.dart';
 import '../../models/Term.dart';
 import '../../util/common.dart';
-import '../../views/rx_status_view.dart';
 import '../../widgets/buttons/custom_button.dart';
 import 'signup_insert_page.dart';
 

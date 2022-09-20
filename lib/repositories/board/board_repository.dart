@@ -158,22 +158,14 @@ class BoardRepository extends GetConnect with Config{
     }
   }
 
-  Future<Board?> getBoard(int board_id) async{
+  Future<Response> getBoard(int board_id) async{
     final Response res = await get('$API_URL/board/$board_id');
-
-    switch(res.statusCode){
-      case 200: {
-        return Board.fromJson(res.body['data']);
-      }
-      default: {
-        return null;
-      }
-    }
+    return res;
   }
 
   Future deleteBoard(BuildContext context, {required int board_id}) async{
     if(await JWT_TOKEN != null){
-      final Response res = await delete('$API_URL/board/${board_id}', headers: await headers);
+      final Response res = await delete('$API_URL/board/$board_id', headers: await headers);
 
       switch(res.statusCode){
         case 200: {

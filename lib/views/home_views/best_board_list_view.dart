@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:thepuppyplace_flutter/controllers/board/best_board_list_controller.dart';
-import 'package:thepuppyplace_flutter/views/rx_status_view.dart';
+import 'package:thepuppyplace_flutter/views/status/rx_status_view.dart';
 import 'package:thepuppyplace_flutter/widgets/cards/best_board_card.dart';
 import 'package:thepuppyplace_flutter/widgets/loadings/sliver_contents.dart';
 

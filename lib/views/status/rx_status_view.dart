@@ -1,9 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-import '../util/common.dart';
-import '../util/png_list.dart';
-import '../widgets/animations/SizedAnimation.dart';
+import 'package:thepuppyplace_flutter/util/common.dart';
+import 'package:thepuppyplace_flutter/util/png_list.dart';
 
 class LoadingView extends StatelessWidget {
   final String? message;

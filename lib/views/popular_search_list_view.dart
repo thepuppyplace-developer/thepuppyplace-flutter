@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thepuppyplace_flutter/controllers/search/popular_keyword_list_controller.dart';
 import 'package:thepuppyplace_flutter/util/common.dart';
-import 'package:thepuppyplace_flutter/views/rx_status_view.dart';
+import 'package:thepuppyplace_flutter/views/status/rx_status_view.dart';
 import 'package:thepuppyplace_flutter/widgets/cards/popular_search_card.dart';
-
 import '../models/Search.dart';
 import '../pages/search_page/search_board_list_page.dart';
 

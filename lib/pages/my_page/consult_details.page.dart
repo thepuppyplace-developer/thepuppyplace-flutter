@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_linkify/flutter_linkify.dart';
@@ -8,10 +7,8 @@ import 'package:thepuppyplace_flutter/controllers/consult/consult_list.controlle
 import 'package:thepuppyplace_flutter/pages/my_page/update_consult.page.dart';
 import 'package:thepuppyplace_flutter/util/common.dart';
 import 'package:thepuppyplace_flutter/views/photo_view/photo_list_view.dart';
-import 'package:thepuppyplace_flutter/views/rx_status_view.dart';
+import 'package:thepuppyplace_flutter/views/status/rx_status_view.dart';
 import 'package:thepuppyplace_flutter/widgets/images/custom_cached_network.image.dart';
-import '../../config/config.dart';
-import '../../controllers/user/user_controller.dart';
 import '../../widgets/buttons/custom_text_button.dart';
 import '../../widgets/dialogs/custom_dialog.dart';
 import '../../widgets/text_fields/custom_text_field.dart';

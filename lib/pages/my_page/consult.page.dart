@@ -1,13 +1,10 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:thepuppyplace_flutter/config/config.dart';
 import 'package:thepuppyplace_flutter/controllers/consult/consult_list.controller.dart';
-import 'package:thepuppyplace_flutter/controllers/user/user_controller.dart';
 import 'package:thepuppyplace_flutter/pages/my_page/consult_details.page.dart';
 import 'package:thepuppyplace_flutter/pages/my_page/insert_consult.page.dart';
 import 'package:thepuppyplace_flutter/util/common.dart';
-import 'package:thepuppyplace_flutter/views/rx_status_view.dart';
+import 'package:thepuppyplace_flutter/views/status/rx_status_view.dart';
 import 'package:thepuppyplace_flutter/widgets/images/custom_cached_network.image.dart';
 
 import '../../models/Consult.dart';

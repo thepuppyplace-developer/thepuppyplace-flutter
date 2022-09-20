@@ -1,14 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../config/config.dart';
 import '../../controllers/notice/notice_list_controller.dart';
-import '../../controllers/user/user_controller.dart';
 import '../../models/Notice.dart';
 import '../../util/common.dart';
 import '../../util/custom_icons.dart';
-import '../../util/customs.dart';
-import '../../views/rx_status_view.dart';
+import 'package:thepuppyplace_flutter/views/status/rx_status_view.dart';
 import '../../widgets/buttons/custom_icon_button.dart';
 import '../../widgets/cards/notice_card.dart';
 import 'notice_insert_page.dart';

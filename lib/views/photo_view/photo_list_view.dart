@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
+import 'package:thepuppyplace_flutter/views/status/rx_status_view.dart';
 import '../../util/common.dart';
 import '../../widgets/buttons/custom_icon_button.dart';
-import '../rx_status_view.dart';
 
 class PhotoListView extends StatefulWidget {
   final List<String> photoList;

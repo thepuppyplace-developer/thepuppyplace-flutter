@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:thepuppyplace_flutter/controllers/board/search_board_list_controller.dart';
 import 'package:thepuppyplace_flutter/pages/board_page/board_list_page.dart';
 import 'package:thepuppyplace_flutter/util/common.dart';
-import 'package:thepuppyplace_flutter/views/rx_status_view.dart';
+import 'package:thepuppyplace_flutter/views/status/rx_status_view.dart';
 import 'package:thepuppyplace_flutter/widgets/buttons/custom_text_button.dart';
 import 'package:thepuppyplace_flutter/widgets/cards/search_board_card.dart';
 

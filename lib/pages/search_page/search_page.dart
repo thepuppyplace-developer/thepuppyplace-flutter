@@ -5,7 +5,7 @@ import 'package:thepuppyplace_flutter/pages/search_page/search_board_list_page.d
 import 'package:thepuppyplace_flutter/views/popular_search_list_view.dart';
 import 'package:thepuppyplace_flutter/views/recommend_search_list_view.dart';
 import '../../util/common.dart';
-import '../../views/rx_status_view.dart';
+import 'package:thepuppyplace_flutter/views/status/rx_status_view.dart';
 import '../../widgets/tab_bars/search_tab_bar.dart';
 
 class SearchPage extends StatefulWidget {
