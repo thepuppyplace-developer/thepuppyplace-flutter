@@ -1,7 +1,9 @@
 name: thepuppyplace_flutter
 description: A new Flutter project.
 publish_to: 'none'
-version: 1.0.0+18
+version: 1.0.0+19
+
+# flutter clean && flutter pub get && cd ios && pod install && cd .. && fltuter build apk
 
 environment:
   sdk: ">=2.16.0 <3.0.0"
