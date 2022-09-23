@@ -10,7 +10,7 @@ class DynamicConfig {
   final String _dynamicLink = dotenv.get('DYNAMIC_LINK');
   final String _appStoreId = dotenv.get('APP_STORE_ID');
 
-  void get dynamicLinkListener => FirebaseDynamicLinks.instance.getInitialLink().then((initData) => FirebaseDynamicLinks.instance.onLink.listen((PendingDynamicLinkData? data){
+  void get dynamicLinkListener => Future.delayed(const Duration(seconds: 2), () => FirebaseDynamicLinks.instance.getInitialLink().then((initData) => FirebaseDynamicLinks.instance.onLink.listen((PendingDynamicLinkData? data){
     final Uri? deepLink;
     if(initData != null){
       deepLink = initData.link;
@@ -21,7 +21,7 @@ class DynamicConfig {
     if (deepLink != null) return _dynamicLinkHandler(deepLink);
   },
     onError: (error) => throw Exception(error),
-  ));
+  )));
 
   void _dynamicLinkHandler(Uri uri){
     final String? routeName = uri.queryParameters['routeName'];
