@@ -68,7 +68,11 @@ class _BoardReportDetailsPageState extends State<BoardReportDetailsPage> {
     body: _buildBody(context),
   );
 
-  AppBar _buildAppBar(BuildContext context) => AppBar();
+  AppBar _buildAppBar(BuildContext context) => AppBar(
+    actions: [
+      CustomIconButton(icon: Icons.delete_forever, onTap: () => null)
+    ],
+  );
 
   Widget _buildBody(BuildContext context) => FutureStateBuilder<BoardReportDetails>(state: _state, object: _report, builder: (context, state, report) {
     return SingleChildScrollView(
@@ -77,7 +81,7 @@ class _BoardReportDetailsPageState extends State<BoardReportDetailsPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _buildUser(report!.reportMember),
-          _buildBoard(report.boardId, report.board),
+          _buildBoard(report.boardId, report.targetMember, report.board),
           Text(_typeToString(report.type), style: CustomTextStyle.w600(context, color: CustomColors.main, scale: 0.02)),
           Text(report.description, style: CustomTextStyle.w500(context, height: 1.5))
         ],
@@ -85,47 +89,52 @@ class _BoardReportDetailsPageState extends State<BoardReportDetailsPage> {
     );
   });
 
-  Widget _buildUser(UserNicknameAndPhotoURL user) => Container(
-    margin: EdgeInsets.only(bottom: mediaHeight(context, 0.02)),
-    child: Row(
-      children: [
-        CustomCachedNetworkImage(
-          user.photo_url,
-          height: mediaHeight(context, 0.05),
-          width: mediaHeight(context, 0.05),
-          shape: BoxShape.circle,
-          margin: EdgeInsets.only(right: mediaWidth(context, 0.03)),
-        ),
-        Text(user.nickname, style: CustomTextStyle.w600(context))
-      ],
-    ),
+  Widget _buildUser(UserNicknameAndPhotoURL user) => Row(
+    children: [
+      CustomCachedNetworkImage(
+        user.photo_url,
+        height: mediaHeight(context, 0.05),
+        width: mediaHeight(context, 0.05),
+        shape: BoxShape.circle,
+        margin: EdgeInsets.only(right: mediaWidth(context, 0.03)),
+      ),
+      Text(user.nickname, style: CustomTextStyle.w600(context))
+    ],
   );
 
-  Widget _buildBoard(int boardId, BoardItem board) => CupertinoButton(
-    padding: EdgeInsets.zero,
-    onPressed: () => Get.toNamed(BoardDetailsPage.routeName, arguments: RxInt(boardId)),
-    child: Container(
-      clipBehavior: Clip.antiAlias,
-      margin: EdgeInsets.only(bottom: mediaHeight(context, 0.03)),
-      width: double.infinity,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        boxShadow: const [
-          BoxShadow(color: CustomColors.hint, blurStyle: BlurStyle.outer, blurRadius: 1)
-        ]
-      ),
-      child: Column(
-        children: [
-          if(board.photoList.isNotEmpty) AspectRatio(
-            aspectRatio: 3/1,
-            child: CustomCachedNetworkImage(
-              board.photoList.first
+  Widget _buildBoard(int boardId, UserNicknameAndPhotoURL user, BoardItem board) => Container(
+    margin: EdgeInsets.only(top: mediaHeight(context, 0.02)),
+    child: CupertinoButton(
+      padding: EdgeInsets.zero,
+      onPressed: () => Get.toNamed(BoardDetailsPage.routeName, arguments: RxInt(boardId)),
+      child: Container(
+        clipBehavior: Clip.antiAlias,
+        margin: EdgeInsets.only(bottom: mediaHeight(context, 0.03)),
+        width: double.infinity,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            boxShadow: const [
+              BoxShadow(color: CustomColors.hint, blurStyle: BlurStyle.outer, blurRadius: 1)
+            ]
+        ),
+        child: Column(
+          children: [
+            Container(
+                margin: baseHorizontalPadding(context).add(baseVerticalPadding(context) / 2),
+                child: _buildUser(user)),
+            if(board.photoList.isNotEmpty) AspectRatio(
+              aspectRatio: 3/1,
+              child: CustomCachedNetworkImage(
+                  board.photoList.first
+              ),
             ),
-          ),
-          Container(
-              padding: basePadding(context),
-              child: Text(board.title, style: CustomTextStyle.w500(context)))
-        ],
+            Container(
+                alignment: Alignment.centerLeft,
+                padding: basePadding(context),
+                child: Text(board.title, style: CustomTextStyle.w500(context))
+            )
+          ],
+        ),
       ),
     ),
   );
