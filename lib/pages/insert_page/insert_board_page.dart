@@ -305,7 +305,7 @@ class _InsertBoardPageState extends State<InsertBoardPage> {
       if(_locationIndex == null){
         showSnackBar(context, '지역을 선택해주세요.');
       } else {
-        showIndicator(BoardRepository.from.insertBoard(
+        showIndicator(BoardRepository.instance.insertBoard(
             context,
             title: _title,
             description: _description,

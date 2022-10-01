@@ -207,7 +207,7 @@ class _UpdateBoardPageState extends State<UpdateBoardPage> {
   void updateBoard() {
     if(_formKey.currentState!.validate()){
       _formKey.currentState!.save();
-      showIndicator(BoardRepository.from.updateBoard(
+      showIndicator(BoardRepository.instance.updateBoard(
         context,
         board_id: widget.board.id,
         title: _title,

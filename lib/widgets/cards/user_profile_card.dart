@@ -1,9 +1,6 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:thepuppyplace_flutter/util/png_list.dart';
 import 'package:thepuppyplace_flutter/widgets/images/custom_cached_network.image.dart';
 import '../../models/UserNicknameAndPhotoURL.dart';
-import '../../util/cached_network_image_list.dart';
 import '../../util/common.dart';
 
 class UserProfileCard extends StatelessWidget {
@@ -17,7 +14,6 @@ class UserProfileCard extends StatelessWidget {
       children: [
         CustomCachedNetworkImage(
           user.photo_url,
-          padding: basePadding(context) / 2,
           shape: BoxShape.circle,
           height: mediaHeight(context, 0.036),
           width: mediaHeight(context, 0.036),

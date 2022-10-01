@@ -57,11 +57,11 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>Camera will be used to take pictures to store in The Puppy Place.</string>
+	<string>카메라 권한을 허용해주세요. 게시글을 올릴 때 및 사용자 사진을 변경할 때 사용됩니다.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>It will be used to upload photos from The Puppy Place.</string>
+	<string>라이브러리 권한을 허용해주세요. 게시글을 올릴 때 및 사용자 사진을 변경할 때 사용됩니다.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>It will be used to upload photos from The Puppy Place.</string>
+	<string>라이브러리 권한을 허용해주세요. 게시글을 올릴 때 및 사용자 사진을 변경할 때 사용됩니다.</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UIBackgroundModes</key>

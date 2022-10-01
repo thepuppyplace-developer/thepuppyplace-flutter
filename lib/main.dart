@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -9,7 +10,10 @@ import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 import 'package:thepuppyplace_flutter/config/kakao_talk_config.dart';
 import 'package:thepuppyplace_flutter/pages/board_page/board_details_page.dart';
 import 'package:thepuppyplace_flutter/pages/board_page/board_list_page.dart';
+import 'package:thepuppyplace_flutter/pages/board_page/board_report.page.dart';
+import 'package:thepuppyplace_flutter/pages/board_page/board_report_details.page.dart';
 import 'package:thepuppyplace_flutter/pages/insert_page/insert_board_page.dart';
+import 'package:thepuppyplace_flutter/pages/my_page/report_list.page.dart';
 import 'package:thepuppyplace_flutter/pages/my_page/update_consult.page.dart';
 import 'package:thepuppyplace_flutter/pages/my_page/user_deleted_page.dart';
 import 'package:thepuppyplace_flutter/pages/notice_page/notice_list_page.dart';
@@ -37,6 +41,7 @@ void main() async{
   await Firebase.initializeApp();
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   KakaoSdk.init(nativeAppKey: KakaoTalkConfig.NATIVE_KEY, javaScriptAppKey: KakaoTalkConfig.JAVA_SCRIPT_KEY);
+  await FirebaseDynamicLinks.instance.getInitialLink();
   runApp(const MyApp());
 }
 
@@ -79,6 +84,9 @@ class MyApp extends StatelessWidget {
         InsertConsultPage.routeName: (context) => const InsertConsultPage(),
         ConsultDetailsPage.routeName: (context) => ConsultDetailsPage(),
         UpdateConsultPage.routeName: (context) => const UpdateConsultPage(),
+        BoardReportPage.routeName: (context) => const BoardReportPage(),
+        ReportListPage.routeName: (context) => const ReportListPage(),
+        BoardReportDetailsPage.routeName: (context) => const BoardReportDetailsPage(),
       },
       getPages: [
         GetPage(name: LoginPage.routeName, page: () => const LoginPage(), fullscreenDialog: true),

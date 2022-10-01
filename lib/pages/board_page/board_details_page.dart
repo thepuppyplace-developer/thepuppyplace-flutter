@@ -7,6 +7,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:thepuppyplace_flutter/config/kakao_talk_config.dart';
 import 'package:thepuppyplace_flutter/controllers/board/board_list_controller.dart';
+import 'package:thepuppyplace_flutter/pages/board_page/board_report.page.dart';
 import 'package:thepuppyplace_flutter/repositories/board/board_repository.dart';
 import 'package:thepuppyplace_flutter/util/common.dart';
 import 'package:thepuppyplace_flutter/util/enums.dart';
@@ -176,7 +177,7 @@ class _BoardDetailsPageState extends State<BoardDetailsPage> with AutomaticKeepA
                           child: Icon(Icons.ios_share, color: Colors.black, size: mediaHeight(context, 0.03),),
                           onPressed: () => showIndicator(KakaoTalkConfig.kakaoShareToMobile(board)),
                         ),
-                        if(compareMemberId(board.userId))CupertinoButton(
+                        CupertinoButton(
                           padding: EdgeInsets.zero,
                           onPressed: null,
                           child: PopupMenuButton(
@@ -185,13 +186,17 @@ class _BoardDetailsPageState extends State<BoardDetailsPage> with AutomaticKeepA
                             ),
                             child: Icon(Icons.more_vert, color: Colors.black, size: mediaHeight(context, 0.03)),
                             itemBuilder: (BuildContext context) => [
-                              PopupMenuItem(
+                              if(compareMemberId(board.userId)) PopupMenuItem(
                                 value: 'edit',
                                 child: Text('게시글 수정', style: CustomTextStyle.w500(context)),
                               ),
-                              PopupMenuItem(
+                              if(compareMemberId(board.userId)) PopupMenuItem(
                                 value: 'delete',
                                 child: Text('게시글 삭제', style: CustomTextStyle.w500(context)),
+                              ),
+                              PopupMenuItem(
+                                value: 'report',
+                                child: Text('신고하기', style: CustomTextStyle.w500(context)),
                               )
                             ],
                             onSelected: (String value){
@@ -206,8 +211,12 @@ class _BoardDetailsPageState extends State<BoardDetailsPage> with AutomaticKeepA
                                   ));
                                   break;
                                 }
-                                default: {
+                                case 'edit': {
                                   Get.to(() => UpdateBoardPage(board));
+                                }
+                                break;
+                                case 'report': {
+                                  Get.toNamed(BoardReportPage.routeName, arguments: board.id);
                                 }
                               }
                             },

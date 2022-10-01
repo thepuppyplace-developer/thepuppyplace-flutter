@@ -54,7 +54,6 @@ class _UpdateMyPageState extends State<UpdateMyPage> {
                               children: [
                                 CustomCachedNetworkImage(
                                   user!.photo_url,
-                                  padding: basePadding(context),
                                   height: mediaHeight(context, 0.14),
                                   width: mediaHeight(context, 0.14),
                                   fit: BoxFit.cover,

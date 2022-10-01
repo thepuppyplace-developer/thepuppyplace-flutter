@@ -22,12 +22,12 @@ class RefreshContents extends StatelessWidget {
     child: Builder(
       builder: (BuildContext context){
         switch(status){
-          case RefreshStatus.completed: {
-            return Text(completedText ?? '새로고침 성공', style: CustomTextStyle.w600(context, color: CustomColors.hint));
-          }
-          case RefreshStatus.idle: {
-            return Text(idleText ?? '새로고침 할 내용 없음', style: CustomTextStyle.w600(context, color: CustomColors.hint));
-          }
+          // case RefreshStatus.completed: {
+          //   return Text(completedText ?? '새로고침 성공', style: CustomTextStyle.w600(context, color: CustomColors.hint));
+          // }
+          // case RefreshStatus.idle: {
+          //   return Text(idleText ?? '새로고침 할 내용 없음', style: CustomTextStyle.w600(context, color: CustomColors.hint));
+          // }
           case RefreshStatus.failed: {
             return Text(failedText ?? '인터넷 연결을 확인해주세요', style: CustomTextStyle.w600(context, color: CustomColors.hint));
           }

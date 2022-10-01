@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thepuppyplace_flutter/pages/my_page/app_info_page.dart';
+import 'package:thepuppyplace_flutter/pages/my_page/report_list.page.dart';
 import 'package:thepuppyplace_flutter/util/cached_network_image_list.dart';
 import 'package:thepuppyplace_flutter/util/common.dart';
 import 'package:thepuppyplace_flutter/util/custom_icons.dart';
@@ -45,7 +46,6 @@ class MyPage extends GetWidget<UserController> {
                     children: [
                       CustomCachedNetworkImage(
                         user!.photo_url,
-                        padding: basePadding(context),
                         fit: BoxFit.cover,
                         height: mediaHeight(context, 0.06),
                         width: mediaHeight(context, 0.06),
@@ -131,6 +131,9 @@ class MyPage extends GetWidget<UserController> {
                       CustomTextButton('공지사항', (){
                         Get.toNamed(NoticeListPage.routeName);
                       }, color: Colors.black, alignment: Alignment.centerLeft),
+                      CustomTextButton('신고내역', (){
+                        Get.toNamed(ReportListPage.routeName);
+                      }, color: Colors.black, alignment: Alignment.centerLeft),
                       CustomTextButton('문의하기', (){
                         Get.toNamed(ConsultPage.routeName);
                       }, color: Colors.black, alignment: Alignment.centerLeft),
@@ -159,7 +162,7 @@ class MyPage extends GetWidget<UserController> {
                         ));
                       }, color: Colors.black, alignment: Alignment.centerLeft),
                     ],
-                  ))
+                  )),
             ],
           ),
         ),

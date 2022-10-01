@@ -13,7 +13,7 @@ import '../../models/LikeBoard.dart';
 import '../../models/Search.dart';
 
 class BoardRepository extends GetConnect with Config{
-  static BoardRepository get from => BoardRepository();
+  static BoardRepository get instance => BoardRepository();
 
   Future insertBoard(BuildContext context, {
     required String title,
@@ -62,7 +62,7 @@ class BoardRepository extends GetConnect with Config{
     required String title,
     required String description,
     required String category,
-}) async{
+  }) async{
     try{
       if(await JWT_TOKEN != null){
         final Response res = await patch('$API_URL/board/$board_id', {
@@ -361,4 +361,49 @@ class BoardRepository extends GetConnect with Config{
       default: return <BoardCategory>[];
     }
   }
+
+  Future<Response> reportBoard({
+    required int board_id,
+    required int report_type,
+    required String report_body,
+  }) async{
+    return post('$API_URL/report', {
+      "board_id" : board_id,
+      "report_type": report_type,
+      "report_body" : report_body
+    }, headers: await headers)
+        .then((res) => returnResponse(res))
+        .catchError((error){
+      throw Exception(error);
+    });
+  }
+
+  Future<Response> getReportBoardList(bool isAdmin) async{
+    String api;
+    Map<String, String>? header;
+    if(isAdmin){
+      api = '$API_URL/report';
+      header = null;
+    } else {
+      api = '$API_URL/report/my';
+      header = await headers;
+    }
+    return get(api, headers: header)
+        .then((res) => returnResponse(res))
+        .catchError((error){
+      throw Exception(error);
+    });
+  }
+
+  Future<Response> getReportBoard(int reportId) => get('$API_URL/report/$reportId')
+      .then((res) => returnResponse(res))
+      .catchError((error){
+    throw Exception(error);
+  });
+
+  Future<Response> deleteReportBoard(int reportId) => delete('$API_URL/report/$reportId')
+      .then((res) => returnResponse(res))
+      .catchError((error){
+    throw Exception(error);
+  });
 }
