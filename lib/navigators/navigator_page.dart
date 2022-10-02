@@ -1,3 +1,4 @@
+import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -76,6 +77,7 @@ class _NavigatorPageState extends State<NavigatorPage> with WidgetsBindingObserv
     if(state == AppLifecycleState.paused){
       print('App is Background');
     } else if(state == AppLifecycleState.resumed){
+      FirebaseDynamicLinks.instance.getInitialLink();
       print('App is Foreground');
     }
   }
