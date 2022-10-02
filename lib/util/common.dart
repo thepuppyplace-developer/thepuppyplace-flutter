@@ -253,7 +253,6 @@ int hexStringToHexInt(String hex) {
 }
 
 Response returnResponse(Response res){
-  if(res.statusCode != 204 || res.statusCode == null) print(res.body['message']);
   return res;
 }
 

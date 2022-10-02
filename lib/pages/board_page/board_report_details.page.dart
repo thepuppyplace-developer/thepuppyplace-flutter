@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:thepuppyplace_flutter/controllers/board/board_list_controller.dart';
+import 'package:thepuppyplace_flutter/controllers/board/report_board_list.controller.dart';
 import 'package:thepuppyplace_flutter/models/BoardItem.dart';
 import 'package:thepuppyplace_flutter/models/BoardReportDetails.dart';
 import 'package:thepuppyplace_flutter/models/UserNicknameAndPhotoURL.dart';
@@ -9,7 +11,9 @@ import 'package:thepuppyplace_flutter/repositories/board/board_repository.dart';
 import 'package:thepuppyplace_flutter/util/common.dart';
 import 'package:thepuppyplace_flutter/util/enums.dart';
 import 'package:thepuppyplace_flutter/views/status/future_state_builder.dart';
+import 'package:thepuppyplace_flutter/widgets/buttons/custom_button.dart';
 import 'package:thepuppyplace_flutter/widgets/buttons/custom_icon_button.dart';
+import 'package:thepuppyplace_flutter/widgets/dialogs/custom_dialog.dart';
 import 'package:thepuppyplace_flutter/widgets/images/custom_cached_network.image.dart';
 
 class BoardReportDetailsPage extends StatefulWidget {
@@ -22,7 +26,7 @@ class BoardReportDetailsPage extends StatefulWidget {
 
 class _BoardReportDetailsPageState extends State<BoardReportDetailsPage> {
 
-  int _reportId = Get.arguments;
+  final int _reportId = Get.arguments;
 
   FutureState _state = FutureState.loading;
 
@@ -56,6 +60,56 @@ class _BoardReportDetailsPageState extends State<BoardReportDetailsPage> {
     });
   }
 
+  Future _deleteReport(BuildContext context, int reportId, {bool? isBack}) async{
+    return ReportBoardListController.instance.deleteReport(reportId)
+        .then((res){
+      switch(res.statusCode){
+        case 200:
+          if(isBack == true) Navigator.of(context).pop();
+          return showSnackBar(context, '신고 내역이 삭제되었습니다.');
+        case null:
+          return network_check_message(context);
+        default:
+          return unknown_message(context);
+      }
+    })
+        .catchError((error){
+      unknown_message(context);
+      throw Exception(error);
+    });
+  }
+
+  Future _deleteBoard(BuildContext _, int boardId) async{
+    if(isAdmin) {
+      return BoardRepository.instance.deleteBoardFromReport(boardId).then((res) {
+        switch(res.statusCode){
+          case 200:
+            Navigator.of(context).pop();
+            return showSnackBar(context, '게시글이 삭제되었습니다.');
+          case null:
+            return network_check_message(context);
+          default:
+            return unknown_message(context);
+        }
+      }).catchError((error){
+        unknown_message(context);
+        throw Exception(error);
+      });
+    } else {
+      return showSnackBar(context, '권한이 없습니다.');
+    }
+  }
+
+  void _showDialog(int reportId) => showDialog(context: context, builder: (_) => CustomDialog(title: '신고내역을 삭제하시겠습니까?', onTap: () {
+    Navigator.of(_).pop();
+    return showIndicator(_deleteReport(context, reportId, isBack: true));
+  }));
+
+  void _showBoardDeleteDialog(int boardId) => showDialog(context: context, builder: (_) => CustomDialog(title: '게시글을 삭제하시겠습니까?', onTap: () {
+    Navigator.of(_).pop();
+    return showIndicator(_deleteBoard(context, boardId));
+  }));
+
   @override
   void initState() {
     super.initState();
@@ -66,11 +120,20 @@ class _BoardReportDetailsPageState extends State<BoardReportDetailsPage> {
   Widget build(BuildContext context) => Scaffold(
     appBar: _buildAppBar(context),
     body: _buildBody(context),
+    bottomNavigationBar: !isAdmin || _report?.boardId == null ? null : Container(
+        color: CustomColors.main,
+        child: SafeArea(
+            child: CustomButton(
+                title: '게시글 삭제',
+                onPressed: () => _showBoardDeleteDialog(_report!.boardId)
+            )
+        )
+    ),
   );
 
   AppBar _buildAppBar(BuildContext context) => AppBar(
     actions: [
-      CustomIconButton(icon: Icons.delete_forever, onTap: () => null)
+      if(_report?.id != null) CustomIconButton(icon: Icons.delete_forever, onTap: () => _showDialog(_report!.id))
     ],
   );
 
@@ -83,7 +146,10 @@ class _BoardReportDetailsPageState extends State<BoardReportDetailsPage> {
           _buildUser(report!.reportMember),
           _buildBoard(report.boardId, report.targetMember, report.board),
           Text(_typeToString(report.type), style: CustomTextStyle.w600(context, color: CustomColors.main, scale: 0.02)),
-          Text(report.description, style: CustomTextStyle.w500(context, height: 1.5))
+          Text(report.description, style: CustomTextStyle.w500(context, height: 1.5)),
+          Container(
+              margin: baseVerticalPadding(context),
+              child: Text(beforeDate(report.createdAt), style: CustomTextStyle.w500(context, scale: 0.012, color: CustomColors.hint)))
         ],
       ),
     );

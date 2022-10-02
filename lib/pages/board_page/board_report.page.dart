@@ -23,20 +23,26 @@ class _BoardReportPageState extends State<BoardReportPage> {
 
   ReportType? _type;
 
-  Future _reportBoard() => BoardRepository.instance.reportBoard(board_id: board_id, report_type: _typeToInt(_type), report_body: _description.trim()).then((res) {
-    switch(res.statusCode){
-      case 200:
-        Navigator.pop(context);
-        return showSnackBar(context, '신고가 성공적으로 접수되었습니다.');
-      case null:
-        return network_check_message(context);
-      default:
-        return unknown_message(context);
+  Future _reportBoard() async{
+    if(_type != null){
+      return BoardRepository.instance.reportBoard(board_id: board_id, report_type: _typeToInt(_type), report_body: _description.trim()).then((res) {
+        switch(res.statusCode){
+          case 200:
+            Navigator.pop(context);
+            return showSnackBar(context, '신고가 성공적으로 접수되었습니다.');
+          case null:
+            return network_check_message(context);
+          default:
+            return unknown_message(context);
+        }
+      }).catchError((error){
+        unknown_message(context);
+        throw Exception(error);
+      });
+    } else {
+      return showSnackBar(context, '신고 종류를 선택해주세요.');
     }
-  }).catchError((error){
-    unknown_message(context);
-    throw Exception(error);
-  });
+  }
 
   @override
   Widget build(BuildContext context) => GestureDetector(

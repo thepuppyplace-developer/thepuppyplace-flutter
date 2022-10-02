@@ -2,12 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:thepuppyplace_flutter/controllers/board/report_board_list.controller.dart';
 import 'package:thepuppyplace_flutter/models/BoardReport.dart';
 import 'package:thepuppyplace_flutter/pages/board_page/board_report_details.page.dart';
-import 'package:thepuppyplace_flutter/repositories/board/board_repository.dart';
 import 'package:thepuppyplace_flutter/util/common.dart';
 import 'package:thepuppyplace_flutter/util/enums.dart';
-import 'package:thepuppyplace_flutter/views/status/future_list_view.dart';
+import 'package:thepuppyplace_flutter/views/status/rx_status_view.dart';
+import 'package:thepuppyplace_flutter/widgets/loadings/refresh_contents.dart';
 
 class ReportListPage extends StatefulWidget {
   static const String routeName = '/reportListPage';
@@ -19,43 +20,19 @@ class ReportListPage extends StatefulWidget {
 
 class _ReportListPageState extends State<ReportListPage> {
 
-  final RefreshController _refreshCtr = RefreshController(initialRefresh: true);
-
-  List<BoardReport> _reportList = <BoardReport>[];
-
-  FutureState _state = FutureState.loading;
-
-  Future _getReportList() => BoardRepository.instance.getReportBoardList(isAdmin)
-      .then((res) {
-    print(res.bodyString);
-    switch(res.statusCode){
-      case 200:
-        final List<BoardReport> reportList = List.from(res.body['data']).map((report) => BoardReport.fromJson(report)).toList();
-        setState((){
-          _reportList.addAll(reportList);
-          _state = FutureState.success;
-        });
-        _refreshCtr.refreshCompleted(resetFooterState: true);
-        break;
-      case null:
-        setState(() => _state = FutureState.network);
-        _refreshCtr.refreshFailed();
-        break;
-      default:
-        setState(() => _state = FutureState.error);
-        _refreshCtr.refreshFailed();
-    }
-  })
-      .catchError((error){
-    setState(() => _state = FutureState.error);
-    _refreshCtr.refreshFailed();
-    throw Exception(error);
-  });
-
   @override
-  Widget build(BuildContext context) => Scaffold(
-    appBar: _buildAppBar(context),
-    body: _buildBody(context),
+  Widget build(BuildContext context) => GetBuilder<ReportBoardListController>(
+    init: ReportBoardListController(),
+    builder: (controller) {
+      return Scaffold(
+        appBar: _buildAppBar(context),
+        body: controller.obx((reportList) => _buildBody(context, controller, reportList!),
+          onLoading: const LoadingView(message: '신고 내역을 불러오는 중입니다.'),
+          onError: (error) => ErrorView(error),
+          onEmpty: const EmptyView(message: '신고 내역이 없습니다.')
+        )
+      );
+    }
   );
 
   AppBar _buildAppBar(BuildContext context) => AppBar(
@@ -63,13 +40,17 @@ class _ReportListPageState extends State<ReportListPage> {
     title: const Text('신고내역'),
   );
 
-  Widget _buildBody(BuildContext context) => FutureListStateView<BoardReport>(
-    padding: baseVerticalPadding(context),
-    refreshCtr: _refreshCtr,
-    children: _reportList,
-    itemBuilder: (context, report) => _buildReportItem(context, report),
-    onRefresh: _getReportList,
-    spacing: mediaHeight(context, 0.01),
+  Widget _buildBody(BuildContext context,ReportBoardListController controller, List<BoardReport> reportList) => SmartRefresher(
+    header: CustomHeader(builder: (context, status) => RefreshContents(status)),
+    footer: CustomFooter(builder: (context, status) => LoadContents(status)),
+    onRefresh: () => controller.getReportList(isRefresh: true),
+    controller: controller.refreshCtr,
+    child: ListView.separated(
+      padding: baseVerticalPadding(context),
+      separatorBuilder: (context, index) => SizedBox(height: mediaHeight(context, 0.02)),
+      itemCount: reportList.length,
+      itemBuilder: (context, index) => _buildReportItem(context, reportList[index]),
+    ),
   );
 
   Widget _buildReportItem(BuildContext context, BoardReport report) => CupertinoButton(

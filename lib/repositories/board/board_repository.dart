@@ -185,6 +185,12 @@ class BoardRepository extends GetConnect with Config{
     }
   }
 
+  Future<Response> deleteBoardFromReport(int boardId) async => delete('$API_URL/board/$boardId', headers: await headers)
+      .then((res) => returnResponse(res))
+      .catchError((error){
+    throw Exception(error);
+  });
+
   Future likeBoard(BuildContext context, int board_id) async{
     if(await JWT_TOKEN != null){
       Response res = await post('$API_URL/like/board/$board_id', {}, headers: await headers);
@@ -401,7 +407,7 @@ class BoardRepository extends GetConnect with Config{
     throw Exception(error);
   });
 
-  Future<Response> deleteReportBoard(int reportId) => delete('$API_URL/report/$reportId')
+  Future<Response> deleteReportBoard(int reportId) async => delete('$API_URL/report/$reportId', headers: await headers)
       .then((res) => returnResponse(res))
       .catchError((error){
     throw Exception(error);
