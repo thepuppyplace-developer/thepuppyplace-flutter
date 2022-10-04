@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:thepuppyplace_flutter/util/custom_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thepuppyplace_flutter/repositories/board/board_repository.dart';
@@ -118,7 +119,7 @@ class _BoardReportPageState extends State<BoardReportPage> {
       child: CustomButton(
         margin: basePadding(context),
         title: '제출',
-        onPressed: () => showIndicator(_reportBoard()),
+        onPressed: () => CustomIndicator.instance.show(context, _reportBoard()),
       ),
     );
   }

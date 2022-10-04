@@ -7,7 +7,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
-import 'package:thepuppyplace_flutter/config/config.dart';
 import 'package:thepuppyplace_flutter/controllers/user/user_controller.dart';
 import '../models/BoardComment.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -51,28 +50,6 @@ Future unknown_message(BuildContext context) => showSnackBar(context, '알 수 �
 Future showToast(String msg) async{
   await Fluttertoast.cancel();
   return Fluttertoast.showToast(msg: msg);
-}
-
-Future showIndicator(Future future) => Get.dialog(FutureBuilder(
-  future: future.whenComplete(() => Get.back()),
-  builder: (context, snapshot) => Container(
-    alignment: Alignment.center,
-      margin: EdgeInsets.symmetric(vertical: mediaHeight(context, 0.04)),
-      child: const CupertinoActivityIndicator()),
-));
-
-class CustomIndicator extends StatelessWidget {
-  const CustomIndicator({Key? key}) : super(key: key);
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Platform.isAndroid
-            ? const CircularProgressIndicator()
-            : const CupertinoActivityIndicator(),
-      )
-    );
-  }
 }
 
 class CustomErrorView extends StatelessWidget {

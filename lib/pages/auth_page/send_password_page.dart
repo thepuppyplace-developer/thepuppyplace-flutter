@@ -1,9 +1,9 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:thepuppyplace_flutter/pages/auth_page/login_page.dart';
 import 'package:thepuppyplace_flutter/repositories/user/user_repository.dart';
 import 'package:thepuppyplace_flutter/util/common.dart';
+import 'package:thepuppyplace_flutter/util/custom_indicator.dart';
 import 'package:thepuppyplace_flutter/widgets/buttons/custom_button.dart';
 import 'package:thepuppyplace_flutter/widgets/text_fields/custom_text_field.dart';
 
@@ -68,7 +68,7 @@ class _SendPasswordPageState extends State<SendPasswordPage> {
             title: '전송',
             margin: EdgeInsets.all(mediaWidth(context, 0.033)),
             onPressed: () {
-              showIndicator(sendPassword);
+              CustomIndicator.instance.show(context, sendPassword);
             }
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,

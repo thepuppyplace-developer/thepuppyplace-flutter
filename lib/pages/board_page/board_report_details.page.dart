@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:thepuppyplace_flutter/controllers/board/board_list_controller.dart';
 import 'package:thepuppyplace_flutter/controllers/board/report_board_list.controller.dart';
 import 'package:thepuppyplace_flutter/models/BoardItem.dart';
 import 'package:thepuppyplace_flutter/models/BoardReportDetails.dart';
@@ -15,6 +14,7 @@ import 'package:thepuppyplace_flutter/widgets/buttons/custom_button.dart';
 import 'package:thepuppyplace_flutter/widgets/buttons/custom_icon_button.dart';
 import 'package:thepuppyplace_flutter/widgets/dialogs/custom_dialog.dart';
 import 'package:thepuppyplace_flutter/widgets/images/custom_cached_network.image.dart';
+import 'package:thepuppyplace_flutter/util/custom_indicator.dart';
 
 class BoardReportDetailsPage extends StatefulWidget {
   static const String routeName = '/boardReportDetailsPage';
@@ -102,12 +102,12 @@ class _BoardReportDetailsPageState extends State<BoardReportDetailsPage> {
 
   void _showDialog(int reportId) => showDialog(context: context, builder: (_) => CustomDialog(title: '신고내역을 삭제하시겠습니까?', onTap: () {
     Navigator.of(_).pop();
-    return showIndicator(_deleteReport(context, reportId, isBack: true));
+    return CustomIndicator.instance.show(context, _deleteReport(context, reportId, isBack: true));
   }));
 
   void _showBoardDeleteDialog(int boardId) => showDialog(context: context, builder: (_) => CustomDialog(title: '게시글을 삭제하시겠습니까?', onTap: () {
     Navigator.of(_).pop();
-    return showIndicator(_deleteBoard(context, boardId));
+    return CustomIndicator.instance.show(context, _deleteBoard(context, boardId));
   }));
 
   @override

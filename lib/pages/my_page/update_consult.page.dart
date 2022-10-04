@@ -1,4 +1,4 @@
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:thepuppyplace_flutter/util/custom_indicator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -47,7 +47,7 @@ class _UpdateConsultPageState extends State<UpdateConsultPage> {
         titleTextStyle: CustomTextStyle.appBarStyle(context),
         title: const Text('수정하기'),
         actions: [
-          CustomTextButton('수정', !_check ? null : () => showIndicator(_updateConsult), color: _check ? null : CustomColors.hint)
+          CustomTextButton('수정', !_check ? null : () => CustomIndicator.instance.show(context, _updateConsult), color: _check ? null : CustomColors.hint)
         ],
       ),
       body: SingleChildScrollView(

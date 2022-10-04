@@ -1,4 +1,4 @@
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:thepuppyplace_flutter/util/custom_indicator.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -207,7 +207,7 @@ class _UpdateBoardPageState extends State<UpdateBoardPage> {
   void updateBoard() {
     if(_formKey.currentState!.validate()){
       _formKey.currentState!.save();
-      showIndicator(BoardRepository.instance.updateBoard(
+      CustomIndicator.instance.show(context, BoardRepository.instance.updateBoard(
         context,
         board_id: widget.board.id,
         title: _title,

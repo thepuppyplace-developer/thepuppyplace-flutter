@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thepuppyplace_flutter/controllers/user/user_controller.dart';
-import 'package:thepuppyplace_flutter/pages/my_page/update_my_page.dart';
 import 'package:thepuppyplace_flutter/repositories/user/user_repository.dart';
+import 'package:thepuppyplace_flutter/util/custom_indicator.dart';
 import 'package:thepuppyplace_flutter/widgets/buttons/custom_text_button.dart';
 import 'package:thepuppyplace_flutter/widgets/dialogs/custom_dialog.dart';
-
 import '../../util/common.dart';
 import '../../widgets/buttons/custom_button.dart';
 import '../../widgets/text_fields/custom_text_field.dart';
@@ -127,7 +126,7 @@ class _UpdatePasswordPageState extends State<UpdatePasswordPage> {
                             '비밀번호가 기억나지 않으세요?', () => showDialog(context: context, builder: (context) => CustomDialog(
                             title: '임시 비밀번호를 전송할까요?',
                             content: '임시 비밀번호를 전송하면 로그아웃됩니다.',
-                            onTap: () => showIndicator(_sendPassword),
+                            onTap: () => CustomIndicator.instance.show(context, _sendPassword),
                           )),
                           ),
                         )
@@ -145,7 +144,7 @@ class _UpdatePasswordPageState extends State<UpdatePasswordPage> {
                         if(_passwordKey.currentState!.validate()){
                           _passwordKey.currentState!.save();
                           Get.back();
-                          showIndicator(_updatePassword);
+                          CustomIndicator.instance.show(context, _updatePassword);
                         }
                       }));
                     },

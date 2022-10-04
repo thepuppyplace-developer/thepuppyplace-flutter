@@ -12,6 +12,7 @@ import '../../widgets/buttons/custom_button.dart';
 import '../../widgets/buttons/custom_text_button.dart';
 import '../../widgets/buttons/pick_image_button.dart';
 import '../../widgets/text_fields/custom_text_field.dart';
+import 'package:thepuppyplace_flutter/util/custom_indicator.dart';
 
 class NoticeInsertPage extends StatefulWidget {
   static const String routeName = '/noticeInsertPage';
@@ -47,7 +48,7 @@ class _NoticeInsertPageState extends State<NoticeInsertPage> {
               title: Text('공지사항 글쓰기', style: CustomTextStyle.w600(context, scale: 0.02)),
               actions: [
                 CustomTextButton('등록', (){
-                  showIndicator(_insertNotice);
+                  CustomIndicator.instance.show(context, _insertNotice);
                 })
               ],
             )
@@ -137,7 +138,7 @@ class _NoticeInsertPageState extends State<NoticeInsertPage> {
         floatingActionButton: CustomButton(
           margin: EdgeInsets.all(mediaWidth(context, 0.033)),
           title: '등록',
-          onPressed: () => showIndicator(_insertNotice),
+          onPressed: () => CustomIndicator.instance.show(context, _insertNotice),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       )

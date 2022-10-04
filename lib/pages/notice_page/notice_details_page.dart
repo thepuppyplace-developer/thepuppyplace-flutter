@@ -6,8 +6,7 @@ import 'package:thepuppyplace_flutter/controllers/notice/notice_list_controller.
 import 'package:thepuppyplace_flutter/pages/notice_page/notice_update_page.dart';
 import 'package:thepuppyplace_flutter/views/photo_view/photo_list_view.dart';
 import 'package:thepuppyplace_flutter/widgets/images/custom_cached_network.image.dart';
-import '../../config/config.dart';
-import '../../controllers/user/user_controller.dart';
+import 'package:thepuppyplace_flutter/util/custom_indicator.dart';
 import '../../models/Notice.dart';
 import '../../util/common.dart';
 import '../../widgets/buttons/custom_icon_button.dart';
@@ -48,7 +47,7 @@ class NoticeDetailsPage extends GetView<NoticeListController> {
                         showCupertinoDialog(context: context, builder: (context) => CustomDialog(
                             title: '공지사항을 삭제하시겠습니까?',
                             content: '삭제한 공지사항은 복구되지 않습니다.\n삭제하시겠습니까?',
-                            onTap: () => showIndicator(_deleteNotice(context))
+                            onTap: () => CustomIndicator.instance.show(context, _deleteNotice(context))
                         ));
                       },
                     )

@@ -1,16 +1,13 @@
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:thepuppyplace_flutter/util/custom_indicator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thepuppyplace_flutter/pages/my_page/app_info_page.dart';
 import 'package:thepuppyplace_flutter/pages/my_page/report_list.page.dart';
-import 'package:thepuppyplace_flutter/util/cached_network_image_list.dart';
 import 'package:thepuppyplace_flutter/util/common.dart';
 import 'package:thepuppyplace_flutter/util/custom_icons.dart';
-import 'package:thepuppyplace_flutter/util/png_list.dart';
 import 'package:thepuppyplace_flutter/widgets/images/custom_cached_network.image.dart';
 import '../../controllers/user/user_controller.dart';
-import '../../controllers/version/version_controller.dart';
 import '../../widgets/buttons/custom_icon_button.dart';
 import '../../widgets/buttons/custom_text_button.dart';
 import '../../widgets/dialogs/custom_dialog.dart';
@@ -146,10 +143,7 @@ class MyPage extends GetWidget<UserController> {
                       CustomTextButton('로그아웃', (){
                         showCupertinoDialog(context: context, builder: (context) => CustomDialog(
                           title: '로그아웃 하시겠습니까?',
-                          onTap: (){
-                            Get.back();
-                            showIndicator(controller.logout(context));
-                          },
+                          onTap: () => controller.logout(context),
                           tabText: '로그아웃',
                         ));
                       }, color: Colors.black, alignment: Alignment.centerLeft),
@@ -158,7 +152,7 @@ class MyPage extends GetWidget<UserController> {
                             title: '회원을 탈퇴하시겠습니까?',
                             tabText: '회원탈퇴',
                             content: '회원탈퇴시 복원되지 않습니다.\n삭제하시겠습니까?',
-                            onTap: () => showIndicator(controller.deleteUser(context))
+                            onTap: () => controller.deleteUser(context)
                         ));
                       }, color: Colors.black, alignment: Alignment.centerLeft),
                     ],
@@ -167,7 +161,7 @@ class MyPage extends GetWidget<UserController> {
           ),
         ),
       ),
-          onLoading: const CustomIndicator(),
+          onLoading: const CupertinoActivityIndicator(),
           onError: (error) => CustomErrorView(error: error),
           onEmpty: const LoginRequestPage()
       ),

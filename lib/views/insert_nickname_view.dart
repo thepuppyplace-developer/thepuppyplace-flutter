@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:thepuppyplace_flutter/repositories/user/user_repository.dart';
+import 'package:thepuppyplace_flutter/util/custom_indicator.dart';
 import '../../models/Term.dart';
 import '../../util/common.dart';
 import '../../widgets/buttons/custom_button.dart';
@@ -61,7 +62,7 @@ class _InsertNicknameViewState extends State<InsertNicknameView> {
                 setState(() {});
               },
               validator: (nickname) => Validations.nickname(nickname, validator: _nicknameValidator),
-              onFieldSubmitted: Validations.nickname(_nickname, validator: _nicknameValidator) != null ? null : (nickname) => showIndicator(_signup),
+              onFieldSubmitted: Validations.nickname(_nickname, validator: _nicknameValidator) != null ? null : (nickname) => CustomIndicator.instance.show(context, _signup),
               maxLength: 16,
               inputFormatters: [
                 Utf8LengthLimitingTextInputFormatter(16),
@@ -71,7 +72,7 @@ class _InsertNicknameViewState extends State<InsertNicknameView> {
           CustomButton(
               borderRadius: mediaHeight(context, 1),
               title: '가입',
-              onPressed: Validations.nickname(_nickname, validator: _nicknameValidator) != null ? null : () => showIndicator(_signup)
+              onPressed: Validations.nickname(_nickname, validator: _nicknameValidator) != null ? null : () => CustomIndicator.instance.show(context, _signup)
           )
         ],
       ),

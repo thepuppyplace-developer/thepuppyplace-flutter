@@ -12,6 +12,7 @@ import 'package:thepuppyplace_flutter/widgets/images/custom_cached_network.image
 import '../../widgets/buttons/custom_text_button.dart';
 import '../../widgets/dialogs/custom_dialog.dart';
 import '../../widgets/text_fields/custom_text_field.dart';
+import 'package:thepuppyplace_flutter/util/custom_indicator.dart';
 
 class ConsultDetailsPage extends StatefulWidget {
   static const String routeName = '/consultDetailsPage';
@@ -55,7 +56,7 @@ class _ConsultDetailsPageState extends State<ConsultDetailsPage> {
                             Get.back();
                             showDialog(context: context, builder: (context) => CustomDialog(
                                 title: '정말로 문의를 삭제하시겠습니까?',
-                                onTap: () => showIndicator(_deleteConsult(context, _consultId.value))));
+                                onTap: () => CustomIndicator.instance.show(context, _deleteConsult(context, _consultId.value))));
                           },
                             color: Colors.black,
                           ),
@@ -124,11 +125,11 @@ class _ConsultDetailsPageState extends State<ConsultDetailsPage> {
                               margin: EdgeInsets.only(right: mediaWidth(context, 0.033)),
                               hintText: '답변',
                               textFieldType: TextFieldType.outline,
-                              onFieldSubmitted: (answer) => showIndicator(_answerConsult(controller)),
+                              onFieldSubmitted: (answer) => CustomIndicator.instance.show(context, _answerConsult(controller)),
                               onChanged: (answer) => setState(() => _answer = answer),
                             ),
                           ),
-                          CustomTextButton('작성', () => showIndicator(_answerConsult(controller)))
+                          CustomTextButton('작성', () => CustomIndicator.instance.show(context, _answerConsult(controller)))
                         ],
                       ),
                     ),

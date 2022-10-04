@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thepuppyplace_flutter/pages/auth_page/send_password_page.dart';
+import 'package:thepuppyplace_flutter/util/custom_indicator.dart';
 import 'package:thepuppyplace_flutter/util/png_list.dart';
 import '../../controllers/user/user_controller.dart';
 import '../../util/common.dart';
@@ -124,7 +125,7 @@ class _LoginPageState extends State<LoginPage> {
                           vertical: mediaHeight(context, 0.033)),
                       title: '로그인',
                       textColor: Colors.white,
-                      onPressed: () => showIndicator(_login)
+                      onPressed: () => CustomIndicator.instance.show(context, _login)
                     ),
                     CustomButton(
                       margin: EdgeInsets.only(
@@ -152,10 +153,10 @@ class _LoginPageState extends State<LoginPage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           CupertinoButton(child: Image.asset(PngList.google, height: mediaWidth(context, 0.1), width: mediaWidth(context, 0.1)),
-                              onPressed: () => showIndicator(_googleLogin(context))
+                              onPressed: () => CustomIndicator.instance.show(context, _googleLogin(context))
                           ),
                           if(Platform.isIOS) CupertinoButton(child: Image.asset(
-                              PngList.apple, height: mediaWidth(context, 0.1), width: mediaWidth(context, 0.1)), onPressed: () => showIndicator(_appleLogin(context)))
+                              PngList.apple, height: mediaWidth(context, 0.1), width: mediaWidth(context, 0.1)), onPressed: () => CustomIndicator.instance.show(context, _appleLogin(context)))
                         ],
                       ),
                     ],

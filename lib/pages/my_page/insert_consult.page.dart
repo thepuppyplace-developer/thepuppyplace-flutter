@@ -8,7 +8,7 @@ import 'package:thepuppyplace_flutter/controllers/consult/consult_list.controlle
 import 'package:thepuppyplace_flutter/util/common.dart';
 import 'package:thepuppyplace_flutter/widgets/buttons/custom_text_button.dart';
 import 'package:thepuppyplace_flutter/widgets/text_fields/custom_text_field.dart';
-
+import 'package:thepuppyplace_flutter/util/custom_indicator.dart';
 import '../../views/photo_view/photo_list_view.dart';
 
 class InsertConsultPage extends StatefulWidget {
@@ -32,7 +32,7 @@ class _InsertConsultPageState extends State<InsertConsultPage> {
         titleTextStyle: CustomTextStyle.appBarStyle(context),
         title: const Text('문의하기'),
         actions: [
-          CustomTextButton('등록', !_check ? null : () => showIndicator(_insertConsult), color: _check ? null : CustomColors.hint)
+          CustomTextButton('등록', !_check ? null : () => CustomIndicator.instance.show(context, _insertConsult), color: _check ? null : CustomColors.hint)
         ],
       ),
       body: SingleChildScrollView(

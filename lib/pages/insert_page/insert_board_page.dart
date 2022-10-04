@@ -17,6 +17,7 @@ import '../../widgets/buttons/select_button.dart';
 import '../../widgets/tab_bars/select_category_tab_bar.dart';
 import '../../widgets/text_fields/custom_text_field.dart';
 import '../my_page/login_request_page.dart';
+import 'package:thepuppyplace_flutter/util/custom_indicator.dart';
 
 class InsertBoardPage extends StatefulWidget {
   static const String routeName = '/insertBoardPage';
@@ -305,7 +306,7 @@ class _InsertBoardPageState extends State<InsertBoardPage> {
       if(_locationIndex == null){
         showSnackBar(context, '지역을 선택해주세요.');
       } else {
-        showIndicator(BoardRepository.instance.insertBoard(
+        CustomIndicator.instance.show(context, BoardRepository.instance.insertBoard(
             context,
             title: _title,
             description: _description,

@@ -10,6 +10,7 @@ import 'package:thepuppyplace_flutter/controllers/board/board_list_controller.da
 import 'package:thepuppyplace_flutter/pages/board_page/board_report.page.dart';
 import 'package:thepuppyplace_flutter/repositories/board/board_repository.dart';
 import 'package:thepuppyplace_flutter/util/common.dart';
+import 'package:thepuppyplace_flutter/util/custom_indicator.dart';
 import 'package:thepuppyplace_flutter/util/enums.dart';
 import 'package:thepuppyplace_flutter/util/error_messages.dart';
 import 'package:thepuppyplace_flutter/views/photo_view/photo_list_view.dart';
@@ -175,7 +176,7 @@ class _BoardDetailsPageState extends State<BoardDetailsPage> with AutomaticKeepA
                         CupertinoButton(
                           padding: EdgeInsets.zero,
                           child: Icon(Icons.ios_share, color: Colors.black, size: mediaHeight(context, 0.03),),
-                          onPressed: () => showIndicator(KakaoTalkConfig.kakaoShareToMobile(board)),
+                          onPressed: () => CustomIndicator.instance.show(context, KakaoTalkConfig.kakaoShareToMobile(board)),
                         ),
                         CupertinoButton(
                           padding: EdgeInsets.zero,
@@ -206,7 +207,7 @@ class _BoardDetailsPageState extends State<BoardDetailsPage> with AutomaticKeepA
                                       title: '게시글을 삭제하시겠습니까?',
                                       content: '삭제한 게시글은 복원되지 않습니다.\n삭제하시겠습니까?',
                                       onTap: (){
-                                        showIndicator(_deleteBoard(context));
+                                        CustomIndicator.instance.show(context, _deleteBoard(context));
                                       }
                                   ));
                                   break;
@@ -407,8 +408,8 @@ class _BoardDetailsPageState extends State<BoardDetailsPage> with AutomaticKeepA
                                               },
                                               onLike: (BoardComment boardComment) => _likeComment(context, boardComment.commentId),
                                               onCommentDelete: () => _deleteComment(context, comment.commentId),
-                                              onNestedCommentDelete: (NestedComment nestedComment) => showIndicator(_deleteNestedComment(context, nestedComment)),
-                                              onNestNestCommentDelete: (NestNestComment nestNestComment) => showIndicator(_deleteNestNestComment(context, nestNestComment)),
+                                              onNestedCommentDelete: (NestedComment nestedComment) => CustomIndicator.instance.show(context, _deleteNestedComment(context, nestedComment)),
+                                              onNestNestCommentDelete: (NestNestComment nestNestComment) => CustomIndicator.instance.show(context, _deleteNestNestComment(context, nestNestComment)),
                                             )
                                           ]
                                       ),

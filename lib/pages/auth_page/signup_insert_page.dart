@@ -8,6 +8,7 @@ import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:thepuppyplace_flutter/controllers/user/user_controller.dart';
 import 'package:thepuppyplace_flutter/repositories/user/user_repository.dart';
 import 'package:thepuppyplace_flutter/util/common.dart';
+import 'package:thepuppyplace_flutter/util/custom_indicator.dart';
 
 import '../../models/Term.dart';
 import '../../util/utf8_length_limiting_text_input_formatter.dart';
@@ -159,7 +160,7 @@ class _SignupInsertPageState extends State<SignupInsertPage> {
                             setState(() {});
                           },
                           onFieldSubmitted: (email){
-                            showIndicator(_sendOTP(email));
+                            CustomIndicator.instance.show(context, _sendOTP(email));
                           },
                           enabled: _otpNumber == null,
                           fillColor: _otpNumber == null ? null : CustomColors.emptySide,
@@ -183,7 +184,7 @@ class _SignupInsertPageState extends State<SignupInsertPage> {
                           if(_verificationOTP){
                             showDialog(context: context, builder: (context) => CustomDialog(title: '이메일 주소를 변경하시겠습니까?', onTap: _changeEmail));
                           } else {
-                            showIndicator(_sendOTP(_email));
+                            CustomIndicator.instance.show(context, _sendOTP(_email));
                           }
                         }
                     ),
@@ -263,7 +264,7 @@ class _SignupInsertPageState extends State<SignupInsertPage> {
           child: CustomButton(
               margin: basePadding(context),
               title: '다음으로',
-              onPressed: !_allVerification ? null : () => showIndicator(_signup())
+              onPressed: !_allVerification ? null : () => CustomIndicator.instance.show(context, _signup())
           ),
         ),
       ),
@@ -313,7 +314,7 @@ class _SignupInsertPageState extends State<SignupInsertPage> {
         }
         setState(() {});
       },
-      onFieldSubmitted: (nickname) => showIndicator(_signup()),
+      onFieldSubmitted: (nickname) => CustomIndicator.instance.show(context, _signup()),
     )
   ];
 }

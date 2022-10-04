@@ -1,4 +1,4 @@
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:thepuppyplace_flutter/util/custom_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thepuppyplace_flutter/controllers/notice/notice_list_controller.dart';
@@ -56,7 +56,7 @@ class _NoticeUpdatePageState extends State<NoticeUpdatePage> {
                 title: Text('공지사항 수정하기', style: CustomTextStyle.w600(context, scale: 0.02)),
                 actions: [
                   CustomTextButton('수정', (){
-                    showIndicator(updateNotice);
+                    CustomIndicator.instance.show(context, updateNotice);
                   })
                 ],
               )
@@ -123,7 +123,7 @@ class _NoticeUpdatePageState extends State<NoticeUpdatePage> {
             margin: EdgeInsets.all(mediaWidth(context, 0.033)),
             title: '수정',
             onPressed: () {
-              showIndicator(updateNotice);
+              CustomIndicator.instance.show(context, updateNotice);
             },
           ),
           floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,

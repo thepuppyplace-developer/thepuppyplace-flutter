@@ -8,6 +8,7 @@ import '../../util/utf8_length_limiting_text_input_formatter.dart';
 import '../../util/validations.dart';
 import '../../widgets/buttons/custom_button.dart';
 import '../../widgets/text_fields/custom_text_field.dart';
+import 'package:thepuppyplace_flutter/util/custom_indicator.dart';
 
 class UpdateNicknamePage extends StatefulWidget {
   const UpdateNicknamePage({Key? key}) : super(key: key);
@@ -95,7 +96,7 @@ class _UpdateNicknamePageState extends State<UpdateNicknamePage> {
                             }
                             setState(() {});
                           },
-                          onFieldSubmitted: Validations.nickname(_nickname, validator: _nicknameValidator) != null ? null : (nickname) => showIndicator(_updateNickname(controller))
+                          onFieldSubmitted: Validations.nickname(_nickname, validator: _nicknameValidator) != null ? null : (nickname) => CustomIndicator.instance.show(context, _updateNickname(controller))
                         ),
                       )
                     ],
@@ -104,7 +105,7 @@ class _UpdateNicknamePageState extends State<UpdateNicknamePage> {
                 SafeArea(
                   child: CustomButton(
                     title: '변경하기',
-                    onPressed: Validations.nickname(_nickname, validator: _nicknameValidator) != null ? null : () => showIndicator(_updateNickname(controller)),
+                    onPressed: Validations.nickname(_nickname, validator: _nicknameValidator) != null ? null : () => CustomIndicator.instance.show(context, _updateNickname(controller)),
                   ),
                 )
               ],

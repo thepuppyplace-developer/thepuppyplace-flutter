@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:thepuppyplace_flutter/controllers/search/popular_keyword_list_controller.dart';
 import 'package:thepuppyplace_flutter/util/common.dart';
+import 'package:thepuppyplace_flutter/util/custom_indicator.dart';
 import 'package:thepuppyplace_flutter/views/status/rx_status_view.dart';
 import 'package:thepuppyplace_flutter/widgets/cards/popular_search_card.dart';
 import '../models/Search.dart';
@@ -45,7 +46,7 @@ class PopularSearchListView extends StatelessWidget {
                     PopularSearchCard(search, (query){
                       Get.toNamed(SearchBoardListPage.routeName, arguments: query);
                     },
-                      onDelete : (search) => showIndicator(_deleteSearch(context, controller, search)),
+                      onDelete : (search) => CustomIndicator.instance.show(context, _deleteSearch(context, controller, search)),
                     ),
                   ],
                 );
