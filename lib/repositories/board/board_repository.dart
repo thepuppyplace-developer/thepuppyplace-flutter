@@ -1,7 +1,11 @@
+import 'dart:async';
+
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:thepuppyplace_flutter/config/network.dart';
 import 'package:thepuppyplace_flutter/models/BoardCategory.dart';
 import 'package:thepuppyplace_flutter/util/common.dart';
 import '../../../config/config.dart';
@@ -32,26 +36,22 @@ class BoardRepository extends GetConnect with Config{
 
       for(XFile? photo in photoList){
         if(photo != null){
-          formData.files.addAll([
+          formData.files.add(
             MapEntry('images', MultipartFile(await photo.readAsBytes(), filename: photo.path))
-          ]);
+          );
         }
       }
 
-      final Response res = await post('$API_URL/board/insert', formData, headers: await headers);
-
-      switch(res.statusCode){
-        case 201: {
-          Get.until((route) => route.isFirst);
-          return showSnackBar(context, '게시글이 업로드되었습니다!');
-        }
-        case 204: {
-          return unknown_message(context);
-        }
-        default: {
-          return network_check_message(context);
-        }
-      }
+      return post('$API_URL/board/insert', formData, headers: await headers).then((res) {
+        return Network.instance.check.then((result) {
+          if(result == ConnectivityResult.none){
+            return null;
+          } else {
+            Get.until((route) => route.isFirst);
+            return showSnackBar(context, '게시글이 업로드되었습니다!');
+          }
+        });
+      });
     } else {
       return expiration_token_message(context);
     }

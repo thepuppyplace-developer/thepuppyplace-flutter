@@ -1,7 +1,7 @@
 name: thepuppyplace_flutter
 description: A new Flutter project.
 publish_to: 'none'
-version: 1.0.0+21
+version: 1.0.0+22
 
 # flutter clean && flutter pub get && cd ios && pod install && cd .. && flutter build apk
 
@@ -54,6 +54,7 @@ dependencies:
   equatable: ^2.0.5
   firebase_dynamic_links: ^4.3.7
   flutter_dotenv: ^5.0.2
+  connectivity_plus: ^2.3.8
 
 dev_dependencies:
   flutter_test:

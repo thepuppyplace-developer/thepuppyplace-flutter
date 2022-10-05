@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -94,7 +96,9 @@ class Config{
     //바야바즈 jwt 토큰값 헤더
     final String? jwt = await JWT_TOKEN;
     if(jwt != null){
-      return {'thepuppyplace': jwt};
+      return {
+        'thepuppyplace': jwt,
+      };
     } else {
       return null;
     }
